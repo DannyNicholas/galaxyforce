@@ -2,11 +2,15 @@ package com.danosoftware.galaxyforce.waves;
 
 import android.util.Log;
 
+import com.danosoftware.galaxyforce.enumerations.Direction;
+import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
 import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.MAX_WAVES;
@@ -37,13 +42,10 @@ import static org.powermock.api.mockito.PowerMockito.when;
 /**
  * Test to confirm behaviour of wave factory to create all waves.
  *
- * TODO This test does not yet pass due to the way Sprites are embeded into waves.
  * Also tries to create waves that are not yet supported.
- *
- * Re-test after wave refactoring to de-couple waves from sprites.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, PathLoader.class, SoundEffectBankSingleton.class, VibrationSingleton.class})
+@PrepareForTest({Log.class, PathLoader.class, AlienFactory.class, SoundEffectBankSingleton.class, VibrationSingleton.class})
 public class WaveFactoryTest {
 
     final static Logger logger = LoggerFactory.getLogger(WaveFactoryTest.class);
@@ -78,15 +80,34 @@ public class WaveFactoryTest {
         VibrationSingleton vibration = mock(VibrationSingleton.class);
         mockStatic(VibrationSingleton.class);
         when(VibrationSingleton.getInstance()).thenReturn(vibration);
+
+        // creating aliens is complex so mock it for this test
+        List<SpriteAlien> mockedAliens = new ArrayList<>();
+        mockStatic(AlienFactory.class);
+        when(AlienFactory.createAlien(
+                any(AlienType.class),
+                any(PowerUpType.class),
+                any(Boolean.class),
+                any(Boolean.class),
+                any(Integer.class),
+                any(Integer.class),
+                any(Float.class),
+                any(GameHandler.class),
+                any(Boolean.class),
+                any(Direction.class))).thenReturn(mockedAliens);
     }
 
     @Test
     public void shouldCreateAllWaves() {
         for (int wave = 1; wave <= MAX_WAVES; wave++) {
 
+            logger.info("Creating wave: " + wave);
+
             GameHandler handler = mock(GameHandler.class);
             WaveFactory waveFactory = new WaveFactory(handler);
             List<SubWave> subWave = waveFactory.createWave(wave);
+
+            logger.info("Sub-waves: " + subWave.size());
 
             assertThat(subWave.size() > 0, is(true));
 

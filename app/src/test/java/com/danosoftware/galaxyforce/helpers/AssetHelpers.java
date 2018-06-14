@@ -9,7 +9,7 @@ import java.nio.file.Paths;
  */
 public class AssetHelpers {
 
-    private final static String ASSET_PATH = "app/src/main/assets";
+    private final static String ASSET_PATH = "src/main/assets";
 
     /**
      * Return a paths assets file with the supplied filename.

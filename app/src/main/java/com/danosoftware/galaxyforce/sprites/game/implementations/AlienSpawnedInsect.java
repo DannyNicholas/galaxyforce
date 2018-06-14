@@ -12,7 +12,7 @@ import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class AlienSpawnedInsect extends SpriteAlien
+public class          AlienSpawnedInsect extends SpriteAlien
 {
     /*
      * ******************************************************
