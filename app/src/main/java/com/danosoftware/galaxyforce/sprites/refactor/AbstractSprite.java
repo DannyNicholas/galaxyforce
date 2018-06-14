@@ -13,7 +13,7 @@ public abstract class AbstractSprite implements ISprite {
     private int rotation;
 
     // sprite's width and height
-    protected int width, height;
+    private int width, height;
 
     // sprite's texture to allow image to be drawn
     private TextureRegion textureRegion;
