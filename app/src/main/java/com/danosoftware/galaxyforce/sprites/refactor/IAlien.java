@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-public interface IAlien extends IMovingSprite  {
+public interface IAlien extends ICollidingSprite  {
 
     void animate();
 

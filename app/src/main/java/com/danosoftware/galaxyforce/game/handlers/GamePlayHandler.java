@@ -57,6 +57,11 @@ import com.danosoftware.galaxyforce.sprites.game.interfaces.SpritePowerUp;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteShield;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
+import com.danosoftware.galaxyforce.sprites.refactor.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.refactor.IBaseMissile;
+import com.danosoftware.galaxyforce.sprites.refactor.IBaseSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
@@ -1290,21 +1295,26 @@ public class GamePlayHandler implements GameHandler
     private void collisionDetection()
     {
 
-        for (SpriteAlien eachAlien : aliens)
-        {
-            // only check collisions for active aliens
-            if (eachAlien.isActive())
-            {
+        List<IAlien> activeAliens = null;
+        List<IBaseSprite > activebases = null;
+        List<IBaseMissile> activeBaseMissiles = null;
+        List<IAlienMissile> activeAlienMissiles = null;
 
-                for (SpriteBase eachBase : bases)
+
+        for (IAlien eachAlien : activeAliens)
+        {
+                for (IBaseSprite eachBase : activebases)
                 {
 
                     // base and alien collide
-                    if (eachBase.isActive() && checkCollision(eachAlien, eachBase))
+                    if (checkCollision(eachAlien, eachBase))
                     {
+                        eachBase.onHitBy(eachAlien);
+
+
                         // base and alien lose energy
-                        eachBase.setExploding();
-                        eachAlien.loseEnergy(eachBase.hitEnergy());
+//                        eachBase.setExploding();
+//                        eachAlien.loseEnergy(eachBase.hitEnergy());
 
                         // base has lost energy. get energy sprites representing
                         // new energy bar level.
@@ -1322,11 +1332,12 @@ public class GamePlayHandler implements GameHandler
                     }
                 }
 
-                for (SpriteBaseMissile eachBaseMissile : baseMissiles)
+                for (IBaseMissile eachBaseMissile : activeBaseMissiles)
                 {
                     // base missile and alien collide
-                    if (eachBaseMissile.isActive() && checkCollision(eachAlien, eachBaseMissile))
+                    if (checkCollision(eachAlien, eachBaseMissile))
                     {
+                        eachAlien.onHitBy(eachBaseMissile);
 
                         /*
                          * base missile and alien have collided but we need to
@@ -1338,8 +1349,10 @@ public class GamePlayHandler implements GameHandler
                         if (!eachBaseMissile.hitBefore(eachAlien))
                         {
                             // base missile and alien lose energy
-                            eachAlien.loseEnergy(eachBaseMissile.hitEnergy());
-                            eachBaseMissile.loseEnergy(eachAlien.hitEnergy());
+                            eachAlien.onHitBy(eachBaseMissile);
+
+//                            eachAlien.loseEnergy(eachBaseMissile.hitEnergy());
+//                            eachBaseMissile.loseEnergy(eachAlien.hitEnergy());
 
 //                            // find the collision point
 //                            Point collisionPoint = collisionPointBaseMissile(eachBaseMissile, eachAlien);
@@ -1350,27 +1363,25 @@ public class GamePlayHandler implements GameHandler
 
                     }
                 }
-            }
-
         }
 
         // list to contain list of power-ups to activate
         List<PowerUpType> powerUpActivation = new ArrayList<PowerUpType>();
 
-        for (SpriteBase eachBase : bases)
+        for (IBaseSprite eachBase : activebases)
         {
-            // only check collisions for active bases
-            if (eachBase.isActive())
-            {
                 // collision detection for base and alien missiles
-                for (SpriteAlienMissile eachAlienMissile : aliensMissiles)
+                for (IAlienMissile eachAlienMissile : activeAlienMissiles)
                 {
                     // only check collisions for active alien missiles
-                    if (eachAlienMissile.isActive() && checkCollision(eachAlienMissile, eachBase))
+                    if (checkCollision(eachAlienMissile, eachBase))
                     {
+
+                        eachBase.onHitBy(eachAlienMissile);
+
                         // base and alien missile energy
-                        eachBase.loseEnergy(eachAlienMissile.hitEnergy());
-                        eachAlienMissile.loseEnergy(eachBase.hitEnergy());
+//                        eachBase.loseEnergy(eachAlienMissile.hitEnergy());
+//                        eachAlienMissile.loseEnergy(eachBase.hitEnergy());
 
                         // find the collision point
 //                        Point collisionPoint = collisionPointAlienMissile(eachAlienMissile, eachBase);
@@ -1390,8 +1401,12 @@ public class GamePlayHandler implements GameHandler
                 for (SpritePowerUp eachPowerUp : powerUps)
                 {
                     // only check collisions for active power ups
-                    if (eachPowerUp.isActive() && checkCollision(eachPowerUp, eachBase))
+                    //if (checkCollision(eachPowerUp, eachBase))
+                    // FIXME
+                        if (false)
                     {
+                        eachBase.collectPowerUp(eachPowerUp.getPowerUpType());
+
                         // add power-up to activate
                         powerUpActivation.add(eachPowerUp.getPowerUpType());
 
@@ -1400,7 +1415,6 @@ public class GamePlayHandler implements GameHandler
                         reBuildSprites = true;
                     }
                 }
-            }
         }
 
         /*
@@ -1450,6 +1464,11 @@ public class GamePlayHandler implements GameHandler
     private boolean checkCollision(MovingSprite sprite1, MovingSprite sprite2)
     {
         return OverlapTester.overlapRectangles(sprite1.getBounds(), sprite2.getBounds());
+    }
+
+    private boolean checkCollision(ICollidingSprite sprite1, ICollidingSprite sprite2)
+    {
+        return false;
     }
 
     /**

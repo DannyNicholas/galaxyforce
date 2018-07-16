@@ -62,7 +62,7 @@ public class PowerUpAllocator {
         Collections.shuffle(filteredPowerUps);
 
         // add power-ups to deque (stack)
-        this.powerUps = new ArrayDeque();
+        this.powerUps = new ArrayDeque<>();
         for (PowerUpType powerUp : filteredPowerUps) {
             this.powerUps.push(powerUp);
         }

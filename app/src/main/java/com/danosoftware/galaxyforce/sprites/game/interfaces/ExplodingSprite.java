@@ -28,7 +28,7 @@ public abstract class ExplodingSprite extends MovingSprite
                 visible);
 
         this.explodeBehaviour = explodeBehaviour;
-        this.hitBehaviour = new HitBehaviourFlash();
+        this.hitBehaviour = new HitBehaviourFlash(this);
         this.energy = energy;
     }
 
@@ -48,7 +48,7 @@ public abstract class ExplodingSprite extends MovingSprite
 
         // if hit then continue sprite flash
         if (hitBehaviour.isHit()) {
-            hitBehaviour.updateHit(this, deltaTime);
+            hitBehaviour.updateHit(deltaTime);
         }
     }
 
@@ -92,6 +92,6 @@ public abstract class ExplodingSprite extends MovingSprite
 
     public void startHit()
     {
-        hitBehaviour.startHit(this);
+        hitBehaviour.startHit();
     }
 }

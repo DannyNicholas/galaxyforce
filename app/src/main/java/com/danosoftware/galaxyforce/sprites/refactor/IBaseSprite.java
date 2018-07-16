@@ -2,9 +2,9 @@ package com.danosoftware.galaxyforce.sprites.refactor;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 
-public interface IBaseSprite extends IMovingSprite {
+import java.util.List;
 
-    void animate();
+public interface IBaseSprite extends ICollidingSprite {
 
     void onHitBy(IAlien alien);
 
@@ -13,4 +13,6 @@ public interface IBaseSprite extends IMovingSprite {
     void destroy();
 
     void collectPowerUp(PowerUpType powerUpType);
+
+    List<ISprite> getBaseSprites();
 }

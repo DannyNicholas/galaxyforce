@@ -1,4 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-public interface IAlienMissile extends IMovingSprite {
+public interface IAlienMissile extends ICollidingSprite {
+
+    int energyDamage();
 }

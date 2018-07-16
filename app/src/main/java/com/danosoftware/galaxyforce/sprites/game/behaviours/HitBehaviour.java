@@ -10,7 +10,7 @@ public interface HitBehaviour {
     /**
      * Start hit behaviour
      */
-    void startHit(ExplodingSprite sprite);
+    void startHit();
 
     /**
      * Is sprite still performing hit behaviour?
@@ -20,5 +20,10 @@ public interface HitBehaviour {
     /**
      * Update hit behaviour using delta-time
      */
-    void updateHit(ExplodingSprite sprite, float deltaTime);
+    void updateHit(float deltaTime);
+
+    /**
+     * Reset hit behaviour early (before finishing normally)
+     */
+    void reset();
 }
