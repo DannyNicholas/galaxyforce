@@ -1,9 +1,10 @@
 version: 2
 jobs:
-  dependencies:
-    pre:
-      - source environmentSetup.sh && copyEnvVarsToGradleProperties
   build:
+    dependencies:
+      pre:
+        - source environmentSetup.sh && copyEnvVarsToGradleProperties
+    build:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-25-alpha
