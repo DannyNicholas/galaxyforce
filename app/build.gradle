@@ -72,6 +72,10 @@ android {
             resValue 'string', "public_key2", "\"$os\""
             resValue 'string', "public_key3", "\"$os\""
             resValue 'string', "public_key4", "\"$os\""
+            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
+            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
+            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
+            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
 
             /**
              * To avoid storing public keys in our source repository we can pass them
