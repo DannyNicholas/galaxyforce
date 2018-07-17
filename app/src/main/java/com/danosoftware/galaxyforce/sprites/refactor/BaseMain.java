@@ -31,6 +31,7 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
+import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.DESTROYED;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
@@ -41,6 +42,8 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
 
     // shield animation that pulses every 0.5 seconds
     private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
+
+    private static final ISpriteIdentifier BASE_SPRITE = BASE;
 
     private static final String TAG = "BaseMain";
 
@@ -115,11 +118,11 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
     private final SoundPlayer soundPlayer;
     private final Sound explosionSound;
 
-    public BaseMain(ISpriteIdentifier spriteId,
-                    int x,
-                    int y) {
+    public BaseMain(
+            int x,
+            int y) {
 
-        super(spriteId, x, y);
+        super(BASE_SPRITE, x, y);
         this.state = ACTIVE;
 
 //        this.helperBases = new ArrayList<>();
@@ -130,7 +133,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
         this.moveHelper = new MoveBaseHelper(this, GAME_WIDTH, GAME_HEIGHT);
 
         this.explosion = new ExplodeBehaviourSimple();
-        this.hit = new HitBehaviourSwitch(this, spriteId, GameSpriteIdentifier.BASE_FLIP);
+        this.hit = new HitBehaviourSwitch(this, BASE_SPRITE, GameSpriteIdentifier.BASE_FLIP);
 
         this.model = model;
 
@@ -232,6 +235,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
      * @param weightingY
      * @param deltaTime
      */
+    @Override
     public void moveBase(float weightingX, float weightingY, float deltaTime) {
         if (state == ACTIVE) {
             // move and animate base
