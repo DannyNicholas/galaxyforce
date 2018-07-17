@@ -24,6 +24,9 @@ jobs:
           name: Run environment set-up for Gradle properties
           command: source environmentSetup.sh && copyEnvVarsToGradleProperties
       - run:
+          name: Run cat
+          command: cat $HOME/.gradle/gradle.properties
+      - run:
           name: Run Tests
           command: ./gradlew lint test
       - store_artifacts:
