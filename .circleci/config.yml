@@ -1,5 +1,8 @@
 version: 2
 jobs:
+  dependencies:
+    pre:
+      - source environmentSetup.sh && copyEnvVarsToGradleProperties
   build:
     working_directory: ~/code
     docker:
