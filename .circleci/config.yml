@@ -1,10 +1,6 @@
 version: 2
 jobs:
   build:
-    dependencies:
-      pre:
-        - source environmentSetup.sh && copyEnvVarsToGradleProperties
-    build:
     working_directory: ~/code
     docker:
       - image: circleci/android:api-25-alpha
@@ -17,6 +13,9 @@ jobs:
 #      - run:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this. 
 #         command: sudo chmod +x ./gradlew
+      - run:
+          name: Run environment set-up for Gradle properties
+          command: source environmentSetup.sh && copyEnvVarsToGradleProperties
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
