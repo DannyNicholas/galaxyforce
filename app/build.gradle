@@ -56,6 +56,45 @@ android {
      */
     buildTypes {
 
+        debug {
+            // gets variable from environment variable
+            // may not be available at run-time
+            buildConfigField 'String', "BILLING_API_KEY", "System.getenv(\"APIKEY\")"
+            resValue 'string', "RES_BILLING_API_KEY", "System.getenv(\"APIKEY\")"
+
+            // hard-codes value into configuration at build time
+            // value will always be available at run-time
+            def os = System.getenv('OS')
+            buildConfigField 'String', "BILLING_API_KEY3", "\"$os\""
+            buildConfigField 'String', "BILLING_API_KEY2", "$System.env.APIKEY"
+            resValue 'string', "RES_BILLING_API_KEY2", "$System.env.APIKEY"
+            resValue 'string', "public_key1", "\"$os\""
+            resValue 'string', "public_key2", "\"$os\""
+            resValue 'string', "public_key3", "\"$os\""
+            resValue 'string', "public_key4", "\"$os\""
+
+            /**
+             * To avoid storing public keys in our source repository we can pass them
+             * in at build time as environment variables.
+             *
+             * These can be added as either BuildConfig objects...
+             * def value = System.getenv('ENV_VAR')
+             * buildConfigField 'String', "MY_ITEM", "\"$value\""
+             *
+             * ... or as resources...
+             * def value = System.getenv('ENV_VAR')
+             * resValue 'string', "MY_ITEM", "\"$value\""
+             *
+             * Can be retrieved from Java using...
+             * String value = BuildConfig.MY_ITEM;
+             * ..or...
+             * String value = activity.getResources().getText(R.string.MY_ITEM).toString();
+             *
+             * Could also retrieve from global gradle.properties
+             * see: https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
+             */
+        }
+
         /**
          * By default, Android Studio configures the release build type to enable code
          * shrinking, using minifyEnabled, and specifies the Proguard settings file.
