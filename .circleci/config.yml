@@ -12,6 +12,8 @@ jobs:
           name: Environment set-up for Gradle properties
           command: source environmentSetup.sh && copyEnvVarsToGradleProperties
       - restore_cache:
+          # Cache is still valid if build.gradle, app/build.gradle and
+          # gradle.properties files (containing environment variables) are identical to last build.
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "~/.gradle/gradle.properties" }}
 #      - run:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this. 
