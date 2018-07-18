@@ -26,6 +26,7 @@ function copyEnvVarsToGradleProperties {
     echo "Gradle properties should exist at $GRADLE_PROPERTIES"
 
     ls -l $HOME
+    cd $HOME
     pwd
     mkdir -p $HOME"/.gradle"
     ls -l $HOME
@@ -44,4 +45,6 @@ function copyEnvVarsToGradleProperties {
         echo "public_key3=$PUBLIC_KEY3" >> $GRADLE_PROPERTIES
         echo "public_key4=$PUBLIC_KEY4" >> $GRADLE_PROPERTIES
     fi
+
+    cat $GRADLE_PROPERTIES
 }
