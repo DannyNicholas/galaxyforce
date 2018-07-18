@@ -57,10 +57,40 @@ android {
     buildTypes {
 
         /**
+         * To avoid storing public keys in our source repository we can pass them
+         * in at build time. The values are stored in the global gradle.properties file
+         * ($HOME/.gradle/gradle.properties).
+         *
+         * Could also retrieve from environment variables.
+         *
+         * see:
+         * https://medium.com/code-better/hiding-api-keys-from-your-android-repository-b23f5598b906
+         * http://www.kiodev.com/circle-ci-and-gradle-properties/
+         *
+         * When building in a remote environment (e.g. a CI server), the
+         * "environmentSetup.sh" script can populate gradle.properties on the remote
+         * server using environment variables.
+         */
+
+        debug {
+            // uses gradle properties to populate API keys in BuildConfig
+            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
+            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
+            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
+            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
+        }
+
+        /**
          * By default, Android Studio configures the release build type to enable code
          * shrinking, using minifyEnabled, and specifies the Proguard settings file.
          */
         release {
+            // uses gradle properties to populate API keys in BuildConfig
+            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
+            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
+            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
+            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
+
             minifyEnabled true // Enables code shrinking for the release build type.
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
