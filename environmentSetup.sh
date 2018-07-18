@@ -3,20 +3,20 @@
 # 
 # Android convention is to store your API keys in a local, non-versioned
 # gradle.properties file. Circle CI doesn't allow users to upload pre-populated
-# gradle.properties files to store this secret information, but instaed allows
+# gradle.properties files to store this secret information, but instead allows
 # users to store such information as environment variables.
 #
 # This script creates a local gradle.properties file on current the Circle CI
-# instance. It then reads environment variable TEST_API_KEY_ENV_VAR which a user
+# instance. It then reads the environment variables PUBLIC_KEYx, which a user
 # has defined in their Circle CI project settings environment variables, and 
 # writes this value to the Circle CI instance's gradle.properties file.
 # 
-# You must execute this script via your circle.yml as a pre-process dependency,
+# You must execute this script via your circle.yml,
 # so your gradle build process has access to all variables.
 #
-#   dependencies:
-#       pre:
-#        - source environmentSetup.sh && copyEnvVarsToGradleProperties
+# - run:
+#     name: Environment set-up for Gradle properties
+#     command: source environmentSetup.sh && copyEnvVarsToGradleProperties
 
 #!/usr/bin/env bash
 
@@ -25,18 +25,11 @@ function copyEnvVarsToGradleProperties {
     export GRADLE_PROPERTIES
     echo "Gradle properties should exist at $GRADLE_PROPERTIES"
 
-    ls -l $HOME
-    cd $HOME
-    pwd
-    mkdir -p $HOME"/.gradle"
-    ls -l $HOME
-    pwd
-
-
     if [ ! -f "$GRADLE_PROPERTIES" ]; then
         echo "Gradle properties does not exist"
 
         echo "Creating Gradle properties file..."
+        mkdir -p $HOME"/.gradle"
         touch $GRADLE_PROPERTIES
 
         echo "Writing Public Key to gradle.properties..."
@@ -45,6 +38,4 @@ function copyEnvVarsToGradleProperties {
         echo "PUBLIC_KEY3=$PUBLIC_KEY3" >> $GRADLE_PROPERTIES
         echo "PUBLIC_KEY4=$PUBLIC_KEY4" >> $GRADLE_PROPERTIES
     fi
-
-    cat $GRADLE_PROPERTIES
 }
