@@ -23,7 +23,7 @@ import java.util.List;
 public class UnlockFullVersionModelImpl implements Model, BillingObserver, MenuButtonModel
 {
     /* logger tag */
-    private static final String LOCAL_TAG = "UnlockFullVersionModelImpl";
+    private static final String LOCAL_TAG = "UnlockFullVersionModel";
 
     // references to stars
     private List<Star> stars = null;
