@@ -24,9 +24,6 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run environment set-up for Gradle properties
-          command: source environmentSetup.sh && copyEnvVarsToGradleProperties
-      - run:
           name: Run Tests
           command: ./gradlew lint test
       - store_artifacts:
