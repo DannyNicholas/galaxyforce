@@ -8,14 +8,14 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: Environment set-up for Gradle properties
+          command: source environmentSetup.sh && copyEnvVarsToGradleProperties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "~/.gradle/gradle.properties" }}
 #      - run:
 #         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this. 
 #         command: sudo chmod +x ./gradlew
-      - run:
-          name: Environment set-up for Gradle properties
-          command: source environmentSetup.sh && copyEnvVarsToGradleProperties
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
