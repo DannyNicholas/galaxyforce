@@ -25,6 +25,9 @@ function copyEnvVarsToGradleProperties {
     export GRADLE_PROPERTIES
     echo "Gradle properties should exist at $GRADLE_PROPERTIES"
 
+    ls -l $HOME
+
+
     if [ ! -f "$GRADLE_PROPERTIES" ]; then
         echo "Gradle properties does not exist"
 
