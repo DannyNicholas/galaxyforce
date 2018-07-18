@@ -26,6 +26,10 @@ function copyEnvVarsToGradleProperties {
     echo "Gradle properties should exist at $GRADLE_PROPERTIES"
 
     ls -l $HOME
+    pwd
+    mkdir -p $HOME"/.gradle"
+    ls -l $HOME
+    pwd
 
 
     if [ ! -f "$GRADLE_PROPERTIES" ]; then
