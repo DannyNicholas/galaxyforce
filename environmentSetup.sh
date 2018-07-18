@@ -40,10 +40,10 @@ function copyEnvVarsToGradleProperties {
         touch $GRADLE_PROPERTIES
 
         echo "Writing Public Key to gradle.properties..."
-        echo "public_key1=$PUBLIC_KEY1" >> $GRADLE_PROPERTIES
-        echo "public_key2=$PUBLIC_KEY2" >> $GRADLE_PROPERTIES
-        echo "public_key3=$PUBLIC_KEY3" >> $GRADLE_PROPERTIES
-        echo "public_key4=$PUBLIC_KEY4" >> $GRADLE_PROPERTIES
+        echo "PUBLIC_KEY1=$PUBLIC_KEY1" >> $GRADLE_PROPERTIES
+        echo "PUBLIC_KEY2=$PUBLIC_KEY2" >> $GRADLE_PROPERTIES
+        echo "PUBLIC_KEY3=$PUBLIC_KEY3" >> $GRADLE_PROPERTIES
+        echo "PUBLIC_KEY4=$PUBLIC_KEY4" >> $GRADLE_PROPERTIES
     fi
 
     cat $GRADLE_PROPERTIES
