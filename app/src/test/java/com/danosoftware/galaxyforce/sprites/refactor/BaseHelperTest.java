@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
+import android.util.Log;
+
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
@@ -7,6 +9,10 @@ import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.implementations.BaseMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteBaseMissile;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.textures.Texture;
+import com.danosoftware.galaxyforce.textures.TextureDetail;
+import com.danosoftware.galaxyforce.textures.Textures;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 
 import org.junit.Before;
@@ -25,6 +31,7 @@ import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -33,7 +40,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({SoundEffectBankSingleton.class, VibrationSingleton.class})
+@PrepareForTest({Log.class, SoundEffectBankSingleton.class, VibrationSingleton.class, Textures.class})
 public class BaseHelperTest {
 
     private static final int INITIAL_X = 100;
@@ -50,6 +57,9 @@ public class BaseHelperTest {
 
     @Before
     public void setup() {
+        // mock any static android logging
+        mockStatic(Log.class);
+
         SoundEffectBank soundEffectBank = mock(SoundEffectBank.class);
         mockStatic(SoundEffectBankSingleton.class);
         when(SoundEffectBankSingleton.getInstance()).thenReturn(soundEffectBank);
@@ -57,6 +67,16 @@ public class BaseHelperTest {
         VibrationSingleton vibration = mock(VibrationSingleton.class);
         mockStatic(VibrationSingleton.class);
         when(VibrationSingleton.getInstance()).thenReturn(vibration);
+
+        final TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
+        Textures mockTextures = mock(Textures.class);
+        mockStatic(Textures.class);
+        when(Textures.getTextureDetail(any(String.class))).thenReturn(mockTextureDetail);
+
+        Texture mockTexture = mock(Texture.class);
+        for (GameSpriteIdentifier spriteId : GameSpriteIdentifier.values()) {
+            spriteId.updateProperties(mockTexture);
+        }
 
         when(primaryBase.x()).thenReturn(INITIAL_X);
         when(primaryBase.y()).thenReturn(INITIAL_Y);

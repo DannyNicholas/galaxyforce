@@ -20,8 +20,8 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
             final int rotation) {
 
         super(spriteId, x, y, rotation);
-        this.halfHeight = this.height / 2;
-        this.halfWidth = this.width / 2;
+        this.halfHeight = this.height() / 2;
+        this.halfWidth = this.width() / 2;
         updateBounds();
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
         this.bounds = new Rectangle(
                 x - halfWidth,
                 y - halfHeight,
-                width,
-                height);
+                width(),
+                height());
     }
 }
