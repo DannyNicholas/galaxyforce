@@ -21,7 +21,9 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static com.danosoftware.galaxyforce.enumerations.BaseMissileType.SIMPLE;
@@ -50,7 +52,7 @@ public class BaseHelperTest {
     private static final boolean SHIELD_DOWN = false;
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
 
-    private final IBaseMainSprite primaryBase = mock(IBaseMainSprite.class);
+    private final IBasePrimarySprite primaryBase = mock(IBasePrimarySprite.class);
     private final GameHandler model = mock(GameHandler.class);
 
     private IBaseHelperSprite baseHelper;
@@ -84,21 +86,11 @@ public class BaseHelperTest {
 
 
     private IBaseHelperSprite shieldedHelper(HelperSide side) {
-        return new BaseHelper(
-                primaryBase,
-                model,
-                side,
-                SHIELD_UP,
-                SHIELD_SYNC_OFFSET);
+        return createHelper(side,SHIELD_UP,SHIELD_SYNC_OFFSET);
     }
 
     private IBaseHelperSprite unShieldedHelper(HelperSide side) {
-        return new BaseHelper(
-                primaryBase,
-                model,
-                side,
-                SHIELD_DOWN,
-                0f);
+        return createHelper(side, SHIELD_DOWN, 0f);
     }
 
     @Test()
@@ -129,6 +121,17 @@ public class BaseHelperTest {
         baseHelper.move(300, 400);
         assertThat(baseHelper.x(), is(300 + EXPECTED_OFFSET));
         assertThat(baseHelper.y(), is(400));
+    }
+
+    @Test()
+    public void destroyedHelperShouldNotMove() {
+        baseHelper = unShieldedHelper(RIGHT);
+        baseHelper.destroy();
+        baseHelper.move(300, 400);
+
+        // confirm helper has not moved
+        assertThat(baseHelper.x(), is(INITIAL_X + EXPECTED_OFFSET));
+        assertThat(baseHelper.y(), is(INITIAL_Y));
     }
 
     @Test()
@@ -168,16 +171,17 @@ public class BaseHelperTest {
     }
 
     @Test()
-    public void unshieldedBaseShouldExplodeWhenHitByMissile() throws NoSuchFieldException, IllegalAccessException {
-        baseHelper = unShieldedHelper(LEFT);
-        baseHelper.onHitBy(mock(IAlienMissile.class));
-        assertThat(helperState(baseHelper), is(EXPLODING));
+    public void shouldTellPrimaryThatHelperBaseIsDestroyedAfterExploding() {
+        baseHelper = shieldedHelper(LEFT);
+        baseHelper.destroy();
+        baseHelper.animate(1f);
+        verify(primaryBase, times(1)).helperDestroyed(LEFT);
     }
 
     @Test()
-    public void unshieldedBaseShouldExplodeWhenHitByAlien() throws NoSuchFieldException, IllegalAccessException {
+    public void unshieldedBaseShouldExplodeWhenHitByMissile() throws NoSuchFieldException, IllegalAccessException {
         baseHelper = unShieldedHelper(LEFT);
-        baseHelper.onHitBy(mock(IAlien.class));
+        baseHelper.onHitBy(mock(IAlienMissile.class));
         assertThat(helperState(baseHelper), is(EXPLODING));
     }
 
@@ -189,18 +193,17 @@ public class BaseHelperTest {
     }
 
     @Test()
+    public void unshieldedBaseShouldExplodeWhenHitByAlien() throws NoSuchFieldException, IllegalAccessException {
+        baseHelper = unShieldedHelper(LEFT);
+        baseHelper.onHitBy(mock(IAlien.class));
+        assertThat(helperState(baseHelper), is(EXPLODING));
+    }
+
+    @Test()
     public void shieldedBaseShouldNotExplodeWhenHitByAlien() throws NoSuchFieldException, IllegalAccessException {
         baseHelper = shieldedHelper(LEFT);
         baseHelper.onHitBy(mock(IAlien.class));
         assertThat(helperState(baseHelper), is(ACTIVE));
-    }
-
-    @Test()
-    public void shouldTellPrimaryThatHelperBaseIsDestroyedAfterExploding() {
-        baseHelper = shieldedHelper(LEFT);
-        baseHelper.destroy();
-        baseHelper.animate(1f);
-        verify(primaryBase, times(1)).helperDestroyed(LEFT);
     }
 
     @Test()
@@ -251,5 +254,27 @@ public class BaseHelperTest {
         Field f = baseHelper.getClass().getDeclaredField("state");
         f.setAccessible(true);
         return (BaseState) f.get(baseHelper);
+    }
+
+    // use reflection to create a helper using the private constructor
+    private IBaseHelperSprite createHelper(HelperSide side, boolean shielded, float shieldSyncTime) {
+        try {
+            Constructor<BaseHelper> constructor = BaseHelper.class.getDeclaredConstructor(
+                    IBasePrimarySprite.class,
+                    GameHandler.class,
+                    HelperSide.class,
+                    boolean.class,
+                    float.class);
+            constructor.setAccessible(true);
+            BaseHelper helper = constructor.newInstance(
+                    primaryBase,
+                    model,
+                    side,
+                    shielded,
+                    shieldSyncTime);
+            return helper;
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

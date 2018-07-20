@@ -2,15 +2,16 @@ package com.danosoftware.galaxyforce.sprites.refactor;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
+import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.interfaces.GameModel;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
-import com.danosoftware.galaxyforce.textures.TextureRegion;
 import com.danosoftware.galaxyforce.textures.Textures;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 
@@ -21,16 +22,24 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
+import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -43,7 +52,13 @@ public class PrimaryBaseTest {
 
     TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
 
-    private IBaseMainSprite primaryBase;
+    private IBasePrimarySprite primaryBase;
+    private IBasePrimarySprite primaryBaseSpy;
+    private IBaseHelperSprite leftHelper;
+    private IBaseHelperSprite rightHelper;
+
+    private GameHandler model;
+
 
     @Before
     public void setUp() {
@@ -67,7 +82,12 @@ public class PrimaryBaseTest {
             spriteId.updateProperties(mockTexture);
         }
 
-        primaryBase = new BaseMain(INITIAL_X, INITIAL_Y);
+        model = mock(GameHandler.class);
+        primaryBase = new BasePrimary(INITIAL_X, INITIAL_Y, model);
+        primaryBaseSpy = spy(primaryBase);
+
+        leftHelper = mock(IBaseHelperSprite.class);
+        rightHelper = mock(IBaseHelperSprite.class);
     }
 
 
@@ -106,44 +126,207 @@ public class PrimaryBaseTest {
     }
 
     @Test()
+    public void shouldNotMoveAfterBeingDestroyed() {
+        primaryBase.destroy();
+        primaryBase.moveBase(1,1,5f);
+
+        // confirm base hasn't moved
+        assertThat(primaryBase.x(), is(INITIAL_X));
+        assertThat(primaryBase.y(), is(INITIAL_Y));
+    }
+
+    @Test()
     public void baseShouldExplodeWhenDestroyed() throws NoSuchFieldException, IllegalAccessException {
         primaryBase.destroy();
-        assertThat(helperState(primaryBase), is(EXPLODING));
+        assertThat(baseState(primaryBase), is(EXPLODING));
     }
 
     @Test()
-    public void baseShouldExplodeWhenHitByPowerfulMissile() throws NoSuchFieldException, IllegalAccessException {
+    public void baseShouldBeDestroyedWhenHitByPowerfulMissile() {
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(100);
-        primaryBase.onHitBy(missile);
-        assertThat(helperState(primaryBase), is(EXPLODING));
+        primaryBaseSpy.onHitBy(missile);
+        verify(primaryBaseSpy, times(1)).destroy();
     }
 
     @Test()
-    public void baseShouldRemainActiveWhenHitByWeakMissile() throws NoSuchFieldException, IllegalAccessException {
+    public void shieldedBaseShouldNotBeDestroyedWhenHitByMissile() {
+        primaryBaseSpy.collectPowerUp(PowerUpType.SHIELD);
+        IAlienMissile missile = mock(IAlienMissile.class);
+        when(missile.energyDamage()).thenReturn(100);
+        primaryBaseSpy.onHitBy(missile);
+        verify(primaryBaseSpy, times(0)).destroy();
+    }
+
+    @Test()
+    public void baseShouldRemainActiveWhenHitByWeakMissile() {
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(1);
-        primaryBase.onHitBy(missile);
-        assertThat(helperState(primaryBase), is(ACTIVE));
+        primaryBaseSpy.onHitBy(missile);
+        verify(primaryBaseSpy, times(0)).destroy();
     }
 
     @Test()
-    public void baseShouldExplodeWhenHitByAlien() throws NoSuchFieldException, IllegalAccessException {
-        primaryBase.onHitBy(mock(IAlien.class));
-        assertThat(helperState(primaryBase), is(EXPLODING));
+    public void baseShouldBeDestroyedAfterEightHits() {
+        IAlienMissile missile = mock(IAlienMissile.class);
+        when(missile.energyDamage()).thenReturn(1);
+        for (int i = 0; i < 7; i++) {
+            primaryBaseSpy.onHitBy(missile);
+            verify(primaryBaseSpy, times(0)).destroy();
+        }
+        primaryBaseSpy.onHitBy(missile);
+        verify(primaryBaseSpy, times(1)).destroy();
+    }
+
+    @Test()
+    public void baseShouldBeDestroyedWhenHitByAlien() {
+        primaryBaseSpy.onHitBy(mock(IAlien.class));
+        verify(primaryBaseSpy, times(1)).destroy();
+    }
+
+    @Test()
+    public void shieldedBaseShouldNotBeDestroyedWhenHitByAlien() {
+        primaryBaseSpy.collectPowerUp(PowerUpType.SHIELD);
+        primaryBaseSpy.onHitBy(mock(IAlien.class));
+        verify(primaryBaseSpy, times(0)).destroy();
+    }
+
+    @Test
+    public void baseShouldFireMissile() {
+        primaryBase.animate(1f);
+        verify(model, atLeastOnce()).fireBaseMissiles(any(BaseMissileBean.class));
+    }
+
+    @Test
+    public void baseShouldNotFireMissileWhenDestroyed() {
+        primaryBase.destroy();
+        primaryBase.animate(1f);
+        verify(model, times(0)).fireBaseMissiles(any(BaseMissileBean.class));
+    }
+
+    @Test
+    public void baseShouldCollectPowerUp() throws NoSuchFieldException, IllegalAccessException {
+        primaryBase.collectPowerUp(PowerUpType.MISSILE_GUIDED);
+        BaseMissileType missileType = missileType(primaryBase);
+        assertThat(missileType, is(BaseMissileType.GUIDED));
+    }
+
+    // this may not be a valid test since destroyed base will never collide with power-up
+    @Test
+    public void baseShouldNotCollectPowerUpWhenDestroyed() throws NoSuchFieldException, IllegalAccessException {
+        primaryBase.destroy();
+        primaryBase.collectPowerUp(PowerUpType.MISSILE_GUIDED);
+        BaseMissileType missileType = missileType(primaryBase);
+        assertThat(missileType, not(BaseMissileType.GUIDED));
+    }
+
+
+
+
+
+
+
+
+
+    ///////
+    /// BASE AND HELPER
+    ////////
+
+
+    @Test
+    public void helperBasesShouldBeDestroyedWithPrimaryBase() {
+
+        // add mock helpers to primary base
+        primaryBase.helperCreated(LEFT, leftHelper);
+        primaryBase.helperCreated(RIGHT, rightHelper);
+
+        // destroy primary base
+        primaryBase.destroy();
+
+        // verify helper bases were also destroyed
+        verify(leftHelper, times(1)).destroy();
+        verify(rightHelper, times(1)).destroy();
+    }
+
+    @Test
+    public void helperBasesShouldBeShieldedWithPrimaryBase() {
+
+        // add mock helpers to primary base
+        primaryBase.helperCreated(LEFT, leftHelper);
+        primaryBase.helperCreated(RIGHT, rightHelper);
+
+        // add shield to primary base
+        primaryBase.collectPowerUp(PowerUpType.SHIELD);
+
+        // verify helper bases were also given shields
+        verify(leftHelper, times(1)).addShield(any(float.class));
+        verify(rightHelper, times(1)).addShield(any(float.class));
+    }
+
+    @Test
+    public void helperBasesShouldRemoveShieldedWithPrimaryBase() {
+
+        // add mock helpers to primary base
+        primaryBase.helperCreated(LEFT, leftHelper);
+        primaryBase.helperCreated(RIGHT, rightHelper);
+
+        // add shield to primary base
+        primaryBase.collectPowerUp(PowerUpType.SHIELD);
+        primaryBase.animate(20f);
+
+        // verify helper bases were also given shields
+        verify(leftHelper, times(1)).removeShield();
+        verify(rightHelper, times(1)).removeShield();
     }
 
 
     @Test
-    public void helperBaseShouldExplodeWithPrimaryBase() {
+    public void helperBasesShouldFireWithPrimaryBase() {
 
+        // add mock helpers to primary base
+        primaryBase.helperCreated(LEFT, leftHelper);
+        primaryBase.helperCreated(RIGHT, rightHelper);
+
+        primaryBase.animate(1f);
+
+        // verify helper bases fired
+        verify(leftHelper, atLeastOnce()).fire(any(BaseMissileType.class));
+        verify(rightHelper, atLeastOnce()).fire(any(BaseMissileType.class));
     }
 
     // use reflection to get helper internal state
-    private BaseState helperState(IBaseMainSprite helper) throws NoSuchFieldException, IllegalAccessException {
+    private List<IBaseHelperSprite> helpers(IBasePrimarySprite base) throws NoSuchFieldException, IllegalAccessException {
+        Field f = base.getClass().getDeclaredField("helpers");
+        f.setAccessible(true);
+        return (List) f.get(base);
+    }
+
+    // use reflection to get base internal state
+    private BaseState baseState(IBasePrimarySprite helper) throws NoSuchFieldException, IllegalAccessException {
         Field f = helper.getClass().getDeclaredField("state");
         f.setAccessible(true);
         return (BaseState) f.get(helper);
+    }
+
+    // use reflection to get base internal state
+    private BaseMissileType missileType(IBasePrimarySprite base) throws NoSuchFieldException, IllegalAccessException {
+        Field f = base.getClass().getDeclaredField("baseMissileType");
+        f.setAccessible(true);
+        return (BaseMissileType) f.get(base);
+    }
+
+        // use reflection to get helper internal state
+    private void verifyHelperState(IBasePrimarySprite base, BaseState expectedState) throws NoSuchFieldException, IllegalAccessException {
+        Field f = base.getClass().getDeclaredField("helpers");
+        f.setAccessible(true);
+        List<IBaseHelperSprite> helpers = (List) f.get(base);
+        assertThat(helpers.size(), is(2));
+        for (IBaseHelperSprite helper : helpers) {
+            Field fh = helper.getClass().getDeclaredField("state");
+            fh.setAccessible(true);
+            BaseState state = (BaseState) fh.get(helper);
+            assertThat(state, is(expectedState));
+        }
     }
 
 

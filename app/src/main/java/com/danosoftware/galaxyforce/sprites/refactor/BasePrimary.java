@@ -18,16 +18,15 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviourSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviourSwitch;
-import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
-import com.danosoftware.galaxyforce.sprites.game.implementations.ShieldBase;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.EnergyBar;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteBase;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
@@ -38,14 +37,14 @@ import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
 
-public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite {
+public class BasePrimary extends AbstractCollidingSprite implements IBasePrimarySprite {
 
     // shield animation that pulses every 0.5 seconds
     private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
 
     private static final ISpriteIdentifier BASE_SPRITE = BASE;
 
-    private static final String TAG = "BaseMain";
+    private static final String TAG = "BasePrimary";
 
 
     // base's energy bar
@@ -59,11 +58,10 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
 
     // sprites
     private List<ISprite> allBaseSprites;
-    private IBaseHelperSprite leftHelperBase;
-    private IBaseHelperSprite rightHelperBase;
 
-    // convenience list of all non-null helpers
-    private List<IBaseHelperSprite> helpers;
+    // left and right helper sprites stored in an enum map.
+    // key is the LEFT/RIGHT enum.
+    private final Map<HelperSide, IBaseHelperSprite> helpers;
 
     private IBaseShield shield;
 
@@ -118,17 +116,14 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
     private final SoundPlayer soundPlayer;
     private final Sound explosionSound;
 
-    public BaseMain(
-            int x,
-            int y) {
+    public BasePrimary(
+            final int x,
+            final int y,
+            final GameHandler model) {
 
         super(BASE_SPRITE, x, y);
         this.state = ACTIVE;
-
-//        this.helperBases = new ArrayList<>();
-        leftHelperBase = null;
-        rightHelperBase = null;
-        this.helpers = buildHelpers();
+        this.helpers = new EnumMap<>(HelperSide.class);
         this.allBaseSprites = buildSprites();
         this.moveHelper = new MoveBaseHelper(this, GAME_WIDTH, GAME_HEIGHT);
 
@@ -172,25 +167,9 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
         if (shielded) {
             sprites.add(shield);
         }
-        for (IBaseHelperSprite helper : helpers) {
-            sprites.addAll(helper.getBaseSprites());
-        }
-        return sprites;
-    }
+        sprites.addAll(helpers.values());
 
-    /**
-     * create list of non-null helpers. should be called whenever
-     * a helper is created or destroyed.
-     */
-    private List<IBaseHelperSprite> buildHelpers() {
-        final List<IBaseHelperSprite> helpers = new ArrayList<>();
-        if (leftHelperBase != null) {
-            helpers.add(leftHelperBase);
-        }
-        if (rightHelperBase != null) {
-            helpers.add(rightHelperBase);
-        }
-        return helpers;
+        return sprites;
     }
 
     /**
@@ -201,11 +180,8 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
     @Override
     public void animate(float deltaTime) {
         if (shielded) {
-            // if shield is still active then count-down time remaining.
-            // otherwise remove it.
-            if (timeUntilShieldRemoved > 0) {
-                timeUntilShieldRemoved = timeUntilShieldRemoved - deltaTime;
-            } else {
+            timeUntilShieldRemoved = timeUntilShieldRemoved - deltaTime;
+            if (timeUntilShieldRemoved <= 0) {
                 removeShield();
             }
         }
@@ -246,7 +222,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
             }
 
             // move helper bases using built in offset from this primary base
-            for (IBaseHelperSprite helper : helpers) {
+            for (IBaseHelperSprite helper : helpers.values()) {
                 helper.move(x(), y());
             }
         }
@@ -291,7 +267,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
         soundPlayer.playSound(explosionSound);
 
         // if primary base explodes - all helper bases must also explode.
-        for (IBaseHelperSprite aHelperBase : helpers) {
+        for (IBaseHelperSprite aHelperBase : helpers.values()) {
             aHelperBase.destroy();
         }
     }
@@ -349,14 +325,12 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
 
             // add helper bases for set time
             case HELPER_BASES:
-                if (leftHelperBase == null) {
-                    leftHelperBase = createHelperBase(LEFT);
+                if (!helpers.containsKey(LEFT)) {
+                    createHelperBase(LEFT);
                 }
-                if (rightHelperBase == null) {
-                    rightHelperBase = createHelperBase(RIGHT);
+                if (!helpers.containsKey(RIGHT)) {
+                    createHelperBase(RIGHT);
                 }
-                helpers = buildHelpers();
-                allBaseSprites = buildSprites();
                 break;
 
             default:
@@ -364,13 +338,20 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
         }
     }
 
-    private IBaseHelperSprite createHelperBase(HelperSide side) {
-        return new BaseHelper(
+    /**
+     * Created helper base for wanted side.
+     *
+     * Helper will register itself with the primary base when created.
+     *
+     * @param side
+     */
+    private void createHelperBase(HelperSide side) {
+        BaseHelper.createHelperBase(
                 this,
                 model,
                 side,
                 shielded,
-                shield.getSynchronisation()
+                shielded ? shield.getSynchronisation() : 0
         );
     }
 
@@ -381,17 +362,13 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
 
     @Override
     public void helperDestroyed(HelperSide side) {
-        switch (side) {
-            case LEFT:
-                leftHelperBase = null;
-                break;
-            case RIGHT:
-                rightHelperBase = null;
-                break;
-            default:
-                throw new GalaxyForceException("Unsupported Helper Side: '" + side.name() + "'.");
-        }
-        this.helpers = buildHelpers();
+        helpers.remove(side);
+        this.allBaseSprites = buildSprites();
+    }
+
+    @Override
+    public void helperCreated(HelperSide side, IBaseHelperSprite helper) {
+        helpers.put(side, helper);
         this.allBaseSprites = buildSprites();
     }
 
@@ -452,7 +429,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
             missiles.add(fire(direction));
 
             // any helper bases fire
-            for (IBaseHelperSprite aHelperBase : helpers) {
+            for (IBaseHelperSprite aHelperBase : helpers.values()) {
                 // create new missile and add to missile list.
                 missiles.add(aHelperBase.fire(baseMissileType));
             }
@@ -530,7 +507,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
             shield = new BaseShield(x(), y(), SHIELD_PULSE, syncTime);
 
             // add shield for any helper bases
-            for (IBaseHelperSprite aHelperBase : helpers) {
+            for (IBaseHelperSprite aHelperBase : helpers.values()) {
                 aHelperBase.addShield(syncTime);
             }
         }
@@ -542,7 +519,7 @@ public class BaseMain extends AbstractCollidingSprite implements IBaseMainSprite
         shield = null;
 
         // remove shield for any helper bases
-        for (IBaseHelperSprite aHelperBase : helpers) {
+        for (IBaseHelperSprite aHelperBase : helpers.values()) {
             aHelperBase.removeShield();
         }
     }

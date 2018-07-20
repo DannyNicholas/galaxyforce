@@ -12,8 +12,6 @@ import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviourSimple;
-import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
-import com.danosoftware.galaxyforce.sprites.game.implementations.ShieldHelper;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -65,7 +63,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
 
     // reference to primary base
-    private final IBaseMainSprite primaryBase;
+    private final IBasePrimarySprite primaryBase;
 
     // reference to game model
     private final GameHandler model;
@@ -83,8 +81,41 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     // help side left or right.
     private final HelperSide side;
 
-    public BaseHelper(
-            final IBaseMainSprite primaryBase,
+    /**
+     * Static Helper creator
+     *
+     * - Creates new helper
+     * - Registers helper with primary base
+     */
+    public final static void createHelperBase(
+            final IBasePrimarySprite primaryBase,
+            final GameHandler model,
+            final HelperSide side,
+            final boolean shieldUp,
+            final float shieldSyncTime) {
+
+        IBaseHelperSprite helper = new BaseHelper(
+                primaryBase,
+                model,
+                side,
+                shieldUp,
+                shieldSyncTime
+        );
+        primaryBase.helperCreated(side, helper);
+    }
+
+    /**
+     * private BaseHelper constructor.
+     * Use static helper creator to ensure helper base is registered with primary base.
+     *
+     * @param primaryBase
+     * @param model
+     * @param side
+     * @param shieldUp
+     * @param shieldSyncTime
+     */
+    private BaseHelper(
+            final IBasePrimarySprite primaryBase,
             final GameHandler model,
             final HelperSide side,
             final boolean shieldUp,
@@ -192,10 +223,12 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
      */
     @Override
     public void move(int x, int y) {
-        super.move(x + xOffset, y);
-        // if base has a shield, move it with base
-        if (shielded) {
-            shield.move(x + xOffset, y);
+        if (state == ACTIVE) {
+            super.move(x + xOffset, y);
+            // if base has a shield, move it with base
+            if (shielded) {
+                shield.move(x + xOffset, y);
+            }
         }
     }
 }
