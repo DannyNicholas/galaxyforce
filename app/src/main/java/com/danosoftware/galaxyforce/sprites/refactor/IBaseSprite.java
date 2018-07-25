@@ -14,5 +14,5 @@ public interface IBaseSprite extends ICollidingSprite {
 
     void collectPowerUp(PowerUpType powerUpType);
 
-    List<ISprite> getBaseSprites();
+    List<ISprite> allSprites();
 }

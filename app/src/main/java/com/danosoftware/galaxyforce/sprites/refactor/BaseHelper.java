@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.HELPER;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
+import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.DESTROYED;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 
@@ -146,7 +147,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     }
 
     @Override
-    public List<ISprite> getBaseSprites() {
+    public List<ISprite> allSprites() {
         final List<ISprite> sprites = new ArrayList<>();
         sprites.add(this);
         if (shielded) {
@@ -182,7 +183,8 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
         if (state == EXPLODING) {
             changeType(explosion.getExplosion(deltaTime));
             if (explosion.finishedExploding()) {
-                primaryBase.helperDestroyed(side);
+                state = DESTROYED;
+                primaryBase.helperRemoved(side);
             }
         }
     }
@@ -209,6 +211,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     @Override
     public void destroy() {
         this.state = EXPLODING;
+        primaryBase.helperExploding(side);
         explosion.startExplosion();
         soundPlayer.playSound(explosionSound);
     }

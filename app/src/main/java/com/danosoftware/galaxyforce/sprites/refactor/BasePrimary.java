@@ -56,12 +56,20 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     // hit behaviour
     private final HitBehaviour hit;
 
-    // sprites
-    private List<ISprite> allBaseSprites;
+    // all sprites
+    // cached as an optimisation to improve performance
+    private List<ISprite> allSprites;
+
+    // active bases
+    // cached as an optimisation to improve performance
+    private List<IBaseSprite> activeBases;
 
     // left and right helper sprites stored in an enum map.
     // key is the LEFT/RIGHT enum.
     private final Map<HelperSide, IBaseHelperSprite> helpers;
+
+    // as above but only holds active (i.e. non-exploding) helpers
+    private final Map<HelperSide, IBaseHelperSprite> activeHelpers;
 
     private IBaseShield shield;
 
@@ -124,7 +132,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         super(BASE_SPRITE, x, y);
         this.state = ACTIVE;
         this.helpers = new EnumMap<>(HelperSide.class);
-        this.allBaseSprites = buildSprites();
+        this.activeHelpers = new EnumMap<>(HelperSide.class);
+        this.allSprites = buildAllSprites();
+        this.activeBases = buildActiveBases();
         this.moveHelper = new MoveBaseHelper(this, GAME_WIDTH, GAME_HEIGHT);
 
         this.explosion = new ExplodeBehaviourSimple();
@@ -155,21 +165,41 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     }
 
     /**
-     * Rebuild list of sprites owned by the base.
-     * Should be called whenever sprites need to added or removed from the list.
+     * Build list of all sprites owned by the base.
+     * Should be called whenever sprites need to added or removed from list of visible sprites.
      *
      * @return sprite list
      */
-    private List<ISprite> buildSprites() {
+    private List<ISprite> buildAllSprites() {
         final List<ISprite> sprites = new ArrayList<>();
         sprites.add(this);
 //        sprites.addAll(energyBar.getEnergyBar());
         if (shielded) {
             sprites.add(shield);
         }
-        sprites.addAll(helpers.values());
+        for (IBaseHelperSprite helper : helpers.values()) {
+            sprites.addAll(helper.allSprites());
+        }
 
         return sprites;
+    }
+
+    /**
+     * Rebuild list of active base sprites.
+     * Should be called whenever a new base becomes active or
+     * existing base becomes inactive (i.e. explodes).
+     *
+     * @return sprite list
+     */
+    private List<IBaseSprite> buildActiveBases() {
+        final List<IBaseSprite> activeBases = new ArrayList<>();
+
+        if (state == ACTIVE) {
+            activeBases.add(this);
+            activeBases.addAll(activeHelpers.values());
+        }
+
+        return activeBases;
     }
 
     /**
@@ -179,8 +209,10 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      */
     @Override
     public void animate(float deltaTime) {
+
+        // if shielded then check when shield should be removed
         if (shielded) {
-            timeUntilShieldRemoved = timeUntilShieldRemoved - deltaTime;
+            timeUntilShieldRemoved -= deltaTime;
             if (timeUntilShieldRemoved <= 0) {
                 removeShield();
             }
@@ -270,6 +302,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         for (IBaseHelperSprite aHelperBase : helpers.values()) {
             aHelperBase.destroy();
         }
+
+        // re-build active bases
+        this.activeBases = buildActiveBases();
     }
 
     @Override
@@ -338,9 +373,19 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         }
     }
 
+    @Override
+    public List<ISprite> allSprites() {
+        return allSprites;
+    }
+
+    @Override
+    public List<IBaseSprite> activeBases() {
+        return activeBases;
+    }
+
     /**
      * Created helper base for wanted side.
-     *
+     * <p>
      * Helper will register itself with the primary base when created.
      *
      * @param side
@@ -356,20 +401,23 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     }
 
     @Override
-    public List<ISprite> getBaseSprites() {
-        return allBaseSprites;
-    }
-
-    @Override
-    public void helperDestroyed(HelperSide side) {
-        helpers.remove(side);
-        this.allBaseSprites = buildSprites();
-    }
-
-    @Override
     public void helperCreated(HelperSide side, IBaseHelperSprite helper) {
         helpers.put(side, helper);
-        this.allBaseSprites = buildSprites();
+        activeHelpers.put(side, helper);
+        this.allSprites = buildAllSprites();
+        this.activeBases = buildActiveBases();
+    }
+
+    @Override
+    public void helperRemoved(HelperSide side) {
+        helpers.remove(side);
+        this.allSprites = buildAllSprites();
+    }
+
+    @Override
+    public void helperExploding(HelperSide side) {
+        activeHelpers.remove(side);
+        this.activeBases = buildActiveBases();
     }
 
 
@@ -510,6 +558,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             for (IBaseHelperSprite aHelperBase : helpers.values()) {
                 aHelperBase.addShield(syncTime);
             }
+
+            // refresh list of sprites
+            this.allSprites = buildAllSprites();
         }
     }
 
@@ -522,5 +573,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         for (IBaseHelperSprite aHelperBase : helpers.values()) {
             aHelperBase.removeShield();
         }
+
+        // refresh list of sprites
+        this.allSprites = buildAllSprites();
     }
 }

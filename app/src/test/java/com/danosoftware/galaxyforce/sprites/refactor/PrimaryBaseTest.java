@@ -9,6 +9,8 @@ import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.interfaces.GameModel;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.implementations.ShieldBase;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteShield;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
@@ -18,12 +20,17 @@ import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
@@ -32,10 +39,13 @@ import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -139,6 +149,9 @@ public class PrimaryBaseTest {
     public void baseShouldExplodeWhenDestroyed() throws NoSuchFieldException, IllegalAccessException {
         primaryBase.destroy();
         assertThat(baseState(primaryBase), is(EXPLODING));
+
+        assertThat(primaryBase.allSprites(), hasItem(primaryBase));
+        assertThat(primaryBase.activeBases(), not(hasItem(primaryBase)));
     }
 
     @Test()
@@ -236,9 +249,35 @@ public class PrimaryBaseTest {
     @Test
     public void helperBasesShouldBeDestroyedWithPrimaryBase() {
 
+        // return list containing helper base when allSprites() is called on each one
+        when(leftHelper.allSprites()).thenReturn(Arrays.asList((ISprite) leftHelper));
+        when(rightHelper.allSprites()).thenReturn(Arrays.asList((ISprite) rightHelper));
+
+        // call primaryBase.helperExploding() when mock helpers are destroyed
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                primaryBase.helperExploding(LEFT);
+                return null;
+            }
+        }).when(leftHelper).destroy();
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                primaryBase.helperExploding(RIGHT);
+                return null;
+            }
+        }).when(rightHelper).destroy();
+
         // add mock helpers to primary base
         primaryBase.helperCreated(LEFT, leftHelper);
         primaryBase.helperCreated(RIGHT, rightHelper);
+
+        // assert helpers are in sprite list and active
+        assertThat(primaryBase.allSprites(), hasItem(leftHelper));
+        assertThat(primaryBase.activeBases(), hasItem(leftHelper));
+        assertThat(primaryBase.allSprites(), hasItem(rightHelper));
+        assertThat(primaryBase.activeBases(), hasItem(rightHelper));
 
         // destroy primary base
         primaryBase.destroy();
@@ -246,6 +285,12 @@ public class PrimaryBaseTest {
         // verify helper bases were also destroyed
         verify(leftHelper, times(1)).destroy();
         verify(rightHelper, times(1)).destroy();
+
+        // assert helpers are in sprite list but no longer active
+        assertThat(primaryBase.allSprites(), hasItem(leftHelper));
+        assertThat(primaryBase.activeBases(), not(hasItem(leftHelper)));
+        assertThat(primaryBase.allSprites(), hasItem(rightHelper));
+        assertThat(primaryBase.activeBases(), not(hasItem(rightHelper)));
     }
 
     @Test
@@ -261,6 +306,15 @@ public class PrimaryBaseTest {
         // verify helper bases were also given shields
         verify(leftHelper, times(1)).addShield(any(float.class));
         verify(rightHelper, times(1)).addShield(any(float.class));
+
+        // count number of primary base shields
+        Long shields = primaryBase.allSprites().stream().filter(new Predicate<ISprite>() {
+            @Override
+            public boolean test(ISprite iSprite) {
+                return iSprite instanceof BaseShield;
+            }
+        }).count();
+        assertThat(shields, is(1L));
     }
 
     @Test
@@ -277,6 +331,15 @@ public class PrimaryBaseTest {
         // verify helper bases were also given shields
         verify(leftHelper, times(1)).removeShield();
         verify(rightHelper, times(1)).removeShield();
+
+        // count number of primary base shields
+        Long shields = primaryBase.allSprites().stream().filter(new Predicate<ISprite>() {
+            @Override
+            public boolean test(ISprite iSprite) {
+                return iSprite instanceof BaseShield;
+            }
+        }).count();
+        assertThat(shields, is(0L));
     }
 
 

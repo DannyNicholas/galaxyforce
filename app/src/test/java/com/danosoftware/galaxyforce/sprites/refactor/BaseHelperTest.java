@@ -137,29 +137,29 @@ public class BaseHelperTest {
     @Test()
     public void shouldConstructWithShield() {
         baseHelper = shieldedHelper(LEFT);
-        List<ISprite> sprites = baseHelper.getBaseSprites();
+        List<ISprite> sprites = baseHelper.allSprites();
         verifyShieldExists(sprites);
     }
 
     @Test()
     public void shouldAddShield() {
         baseHelper = unShieldedHelper(LEFT);
-        List<ISprite> sprites = baseHelper.getBaseSprites();
+        List<ISprite> sprites = baseHelper.allSprites();
         verifyShieldDoesNotExists(sprites);
 
         baseHelper.addShield(SHIELD_SYNC_OFFSET);
-        sprites = baseHelper.getBaseSprites();
+        sprites = baseHelper.allSprites();
         verifyShieldExists(sprites);
     }
 
     @Test()
     public void shouldRemoveShield() {
         baseHelper = shieldedHelper(LEFT);
-        List<ISprite> sprites = baseHelper.getBaseSprites();
+        List<ISprite> sprites = baseHelper.allSprites();
         verifyShieldExists(sprites);
 
         baseHelper.removeShield();
-        sprites = baseHelper.getBaseSprites();
+        sprites = baseHelper.allSprites();
         verifyShieldDoesNotExists(sprites);
     }
 
@@ -175,7 +175,7 @@ public class BaseHelperTest {
         baseHelper = shieldedHelper(LEFT);
         baseHelper.destroy();
         baseHelper.animate(1f);
-        verify(primaryBase, times(1)).helperDestroyed(LEFT);
+        verify(primaryBase, times(1)).helperRemoved(LEFT);
     }
 
     @Test()
