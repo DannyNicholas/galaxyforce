@@ -2,77 +2,89 @@ package com.danosoftware.galaxyforce.sprites.refactor;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.game.handlers.GamePlayHandlerRefactor;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlienWithPath;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.AlienState.DESTROYED;
-import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.AlienState.END_OF_PASS;
-import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.AlienState.IDLE;
-import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.AlienState.PLAYING;
-import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.AlienState.WAVE_COMPLETE;
+import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.SubWaveState.DESTROYED;
+import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.SubWaveState.END_OF_PASS;
+import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.SubWaveState.IDLE;
+import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.SubWaveState.PLAYING;
+import static com.danosoftware.galaxyforce.sprites.refactor.AlienManager.SubWaveState.WAVE_COMPLETE;
 
 public class AlienManager implements IAlienManager {
 
     /* logger tag */
     private static final String TAG = AlienManager.class.getSimpleName();
 
-    private enum AlienState {
+    public enum SubWaveState {
         IDLE, PLAYING, END_OF_PASS, DESTROYED, WAVE_COMPLETE
-    }
-
-    ;
+    };
 
     // provides waves
     private final WaveManager waveManager;
 
     // state of current sub-wave
     private List<IAlien> aliens;
-    private AlienState alienState;
+    private List<IAlien> activeAliens;
+    private List<IAlien> visibleAliens;
+    private SubWaveState subWaveState;
     private boolean repeatedSubWave;
 
 
     public AlienManager(WaveManager waveManager) {
         this.waveManager = waveManager;
         this.aliens = new ArrayList<>();
-        this.alienState = IDLE;
+        this.activeAliens = new ArrayList<>();
+        this.visibleAliens = new ArrayList<>();
+        this.subWaveState = IDLE;
     }
 
     @Override
     public List<IAlien> activeAliens() {
-        return null;
+        return activeAliens;
     }
 
     @Override
     public List<IAlien> allAliens() {
-        return null;
+        return visibleAliens;
     }
 
     @Override
     public void animate(float deltaTime) {
         int finishedAliens = 0;
-        int destroyedAliens = 0;
+        List<IAlien> nonDestroyedAliens = new ArrayList<>();
+        List<IAlien> currentActiveAliens = new ArrayList<>();
+        List<IAlien> currentVisibleAliens = new ArrayList<>();
 
         for (IAlien alien : aliens) {
             alien.animate(deltaTime);
 
-            if (alien.isEndOfPass()) {
-                finishedAliens++;
+            if (alien.isActive()) {
+                currentActiveAliens.add(alien);
             }
-            if (alien.isDestroyed()) {
-                destroyedAliens++;
+            if (alien.isVisible()) {
+                currentVisibleAliens.add(alien);
+            }
+            if (alien instanceof IAlienWithPath && ((IAlienWithPath) alien).isEndOfPass()) {
+                    finishedAliens++;
+            }
+            if (!alien.isDestroyed()) {
+                nonDestroyedAliens.add(alien);
             }
         }
 
+        this.aliens = nonDestroyedAliens;
+        this.activeAliens = currentActiveAliens;
+        this.visibleAliens = currentVisibleAliens;
+
         // have all aliens finished pass or been destoyed
-        if (aliens.size() == destroyedAliens) {
-            alienState = DESTROYED;
+        if (aliens.size() == 0) {
+            subWaveState = DESTROYED;
         } else if (aliens.size() == finishedAliens) {
-            alienState = END_OF_PASS;
+            subWaveState = END_OF_PASS;
         }
 
         // handles complex sub-wave scenarios
@@ -102,7 +114,7 @@ public class AlienManager implements IAlienManager {
 
     @Override
     public boolean isWaveComplete() {
-        boolean waveFinished = false;
+        return (subWaveState == WAVE_COMPLETE);
     }
 
     /**
@@ -111,9 +123,23 @@ public class AlienManager implements IAlienManager {
     private void createAlienSubWave(final SubWave subWave) {
         this.aliens = subWave.getAliens();
         this.repeatedSubWave = subWave.isWaveRepeated();
-        this.alienState = PLAYING;
-    }
+        this.subWaveState = PLAYING;
 
+        List<IAlien> currentActiveAliens = new ArrayList<>();
+        List<IAlien> currentVisibleAliens = new ArrayList<>();
+
+        for (IAlien alien : aliens) {
+            if (alien.isActive()) {
+                currentActiveAliens.add(alien);
+            }
+            if (alien.isVisible()) {
+                currentVisibleAliens.add(alien);
+            }
+        }
+
+        this.activeAliens = currentActiveAliens;
+        this.visibleAliens = currentVisibleAliens;
+    }
 
     /**
      * This method performs the following functionality:
@@ -130,17 +156,17 @@ public class AlienManager implements IAlienManager {
         /**
          * if no aliens left then decide what action to take.
          */
-        if (alienState == DESTROYED || alienState == END_OF_PASS) {
+        if (subWaveState == DESTROYED || subWaveState == END_OF_PASS) {
             /**
              * Have we reached the end of a sub-wave that repeats?
              */
-            if (repeatedSubWave && alienState == END_OF_PASS) {
+            if (repeatedSubWave && subWaveState == END_OF_PASS) {
                 /**
                  * if there are finished aliens that were not destroyed and
                  * the current sub-wave should be repeated (until all aliens are
                  * destroyed) then reset the aliens and repeat the sub-wave.
                  */
-                List<SpriteAlienWithPath> aliensToRepeat = new ArrayList<>();
+                List<IAlienWithPath> aliensToRepeat = new ArrayList<>();
 
                 Float minDelay = null;
                 for (IAlien anAlien : aliens) {
@@ -151,8 +177,8 @@ public class AlienManager implements IAlienManager {
                      * aliens by this offset so the first alien starts
                      * immediately.
                      */
-                    if (anAlien instanceof SpriteAlienWithPath) {
-                        SpriteAlienWithPath alienWithPath = (SpriteAlienWithPath) anAlien;
+                    if (anAlien instanceof IAlienWithPath) {
+                        IAlienWithPath alienWithPath = (IAlienWithPath) anAlien;
                         aliensToRepeat.add(alienWithPath);
 
                         float timeDelay = alienWithPath.getTimeDelay();
@@ -167,11 +193,11 @@ public class AlienManager implements IAlienManager {
                  * reduce offset of all repeated aliens with path by minimum
                  * offset. causes first alien to start immediately.
                  */
-                for (SpriteAlienWithPath anAlienToRepeat : aliensToRepeat) {
+                for (IAlienWithPath anAlienToRepeat : aliensToRepeat) {
                     anAlienToRepeat.reset(minDelay);
                 }
 
-                this.alienState = PLAYING;
+                this.subWaveState = PLAYING;
                 Log.i(TAG, "Wave: Reset SubWave");
             }
             /**
@@ -180,38 +206,16 @@ public class AlienManager implements IAlienManager {
              */
             else if (waveManager.hasNext()) {
                 createAlienSubWave(waveManager.next());
-//                this.subWave = waveManager.next();
-//                aliens = subWave.getAliens();
-//                repeatedSubWave = nextSubWave.isWaveRepeated();
-
-                /**
-                 * The aliens can jump positions when the wave is started if
-                 * there has been a time delay between construction and starting
-                 * moves. To avoid this jump, reset each alien so it re-starts
-                 * it's path.
-                 */
-                //TODO is this reset really neccessary???
-//                for (SpriteAlien anAlien : aliens) {
-//                    if (anAlien.isActive())
-//                    {
-//                        anAlien.setVisible(true);
-//                    }
-
-//                    if (anAlien instanceof SpriteAlienWithPath)
-//                    {
-//                        SpriteAlienWithPath alienWithPath = (SpriteAlienWithPath) anAlien;
-//                        alienWithPath.reset(0);
-//                    }
-//                }
-
                 Log.i(TAG, "Wave: Next SubWave");
             }
             /**
-             * otherwise wave is finished so we should advance to next wave
+             * otherwise wave is finished. there are no more sub-waves.
+             * we can advance to next wave.
              */
             else {
-                this.alienState = WAVE_COMPLETE;
+                this.subWaveState = WAVE_COMPLETE;
                 Log.i(TAG, "Wave: All SubWaves Complete");
             }
         }
     }
+}

@@ -1173,7 +1173,7 @@ public class GamePlayHandler implements GameHandler
                  * aliens.
                  */
                 SubWave nextSubWave = waveManager.next();
-                aliens = nextSubWave.getAliens();
+                //aliens = nextSubWave.getAliens();
                 repeatedSubWave = nextSubWave.isWaveRepeated();
 
                 /*

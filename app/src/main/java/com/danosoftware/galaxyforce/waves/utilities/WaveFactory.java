@@ -4,6 +4,7 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
+import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -529,7 +530,9 @@ public class WaveFactory {
 
         // create subwave from list of aliens and set whether wave should repeat
         // until all destroyed
-        SubWave subWave = new SubWave(reversedAlienList, repeatedMode);
+        //TODO Use IAlien in WaveFactory
+        //SubWave subWave = new SubWave(reversedAlienList, repeatedMode);
+        SubWave subWave = new SubWave(new ArrayList<IAlien>(), repeatedMode);
 
         return subWave;
 
