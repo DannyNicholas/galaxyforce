@@ -5,6 +5,8 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AbstractSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Flag extends Sprite
+public class Flag extends AbstractSprite implements ISprite
 {
     /* logger tag */
     private static final String TAG = "Flag";
@@ -44,9 +46,9 @@ public class Flag extends Sprite
         flagMap.put(1, Flag.FLAG_1);
     }
 
-    public Flag(int xStart, int yStart, ISpriteIdentifier spriteId)
+    public Flag(int x, int y, ISpriteIdentifier spriteId)
     {
-        super(xStart, yStart, spriteId, true);
+        super(spriteId, x, y);
     }
 
     /**

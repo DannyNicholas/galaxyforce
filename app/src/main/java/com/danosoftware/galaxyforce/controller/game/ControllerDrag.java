@@ -1,26 +1,24 @@
 package com.danosoftware.galaxyforce.controller.game;
 
-import com.danosoftware.galaxyforce.controller.interfaces.BaseController;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchController;
-import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Vector2;
 
-public class ControllerDrag implements BaseController, TouchController
+public class ControllerDrag implements TouchController //BaseController
 {
     // pointer to finger currently controlling this drag
-    public static int DRAG_POINTER = -1;
+    private int dragPointer = -1;
 
     /* contains reference to game model */
-    private GameHandler model = null;
+//    private final GameHandler model;
 
     /* reference to drag model */
-    private TouchBaseControllerModel dragModel = null;
+    private final TouchBaseControllerModel dragModel;
 
-    public ControllerDrag(GameHandler model, TouchBaseControllerModel dragModel)
+    public ControllerDrag(TouchBaseControllerModel dragModel)
     {
-        this.model = model;
+//        this.model = model;
         this.dragModel = dragModel;
     }
 
@@ -31,42 +29,42 @@ public class ControllerDrag implements BaseController, TouchController
 
         // on touch down: set drag pointer, set centre based on base's location,
         // update touch point
-        if (event.type == TouchEvent.TOUCH_DOWN && DRAG_POINTER == -1)
+        if (event.type == TouchEvent.TOUCH_DOWN && dragPointer == -1)
         {
-            DRAG_POINTER = pointerID;
-            dragModel.setCentre(model.getBaseX(), model.getBaseY());
-            dragModel.updateTouchPoint(touchPoint.x, touchPoint.y);
+            dragPointer = pointerID;
+//            dragModel.setCentre(model.getBaseX(), model.getBaseY());
+            dragModel.updateTouchPoint(touchPoint.x, touchPoint.y, deltaTime);
             processed = true;
         }
 
         // on drag: set centre on base's location and update touch point
-        if (event.type == TouchEvent.TOUCH_DRAGGED && pointerID == DRAG_POINTER)
+        if (event.type == TouchEvent.TOUCH_DRAGGED && pointerID == dragPointer)
         {
-            dragModel.setCentre(model.getBaseX(), model.getBaseY());
-            dragModel.updateTouchPoint(touchPoint.x, touchPoint.y);
+//            dragModel.setCentre(model.getBaseX(), model.getBaseY());
+            dragModel.updateTouchPoint(touchPoint.x, touchPoint.y, deltaTime);
             processed = true;
         }
 
         // on release: release touch point and reset drag pointer
-        if (event.type == TouchEvent.TOUCH_UP && pointerID == DRAG_POINTER)
+        if (event.type == TouchEvent.TOUCH_UP && pointerID == dragPointer)
         {
             // reset joystick to centre
-            dragModel.setCentre(model.getBaseX(), model.getBaseY());
+//            dragModel.setCentre(model.getBaseX(), model.getBaseY());
             dragModel.releaseTouchPoint();
-            DRAG_POINTER = -1;
+            dragPointer = -1;
             processed = true;
         }
 
         return processed;
     }
 
-    @Override
-    public void reset()
-    {
-        // resets centre to current base position
-        dragModel.setCentre(model.getBaseX(), model.getBaseY());
-
-        // resets weighting and sets target to base position
-        dragModel.reset();
-    }
+//    @Override
+//    public void reset()
+//    {
+//        // resets centre to current base position
+//        dragModel.setCentre(model.getBaseX(), model.getBaseY());
+//
+//        // resets weighting and sets target to base position
+//        dragModel.reset();
+//    }
 }

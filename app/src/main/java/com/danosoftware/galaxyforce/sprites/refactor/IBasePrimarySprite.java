@@ -1,8 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-
 import java.util.List;
 
 public interface IBasePrimarySprite extends IBaseSprite {
@@ -16,4 +13,6 @@ public interface IBasePrimarySprite extends IBaseSprite {
     void helperCreated(HelperSide side, IBaseHelperSprite helper);
 
     List<IBaseSprite> activeBases();
+
+    List<ISprite> energyBar();
 }

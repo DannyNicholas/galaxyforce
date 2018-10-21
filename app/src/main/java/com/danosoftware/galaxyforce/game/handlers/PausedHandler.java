@@ -12,9 +12,9 @@ import com.danosoftware.galaxyforce.model.screens.ButtonType;
 import com.danosoftware.galaxyforce.model.screens.MenuButtonModel;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class PausedHandler implements PlayModel, MenuButtonModel
     private List<Text> allText;
 
     /* Stores list of all sprites to be shown as paused. */
-    private List<Sprite> pausedSprites = null;
+    private List<ISprite> pausedSprites = null;
 
     /* Stores list of all sprites to be returned. */
-    private List<Sprite> allSprites = null;
+    private List<ISprite> allSprites = null;
 
     /* reference to current state */
     private ModelState modelState;
@@ -70,15 +70,15 @@ public class PausedHandler implements PlayModel, MenuButtonModel
      * ******************************************************
      */
 
-    public PausedHandler(GameModel gameModel, Controller controller, List<Sprite> pausedSprites)
+    public PausedHandler(GameModel gameModel, Controller controller, List<ISprite> pausedSprites)
     {
         this.controller = controller;
         this.gameModel = gameModel;
         this.pausedSprites = pausedSprites;
 
-        this.menuButtons = new ArrayList<SpriteTextButton>();
-        this.allText = new ArrayList<Text>();
-        this.allSprites = new ArrayList<Sprite>();
+        this.menuButtons = new ArrayList<>();
+        this.allText = new ArrayList<>();
+        this.allSprites = new ArrayList<>();
 
         this.modelState = ModelState.PAUSED;
     }
@@ -111,7 +111,7 @@ public class PausedHandler implements PlayModel, MenuButtonModel
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }

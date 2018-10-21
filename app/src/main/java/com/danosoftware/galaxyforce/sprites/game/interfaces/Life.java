@@ -2,11 +2,12 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AbstractSprite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Life extends Sprite
+public class Life extends AbstractSprite
 {
     // flags height and width
     private static final int LIVES_HEIGHT = GameSpriteIdentifier.LIVES.getProperties().getHeight();
@@ -16,9 +17,9 @@ public class Life extends Sprite
     private static final int LIVES_START_X = 0 + (LIVES_WIDTH / 2);
     private static final int LIVES_START_Y = (LIVES_HEIGHT / 2) + 10;
 
-    public Life(int xStart, int yStart, ISpriteIdentifier spriteId)
+    public Life(int x, int y, ISpriteIdentifier spriteId)
     {
-        super(xStart, yStart, spriteId, true);
+        super(spriteId, x, y);
     }
 
     /**

@@ -5,6 +5,7 @@ package com.danosoftware.galaxyforce.sprites.refactor;
  */
 public enum BaseState {
 
+    MOVING_TO_START_POSITION,
     ACTIVE,
     EXPLODING,
     DESTROYED

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.BuildConfig;
-import com.danosoftware.galaxyforce.R;
 import com.danosoftware.galaxyforce.billing.IabHelper;
 import com.danosoftware.galaxyforce.billing.IabResult;
 import com.danosoftware.galaxyforce.billing.Inventory;

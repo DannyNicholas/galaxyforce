@@ -19,9 +19,9 @@ import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.Configurations;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class OptionsModelImpl implements OptionsModel
     private List<Star> stars = null;
 
     // reference to all sprites in model
-    List<Sprite> allSprites = null;
+    List<ISprite> allSprites = null;
 
     private ModelState modelState;
 
@@ -52,8 +52,8 @@ public class OptionsModelImpl implements OptionsModel
     public OptionsModelImpl(Controller controller)
     {
         this.controller = controller;
-        this.allSprites = new ArrayList<Sprite>();
-        this.allText = new ArrayList<Text>();
+        this.allSprites = new ArrayList<>();
+        this.allText = new ArrayList<>();
 
         // add screen touch to trigger screenTouch method when user touches
         // screen
@@ -103,7 +103,7 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }
@@ -138,7 +138,7 @@ public class OptionsModelImpl implements OptionsModel
     {
         for (Star eachStar : stars)
         {
-            eachStar.move(deltaTime);
+            eachStar.animate(deltaTime);
         }
     }
 

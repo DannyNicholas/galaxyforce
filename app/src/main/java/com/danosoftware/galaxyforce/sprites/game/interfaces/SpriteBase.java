@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.Direction;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 

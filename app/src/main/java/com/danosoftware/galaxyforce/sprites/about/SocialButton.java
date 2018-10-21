@@ -5,8 +5,9 @@ import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.controller.utilities.DetectButtonTouch;
 import com.danosoftware.galaxyforce.interfaces.AboutModel;
 import com.danosoftware.galaxyforce.model.screens.ButtonType;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.ButtonRectangle;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 /**
@@ -20,7 +21,7 @@ public class SocialButton implements SpriteButton
     private final AboutModel model;
 
     // reference to level selector button sprite
-    private final ButtonRectangle buttonSprite;
+    private final IButtonSprite buttonSprite;
 
     // sprites to be used for when button is up (not pressed) or down (pressed)
     private final ISpriteIdentifier spriteButtonUp;
@@ -33,7 +34,7 @@ public class SocialButton implements SpriteButton
             ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown)
     {
         this.model = model;
-        this.buttonSprite = new ButtonRectangle(xPos, yPos, spriteButtonUp);
+        this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.buttonType = buttonType;
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
@@ -51,7 +52,7 @@ public class SocialButton implements SpriteButton
     @Override
     public void buttonUp()
     {
-        buttonSprite.setSpriteIdentifier(spriteButtonUp);
+        buttonSprite.changeType(spriteButtonUp);
 
         model.processButton(buttonType);
     }
@@ -59,17 +60,17 @@ public class SocialButton implements SpriteButton
     @Override
     public void buttonDown()
     {
-        buttonSprite.setSpriteIdentifier(spriteButtonDown);
+        buttonSprite.changeType(spriteButtonDown);
     }
 
     @Override
     public void buttonReleased()
     {
-        buttonSprite.setSpriteIdentifier(spriteButtonUp);
+        buttonSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public ButtonRectangle getSprite()
+    public IButtonSprite getSprite()
     {
         return buttonSprite;
     }

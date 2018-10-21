@@ -1,10 +1,8 @@
 package com.danosoftware.galaxyforce.controller.game;
 
-import com.danosoftware.galaxyforce.controller.interfaces.BaseControllerModel;
-import com.danosoftware.galaxyforce.controller.interfaces.ControllerBase;
-import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.options.OptionController;
-import com.danosoftware.galaxyforce.services.Configurations;
+import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
+import com.danosoftware.galaxyforce.controller.interfaces.TouchController;
+import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
 
 public class BaseControllerFactory
 {
@@ -17,31 +15,34 @@ public class BaseControllerFactory
      * @param gameHandler
      * @return base controller
      */
-    public static BaseControllerModel getBaseController(ControllerBase controller, GameHandler gameHandler)
+    public static TouchController getBaseController(IBasePrimarySprite base)
     {
+        TouchBaseControllerModel baseController = new BaseDragModel(base);
+        return new ControllerDrag(baseController);
 
-        BaseControllerModel baseController = null;
 
-        // get controller option currently selected
-        Configurations configurations = Configurations.getInstance();
-        OptionController optionController = configurations.getControllerType();
-
-        // choose wanted base controller
-        switch (optionController)
-        {
-        case ACCELEROMETER:
-            baseController = new BaseTiltModel(controller);
-            break;
-        case DRAG:
-            baseController = new BaseDragModel(gameHandler, controller);
-            break;
-        case JOYSTICK:
-            baseController = new BaseJoystickModel(controller);
-            break;
-        default:
-            throw new IllegalArgumentException("Unrecognised OptionController found: '" + optionController + "'.");
-        }
-
-        return baseController;
+//        BaseControllerModel baseController = null;
+//
+//        // get controller option currently selected
+//        Configurations configurations = Configurations.getInstance();
+//        OptionController optionController = configurations.getControllerType();
+//
+//        // choose wanted base controller
+//        switch (optionController)
+//        {
+//        case ACCELEROMETER:
+//            baseController = new BaseTiltModel(controller);
+//            break;
+//        case DRAG:
+//            baseController = new BaseDragModel(gameHandler, controller);
+//            break;
+//        case JOYSTICK:
+//            baseController = new BaseJoystickModel(controller);
+//            break;
+//        default:
+//            throw new IllegalArgumentException("Unrecognised OptionController found: '" + optionController + "'.");
+//        }
+//
+//        return baseController;
     }
 }

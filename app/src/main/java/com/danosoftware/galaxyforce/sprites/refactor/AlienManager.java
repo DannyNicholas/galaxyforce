@@ -92,6 +92,13 @@ public class AlienManager implements IAlienManager {
     }
 
     @Override
+    public void spawnAliens(List<IAlien> spawnedAliens) {
+        // spawned aliens are newly created aliens to the wave.
+        // they should appear behind existing sprites so are added to beginning of list
+        this.aliens.addAll(0, spawnedAliens);
+    }
+
+    @Override
     public void setUpWave(int wave) {
         /**
          * asks wave manager to set-up next level. this is an asynchronous task
@@ -115,6 +122,18 @@ public class AlienManager implements IAlienManager {
     @Override
     public boolean isWaveComplete() {
         return (subWaveState == WAVE_COMPLETE);
+    }
+
+    @Override
+    public IAlien chooseActiveAlien() {
+        // if no aliens are active return null
+        if (activeAliens.size() == 0) {
+            return null;
+        }
+
+        // choose a random active alien
+        int index = (int) (Math.random() * activeAliens.size());
+        return activeAliens.get(index);
     }
 
     /**

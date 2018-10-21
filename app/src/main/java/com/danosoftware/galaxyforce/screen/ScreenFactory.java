@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.screen;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controller.game.ControllerGame;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
-import com.danosoftware.galaxyforce.controller.interfaces.ControllerBase;
 import com.danosoftware.galaxyforce.controller.menus.MenuController;
 import com.danosoftware.galaxyforce.interfaces.Game;
 import com.danosoftware.galaxyforce.interfaces.Input;
@@ -213,11 +212,11 @@ public class ScreenFactory
 
         /* set-up controller */
         Input input = Inputs.getInput();
-        ControllerBase controllerBase = new ControllerGame(input, camera);
-        Controller controller = controllerBase;
+        Controller controller = new ControllerGame(input, camera);
+//        Controller controller = controllerBase;
 
         /* set-up model */
-        Model model = new GameModelImpl(controllerBase, startingWave, game.getBillingService());
+        Model model = new GameModelImpl(controller, startingWave, game.getBillingService());
 
         /* create screen */
         return new GameScreen(model, controller, textureMap, glGraphics, camera, batcher);

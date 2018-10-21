@@ -74,12 +74,6 @@ public class MenuController implements Controller
     }
 
     @Override
-    public void reset()
-    {
-
-    }
-
-    @Override
     public void clearTouchControllers()
     {
         touchControllers.clear();

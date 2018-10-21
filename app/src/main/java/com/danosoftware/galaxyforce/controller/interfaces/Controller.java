@@ -5,23 +5,23 @@ public interface Controller
     /**
      * update model using any set-up controllers.
      */
-    public void update(float deltaTime);
+    void update(float deltaTime);
 
     /**
      * add a touch controller to be monitored.
      * 
      * @param touchController
      */
-    public void addTouchController(TouchController touchController);
+    void addTouchController(TouchController touchController);
 
     /**
      * Remove all existing touch controllers
      */
-    public void clearTouchControllers();
+    void clearTouchControllers();
 
     /**
      * reset controller on game re-start
      */
-    public void reset();
+//    public void reset();
 
 }

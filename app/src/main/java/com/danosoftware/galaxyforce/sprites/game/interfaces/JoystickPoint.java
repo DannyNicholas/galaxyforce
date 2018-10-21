@@ -1,17 +1,22 @@
 package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AbstractSprite;
 
-public class JoystickPoint extends Sprite
-{
+/*
+ * Sprite model for the joystick point.
+ */
+public class JoystickPoint extends AbstractSprite {
 
-    /*
-     * Sprite model for the joystick point. Creates concrete class using Sprite
-     * class.
-     */
-    public JoystickPoint(int xStart, int yStart, ISpriteIdentifier spriteId)
-    {
-        super(xStart, yStart, spriteId, true);
+    public JoystickPoint(
+            int x,
+            int y,
+            ISpriteIdentifier spriteId) {
+
+        super(
+                spriteId,
+                x,
+                y);
     }
 
 }

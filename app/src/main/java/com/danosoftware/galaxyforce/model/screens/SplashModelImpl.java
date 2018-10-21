@@ -10,8 +10,8 @@ import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.properties.SplashSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class SplashModelImpl implements TouchScreenModel
     Text copyright = null;
 
     // list of sprites
-    private List<Sprite> allSprites = null;
+    private List<ISprite> allSprites = null;
 
     /* reference to controller */
     private Controller controller = null;
@@ -46,8 +46,8 @@ public class SplashModelImpl implements TouchScreenModel
     public SplashModelImpl(Controller controller)
     {
 
-        this.allSprites = new ArrayList<Sprite>();
-        this.textList = new ArrayList<Text>();
+        this.allSprites = new ArrayList<>();
+        this.textList = new ArrayList<>();
 
         this.controller = controller;
 
@@ -79,7 +79,7 @@ public class SplashModelImpl implements TouchScreenModel
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }

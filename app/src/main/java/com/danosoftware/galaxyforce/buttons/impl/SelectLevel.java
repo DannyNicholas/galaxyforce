@@ -4,9 +4,10 @@ import com.danosoftware.galaxyforce.buttons.interfaces.SpriteTextButton;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.controller.utilities.DetectButtonTouch;
 import com.danosoftware.galaxyforce.model.screens.SelectLevelModel;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.ButtonRectangle;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
@@ -35,7 +36,7 @@ public class SelectLevel implements SpriteTextButton
     private final SelectLevelModel model;
 
     // reference to level selector button sprite
-    private final ButtonRectangle levelSprite;
+    private final IButtonSprite levelSprite;
 
     // reference to button's level number
     private final static int NO_LEVEL = 0;
@@ -58,7 +59,7 @@ public class SelectLevel implements SpriteTextButton
             // unlocked button
             this.spriteButtonUp = levelButton;
             this.spriteButtonDown = levelButtonPressed;
-            this.levelSprite = new ButtonRectangle(xPos, yPos, spriteButtonUp);
+            this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
             this.text = Text.newTextAbsolutePosition(Integer.toString(levelInt), xPos, yPos);
             this.levelNumber = levelInt;
         }
@@ -67,7 +68,7 @@ public class SelectLevel implements SpriteTextButton
             // locked button
             this.spriteButtonUp = lockedButton;
             this.spriteButtonDown = lockedButtonPressed;
-            this.levelSprite = new ButtonRectangle(xPos, yPos, spriteButtonUp);
+            this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
             this.text = Text.newTextAbsolutePosition("", xPos, yPos);
             this.levelNumber = NO_LEVEL;
         }
@@ -86,7 +87,7 @@ public class SelectLevel implements SpriteTextButton
     @Override
     public void buttonUp()
     {
-        levelSprite.setSpriteIdentifier(spriteButtonUp);
+        levelSprite.changeType(spriteButtonUp);
 
         if (lockStatus == LockStatus.UNLOCKED)
         {
@@ -98,17 +99,17 @@ public class SelectLevel implements SpriteTextButton
     public void buttonDown()
     {
 
-        levelSprite.setSpriteIdentifier(spriteButtonDown);
+        levelSprite.changeType(spriteButtonDown);
     }
 
     @Override
     public void buttonReleased()
     {
-        levelSprite.setSpriteIdentifier(spriteButtonUp);
+        levelSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public ButtonRectangle getSprite()
+    public IButtonSprite getSprite()
     {
         return levelSprite;
     }

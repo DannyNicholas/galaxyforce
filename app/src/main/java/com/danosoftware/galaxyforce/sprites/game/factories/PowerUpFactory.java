@@ -1,14 +1,13 @@
 package com.danosoftware.galaxyforce.sprites.game.factories;
 
-import com.danosoftware.galaxyforce.enumerations.Direction;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sprites.game.implementations.PowerUpImpl;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpritePowerUp;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
+import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
@@ -26,48 +25,31 @@ public class PowerUpFactory
 
     /**
      * Return any random power-up.
-     * 
-     * @param x
-     * @param y
-     * @param direction
-     * @return SpritePowerUp
      */
-    public static PowerUpBean generateRandomPowerUp(int x, int y, Direction direction)
+    public static PowerUpBean generateRandomPowerUp(int x, int y)
     {
         // create array of possible power-ups
         PowerUpType[] powerUps = PowerUpType.values();
 
         // use method requiring a power-up type array to generate powerup
-        return generateRandomPowerUp(x, y, direction, powerUps);
+        return generateRandomPowerUp(x, y, powerUps);
     }
 
     /**
      * Return a random power-up from the supplied array of power-up types.
-     * 
-     * @param x
-     * @param y
-     * @param direction
-     * @param powerUps
-     * @return SpritePowerUp
      */
-    public static PowerUpBean generateRandomPowerUp(int x, int y, Direction direction, PowerUpType... powerUps)
+    public static PowerUpBean generateRandomPowerUp(int x, int y, PowerUpType... powerUps)
     {
         // select a random powerup type and generate the power-up
         int index = (int) (Math.random() * powerUps.length);
 
-        return newPowerUp(powerUps[index], x, y, direction);
+        return newPowerUp(powerUps[index], x, y);
     }
 
     /**
      * Return a power-up using the supplied power-up type.
-     * 
-     * @param powerUpType
-     * @param x
-     * @param y
-     * @param direction
-     * @return SpritePowerUp
      */
-    public static PowerUpBean newPowerUp(PowerUpType powerUpType, int x, int y, Direction direction)
+    public static PowerUpBean newPowerUp(PowerUpType powerUpType, int x, int y)
     {
         ISpriteIdentifier spriteId = null;
         Sound sound = POWER_UP_SOUND;
@@ -108,7 +90,7 @@ public class PowerUpFactory
             throw new IllegalArgumentException("Unsupported PowerUpType: '" + powerUpType + "'.");
         }
 
-        SpritePowerUp powerUp = new PowerUpImpl(x, y, direction, powerUpType, spriteId);
+        IPowerUp powerUp = new PowerUp(spriteId, x, y, powerUpType);
 
         return new PowerUpBean(powerUp, sound);
     }

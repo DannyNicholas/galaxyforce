@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.interfaces;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public interface LevelModel extends Model
      * 
      * @return list of static sprites
      */
-    public List<Sprite> getStaticSprites();
+    public List<ISprite> getStaticSprites();
 
     /**
      * Some text will be rendered separately to level button text and will not

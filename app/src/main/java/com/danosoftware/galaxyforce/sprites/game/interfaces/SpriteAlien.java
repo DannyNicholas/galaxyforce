@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.FireBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.PowerUpBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.SpawnBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
 
 /**

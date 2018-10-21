@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.properties;
 
 import com.danosoftware.galaxyforce.textures.Texture;
-import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Animation;
 
 public enum GameSpriteIdentifier implements ISpriteIdentifier {

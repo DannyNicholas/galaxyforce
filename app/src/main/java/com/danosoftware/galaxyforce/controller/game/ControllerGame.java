@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.controller.game;
 
-import com.danosoftware.galaxyforce.controller.interfaces.BaseController;
-import com.danosoftware.galaxyforce.controller.interfaces.BaseControllerTilt;
-import com.danosoftware.galaxyforce.controller.interfaces.ControllerBase;
+import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchController;
 import com.danosoftware.galaxyforce.interfaces.Input;
 import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
@@ -12,7 +10,9 @@ import com.danosoftware.galaxyforce.view.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerGame implements ControllerBase
+
+// TODO is this the same as MenuController - if so remove one!
+public class ControllerGame implements Controller
 {
     /* reference to game input */
     private Input input = null;
@@ -24,7 +24,7 @@ public class ControllerGame implements ControllerBase
     private List<TouchController> touchControllers = null;
 
     // current base controller being used
-    private BaseController baseController = null;
+//    private BaseController baseController = null;
 
     public ControllerGame(Input input, Camera2D camera)
     {
@@ -37,10 +37,10 @@ public class ControllerGame implements ControllerBase
     public void update(float deltaTime)
     {
         // if accelerometer - process tilt movement
-        if (baseController instanceof BaseControllerTilt)
-        {
-            ((BaseControllerTilt) baseController).updateController(input);
-        }
+//        if (baseController instanceof BaseControllerTilt)
+//        {
+//            ((BaseControllerTilt) baseController).updateController(input);
+//        }
 
         List<TouchEvent> touchEvents = input.getTouchEvents();
         int len = touchEvents.size();
@@ -54,8 +54,8 @@ public class ControllerGame implements ControllerBase
             int pointerID = event.pointer;
 
             // set the touch point x,y,
-            Vector2 touchPoint = new Vector2();
-            touchPoint.set(event.x, event.y);
+            Vector2 touchPoint = new Vector2(event.x, event.y);
+//            touchPoint.set(event.x, event.y);
 
             // convert touch point to current camera x,y
             camera.touchToWorld(touchPoint);
@@ -77,12 +77,12 @@ public class ControllerGame implements ControllerBase
 
             // only process base controller if no other touch controllers have
             // already processed this touch point.
-            if (!processed && (baseController instanceof TouchController))
-            {
-                // process base controller as touch controller (i.e. drag or
-                // joystick)
-                ((TouchController) baseController).processTouchEvent(event, touchPoint, pointerID, deltaTime);
-            }
+//            if (!processed && (baseController instanceof TouchController))
+//            {
+//                // process base controller as touch controller (i.e. drag or
+//                // joystick)
+//                ((TouchController) baseController).processTouchEvent(event, touchPoint, pointerID, deltaTime);
+//            }
         }
     }
 
@@ -92,22 +92,22 @@ public class ControllerGame implements ControllerBase
         touchControllers.add(touchController);
     }
 
-    @Override
-    public void reset()
-    {
-        baseController.reset();
-    }
+//    @Override
+//    public void reset()
+//    {
+//        baseController.reset();
+//    }
 
-    @Override
-    public void setBaseController(BaseController baseController)
-    {
-        this.baseController = baseController;
-    }
+//    @Override
+//    public void setBaseController(BaseController baseController)
+//    {
+//        this.baseController = baseController;
+//    }
 
     @Override
     public void clearTouchControllers()
     {
         touchControllers.clear();
-        baseController = null;
+//        baseController = null;
     }
 }

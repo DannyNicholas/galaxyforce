@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.MovingSprite;
 import com.danosoftware.galaxyforce.view.Animation;
 
 public class BaseShield extends AbstractMovingSprite implements IBaseShield

@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
-import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.Sound;
@@ -10,8 +9,11 @@ import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
+import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -159,9 +161,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
 
     @Override
     public BaseMissileBean fire(BaseMissileType baseMissileType) {
-        // TBC
-        //return BaseMissileFactory.createBaseMissile(this, baseMissileType, direction, model);
-        return null;
+        return BaseMissileFactory.createBaseMissile(this, baseMissileType, model);
     }
 
     @Override
@@ -206,6 +206,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
             // helper is destroyed by single missile hit
             destroy();
         }
+        missile.destroy();
     }
 
     @Override
@@ -217,8 +218,13 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     }
 
     @Override
-    public void collectPowerUp(PowerUpType powerUpType) {
-        primaryBase.collectPowerUp(powerUpType);
+    public boolean isDestroyed() {
+        return state == DESTROYED;
+    }
+
+    @Override
+    public void collectPowerUp(IPowerUp powerUp) {
+        primaryBase.collectPowerUp(powerUp);
     }
 
     /**

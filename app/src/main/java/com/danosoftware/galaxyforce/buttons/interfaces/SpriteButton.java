@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.buttons.interfaces;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.ButtonRectangle;
+import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 
 /**
  * Button that can be selected by a user.
@@ -12,5 +12,5 @@ public interface SpriteButton extends Button
      * 
      * @return button's sprite
      */
-    public ButtonRectangle getSprite();
+    public IButtonSprite getSprite();
 }

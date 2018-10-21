@@ -15,4 +15,15 @@ public interface IAlienManager {
     boolean isWaveReady();
 
     boolean isWaveComplete();
+
+    /**
+     * Return a randomly selected active alien.
+     * Can return null if no aliens are active.
+     */
+    IAlien chooseActiveAlien();
+
+    /**
+     * Add new spawned aliens to the current wave.
+     */
+    void spawnAliens(List<IAlien> spawnedAliens);
 }

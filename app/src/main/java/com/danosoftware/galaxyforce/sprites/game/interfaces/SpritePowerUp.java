@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 
 /*
  * To change this template, choose Tools | Templates
@@ -13,18 +14,12 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
  * 
  * @author Danny
  */
-public abstract class SpritePowerUp extends MovingSprite
+public abstract class SpritePowerUp extends AbstractCollidingSprite
 {
-
-    /* power-up has no energy */
-    private static final int ENERGY = 0;
-
-    /* power-up caused no energy damage to a base */
-    private static final int HIT_ENERGY = 0;
 
     public SpritePowerUp(int xStart, int yStart, ISpriteIdentifier spriteId)
     {
-        super(xStart, yStart, spriteId, ENERGY, HIT_ENERGY, true);
+        super(spriteId, xStart, yStart);
     }
 
     /**

@@ -4,8 +4,9 @@ import com.danosoftware.galaxyforce.buttons.interfaces.SpriteButton;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.controller.utilities.DetectButtonTouch;
 import com.danosoftware.galaxyforce.model.screens.SelectLevelModel;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.ButtonRectangle;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 /**
@@ -24,7 +25,7 @@ public class PreviousZone implements SpriteButton
     private final int zone;
 
     // reference to level selector button sprite
-    private final ButtonRectangle levelSprite;
+    private final IButtonSprite levelSprite;
 
     // sprites to be used for when button is up (not pressed) or down (pressed)
     private final ISpriteIdentifier spriteButtonUp;
@@ -34,7 +35,7 @@ public class PreviousZone implements SpriteButton
             ISpriteIdentifier spriteButtonDown)
     {
         this.model = model;
-        this.levelSprite = new ButtonRectangle(xPos, yPos, spriteButtonUp, buffer, buffer);
+        this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos, buffer);
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
         this.zone = zone;
@@ -53,7 +54,7 @@ public class PreviousZone implements SpriteButton
     @Override
     public void buttonUp()
     {
-        levelSprite.setSpriteIdentifier(spriteButtonUp);
+        levelSprite.changeType(spriteButtonUp);
 
         model.changeZone(zone - 1);
     }
@@ -61,17 +62,17 @@ public class PreviousZone implements SpriteButton
     @Override
     public void buttonDown()
     {
-        levelSprite.setSpriteIdentifier(spriteButtonDown);
+        levelSprite.changeType(spriteButtonDown);
     }
 
     @Override
     public void buttonReleased()
     {
-        levelSprite.setSpriteIdentifier(spriteButtonUp);
+        levelSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public ButtonRectangle getSprite()
+    public IButtonSprite getSprite()
     {
         return levelSprite;
     }

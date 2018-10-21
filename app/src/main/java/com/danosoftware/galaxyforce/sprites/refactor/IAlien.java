@@ -1,21 +1,16 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
+import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
+
 public interface IAlien extends ICollidingSprite  {
 
     void onHitBy(IBaseMissile baseMissile);
-
-    void destroy();
 
     /**
      * Is alien activate?
      * That is: not exploding, destroyed or idle.
      */
     boolean isActive();
-
-    /**
-     * Is alien destroyed and can be removed?
-     */
-    boolean isDestroyed();
 
     /**
      * Is alien visible on the game screen?

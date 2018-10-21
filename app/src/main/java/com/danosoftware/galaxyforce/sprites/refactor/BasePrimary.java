@@ -14,11 +14,13 @@ import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviourSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviourSwitch;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourSwitch;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.EnergyBar;
+import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
@@ -30,10 +32,13 @@ import java.util.Map;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
+import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_BOTTOM;
+import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.DESTROYED;
 import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
+import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.MOVING_TO_START_POSITION;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
 
@@ -46,6 +51,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     private static final String TAG = "BasePrimary";
 
+    // base's start y position when ready
+    private static final int BASE_START_Y = 192;
 
     // base's energy bar
     private final EnergyBar energyBar;
@@ -125,12 +132,10 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private final Sound explosionSound;
 
     public BasePrimary(
-            final int x,
-            final int y,
             final GameHandler model) {
 
-        super(BASE_SPRITE, x, y);
-        this.state = ACTIVE;
+        super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
+        this.state = MOVING_TO_START_POSITION;
         this.helpers = new EnumMap<>(HelperSide.class);
         this.activeHelpers = new EnumMap<>(HelperSide.class);
         this.allSprites = buildAllSprites();
@@ -153,11 +158,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.baseMissileDelay = DEFAULT_BASE_MISSILE_DELAY;
         timeUntilDefaultMissile = 0f;
         timeSinceBaseLastFired = 0f;
-        timeUntilShieldRemoved = 0f;
 
-
-        /* base is not currently shielded */
-        shielded = false;
+        // new base starts as shielded to avoid being immediately destroyed
+        addShield(2f, 0f);
 
         // reset energy bar to maximum. new energy level returned.
         this.energyBar = new EnergyBar();
@@ -209,6 +212,21 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      */
     @Override
     public void animate(float deltaTime) {
+
+        // if moving upwards into y start position
+        if (state == MOVING_TO_START_POSITION) {
+            moveBase(0, 0.7f, deltaTime);
+            if (y() >= BASE_START_Y)
+            {
+                move(x(), BASE_START_Y);
+                if (shielded) {
+                    shield.move(x(), BASE_START_Y);
+                }
+                state = ACTIVE;
+                // tell model that base is now in position and ready
+                model.baseReady();
+            }
+        }
 
         // if shielded then check when shield should be removed
         if (shielded) {
@@ -284,6 +302,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
                 hit.startHit();
             }
         }
+        missile.destroy();
     }
 
     @Override
@@ -308,7 +327,12 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     }
 
     @Override
-    public void collectPowerUp(PowerUpType powerUpType) {
+    public void collectPowerUp(IPowerUp powerUp) {
+
+        // destroy collected power-up
+        powerUp.destroy();
+
+        PowerUpType powerUpType = powerUp.getPowerUpType();
 
         Log.i(TAG, "Power-Up: '" + powerUpType.name() + "'.");
 
@@ -376,6 +400,11 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public List<ISprite> allSprites() {
         return allSprites;
+    }
+
+    @Override
+    public List<ISprite> energyBar() {
+        return energyBar.getEnergyBar();
     }
 
     @Override
@@ -576,5 +605,10 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         // refresh list of sprites
         this.allSprites = buildAllSprites();
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return false;
     }
 }

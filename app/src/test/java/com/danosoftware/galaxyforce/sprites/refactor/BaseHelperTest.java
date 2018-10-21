@@ -7,8 +7,9 @@ import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sprites.game.implementations.BaseMissileSimple;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteBaseMissile;
+import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.game.missiles.bases.AbstractBaseMissile;
+import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileSimple;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
@@ -218,7 +219,7 @@ public class BaseHelperTest {
         baseHelper = shieldedHelper(LEFT);
         BaseMissileBean missile = baseHelper.fire(SIMPLE);
         assertThat(missile.getMissiles().size() > 0, is(true));
-        for (SpriteBaseMissile aMissile : missile.getMissiles()) {
+        for (AbstractBaseMissile aMissile : missile.getMissiles()) {
             assertThat(aMissile instanceof BaseMissileSimple, is(true));
         }
     }

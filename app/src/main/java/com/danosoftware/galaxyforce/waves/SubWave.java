@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.waves;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
 import com.danosoftware.galaxyforce.waves.config.SubWaveRepeatMode;
 

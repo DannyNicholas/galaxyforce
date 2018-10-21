@@ -6,8 +6,8 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.interfaces.Model;
 import com.danosoftware.galaxyforce.interfaces.Screen;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureMap;
@@ -97,23 +97,20 @@ public abstract class AbstractScreen implements Screen
         batcher.beginBatch(texture);
 
         // gets sprites from model
-        for (Sprite eachSprite : model.getSprites())
+        for (ISprite eachSprite : model.getSprites())
         {
-            if (eachSprite.isVisible())
-            {
-                if (eachSprite.getRotation() != 0)
+                if (eachSprite.rotation() != 0)
                 {
                     // use sprite with rotation method
-                    batcher.drawSprite(eachSprite.getX(), eachSprite.getY(), eachSprite.getWidth(), eachSprite.getHeight(),
-                            eachSprite.getRotation(), eachSprite.getTextureRegion());
+                    batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
+                            eachSprite.rotation(), eachSprite.textureRegion());
                 }
                 else
                 {
                     // use normal sprite method
-                    batcher.drawSprite(eachSprite.getX(), eachSprite.getY(), eachSprite.getWidth(), eachSprite.getHeight(),
-                            eachSprite.getTextureRegion());
+                    batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
+                            eachSprite.textureRegion());
                 }
-            }
         }
 
         // draw any text

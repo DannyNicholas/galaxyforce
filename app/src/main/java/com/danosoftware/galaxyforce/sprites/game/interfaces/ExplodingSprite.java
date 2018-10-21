@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
-import com.danosoftware.galaxyforce.sprites.game.behaviours.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.HitBehaviourFlash;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFlash;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public abstract class ExplodingSprite extends MovingSprite

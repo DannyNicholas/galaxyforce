@@ -3,10 +3,8 @@ package com.danosoftware.galaxyforce.sprites.refactor;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.textures.TextureRegion;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 
 import java.util.ArrayList;
@@ -92,55 +90,5 @@ public class Flag extends AbstractSprite
         }
 
         return flags;
-    }
-
-    @Override
-    public void move(int x, int y) {
-
-    }
-
-    @Override
-    public void rotate(int angle) {
-
-    }
-
-    @Override
-    public void changeType(ISpriteIdentifier type) {
-
-    }
-
-    @Override
-    public void changeStatus(SpriteState state) {
-
-    }
-
-    @Override
-    public int width() {
-        return 0;
-    }
-
-    @Override
-    public int height() {
-        return 0;
-    }
-
-    @Override
-    public int rotation() {
-        return 0;
-    }
-
-    @Override
-    public int x() {
-        return 0;
-    }
-
-    @Override
-    public int y() {
-        return 0;
-    }
-
-    @Override
-    public TextureRegion textureRegion() {
-        return null;
     }
 }

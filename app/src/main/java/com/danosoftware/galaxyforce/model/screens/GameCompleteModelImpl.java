@@ -20,9 +20,9 @@ import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.about.SocialButton;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.RotatingSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -37,18 +37,18 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel
     private List<Star> stars = null;
 
     // reference to all sprites in model
-    List<Sprite> allSprites = null;
+    List<ISprite> allSprites;
 
     // reference to all sprites in model to be rotated
-    List<RotatingSprite> rotatedSprites = null;
+    List<RotatingSprite> rotatedSprites;
 
     private ModelState modelState;
 
     // reference to all text objects in model
-    List<Text> allText = null;
+    List<Text> allText;
 
     /* reference to controller */
-    private Controller controller = null;
+    private final Controller controller;
 
     /* reference to screen button */
     private ScreenTouch screenTouch = null;
@@ -63,9 +63,9 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel
     {
         this.controller = controller;
         this.context = context;
-        this.allSprites = new ArrayList<Sprite>();
-        this.rotatedSprites = new ArrayList<RotatingSprite>();
-        this.allText = new ArrayList<Text>();
+        this.allSprites = new ArrayList<>();
+        this.rotatedSprites = new ArrayList<>();
+        this.allText = new ArrayList<>();
 
         // add screen touch to trigger screenTouch method when user touches
         // screen
@@ -116,7 +116,7 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }
@@ -144,7 +144,7 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel
 
         for (RotatingSprite eachSprite : rotatedSprites)
         {
-            eachSprite.setRotation((int) angle);
+            eachSprite.rotate((int) angle);
         }
     }
 
@@ -171,7 +171,7 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel
     {
         for (Star eachStar : stars)
         {
-            eachStar.move(deltaTime);
+            eachStar.animate(deltaTime);
         }
     }
 

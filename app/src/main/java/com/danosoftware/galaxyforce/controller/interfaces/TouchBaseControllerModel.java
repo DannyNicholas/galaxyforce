@@ -7,7 +7,7 @@ package com.danosoftware.galaxyforce.controller.interfaces;
 public interface TouchBaseControllerModel extends BaseControllerModel
 {
 
-    public void releaseTouchPoint();
+    void releaseTouchPoint();
 
     /**
      * Sets the centre point of the model. This may be the centre point for a
@@ -19,7 +19,7 @@ public interface TouchBaseControllerModel extends BaseControllerModel
      * @param centreY
      *            y co-ordinate of centre point
      */
-    public void setCentre(float centreX, float centreY);
+//   void setCentre(float centreX, float centreY);
 
     /**
      * Updates the current touch point and calculates the base movement's
@@ -30,5 +30,5 @@ public interface TouchBaseControllerModel extends BaseControllerModel
      * @param touchY
      *            y co-ordinate of touch point
      */
-    public void updateTouchPoint(float touchX, float touchY);
+    void updateTouchPoint(float touchX, float touchY, float deltaTime);
 }

@@ -12,10 +12,10 @@ import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -30,13 +30,13 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     private List<Star> stars = null;
 
     // reference to all sprites in model
-    private final List<Sprite> allSprites;
+    private final List<ISprite> allSprites;
 
     // reference to all button sprites in model
-    private final List<Sprite> buttons;
+    private final List<ISprite> buttons;
 
     // reference to logo sprite
-    private Sprite logo = null;
+    private ISprite logo = null;
 
     // reference to all text objects in model
     List<Text> allText = null;
@@ -59,9 +59,9 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
         this.controller = controller;
         this.billingService = billingService;
 
-        this.allSprites = new ArrayList<Sprite>();
-        this.buttons = new ArrayList<Sprite>();
-        this.allText = new ArrayList<Text>();
+        this.allSprites = new ArrayList<>();
+        this.buttons = new ArrayList<>();
+        this.allText = new ArrayList<>();
 
         // model must check the billing service's products on next update
         this.checkBillingProducts = true;
@@ -185,7 +185,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }
@@ -227,7 +227,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     {
         for (Star eachStar : stars)
         {
-            eachStar.move(deltaTime);
+            eachStar.animate(deltaTime);
         }
     }
 

@@ -8,16 +8,23 @@ import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -119,5 +126,44 @@ public class AlienManagerTest {
         // waveMgr.next() is called twice.
         // Once on setUp() and again on for next sub-wave.
         verify(mockWaveMgr, times(2)).next();
+    }
+
+    @Test
+    public void shouldReturnNullIfSelectingFromNoActiveAliens() {
+        // destroy all aliens
+        for (IAlien alien : alienMgr.activeAliens()) {
+            alien.destroy();
+        }
+
+        IAlien selectedAlien = alienMgr.chooseActiveAlien();
+        assertThat(selectedAlien, is(nullValue()));
+    }
+
+    @Test
+    public void shouldSelectARandomAlien() {
+        IAlien alien = alienMgr.chooseActiveAlien();
+        assertThat(alien, is(not(nullValue())));
+    }
+
+    @Test
+    public void spawnAlienTest() {
+        // when animate is called on an alien, call the spawn alien method
+        final List<IAlien> spawnedAliens = Arrays.asList(mock(IAlien.class));
+        doAnswer(new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                alienMgr.spawnAliens(spawnedAliens);
+                return null;
+            }
+        }).when(mockAlien).animate(any(Float.class));
+
+
+        // confirm that the animate cycle successfully allows existing aliens to spawns new aliens
+        alienMgr.animate(0);
+
+        // confirm every alien has spawned a new alien
+        //TODO this may throw a concurrent exception in which case the alien manager
+        // should queue spawned aliens and add them at end of animation loop
+        assertThat(alienMgr.allAliens().size(), equalTo(20));
     }
 }

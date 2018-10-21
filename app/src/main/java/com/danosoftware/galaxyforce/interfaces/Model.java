@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.interfaces;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface Model
      */
     public void initialise();
 
-    public List<Sprite> getSprites();
+    public List<ISprite> getSprites();
 
     public List<Text> getText();
 

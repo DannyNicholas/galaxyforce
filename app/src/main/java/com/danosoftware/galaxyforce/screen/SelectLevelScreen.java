@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.screen;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.interfaces.LevelModel;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Camera2D;
@@ -56,20 +56,17 @@ public class SelectLevelScreen extends AbstractScreen
          * scroll with other elements so offset stars by current camera offset.
          */
         float cameraOffset = levelModel.getScrollPosition();
-        for (Sprite eachSprite : levelModel.getStaticSprites())
+        for (ISprite eachSprite : levelModel.getStaticSprites())
         {
-            if (eachSprite.isVisible())
-            {
-                batcher.drawSprite(eachSprite.getX() + cameraOffset, eachSprite.getY(), eachSprite.getWidth(), eachSprite.getHeight(),
-                        eachSprite.getTextureRegion());
-            }
+                batcher.drawSprite(eachSprite.x() + cameraOffset, eachSprite.y(), eachSprite.width(), eachSprite.height(),
+                        eachSprite.textureRegion());
         }
 
         // gets sprites from model
-        for (Sprite eachSprite : model.getSprites())
+        for (ISprite eachSprite : model.getSprites())
         {
-            batcher.drawSprite(eachSprite.getX(), eachSprite.getY(), eachSprite.getWidth(), eachSprite.getHeight(),
-                    eachSprite.getTextureRegion());
+            batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
+                    eachSprite.textureRegion());
         }
 
         /*

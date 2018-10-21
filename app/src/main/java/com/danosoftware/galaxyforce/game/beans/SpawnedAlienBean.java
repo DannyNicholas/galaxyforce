@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.game.beans;
 
 import com.danosoftware.galaxyforce.sound.Sound;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
+import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
 
 import java.util.List;
 
@@ -10,16 +10,16 @@ import java.util.List;
  */
 public class SpawnedAlienBean
 {
-    private final List<SpriteAlien> aliens;
+    private final List<IAlien> aliens;
     private final Sound soundEffect;
 
-    public SpawnedAlienBean(List<SpriteAlien> aliens, Sound soundEffect)
+    public SpawnedAlienBean(List<IAlien> aliens, Sound soundEffect)
     {
         this.aliens = aliens;
         this.soundEffect = soundEffect;
     }
 
-    public List<SpriteAlien> getAliens()
+    public List<IAlien> getAliens()
     {
         return aliens;
     }

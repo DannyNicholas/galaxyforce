@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 
 import java.util.List;
 
@@ -10,9 +11,7 @@ public interface IBaseSprite extends ICollidingSprite {
 
     void onHitBy(IAlienMissile missile);
 
-    void destroy();
-
-    void collectPowerUp(PowerUpType powerUpType);
+    void collectPowerUp(IPowerUp powerUp);
 
     List<ISprite> allSprites();
 }

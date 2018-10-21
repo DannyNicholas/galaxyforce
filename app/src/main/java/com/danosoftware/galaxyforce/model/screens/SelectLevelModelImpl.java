@@ -17,10 +17,10 @@ import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.services.SavedGame;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.SwipeMenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -56,8 +56,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     private List<Star> stars = null;
 
     // reference to all sprites in model
-    private List<Sprite> allSprites = null;
-    private List<Sprite> staticSprites = null;
+    private List<ISprite> allSprites = null;
+    private List<ISprite> staticSprites = null;
 
     // reference to all button sprites in model
     // private final List<Sprite> buttons;
@@ -86,7 +86,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
 
     public SelectLevelModelImpl(Controller controller, IBillingService billingService)
     {
-        this.levels = new ArrayList<SelectLevel>();
+        this.levels = new ArrayList<>();
         this.controller = controller;
         this.billingService = billingService;
 
@@ -96,8 +96,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
         // register this model with the billing service
         // billingService.registerProductObserver(this);
 
-        this.allSprites = new ArrayList<Sprite>();
-        this.staticSprites = new ArrayList<Sprite>();
+        this.allSprites = new ArrayList<>();
+        this.staticSprites = new ArrayList<>();
         // this.buttons = new ArrayList<Sprite>();
         this.allText = new ArrayList<Text>();
         this.staticText = new ArrayList<Text>();
@@ -289,13 +289,13 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }
 
     @Override
-    public List<Sprite> getStaticSprites()
+    public List<ISprite> getStaticSprites()
     {
         return staticSprites;
     }
@@ -490,7 +490,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     {
         for (Star eachStar : stars)
         {
-            eachStar.move(deltaTime);
+            eachStar.animate(deltaTime);
         }
     }
 

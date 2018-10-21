@@ -11,10 +11,10 @@ import com.danosoftware.galaxyforce.enumerations.TextPositionX;
 import com.danosoftware.galaxyforce.interfaces.Model;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, MenuButt
     private List<Star> stars = null;
 
     // reference to all sprites in model
-    private final List<Sprite> allSprites;
+    private final List<ISprite> allSprites;
 
     private ModelState modelState;
 
@@ -50,18 +50,18 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, MenuButt
     private boolean checkBillingProducts;
 
     // reference to logo sprite
-    private Sprite logo = null;
+    private ISprite logo = null;
 
     // reference to all button sprites in model
-    private final List<Sprite> buttons;
+    private final List<ISprite> buttons;
 
     public UnlockAllZonesModelImpl(Controller controller, IBillingService billingService)
     {
         this.controller = controller;
         this.billingService = billingService;
-        this.allSprites = new ArrayList<Sprite>();
-        this.allText = new ArrayList<Text>();
-        this.buttons = new ArrayList<Sprite>();
+        this.allSprites = new ArrayList<>();
+        this.allText = new ArrayList<>();
+        this.buttons = new ArrayList<>();
 
         // register this model with the billing service
         billingService.registerProductObserver(this);
@@ -176,7 +176,7 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, MenuButt
     }
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return allSprites;
     }
@@ -246,7 +246,7 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, MenuButt
     {
         for (Star eachStar : stars)
         {
-            eachStar.move(deltaTime);
+            eachStar.animate(deltaTime);
         }
     }
 

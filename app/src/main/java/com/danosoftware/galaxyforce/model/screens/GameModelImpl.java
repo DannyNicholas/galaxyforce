@@ -4,11 +4,11 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.controller.interfaces.ControllerBase;
+import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.game.handlers.GameOverHandler;
-import com.danosoftware.galaxyforce.game.handlers.GamePlayHandler;
+import com.danosoftware.galaxyforce.game.handlers.GamePlayHandlerRefactor;
 import com.danosoftware.galaxyforce.game.handlers.PausedHandler;
 import com.danosoftware.galaxyforce.interfaces.GameModel;
 import com.danosoftware.galaxyforce.interfaces.Model;
@@ -16,9 +16,10 @@ import com.danosoftware.galaxyforce.interfaces.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Sprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AlienManager;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 
@@ -50,7 +51,7 @@ public class GameModelImpl implements GameModel
     /* reference to current game state */
     private ModelState modelState = null;
 
-    private ControllerBase controller = null;
+    private Controller controller = null;
 
     /* current handler looking after the current state of game model */
     private Model modelHandler = null;
@@ -78,7 +79,7 @@ public class GameModelImpl implements GameModel
      * ******************************************************
      */
 
-    public GameModelImpl(ControllerBase controller, int wave, IBillingService billingService)
+    public GameModelImpl(Controller controller, int wave, IBillingService billingService)
     {
         this.controller = controller;
         this.billingService = billingService;
@@ -87,7 +88,7 @@ public class GameModelImpl implements GameModel
         stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
 
         // initial handler - goes straight into game
-        this.modelHandler = new GamePlayHandler(this, controller, stars, wave, billingService);
+        this.modelHandler = new GamePlayHandlerRefactor(this, controller, stars, wave, billingService);
 
         this.modelState = ModelState.RUNNING;
     }
@@ -99,7 +100,7 @@ public class GameModelImpl implements GameModel
      */
 
     @Override
-    public List<Sprite> getSprites()
+    public List<ISprite> getSprites()
     {
         return modelHandler.getSprites();
     }
@@ -153,7 +154,7 @@ public class GameModelImpl implements GameModel
             pausedGameHandler = modelHandler;
 
             // get list of game sprites to show on pause screen
-            List<Sprite> pausedSprites = null;
+            List<ISprite> pausedSprites;
             if (modelHandler instanceof GameHandler)
             {
                 GameHandler gameHandler = (GameHandler) modelHandler;
@@ -162,7 +163,7 @@ public class GameModelImpl implements GameModel
             }
             else
             {
-                pausedSprites = new ArrayList<Sprite>();
+                pausedSprites = new ArrayList<>();
             }
 
             // create new pause handler
@@ -198,7 +199,7 @@ public class GameModelImpl implements GameModel
                 this.lastWave = 1;
             }
 
-            modelHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
+            modelHandler = new GamePlayHandlerRefactor(this, controller, stars, lastWave, billingService);
             modelHandler.initialise();
 
             // set state back to running so doesn't create new handlers every
