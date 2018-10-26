@@ -6,11 +6,11 @@ import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotated;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class AlienMissileFactory
      * will be based on the base's position. Direction will be used to determine
      * initial position and direction of travel.
      */
-    public static AlienMissileBean createAlienMissile(IBasePrimarySprite base, IAlien alien, AlienMissileType missileType)
+    public static AlienMissileBean createAlienMissile(IBasePrimary base, IAlien alien, AlienMissileType missileType)
     {
 
         List<IAlienMissile> missiles = new ArrayList<>();

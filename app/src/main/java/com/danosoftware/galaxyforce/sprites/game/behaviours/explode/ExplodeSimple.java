@@ -13,7 +13,7 @@ import com.danosoftware.galaxyforce.vibration.Vibration;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class ExplodeBehaviourSimple implements ExplodeBehaviour
+public class ExplodeSimple implements ExplodeBehaviour
 {
     // explosion animation
     private static final Animation EXPLOSION_ANIMATION = new Animation(0.15f, GameSpriteIdentifier.EXPLODE_01,
@@ -38,7 +38,7 @@ public class ExplodeBehaviourSimple implements ExplodeBehaviour
     // time since explosion started
     private float explosionTime;
 
-    public ExplodeBehaviourSimple()
+    public ExplodeSimple()
     {
         this.soundPlayer = SoundPlayerSingleton.getInstance();
         this.vibrator = VibrationSingleton.getInstance();

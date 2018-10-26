@@ -1,14 +1,17 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.hit;
 
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+
 /**
  * Interface that handles behaviour following a sprite being hit.
  */
 public interface HitBehaviour {
 
     /**
-     * Start hit behaviour
+     * Start hit behaviour. Supply stateTime to keep hit animation
+     * in sync with the parent sprite.
      */
-    void startHit();
+    void startHit(float stateTime);
 
     /**
      * Is sprite still performing hit behaviour?
@@ -16,12 +19,7 @@ public interface HitBehaviour {
     boolean isHit();
 
     /**
-     * Update hit behaviour using delta-time
+     * Get the current hit sprite.
      */
-    void updateHit(float deltaTime);
-
-    /**
-     * Reset hit behaviour early (before finishing normally)
-     */
-    void reset();
+    ISpriteIdentifier getHit(float deltaTime);
 }

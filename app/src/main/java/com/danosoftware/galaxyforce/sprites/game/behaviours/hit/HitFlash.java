@@ -1,12 +1,13 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.hit;
 
 import com.danosoftware.galaxyforce.sprites.game.interfaces.ExplodingSprite;
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 /**
  * Make alien flash when hit by making sprite invisible for a short time
  * and then visible again.
  */
-public class HitBehaviourFlash implements HitBehaviour {
+public class HitFlash implements HitBehaviour {
 
     private final static float FLASH_DELAY_INVERT = 0.15f;
     private final static float FLASH_DELAY_TOTAL = FLASH_DELAY_INVERT * 3f;
@@ -16,7 +17,7 @@ public class HitBehaviourFlash implements HitBehaviour {
     private float timeSinceFirstHit;
     private final ExplodingSprite sprite;
 
-    public HitBehaviourFlash(ExplodingSprite sprite) {
+    public HitFlash(ExplodingSprite sprite) {
         this.sprite = sprite;
         this.hit = false;
         this.visible = true;
@@ -25,7 +26,7 @@ public class HitBehaviourFlash implements HitBehaviour {
 
     // when hit make sprite invisible
     @Override
-    public void startHit() {
+    public void startHit(float stateTime) {
         hit = true;
         visible = false;
         timeSinceFirstHit = 0f;
@@ -39,7 +40,7 @@ public class HitBehaviourFlash implements HitBehaviour {
 
     // after delay make sprite visible again
     @Override
-    public void updateHit(float deltaTime) {
+    public ISpriteIdentifier getHit(float deltaTime) {
         timeSinceFirstHit = timeSinceFirstHit + deltaTime;
 
         // invert visibility after every delay
@@ -50,13 +51,9 @@ public class HitBehaviourFlash implements HitBehaviour {
 
         // has hit time finished
         if (timeSinceFirstHit > FLASH_DELAY_TOTAL) {
-            reset();
+            //reset();
         }
-    }
 
-    @Override
-    public void reset() {
-        hit = false;
-        sprite.setVisible(true);
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sprites.refactor;
+package com.danosoftware.galaxyforce.sprites.game.bases;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
@@ -9,22 +9,29 @@ import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
+import com.danosoftware.galaxyforce.sprites.refactor.BaseShield;
+import com.danosoftware.galaxyforce.sprites.refactor.IBaseShield;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.DESTROYED;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.HELPER;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.DESTROYED;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
-import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
 
 /**
  * Base Helper that moves alongside the Primary Base
@@ -48,7 +55,7 @@ import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
  * <p>
  * After finishing exploding, the base will be removed from the game.
  */
-public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSprite {
+public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
 
     // helper's x position (in pixels) from primary base
     private static final int X_OFFSET_FROM_PRIMARY_BASE = 64;
@@ -66,7 +73,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
     private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
 
     // reference to primary base
-    private final IBasePrimarySprite primaryBase;
+    private final IBasePrimary primaryBase;
 
     // reference to game model
     private final GameHandler model;
@@ -91,13 +98,13 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
      * - Registers helper with primary base
      */
     public final static void createHelperBase(
-            final IBasePrimarySprite primaryBase,
+            final IBasePrimary primaryBase,
             final GameHandler model,
             final HelperSide side,
             final boolean shieldUp,
             final float shieldSyncTime) {
 
-        IBaseHelperSprite helper = new BaseHelper(
+        IBaseHelper helper = new BaseHelper(
                 primaryBase,
                 model,
                 side,
@@ -118,7 +125,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
      * @param shieldSyncTime
      */
     private BaseHelper(
-            final IBasePrimarySprite primaryBase,
+            final IBasePrimary primaryBase,
             final GameHandler model,
             final HelperSide side,
             final boolean shieldUp,
@@ -134,7 +141,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelperSp
         this.state = ACTIVE;
         this.side = side;
         this.xOffset = (side == LEFT ? - X_OFFSET_FROM_PRIMARY_BASE : + X_OFFSET_FROM_PRIMARY_BASE);
-        this.explosion = new ExplodeBehaviourSimple();
+        this.explosion = new ExplodeSimple();
 
         if (shieldUp) {
             addShield(shieldSyncTime);

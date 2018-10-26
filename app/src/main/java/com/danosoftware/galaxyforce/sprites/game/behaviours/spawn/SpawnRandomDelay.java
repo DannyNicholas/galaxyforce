@@ -3,8 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 
@@ -91,7 +91,7 @@ public class SpawnRandomDelay implements SpawnBehaviour
     }
 
     @Override
-    public void spawn(SpriteAlien alien)
+    public void spawn(IAlien alien)
     {
         /* reset time since base last spawned */
         timeSinceLastSpawn = 0f;
@@ -100,7 +100,7 @@ public class SpawnRandomDelay implements SpawnBehaviour
         delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * Math.random());
 
         // create and send new alien bean
-        SpawnedAlienBean aliens = AlienFactory.createSpawnedAlien(alienType, powerUpAllocator.allocate(), alien.getX(), alien.getY() - alien.getHeight(), model);
+        SpawnedAlienBean aliens = AlienFactory.createSpawnedAlien(alienType, powerUpAllocator.allocate(), alien.x(), alien.y() - alien.height(), model);
 
         model.spawnAliens(aliens);
     }

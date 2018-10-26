@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sprites.refactor;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 public interface IAlienWithPath extends IAlien {
 
@@ -12,6 +12,11 @@ public interface IAlienWithPath extends IAlien {
      * has alien reached the end of it's path?
      */
     boolean isEndOfPass();
+
+    /**
+     * alien has reached the end of the path
+     */
+    void endOfPass();
 
     /**
      * Get the original time delay. Can be used to calculate a corrected time

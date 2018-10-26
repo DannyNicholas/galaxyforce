@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFlash;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitFlash;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public abstract class ExplodingSprite extends MovingSprite
@@ -28,7 +28,7 @@ public abstract class ExplodingSprite extends MovingSprite
                 visible);
 
         this.explodeBehaviour = explodeBehaviour;
-        this.hitBehaviour = new HitBehaviourFlash(this);
+        this.hitBehaviour = new HitFlash(this);
         this.energy = energy;
     }
 

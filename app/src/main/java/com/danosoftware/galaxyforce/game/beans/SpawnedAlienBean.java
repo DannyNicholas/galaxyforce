@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.game.beans;
 
 import com.danosoftware.galaxyforce.sound.Sound;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
 import java.util.List;
 

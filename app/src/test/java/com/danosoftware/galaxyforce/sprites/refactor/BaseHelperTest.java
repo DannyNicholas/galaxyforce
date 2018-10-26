@@ -7,6 +7,12 @@ import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.BaseHelper;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBaseHelper;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.AbstractBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileSimple;
@@ -28,10 +34,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static com.danosoftware.galaxyforce.enumerations.BaseMissileType.SIMPLE;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.ACTIVE;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
-import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
-import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,10 +59,10 @@ public class BaseHelperTest {
     private static final boolean SHIELD_DOWN = false;
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
 
-    private final IBasePrimarySprite primaryBase = mock(IBasePrimarySprite.class);
+    private final IBasePrimary primaryBase = mock(IBasePrimary.class);
     private final GameHandler model = mock(GameHandler.class);
 
-    private IBaseHelperSprite baseHelper;
+    private IBaseHelper baseHelper;
 
     @Before
     public void setup() {
@@ -86,11 +92,11 @@ public class BaseHelperTest {
     }
 
 
-    private IBaseHelperSprite shieldedHelper(HelperSide side) {
+    private IBaseHelper shieldedHelper(HelperSide side) {
         return createHelper(side,SHIELD_UP,SHIELD_SYNC_OFFSET);
     }
 
-    private IBaseHelperSprite unShieldedHelper(HelperSide side) {
+    private IBaseHelper unShieldedHelper(HelperSide side) {
         return createHelper(side, SHIELD_DOWN, 0f);
     }
 
@@ -251,17 +257,17 @@ public class BaseHelperTest {
     }
 
     // use reflection to get helper internal state
-    private BaseState helperState(IBaseHelperSprite baseHelper) throws NoSuchFieldException, IllegalAccessException {
+    private BaseState helperState(IBaseHelper baseHelper) throws NoSuchFieldException, IllegalAccessException {
         Field f = baseHelper.getClass().getDeclaredField("state");
         f.setAccessible(true);
         return (BaseState) f.get(baseHelper);
     }
 
     // use reflection to create a helper using the private constructor
-    private IBaseHelperSprite createHelper(HelperSide side, boolean shielded, float shieldSyncTime) {
+    private IBaseHelper createHelper(HelperSide side, boolean shielded, float shieldSyncTime) {
         try {
             Constructor<BaseHelper> constructor = BaseHelper.class.getDeclaredConstructor(
-                    IBasePrimarySprite.class,
+                    IBasePrimary.class,
                     GameHandler.class,
                     HelperSide.class,
                     boolean.class,

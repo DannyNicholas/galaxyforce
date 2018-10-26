@@ -3,8 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 
 public class FireRandomDelay implements FireBehaviour
 {
@@ -73,7 +73,7 @@ public class FireRandomDelay implements FireBehaviour
     }
 
     @Override
-    public void fire(SpriteAlien alien)
+    public void fire(IAlien alien)
     {
         // reset timer since last fired
         timeSinceLastFired = 0f;

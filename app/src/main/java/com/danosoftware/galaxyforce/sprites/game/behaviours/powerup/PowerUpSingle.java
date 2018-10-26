@@ -2,8 +2,8 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.powerup;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.PowerUpFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 
 public class PowerUpSingle implements PowerUpBehaviour {
     /*
@@ -31,10 +31,10 @@ public class PowerUpSingle implements PowerUpBehaviour {
     }
 
     @Override
-    public void releasePowerUp(SpriteAlien alien) {
+    public void releasePowerUp(IAlien alien) {
         // Add power-up (if one exists).
         if (powerUp != null) {
-            model.addPowerUp(PowerUpFactory.newPowerUp(powerUp, alien.getX(), alien.getY()));
+            model.addPowerUp(PowerUpFactory.newPowerUp(powerUp, alien.x(), alien.y()));
         }
     }
 }

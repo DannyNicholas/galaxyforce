@@ -2,8 +2,8 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.powerup;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.PowerUpFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 
 public class PowerUpRandom implements PowerUpBehaviour {
     /*
@@ -54,16 +54,16 @@ public class PowerUpRandom implements PowerUpBehaviour {
     }
 
     @Override
-    public void releasePowerUp(SpriteAlien alien) {
+    public void releasePowerUp(IAlien alien) {
         if (hasPowerUp) {
             /*
              * Choose from supplied list of power-ups if one exists. Otherwise
              * choose a completely random power-up.
              */
             if (powerUps != null) {
-                model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.getX(), alien.getY(), powerUps));
+                model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.x(), alien.y(), powerUps));
             } else {
-                model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.getX(), alien.getY()));
+                model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.x(), alien.y()));
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
 public interface FireBehaviour
 {
@@ -14,5 +14,5 @@ public interface FireBehaviour
     /**
      * Fires the alien's current missile type.
      */
-    public void fire(SpriteAlien alien);
+    public void fire(IAlien alien);
 }

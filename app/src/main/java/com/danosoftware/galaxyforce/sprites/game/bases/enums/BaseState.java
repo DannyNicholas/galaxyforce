@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sprites.refactor;
+package com.danosoftware.galaxyforce.sprites.game.bases.enums;
 
 /**
  * Possible states of a base

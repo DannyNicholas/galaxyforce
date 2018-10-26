@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
 public interface SpawnBehaviour
 {
@@ -16,5 +16,5 @@ public interface SpawnBehaviour
      * 
      * @param alien
      */
-    public void spawn(SpriteAlien alien);
+    public void spawn(IAlien alien);
 }

@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.controller.game;
 
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchController;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 
 public class BaseControllerFactory
 {
@@ -15,7 +15,7 @@ public class BaseControllerFactory
      * @param gameHandler
      * @return base controller
      */
-    public static TouchController getBaseController(IBasePrimarySprite base)
+    public static TouchController getBaseController(IBasePrimary base)
     {
         TouchBaseControllerModel baseController = new BaseDragModel(base);
         return new ControllerDrag(baseController);

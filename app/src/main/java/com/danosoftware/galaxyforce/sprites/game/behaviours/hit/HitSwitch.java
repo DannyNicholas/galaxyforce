@@ -7,7 +7,7 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
  * Make sprite switch to an alternative sprite when hit for a short time
  * before returning to the original sprite.
  */
-public class HitBehaviourSwitch implements HitBehaviour {
+public class HitSwitch implements HitBehaviour {
 
     private final static float FLASH_DELAY_INVERT = 0.15f;
     private final static float FLASH_DELAY_TOTAL = FLASH_DELAY_INVERT * 3f;
@@ -19,7 +19,7 @@ public class HitBehaviourSwitch implements HitBehaviour {
     private final ISpriteIdentifier original;
     private final ISpriteIdentifier alternative;
 
-    public HitBehaviourSwitch(
+    public HitSwitch(
             ISprite sprite,
             ISpriteIdentifier original,
             ISpriteIdentifier alternative) {
@@ -34,7 +34,7 @@ public class HitBehaviourSwitch implements HitBehaviour {
 
     // switch to alternative
     @Override
-    public void startHit() {
+    public void startHit(float stateTime) {
         hit = true;
         switched = true;
         timeSinceFirstHit = 0f;
@@ -48,7 +48,7 @@ public class HitBehaviourSwitch implements HitBehaviour {
 
     // after delay switch sprites
     @Override
-    public void updateHit(float deltaTime) {
+    public ISpriteIdentifier getHit(float deltaTime) {
         timeSinceFirstHit = timeSinceFirstHit + deltaTime;
 
         // invert sprite after every delay
@@ -59,15 +59,10 @@ public class HitBehaviourSwitch implements HitBehaviour {
 
         // has hit time finished
         if (timeSinceFirstHit > FLASH_DELAY_TOTAL) {
-            reset();
+            //reset();
         }
-    }
 
-    @Override
-    public void reset() {
-        hit = false;
-        this.switched = false;
-        selectSprite();
+        return null;
     }
 
     private void selectSprite() {

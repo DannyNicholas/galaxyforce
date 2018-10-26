@@ -1,19 +1,19 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class          AlienSpawnedInsect extends SpriteAlien
-{
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
+
+public class AlienSpawnedInsect extends AbstractAlien {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -29,11 +29,10 @@ public class          AlienSpawnedInsect extends SpriteAlien
     /* energy of this sprite */
     private static final int ENERGY = 1;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
-
     // alien animation
-    private static final Animation ANIMATION = new Animation(0.5f, GameSpriteIdentifier.INSECT_WINGS_UP,
+    private static final Animation ANIMATION = new Animation(
+            0.5f,
+            GameSpriteIdentifier.INSECT_WINGS_UP,
             GameSpriteIdentifier.INSECT_WINGS_DOWN);
 
 
@@ -59,19 +58,21 @@ public class          AlienSpawnedInsect extends SpriteAlien
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
-            final GameHandler model)
-    {
+            final GameHandler model) {
         super(
-                new FireRandomDelay(model, AlienMissileType.SIMPLE, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
                 ANIMATION,
                 xStart,
                 yStart,
                 ENERGY,
-                HIT_ENERGY,
-                true);
+                new FireRandomDelay(
+                        model,
+                        AlienMissileType.SIMPLE,
+                        MIN_MISSILE_DELAY,
+                        MISSILE_DELAY_RANDOM),
+                new PowerUpSingle(model, powerUpType),
+                new SpawnDisabled(),
+                new HitDisabled(),
+                new ExplodeSimple());
 
         /* distance moved since spawned */
         this.distanceYMoved = 0f;
@@ -81,27 +82,23 @@ public class          AlienSpawnedInsect extends SpriteAlien
     }
 
     @Override
-    public void move(float deltaTime)
-    {
-        /* use superclass for movements */
-        super.move(deltaTime);
+    public void animate(float deltaTime) {
+        super.animate(deltaTime);
 
         /* if active then alien can move */
-        if (isActive())
-        {
+        if (isActive()) {
             distanceYMoved += ALIEN_MOVE_PIXELS * deltaTime;
 
-            setY(originalYPosition - (int) distanceYMoved);
-            // move sprite bounds
-            updateBounds();
+            move(
+                    x(),
+                    originalYPosition - (int) distanceYMoved);
         }
 
         /*
          * if alien off screen then destroy alien no need to handle explosions
          */
-        if (getY() < 0 - (getHeight() / 2))
-        {
-            setState(SpriteState.DESTROYED);
+        if (offScreenBottom(this)) {
+            destroy();
         }
     }
 }

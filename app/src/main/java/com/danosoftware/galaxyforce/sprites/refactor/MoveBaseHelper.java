@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
+import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
+
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_LEFT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_RIGHT;
@@ -28,7 +30,7 @@ public class MoveBaseHelper {
     private static float STEADY_DELAY = 0.1f;
 
     // base being animated
-    private final IBaseSprite base;
+    private final IBase base;
 
     // holds time base has been steady for (i.e. not turning left or right)
     private float baseTurnSteadyTime;
@@ -44,7 +46,7 @@ public class MoveBaseHelper {
 
 
     public MoveBaseHelper(
-            final IBaseSprite base,
+            final IBase base,
             final int width,
             final int height) {
 

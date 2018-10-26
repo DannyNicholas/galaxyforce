@@ -6,8 +6,8 @@ import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.view.FPSCounter;
@@ -59,7 +59,7 @@ public class GameHandlerFrameRateDecorator implements GameHandler {
     }
 
     @Override
-    public IBasePrimarySprite getBase() {
+    public IBasePrimary getBase() {
         return gameHandler.getBase();
     }
 

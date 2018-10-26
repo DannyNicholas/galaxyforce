@@ -1,20 +1,20 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlienWithPath;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienGobby extends SpriteAlienWithPath
+public class AlienGobby extends AbstractAlienWithPath
 {
 
     /*
@@ -32,11 +32,12 @@ public class AlienGobby extends SpriteAlienWithPath
     /* energy of this sprite */
     private static final int ENERGY = 1;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
 
     // alien animation
-    private static final Animation ANIMATION = new Animation(0.5f, new GameSpriteIdentifier[]{GameSpriteIdentifier.ALIEN_GOBBY_LEFT, GameSpriteIdentifier.ALIEN_GOBBY_RIGHT});
+    private static final Animation ANIMATION = new Animation(
+            0.5f,
+            GameSpriteIdentifier.ALIEN_GOBBY_LEFT,
+            GameSpriteIdentifier.ALIEN_GOBBY_RIGHT);
 
     /**
      * Create Alien Gobby that has rotated missiles and generates random
@@ -49,10 +50,20 @@ public class AlienGobby extends SpriteAlienWithPath
             final float delayStart,
             final boolean restartImmediately)
     {
-        super(new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
+        super(
+                ANIMATION,
+                new FireRandomDelay(
+                        model,
+                        AlienMissileType.ROTATED,
+                        MIN_MISSILE_DELAY,
+                        MISSILE_DELAY_RANDOM),
                 new PowerUpSingle(model, powerUp),
                 new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
-                ANIMATION, alienPath, delayStart, ENERGY, HIT_ENERGY, restartImmediately);
+                new HitDisabled(),
+                new ExplodeSimple(),
+                alienPath,
+                delayStart,
+                ENERGY,
+                restartImmediately);
     }
 }

@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.controller.game;
 
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 
 public class BaseDragModel implements TouchBaseControllerModel
 {
@@ -63,12 +63,12 @@ public class BaseDragModel implements TouchBaseControllerModel
     /* contains reference to game model */
 //    private ControllerBase controller = null;
 
-    private final IBasePrimarySprite base;
+    private final IBasePrimary base;
 
     /* timer to store time since animation timer reset */
 //    private float animationTime = 0f;
 
-    public BaseDragModel(IBasePrimarySprite base)
+    public BaseDragModel(IBasePrimary base)
     {
         this.base = base;
         this.targetX = base.x();

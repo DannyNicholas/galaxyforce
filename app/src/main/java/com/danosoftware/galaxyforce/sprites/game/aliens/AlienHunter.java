@@ -1,40 +1,27 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
-import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteBase;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-import java.util.List;
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
-public class AlienDragonHead extends SpriteAlien
-{
+public class AlienHunter extends AbstractAlien {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
      * ******************************************************
      */
 
-    /* minimum delay between alien firing missiles in seconds */
-    private static final float MIN_MISSILE_DELAY = 4.5f;
-
-    /* maximum addition random time before firing */
-    private static final float MISSILE_DELAY_RANDOM = 2f;
-
     /* energy of this sprite */
-    private static final int ENERGY = 20;
-
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
+    private static final int ENERGY = 10;
 
     /* distance alien can move each cycle in pixels each second */
     public static final int ALIEN_MOVE_PIXELS = 5 * 60;
@@ -46,16 +33,15 @@ public class AlienDragonHead extends SpriteAlien
     public static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
     // alien animation
-    private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.DRAGON_HEAD);
+    private static final Animation ANIMATION = new Animation(
+            0f,
+            GameSpriteIdentifier.ALIEN_HELMET);
 
     /*
      * ******************************************************
      * PRIVATE INSTANCE VARIABLES
      * ******************************************************
      */
-
-    /* dragon body parts - these will be destroyed when the head is destroyed */
-    private final List<AlienDragonBody> dragonBodies;
 
     /* current for sprite rotation */
     private float angle;
@@ -69,33 +55,30 @@ public class AlienDragonHead extends SpriteAlien
     private final GameHandler model;
 
     /**
-     * Create Alien Dragon's Head that has rotated missiles and generates random
-     * power-ups.
-     *
+     * Create Alien Hunter.
      */
-    public AlienDragonHead(
+    public AlienHunter(
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
             final float timeDelayStart,
-            final GameHandler model,
-            final List<AlienDragonBody> dragonBodies
-    ) {
+            final GameHandler model) {
 
+        // default is that asteroids are initially invisible
         super(
-                new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
                 ANIMATION,
                 xStart,
                 yStart,
                 ENERGY,
-                HIT_ENERGY,
-                false);
+                new FireDisabled(),
+                new PowerUpSingle(model, powerUpType),
+                new SpawnDisabled(),
+                new HitDisabled(),
+                new ExplodeSimple());
+
+        waiting();
 
         this.model = model;
-        this.dragonBodies = dragonBodies;
 
         // set positional and movement behaviour
         this.timeDelayStart = timeDelayStart;
@@ -108,7 +91,9 @@ public class AlienDragonHead extends SpriteAlien
     }
 
     @Override
-    public void move(float deltaTime) {
+    public void animate(float deltaTime) {
+
+        super.animate(deltaTime);
 
         /* if active then alien can move */
         if (isActive()) {
@@ -127,28 +112,17 @@ public class AlienDragonHead extends SpriteAlien
                 timeSinceLastDirectionChange = 0f;
             }
 
+
             // calculate the deltas to be applied each move
             int xDelta = (int) (ALIEN_MOVE_PIXELS * (float) Math.cos(this.angle));
             int yDelta = (int) (ALIEN_MOVE_PIXELS * (float) Math.sin(this.angle));
 
             // move alien by calculated deltas
-            setX(getX() + (int) (xDelta * deltaTime));
-            setY(getY() + (int) (yDelta * deltaTime));
+            move(
+                    x() + (int) (xDelta * deltaTime),
+                    y() + (int) (yDelta * deltaTime));
 
-            // move sprite bounds
-            updateBounds();
-
-            // update position of the dragon bodies so each are following the one before
-            SpriteAlien dragonToFollow = this;
-            for (AlienDragonBody dragonBody : dragonBodies)
-            {
-                if (dragonBody.isActive()) {
-                    dragonBody.bodyUpdate(dragonToFollow, deltaTime);
-                    dragonToFollow = dragonBody;
-                }
-            }
-
-        } else if (isInactive()) {
+        } else if (isWaiting()) {
 
             /* if delayStart still > 0 then count down delay */
             if (timeDelayStart > 0) {
@@ -156,29 +130,7 @@ public class AlienDragonHead extends SpriteAlien
             }
             /* otherwise activate alien. can only happen once! */
             else {
-                setState(SpriteState.ACTIVE);
-                setVisible(true);
-            }
-        }
-
-        /* use superclass for any explosions */
-        super.move(deltaTime);
-    }
-
-    /**
-     * If dragon head explodes then all body parts should also explode
-     */
-    @Override
-    public void setExploding()
-    {
-        // call superclass to handle head exploding
-        super.setExploding();
-
-        for (SpriteAlien dragonBody : dragonBodies)
-        {
-            if (!dragonBody.isDestroyed())
-            {
-                dragonBody.setExploding();
+                activate();
             }
         }
     }
@@ -188,17 +140,14 @@ public class AlienDragonHead extends SpriteAlien
      */
     private float recalculateAngle(float angle) {
 
-        SpriteBase base = model.getBase();
+        IBasePrimary base = model.getBase();
         if (base != null) {
 
             // calculate angle from alien position to base
-            float newAngle = (float) Math.atan2(base.getY() - getY(), base.getX() - getX());
+            float newAngle = (float) Math.atan2(base.y() - y(), base.x() - x());
 
             // if alien is off screen, return it back immediately (can get lost!).
-            if (getY() > GameConstants.GAME_HEIGHT + getHeight()
-                    || getY() < 0 - getHeight()
-                    || getX() > GameConstants.GAME_WIDTH + getWidth()
-                    || getX() < 0 - getWidth()) {
+            if (offScreenAnySide(this)) {
                 return newAngle;
             }
 

@@ -1,20 +1,20 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnRandomDelay;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlienWithPath;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienType;
 
 import java.util.List;
 
-public class AlienMothership extends SpriteAlienWithPath
+public class AlienMothership extends AbstractAlienWithPath
 {
     /*
      * ******************************************************
@@ -33,11 +33,10 @@ public class AlienMothership extends SpriteAlienWithPath
     /* energy of this sprite */
     private static final int ENERGY = 10;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
-
     // alien animation
-    private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.EXPLODE_03);
+    private static final Animation ANIMATION = new Animation(
+            0f,
+            GameSpriteIdentifier.EXPLODE_03);
 
     /**
      * Create Alien Mothership that has rotated missiles and generates random
@@ -57,6 +56,7 @@ public class AlienMothership extends SpriteAlienWithPath
             final boolean restartImmediately)
     {
         super(
+                ANIMATION,
                 new FireDisabled(),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnRandomDelay(
@@ -65,12 +65,11 @@ public class AlienMothership extends SpriteAlienWithPath
                         spwanPowerUpTypes,
                         MIN_SPAWN_DELAY,
                         SPAWN_DELAY_RANDOM),
-                new ExplodeBehaviourSimple(),
-                ANIMATION,
+                new HitDisabled(),
+                new ExplodeSimple(),
                 alienPath,
                 delayStart,
                 ENERGY,
-                HIT_ENERGY,
                 restartImmediately);
     }
 }

@@ -8,6 +8,11 @@ import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBaseHelper;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
@@ -30,9 +35,9 @@ import java.util.function.Predicate;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
-import static com.danosoftware.galaxyforce.sprites.refactor.BaseState.EXPLODING;
-import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.LEFT;
-import static com.danosoftware.galaxyforce.sprites.refactor.HelperSide.RIGHT;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
+import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsNot.not;
@@ -56,10 +61,10 @@ public class PrimaryBaseTest {
 
     TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
 
-    private IBasePrimarySprite primaryBase;
-    private IBasePrimarySprite primaryBaseSpy;
-    private IBaseHelperSprite leftHelper;
-    private IBaseHelperSprite rightHelper;
+    private IBasePrimary primaryBase;
+    private IBasePrimary primaryBaseSpy;
+    private IBaseHelper leftHelper;
+    private IBaseHelper rightHelper;
 
     private GameHandler model;
 
@@ -90,8 +95,8 @@ public class PrimaryBaseTest {
         primaryBase = new BasePrimary(INITIAL_X, INITIAL_Y, model);
         primaryBaseSpy = spy(primaryBase);
 
-        leftHelper = mock(IBaseHelperSprite.class);
-        rightHelper = mock(IBaseHelperSprite.class);
+        leftHelper = mock(IBaseHelper.class);
+        rightHelper = mock(IBaseHelper.class);
     }
 
 
@@ -352,33 +357,33 @@ public class PrimaryBaseTest {
     }
 
     // use reflection to get helper internal state
-    private List<IBaseHelperSprite> helpers(IBasePrimarySprite base) throws NoSuchFieldException, IllegalAccessException {
+    private List<IBaseHelper> helpers(IBasePrimary base) throws NoSuchFieldException, IllegalAccessException {
         Field f = base.getClass().getDeclaredField("helpers");
         f.setAccessible(true);
         return (List) f.get(base);
     }
 
     // use reflection to get base internal state
-    private BaseState baseState(IBasePrimarySprite helper) throws NoSuchFieldException, IllegalAccessException {
+    private BaseState baseState(IBasePrimary helper) throws NoSuchFieldException, IllegalAccessException {
         Field f = helper.getClass().getDeclaredField("state");
         f.setAccessible(true);
         return (BaseState) f.get(helper);
     }
 
     // use reflection to get base internal state
-    private BaseMissileType missileType(IBasePrimarySprite base) throws NoSuchFieldException, IllegalAccessException {
+    private BaseMissileType missileType(IBasePrimary base) throws NoSuchFieldException, IllegalAccessException {
         Field f = base.getClass().getDeclaredField("baseMissileType");
         f.setAccessible(true);
         return (BaseMissileType) f.get(base);
     }
 
         // use reflection to get helper internal state
-    private void verifyHelperState(IBasePrimarySprite base, BaseState expectedState) throws NoSuchFieldException, IllegalAccessException {
+        private void verifyHelperState(IBasePrimary base, BaseState expectedState) throws NoSuchFieldException, IllegalAccessException {
         Field f = base.getClass().getDeclaredField("helpers");
         f.setAccessible(true);
-        List<IBaseHelperSprite> helpers = (List) f.get(base);
+            List<IBaseHelper> helpers = (List) f.get(base);
         assertThat(helpers.size(), is(2));
-        for (IBaseHelperSprite helper : helpers) {
+            for (IBaseHelper helper : helpers) {
             Field fh = helper.getClass().getDeclaredField("state");
             fh.setAccessible(true);
             BaseState state = (BaseState) fh.get(helper);

@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.bases;
 
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 

@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.aliens;
 
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
@@ -34,7 +34,7 @@ public class AlienMissileRotated extends AbstractAlienMissile
     private int xDelta;
     private int yDelta;
 
-    public AlienMissileRotated(int xStart, int yStart, IBasePrimarySprite base)
+    public AlienMissileRotated(int xStart, int yStart, IBasePrimary base)
     {
         super(SPRITE, xStart, yStart, HIT_ENERGY);
 

@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
 /**
  * Fire behaviour implementation for aliens that do NOT fire missiles.
@@ -17,7 +17,7 @@ public class FireDisabled implements FireBehaviour
     }
 
     @Override
-    public void fire(SpriteAlien alien)
+    public void fire(IAlien alien)
     {
         // no implementation
     }

@@ -1,20 +1,20 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlienWithPath;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienInsectPath extends SpriteAlienWithPath
+public class AlienInsectPath extends AbstractAlienWithPath
 {
     /*
      * ******************************************************
@@ -31,11 +31,10 @@ public class AlienInsectPath extends SpriteAlienWithPath
     /* energy of this sprite */
     private static final int ENERGY = 1;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
-
     // alien animation
-    private static final Animation ANIMATION = new Animation(0.5f, GameSpriteIdentifier.INSECT_WINGS_UP,
+    private static final Animation ANIMATION = new Animation(
+            0.5f,
+            GameSpriteIdentifier.INSECT_WINGS_UP,
             GameSpriteIdentifier.INSECT_WINGS_DOWN);
 
     /**
@@ -50,15 +49,15 @@ public class AlienInsectPath extends SpriteAlienWithPath
             final boolean restartImmediately)
     {
         super(
+                ANIMATION,
                 new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
-                ANIMATION,
+                new HitDisabled(),
+                new ExplodeSimple(),
                 alienPath,
                 delayStart,
                 ENERGY,
-                HIT_ENERGY,
                 restartImmediately);
     }
 }

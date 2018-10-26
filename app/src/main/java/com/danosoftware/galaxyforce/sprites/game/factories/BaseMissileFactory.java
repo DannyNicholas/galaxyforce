@@ -7,13 +7,13 @@ import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileBlast;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileFast;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileGuided;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileLaser;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
-import com.danosoftware.galaxyforce.sprites.refactor.IBaseSprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class BaseMissileFactory {
      * will be based on the base's position.
      */
     public static BaseMissileBean createBaseMissile(
-            IBaseSprite base,
+            IBase base,
             BaseMissileType baseMissileType,
             GameHandler model) {
         List<IBaseMissile> baseMissiles = new ArrayList<>();
@@ -82,7 +82,7 @@ public class BaseMissileFactory {
     }
 
     private static IBaseMissile createMissile(
-            IBaseSprite base,
+            IBase base,
             BaseMissileType baseMissileType,
             int xOffset,
             GameHandler model,

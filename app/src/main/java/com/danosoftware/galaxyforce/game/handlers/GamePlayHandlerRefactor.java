@@ -29,16 +29,16 @@ import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
-import com.danosoftware.galaxyforce.sprites.refactor.BasePrimary;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
 import com.danosoftware.galaxyforce.sprites.refactor.IAlienManager;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IBaseSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
@@ -87,7 +87,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     private int lives;
 
     // main base
-    private IBasePrimarySprite primaryBase;
+    private IBasePrimary primaryBase;
 
     //TODO make immutable in future?
     private SpriteButton pauseButton;
@@ -301,7 +301,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     }
 
     @Override
-    public IBasePrimarySprite getBase() {
+    public IBasePrimary getBase() {
         return primaryBase;
     }
 
@@ -542,7 +542,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
         for (IAlien eachAlien : alienManager.activeAliens()) {
             // check for base and alien collisions
-            for (IBaseSprite eachBase : primaryBase.activeBases()) {
+            for (IBase eachBase : primaryBase.activeBases()) {
                 if (checkCollision(eachAlien, eachBase)) {
                     eachBase.onHitBy(eachAlien);
                 }
@@ -562,7 +562,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
             }
         }
 
-        for (IBaseSprite eachBase : primaryBase.activeBases()) {
+        for (IBase eachBase : primaryBase.activeBases()) {
 
             // collision detection for base and alien missiles
             for (IAlienMissile eachAlienMissile : assets.getAliensMissiles()) {

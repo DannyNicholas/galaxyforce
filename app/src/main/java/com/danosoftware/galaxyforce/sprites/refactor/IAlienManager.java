@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+
 import java.util.List;
 
 public interface IAlienManager {

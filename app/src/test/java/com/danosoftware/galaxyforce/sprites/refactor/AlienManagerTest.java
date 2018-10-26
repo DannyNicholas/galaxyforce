@@ -2,6 +2,8 @@ package com.danosoftware.galaxyforce.sprites.refactor;
 
 import android.util.Log;
 
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienWithPath;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 

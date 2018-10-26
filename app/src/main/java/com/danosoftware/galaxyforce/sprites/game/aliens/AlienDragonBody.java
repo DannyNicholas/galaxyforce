@@ -1,18 +1,17 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class AlienDragonBody extends SpriteAlien
+public class AlienDragonBody extends AbstractAlien implements IAlienFollower
 {
     /*
      * ******************************************************
@@ -35,16 +34,10 @@ public class AlienDragonBody extends SpriteAlien
     /* energy of this sprite */
     private static final int ENERGY = 1;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
-
-    /* chance that this alien will generate a power-up when destroyed */
-    private static final double CHANCE_OF_POWER_UP = 0.2D;
-
     // alien animation
     private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.DRAGON_BODY);
 
-    boolean started;
+    private boolean started;
 
     /**
      * Create Alien Dragon's Body that has rotated missiles and generates random
@@ -57,16 +50,15 @@ public class AlienDragonBody extends SpriteAlien
             final GameHandler model) {
 
         super(
-                new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
                 ANIMATION,
                 xStart,
                 yStart,
                 ENERGY,
-                HIT_ENERGY,
-                false);
+                new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
+                new PowerUpSingle(model, powerUpType),
+                new SpawnDisabled(),
+                new HitDisabled(),
+                new ExplodeSimple());
 
         this.started = false;
     }
@@ -75,41 +67,36 @@ public class AlienDragonBody extends SpriteAlien
      * Update position of body based on alien this is following.
      * The body will attempt to follow the body in front but will throttle
      * it's speed if it gets too close.
-     *
-     * @param alienFollowed - alien being followed
-     * @param deltaTime
      */
-    public void bodyUpdate(SpriteAlien alienFollowed, float deltaTime) {
+    @Override
+    public void follow(IAlien alienFollowed, float deltaTime) {
 
         if (!started) {
-            setState(SpriteState.ACTIVE);
-            setVisible(true);
+            activate();
             this.started = true;
         }
 
         // calculate angle from this dragon body to the one we are following
-        float newAngle = (float) Math.atan2(alienFollowed.getY() - getY(), alienFollowed.getX() - getX());
+        float newAngle = (float) Math.atan2(
+                alienFollowed.y() - y(),
+                alienFollowed.x() - x());
 
         // calculate the deltas to be applied each move
         int xDelta = (int) ((ALIEN_MOVE_PIXELS) * (float) Math.cos(newAngle));
         int yDelta = (int) ((ALIEN_MOVE_PIXELS) * (float) Math.sin(newAngle));
 
         // calculate new position
-        int newX = getX() + (int) (xDelta * deltaTime);
-        int newY = getY() + (int) (yDelta * deltaTime);
+        int newX = x() + (int) (xDelta * deltaTime);
+        int newY = y() + (int) (yDelta * deltaTime);
 
         // calculate squared distance from alien we are following
-        int distX = (alienFollowed.getX() - newX);
-        int distY = (alienFollowed.getY() - newY);
+        int distX = (alienFollowed.x() - newX);
+        int distY = (alienFollowed.y() - newY);
         int distSquared = (distX * distX) + (distY * distY);
 
         // if we are too close we need to throttle our speed
         if (distSquared > MIN_DISTANCE_SQUARED) {
-            setX(newX);
-            setY(newY);
-
-            // move sprite bounds
-            updateBounds();
+            move(newX, newY);
         }
         else {
             float throttleRatio = (float) distSquared / MIN_DISTANCE_SQUARED;
@@ -117,15 +104,11 @@ public class AlienDragonBody extends SpriteAlien
             // calculate new position based on reduced speed
             int reducedXDelta = (int) (xDelta * throttleRatio);
             int reducedYDelta = (int) (yDelta * throttleRatio);
-            int recalculatedX = getX() + (int) (reducedXDelta * deltaTime);
-            int recalculatedY = getY() + (int) (reducedYDelta * deltaTime);
+            int recalculatedX = x() + (int) (reducedXDelta * deltaTime);
+            int recalculatedY = y() + (int) (reducedYDelta * deltaTime);
 
             // move alien
-            setX(recalculatedX);
-            setY(recalculatedY);
-
-            // move sprite bounds
-            updateBounds();
+            move(recalculatedX, recalculatedY);
         }
     }
 }

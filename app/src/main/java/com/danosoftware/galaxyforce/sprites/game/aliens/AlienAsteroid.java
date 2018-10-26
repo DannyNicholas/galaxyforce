@@ -1,34 +1,35 @@
-package com.danosoftware.galaxyforce.sprites.game.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens;
 
-import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.enumerations.Direction;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviourSimple;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class AlienAsteroid extends SpriteAlien
-{
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
+
+public class AlienAsteroid extends AbstractAlien {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
      * ******************************************************
      */
 
-    /* energy of this sprite */
+    /* energy of this alien */
     private static final int ENERGY = 5;
 
-    /* how much energy will be lost by another sprite when this sprite hits it */
-    private static final int HIT_ENERGY = 2;
+    // normal animation
+    private static final Animation ANIMATION = new Animation(
+            0f, GameSpriteIdentifier.ASTEROID);
 
-    // alien animation
-    private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.ASTEROID);
+    // hit animation
+    private static final Animation HIT_ANIMATION = new Animation(
+            0f, GameSpriteIdentifier.EXPLODE_03);
 
     /*
      * ******************************************************
@@ -47,9 +48,6 @@ public class AlienAsteroid extends SpriteAlien
 
     /* how many seconds to delay before alien starts to follow path */
     private float timeDelayStart;
-
-    /* direction of asteroid */
-    private final Direction direction;
 
     /* restart asteroid as soon as it leaves screen? */
     private final boolean restartImmediately;
@@ -70,28 +68,25 @@ public class AlienAsteroid extends SpriteAlien
             final float timeDelayStart,
             final boolean restartImmediately,
             final Direction direction,
-            final GameHandler model)
-    {
+            final GameHandler model) {
         // default is that asteroids are initially invisible
         super(
-                new FireDisabled(),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new ExplodeBehaviourSimple(),
                 ANIMATION,
                 xStart,
                 yStart,
                 ENERGY,
-                HIT_ENERGY,
-                false);
+                new FireDisabled(),
+                new PowerUpSingle(model, powerUpType),
+                new SpawnDisabled(),
+                new HitAnimation(HIT_ANIMATION),
+                new ExplodeSimple());
 
-        setState(SpriteState.INACTIVE);
+        waiting();
 
         // set positional and movement behaviour
         this.timeDelayStart = timeDelayStart;
         this.originalYPosition = yStart;
         this.distanceYMoved = 0f;
-        this.direction = direction;
         this.restartImmediately = restartImmediately;
 
         // set random starting rotation angle
@@ -105,84 +100,44 @@ public class AlienAsteroid extends SpriteAlien
     }
 
     @Override
-    public void move(float deltaTime)
-    {
+    public void animate(float deltaTime) {
+        super.animate(deltaTime);
+
         /* if active then asteroid can move */
-        if (isActive())
-        {
+        if (isActive()) {
 
             // move until off the screen and then either destroy it or reset it
-            switch (direction)
-            {
-            case UP:
 
-                // move
-                distanceYMoved -= speed * deltaTime;
-                setY(originalYPosition - (int) distanceYMoved);
+            // move
+            distanceYMoved += speed * deltaTime;
+            move(
+                    x(),
+                    (originalYPosition - (int) distanceYMoved)
+            );
 
-                // if asteroid is now off screen then decide whether to destory
-                // it or reset
-                if (getY() > GameConstants.GAME_HEIGHT - (getHeight() / 2))
-                {
-                    if (restartImmediately)
-                    {
-                        setY(originalYPosition);
-                        distanceYMoved = 0f;
-                    }
-                    else
-                    {
-                        setState(SpriteState.DESTROYED);
-                    }
+            // if asteroid is now off screen then decide whether to destory
+            // it or reset
+            if (offScreenBottom(this)) {
+                if (restartImmediately) {
+                    move(x(), originalYPosition);
+                    distanceYMoved = 0f;
+                } else {
+                    destroy();
                 }
-                break;
-
-            case DOWN:
-
-                // move
-                distanceYMoved += speed * deltaTime;
-                setY(originalYPosition - (int) distanceYMoved);
-
-                // if asteroid is now off screen then decide whether to destory
-                // it or reset
-                if (getY() < 0 - (getHeight() / 2))
-                {
-                    if (restartImmediately)
-                    {
-                        setY(originalYPosition);
-                        distanceYMoved = 0f;
-                    }
-                    else
-                    {
-                        setState(SpriteState.DESTROYED);
-                    }
-                }
-                break;
             }
 
             // rotate asteroid
             angle = (angle + (deltaTime * anglularSpeed)) % 360;
-            setRotation((int) (angle));
-
-            // move sprite bounds
-            updateBounds();
-
-        }
-        else if (isInactive())
-        {
+            rotate((int) (angle));
+        } else if (isWaiting()) {
             /* if delayStart still > 0 then count down delay */
-            if (timeDelayStart > 0)
-            {
+            if (timeDelayStart > 0) {
                 timeDelayStart -= deltaTime;
             }
             /* otherwise activate alien. can only happen once! */
-            else
-            {
-                setState(SpriteState.ACTIVE);
-                setVisible(true);
+            else {
+                activate();
             }
         }
-
-        /* use superclass for any explosions */
-        super.move(deltaTime);
     }
 }

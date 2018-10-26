@@ -4,9 +4,8 @@ import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.sprites.refactor.IAlien;
-import com.danosoftware.galaxyforce.sprites.refactor.IBasePrimarySprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IBaseSprite;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 public interface GameHandler extends PlayModel {
 
 
-   public IBasePrimarySprite getBase();
+    public IBasePrimary getBase();
 //
 //    public float getBaseX();
 //
