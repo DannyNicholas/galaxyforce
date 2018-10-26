@@ -13,6 +13,6 @@ public interface SpriteTextButton extends SpriteButton
      * 
      * @return the text object of the button's label
      */
-    public Text getText();
+    Text getText();
 
 }

@@ -15,7 +15,7 @@ public class WaveManagerImpl implements WaveManager
     private enum WaveManagerState
     {
         NONE, CREATING_WAVE, WAVE_READY, ITERATING_WAVE
-    };
+    }
 
     // executor service for threads to create waves
     private final ExecutorService pool;

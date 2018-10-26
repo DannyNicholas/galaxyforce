@@ -3,23 +3,23 @@ package com.danosoftware.galaxyforce.model.screens;
 public interface SelectLevelModel
 {
 
-    public void setLevel(int level);
+    void setLevel(int level);
 
-    public void changeZone(int newZone);
+    void changeZone(int newZone);
 
     /**
      * Screen currently being swiped and should be moved by provided offset.
      * 
      * @param xDelta
      */
-    public void swipeUpdate(float xDelta);
+    void swipeUpdate(float xDelta);
 
     /**
      * Screen currently being swiped and should be moved by provided offset.
      * 
      * @param xOffset
      */
-    public void swipeStart();
+    void swipeStart();
 
     /**
      * Screen swipe has finished at provided offset. Screen should be updated to
@@ -27,5 +27,5 @@ public interface SelectLevelModel
      * 
      * @param xDelta
      */
-    public void swipeFinish(float xDelta);
+    void swipeFinish(float xDelta);
 }

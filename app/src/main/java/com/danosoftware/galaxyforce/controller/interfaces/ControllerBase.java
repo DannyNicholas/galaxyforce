@@ -10,6 +10,6 @@ public interface ControllerBase extends Controller
      * @param baseController
      *            - new base controller
      */
-    public void setBaseController(BaseController baseController);
+    void setBaseController(BaseController baseController);
 
 }

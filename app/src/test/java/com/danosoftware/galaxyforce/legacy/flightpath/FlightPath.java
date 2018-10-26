@@ -8,8 +8,8 @@ public interface FlightPath
 {
 
     /* returns an array of points to append to existing path */
-    public List<Point> addPath();
+    List<Point> addPath();
 
-    public PathDTO createDTO();
+    PathDTO createDTO();
 
 }

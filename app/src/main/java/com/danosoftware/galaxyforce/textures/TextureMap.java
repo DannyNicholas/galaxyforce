@@ -28,7 +28,7 @@ public enum TextureMap
     // identifier of fonts sprite (if one exists)
     private final ISpriteIdentifier fontIdentifier;
 
-    private TextureMap(String textureImage, String textureXml, ISpriteIdentifier[] spriteIdentifiers, ISpriteIdentifier fontIdentifier)
+    TextureMap(String textureImage, String textureXml, ISpriteIdentifier[] spriteIdentifiers, ISpriteIdentifier fontIdentifier)
     {
         this.textureImage = textureImage;
         this.textureXml = textureXml;

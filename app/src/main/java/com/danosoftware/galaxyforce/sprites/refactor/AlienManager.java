@@ -23,7 +23,7 @@ public class AlienManager implements IAlienManager {
 
     public enum SubWaveState {
         IDLE, PLAYING, END_OF_PASS, DESTROYED, WAVE_COMPLETE
-    };
+    }
 
     // provides waves
     private final WaveManager waveManager;

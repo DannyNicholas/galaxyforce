@@ -8,6 +8,6 @@ public interface Option
      * 
      * @return text
      */
-    public String getText();
+    String getText();
 
 }

@@ -15,7 +15,6 @@ import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +57,7 @@ public class AlienManagerTest {
         aliens = new ArrayList<>();
         for (int i = 0; i < ALIEN_COUNT; i++) {
             aliens.add(mockAlien);
-        };
+        }
 
         SubWave subWave = mock(SubWave.class);
         when(subWave.isWaveRepeated()).thenReturn(true);
@@ -120,7 +119,7 @@ public class AlienManagerTest {
     }
 
     @Test
-    public void shouldGetNextSubWaveWhenAllDestroyedAndMoreSubWaves() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException {
+    public void shouldGetNextSubWaveWhenAllDestroyedAndMoreSubWaves() {
         when(mockAlien.isDestroyed()).thenReturn(true);
         when(mockWaveMgr.hasNext()).thenReturn(true);
         alienMgr.animate(0);
@@ -153,7 +152,7 @@ public class AlienManagerTest {
         final List<IAlien> spawnedAliens = Arrays.asList(mock(IAlien.class));
         doAnswer(new Answer() {
             @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+            public Object answer(InvocationOnMock invocation) {
                 alienMgr.spawnAliens(spawnedAliens);
                 return null;
             }

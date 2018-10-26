@@ -9,10 +9,10 @@ public interface FireBehaviour
      * 
      * @param deltaTime
      */
-    public boolean readyToFire(float deltaTime);
+    boolean readyToFire(float deltaTime);
 
     /**
      * Fires the alien's current missile type.
      */
-    public void fire(IAlien alien);
+    void fire(IAlien alien);
 }

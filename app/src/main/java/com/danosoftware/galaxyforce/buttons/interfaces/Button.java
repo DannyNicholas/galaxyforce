@@ -13,22 +13,22 @@ public interface Button
      * 
      * @return area of button's bounds.
      */
-    public Rectangle getBounds();
+    Rectangle getBounds();
 
     /**
      * Button has been pressed and then released. Process the button request.
      */
-    public void buttonUp();
+    void buttonUp();
 
     /**
      * Button has been pressed. The button request should not be processed until
      * released.
      */
-    public void buttonDown();
+    void buttonDown();
 
     /**
      * Finger pressing button has been dragged outside the button's bounds.
      * Release button but do not process the button's request.
      */
-    public void buttonReleased();
+    void buttonReleased();
 }

@@ -15,6 +15,6 @@ public interface PlayModel extends Model
      * @param flashState
      *            - show or hide text
      */
-    public void flashText(Text text, boolean flashState);
+    void flashText(Text text, boolean flashState);
 
 }

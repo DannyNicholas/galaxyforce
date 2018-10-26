@@ -9,12 +9,12 @@ public interface SpawnBehaviour
      * 
      * @param deltaTime
      */
-    public boolean readyToSpawn(float deltaTime);
+    boolean readyToSpawn(float deltaTime);
 
     /**
      * Spawn a new alien.
      * 
      * @param alien
      */
-    public void spawn(IAlien alien);
+    void spawn(IAlien alien);
 }

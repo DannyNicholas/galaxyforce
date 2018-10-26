@@ -14,7 +14,7 @@ public interface Swipe
      * @param touchPoint
      *            - location of finger
      */
-    public void fingerUp(Vector2 touchPoint);
+    void fingerUp(Vector2 touchPoint);
 
     /**
      * Finger has been pressed to screen. Process as start of swipe.
@@ -22,7 +22,7 @@ public interface Swipe
      * @param touchPoint
      *            - location of finger
      */
-    public void fingerDown(Vector2 touchPoint);
+    void fingerDown(Vector2 touchPoint);
 
     /**
      * Finger has been dragged around screen. Process as on-going swipe.
@@ -30,6 +30,6 @@ public interface Swipe
      * @param touchPoint
      *            - location of finger
      */
-    public void fingerDragged(Vector2 touchPoint);
+    void fingerDragged(Vector2 touchPoint);
 
 }

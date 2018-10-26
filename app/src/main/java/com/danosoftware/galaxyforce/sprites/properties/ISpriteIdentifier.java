@@ -10,7 +10,7 @@ public interface ISpriteIdentifier
      * 
      * @return
      */
-    public ISpriteProperties getProperties();
+    ISpriteProperties getProperties();
 
     /**
      * Update the sprite properties using the supplied texture map.
@@ -21,5 +21,5 @@ public interface ISpriteIdentifier
      * 
      * @param texture
      */
-    public void updateProperties(Texture texture);
+    void updateProperties(Texture texture);
 }

@@ -12,13 +12,13 @@ public interface SoundPlayer
      * 
      * @param sound
      */
-    public void playSound(Sound sound);
+    void playSound(Sound sound);
 
     /**
      * Set whether sound should be played from supplied parameter.
      * 
      * @param optionSound
      */
-    public void setSoundEnabled(OptionSound optionSound);
+    void setSoundEnabled(OptionSound optionSound);
 
 }

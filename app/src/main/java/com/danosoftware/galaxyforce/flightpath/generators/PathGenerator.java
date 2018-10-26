@@ -15,5 +15,5 @@ public interface PathGenerator {
      * returns a list of path points
      * @return points
      */
-    public List<Point> path();
+    List<Point> path();
 }

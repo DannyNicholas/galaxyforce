@@ -18,7 +18,7 @@ public abstract class AbstractAlienMissile extends AbstractCollidingSprite imple
 
         super(spriteId, x, y);
         this.hitEnergy = hitEnergy;
-        this.isDestroyed = isDestroyed;
+        this.isDestroyed = false;
     }
 
     @Override

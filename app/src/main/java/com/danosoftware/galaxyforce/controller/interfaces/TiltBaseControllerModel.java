@@ -15,6 +15,6 @@ public interface TiltBaseControllerModel extends BaseControllerModel
      * @param weightingY
      *            y weighting
      */
-    public void setWeighting(float weightingX, float weightingY);
+    void setWeighting(float weightingX, float weightingY);
 
 }

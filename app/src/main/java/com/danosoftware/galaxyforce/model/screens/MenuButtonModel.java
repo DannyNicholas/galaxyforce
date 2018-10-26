@@ -9,6 +9,6 @@ public interface MenuButtonModel
      * 
      * @param buttonType
      */
-    public void processButton(ButtonType buttonType);
+    void processButton(ButtonType buttonType);
 
 }

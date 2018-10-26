@@ -42,5 +42,5 @@ public enum AlienType
     GOBBY,
 
     // hunter
-    HUNTER;
+    HUNTER
 }

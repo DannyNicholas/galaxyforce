@@ -5,7 +5,7 @@ import com.danosoftware.galaxyforce.sound.SoundEffect;
 
 public interface Audio
 {
-    public Music newMusic(String filename);
+    Music newMusic(String filename);
 
-    public Sound newSound(SoundEffect soundEffect);
+    Sound newSound(SoundEffect soundEffect);
 }

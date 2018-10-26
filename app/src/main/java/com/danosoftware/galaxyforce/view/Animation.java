@@ -40,14 +40,7 @@ public class Animation
              * if beyond last keyframe then set animation completed (only for
              * non-looping animations)
              */
-            if (frameNumber >= keyFrames.length)
-            {
-                animationComplete = true;
-            }
-            else
-            {
-                animationComplete = false;
-            }
+            animationComplete = frameNumber >= keyFrames.length;
 
             /*
              * ensure we don't exceed the maximum array element. if we have gone

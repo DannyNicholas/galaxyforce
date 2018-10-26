@@ -8,10 +8,10 @@ public interface Sound
      * 
      * @param volume
      */
-    public void play(float volume);
+    void play(float volume);
 
     /**
      * Dipose of sound when finished
      */
-    public void dispose();
+    void dispose();
 }

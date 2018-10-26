@@ -9,5 +9,5 @@ public interface OptionsModel extends Model
      * Called when option selected. Implementation will need to work out which
      * option type has been selected and take appropriate action.
      */
-    public void optionSelected(Option optionSelected);
+    void optionSelected(Option optionSelected);
 }

@@ -13,7 +13,7 @@ public interface ToggleButtonGroup
      * @param optionType
      *            - option type associated with button
      */
-    public void addOption(Button button, Option optionType);
+    void addOption(Button button, Option optionType);
 
     /**
      * Allows buttons to call back toggle group when selected so the group knows
@@ -25,13 +25,13 @@ public interface ToggleButtonGroup
      *            - option type associated with button
      * 
      */
-    public void optionSelected(Button buttonSelected, Option optionType);
+    void optionSelected(Button buttonSelected, Option optionType);
 
     /**
      * Returns the currently selected option within the group
      * 
      * @return selected option
      */
-    public Option getSelectedOption();
+    Option getSelectedOption();
 
 }

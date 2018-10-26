@@ -4,5 +4,5 @@ import com.danosoftware.galaxyforce.interfaces.Input;
 
 public interface BaseControllerTilt extends BaseController
 {
-    public void updateController(Input input);
+    void updateController(Input input);
 }

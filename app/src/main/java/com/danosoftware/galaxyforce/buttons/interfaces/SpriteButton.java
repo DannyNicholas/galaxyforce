@@ -12,5 +12,5 @@ public interface SpriteButton extends Button
      * 
      * @return button's sprite
      */
-    public IButtonSprite getSprite();
+    IButtonSprite getSprite();
 }

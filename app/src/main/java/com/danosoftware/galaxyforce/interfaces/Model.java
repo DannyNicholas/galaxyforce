@@ -21,13 +21,13 @@ public interface Model
      * Used to initialise model after model has been instantiated. The model
      * should only be initialised once.
      */
-    public void initialise();
+    void initialise();
 
-    public List<ISprite> getSprites();
+    List<ISprite> getSprites();
 
-    public List<Text> getText();
+    List<Text> getText();
 
-    public void update(float deltaTime);
+    void update(float deltaTime);
 
     /**
      * Called when model associated with screen can be disposed with. Since
@@ -37,20 +37,20 @@ public interface Model
      * allow garbage collection. If the model is needed again, objects should be
      * re-initialised using the initialise() method.
      */
-    public void dispose();
+    void dispose();
 
     /**
      * Handle "back button" behaviour
      * */
-    public void goBack();
+    void goBack();
 
     /**
      * Pause the current game model. Has no effect if model is already paused.
      */
-    public void pause();
+    void pause();
 
     /**
      * Resume the current game model.
      */
-    public void resume();
+    void resume();
 }

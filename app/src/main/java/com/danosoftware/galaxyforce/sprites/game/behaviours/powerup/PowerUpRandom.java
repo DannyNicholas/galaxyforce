@@ -32,11 +32,7 @@ public class PowerUpRandom implements PowerUpBehaviour {
         this.model = model;
 
         // decide whether this alien should generate a power-up when destroyed
-        if (Math.random() < powerUpChance) {
-            this.hasPowerUp = true;
-        } else {
-            this.hasPowerUp = false;
-        }
+        this.hasPowerUp = Math.random() < powerUpChance;
     }
 
     /**

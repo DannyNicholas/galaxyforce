@@ -8,5 +8,5 @@ public interface SoundEffectBank
      * 
      * @param soundEffect
      */
-    public Sound get(SoundEffect soundEffect);
+    Sound get(SoundEffect soundEffect);
 }

@@ -15,12 +15,12 @@ public interface DirectionListener
      * @param direction
      *            new direction to be updated
      */
-    public void completeDirectionChange();
+    void completeDirectionChange();
 
     /**
      * Used to update any listeners that a direction change is starting. Some
      * listeners may choose not to take any action.
      */
-    public void startDirectionChange();
+    void startDirectionChange();
 
 }

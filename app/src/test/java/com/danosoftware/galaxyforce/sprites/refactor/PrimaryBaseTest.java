@@ -255,14 +255,14 @@ public class PrimaryBaseTest {
         // call primaryBase.helperExploding() when mock helpers are destroyed
         doAnswer(new Answer() {
             @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+            public Object answer(InvocationOnMock invocation) {
                 primaryBase.helperExploding(LEFT);
                 return null;
             }
         }).when(leftHelper).destroy();
         doAnswer(new Answer() {
             @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
+            public Object answer(InvocationOnMock invocation) {
                 primaryBase.helperExploding(RIGHT);
                 return null;
             }

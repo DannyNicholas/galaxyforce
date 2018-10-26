@@ -13,7 +13,7 @@ public interface LevelModel extends Model
      * 
      * @return speed of screen scroll
      */
-    public float getScrollPosition();
+    float getScrollPosition();
 
     /**
      * Some sprites (e.g. starfield) will be rendered separately to level
@@ -22,7 +22,7 @@ public interface LevelModel extends Model
      * 
      * @return list of static sprites
      */
-    public List<ISprite> getStaticSprites();
+    List<ISprite> getStaticSprites();
 
     /**
      * Some text will be rendered separately to level button text and will not
@@ -30,6 +30,6 @@ public interface LevelModel extends Model
      * 
      * @return list of static text
      */
-    public List<Text> getStaticText();
+    List<Text> getStaticText();
 
 }

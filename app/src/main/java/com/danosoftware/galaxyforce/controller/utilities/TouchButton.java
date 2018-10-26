@@ -32,14 +32,7 @@ public class TouchButton
      */
     public static boolean isButtonPressed(boolean inButtonBounds, int touchEvent)
     {
-        if (inButtonBounds && touchEvent == TouchEvent.TOUCH_DOWN)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return inButtonBounds && touchEvent == TouchEvent.TOUCH_DOWN;
     }
 
     /**
@@ -54,12 +47,8 @@ public class TouchButton
      */
     public static boolean isButtonReleased(boolean inButtonBounds, int touchEvent)
     {
-        if (inButtonBounds && touchEvent == TouchEvent.TOUCH_UP)
-        {
-            return true;
-        }
+        return inButtonBounds && touchEvent == TouchEvent.TOUCH_UP;
 
-        return false;
     }
 
     /**
@@ -75,12 +64,8 @@ public class TouchButton
      */
     public static boolean isDraggedOutsideButton(boolean inButtonBounds, int touchEvent)
     {
-        if (touchEvent == TouchEvent.TOUCH_DRAGGED && !inButtonBounds)
-        {
-            return true;
-        }
+        return touchEvent == TouchEvent.TOUCH_DRAGGED && !inButtonBounds;
 
-        return false;
     }
 
     /**
@@ -97,12 +82,8 @@ public class TouchButton
      */
     public static boolean isDragged(int touchEvent, Vector2 startTouchPoint, Vector2 currentTouchPoint)
     {
-        if (touchEvent == TouchEvent.TOUCH_DRAGGED && startTouchPoint.dist(currentTouchPoint) >= DRAG_DISTANCE)
-        {
-            return true;
-        }
+        return touchEvent == TouchEvent.TOUCH_DRAGGED && startTouchPoint.dist(currentTouchPoint) >= DRAG_DISTANCE;
 
-        return false;
     }
 
 }

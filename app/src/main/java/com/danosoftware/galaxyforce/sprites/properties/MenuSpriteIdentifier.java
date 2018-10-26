@@ -49,7 +49,7 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier
     private final String name;
     private SpriteProperties properties;
 
-    private MenuSpriteIdentifier(String name)
+    MenuSpriteIdentifier(String name)
     {
         this.name = name;
     }

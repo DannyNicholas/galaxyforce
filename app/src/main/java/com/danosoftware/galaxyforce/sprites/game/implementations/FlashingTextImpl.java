@@ -44,7 +44,7 @@ public class FlashingTextImpl implements FlashingText
         if (timeSinceflashStateChange > flashDelay)
         {
             // invert current flash state
-            flashState = (flashState ? false : true);
+            flashState = (!flashState);
 
             // reset time since state change
             timeSinceflashStateChange = 0f;

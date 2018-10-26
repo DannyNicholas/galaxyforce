@@ -2,5 +2,5 @@ package com.danosoftware.galaxyforce.enumerations;
 
 public enum BaseMissileType
 {
-    SIMPLE, FAST, BLAST, GUIDED, PARALLEL, SPRAY, LASER;
+    SIMPLE, FAST, BLAST, GUIDED, PARALLEL, SPRAY, LASER
 }

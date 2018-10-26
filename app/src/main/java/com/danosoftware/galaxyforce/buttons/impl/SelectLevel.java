@@ -21,7 +21,7 @@ public class SelectLevel implements SpriteTextButton
     public enum LockStatus
     {
         UNLOCKED, LOCKED
-    };
+    }
 
     // possible button sprites
     private static ISpriteIdentifier levelButton = MenuSpriteIdentifier.LEVEL_FRAME;

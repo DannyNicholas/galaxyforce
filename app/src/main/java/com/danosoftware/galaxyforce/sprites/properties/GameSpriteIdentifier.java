@@ -106,7 +106,7 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     private final String name;
     private ISpriteProperties properties;
 
-    private GameSpriteIdentifier(String name) {
+    GameSpriteIdentifier(String name) {
         this.name = name;
     }
 

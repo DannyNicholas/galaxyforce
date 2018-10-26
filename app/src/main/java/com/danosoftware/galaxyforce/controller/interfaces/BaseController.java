@@ -6,5 +6,5 @@ public interface BaseController
     /**
      * reset controller on game re-start
      */
-    public void reset();
+    void reset();
 }

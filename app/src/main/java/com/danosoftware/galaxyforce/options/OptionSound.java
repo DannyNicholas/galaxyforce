@@ -7,7 +7,7 @@ public enum OptionSound implements Option
 
     private String text = null;
 
-    private OptionSound(String text)
+    OptionSound(String text)
     {
         this.text = text;
     }

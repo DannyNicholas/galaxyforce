@@ -76,7 +76,7 @@ public class Flag extends AbstractSprite implements ISprite
         // calculate how many flags of each flag type are needed
         for (int flag : Reversed.reversed(flagKeysAsList))
         {
-            int numberOfFlags = (int) remainder / flag;
+            int numberOfFlags = remainder / flag;
             remainder = remainder - (numberOfFlags * flag);
 
             Log.d(TAG, "Flag: " + flag + ". Number Of: " + numberOfFlags);

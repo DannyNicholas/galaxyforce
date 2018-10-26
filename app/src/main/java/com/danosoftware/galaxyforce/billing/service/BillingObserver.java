@@ -8,6 +8,6 @@ public interface BillingObserver
      * purchasable products have changed. The observer may need to check the
      * billing service for any product changes at the next opportunity.
      */
-    public void billingProductsStateChange();
+    void billingProductsStateChange();
 
 }

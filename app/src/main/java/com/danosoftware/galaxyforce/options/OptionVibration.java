@@ -7,7 +7,7 @@ public enum OptionVibration implements Option
 
     private String text = null;
 
-    private OptionVibration(String text)
+    OptionVibration(String text)
     {
         this.text = text;
     }

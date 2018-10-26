@@ -10,7 +10,7 @@ public interface IBillingService
      * 
      * @param billingObserver
      */
-    public void registerProductObserver(BillingObserver billingObserver);
+    void registerProductObserver(BillingObserver billingObserver);
 
     /**
      * Unregister observer for any product state refreshes. Normally called when
@@ -18,14 +18,14 @@ public interface IBillingService
      * 
      * @param billingObserver
      */
-    public void unregisterProductObserver(BillingObserver billingObserver);
+    void unregisterProductObserver(BillingObserver billingObserver);
 
     /**
      * Refresh the product states of all known billing products. Querying
      * billing service is an asynchronous activity so refreshing may not happen
      * immediately.
      */
-    public void refreshProductStates();
+    void refreshProductStates();
 
     /**
      * Is supplied product Id purchased?
@@ -36,7 +36,7 @@ public interface IBillingService
      * 
      * @param productId
      */
-    public boolean isPurchased(String productId);
+    boolean isPurchased(String productId);
 
     /**
      * Is supplied product Id not purchased?
@@ -47,7 +47,7 @@ public interface IBillingService
      * 
      * @param productId
      */
-    public boolean isNotPurchased(String productId);
+    boolean isNotPurchased(String productId);
 
     /**
      * Get the price of the product Id.
@@ -57,14 +57,14 @@ public interface IBillingService
      * @param productId
      * @return
      */
-    public String getPrice(String productId);
+    String getPrice(String productId);
 
     /**
      * Purchase supplied product Id.
      * 
      * @param productId
      */
-    public void purchase(String productId);
+    void purchase(String productId);
 
     /**
      * Process the results returned back to the billing service. Typically this
@@ -74,11 +74,11 @@ public interface IBillingService
      * @param resultCode
      * @param data
      */
-    public boolean processActivityResult(int requestCode, int resultCode, Intent data);
+    boolean processActivityResult(int requestCode, int resultCode, Intent data);
 
     /**
      * Destroy billing service. Must be called when activity is finished to
      * avoid degrading device.
      */
-    public void destroy();
+    void destroy();
 }

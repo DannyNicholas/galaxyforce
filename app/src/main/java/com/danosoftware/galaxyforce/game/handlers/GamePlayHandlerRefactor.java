@@ -59,7 +59,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
      */
 
     private enum ModelState {
-        GET_READY, NEW_BASE, PLAYING;
+        GET_READY, NEW_BASE, PLAYING
     }
 
     private static final String TAG = GamePlayHandlerRefactor.class.getSimpleName();

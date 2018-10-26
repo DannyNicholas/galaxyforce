@@ -7,7 +7,7 @@ public enum OptionMusic implements Option
 
     private String text = null;
 
-    private OptionMusic(String text)
+    OptionMusic(String text)
     {
         this.text = text;
     }

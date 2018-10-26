@@ -22,5 +22,5 @@ public interface TouchController
      *            - time since last update
      * @return returns true if touch point was processed by this controller
      */
-    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID, float deltaTime);
+    boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID, float deltaTime);
 }

@@ -7,7 +7,7 @@ public enum OptionController implements Option
 
     private String text = null;
 
-    private OptionController(String text)
+    OptionController(String text)
     {
         this.text = text;
     }

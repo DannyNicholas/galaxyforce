@@ -13,14 +13,14 @@ public interface IPreferences<T>
      * @param defaultValue
      * @return
      */
-    public T getPreference(String key, T defaultValue);
+    T getPreference(String key, T defaultValue);
 
     /**
      * Persist a map of string keys with values of wanted type.
      * 
      * @param keyValueMap
      */
-    public void storePreference(Map<String, T> keyValueMap);
+    void storePreference(Map<String, T> keyValueMap);
 
     /**
      * Return true if key is contained in preferences.
@@ -28,5 +28,5 @@ public interface IPreferences<T>
      * @param key
      * @return
      */
-    public boolean preferenceExists(String key);
+    boolean preferenceExists(String key);
 }

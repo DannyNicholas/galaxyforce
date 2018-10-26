@@ -10,7 +10,7 @@ public enum SplashSpriteIdentifier implements ISpriteIdentifier
     private final String name;
     private SpriteProperties properties;
 
-    private SplashSpriteIdentifier(String name)
+    SplashSpriteIdentifier(String name)
     {
         this.name = name;
     }

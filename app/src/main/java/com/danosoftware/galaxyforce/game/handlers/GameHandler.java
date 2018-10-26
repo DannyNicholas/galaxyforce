@@ -13,7 +13,7 @@ import java.util.List;
 public interface GameHandler extends PlayModel {
 
 
-    public IBasePrimary getBase();
+    IBasePrimary getBase();
 //
 //    public float getBaseX();
 //
@@ -49,12 +49,12 @@ public interface GameHandler extends PlayModel {
     /**
      * Pause the current game model.
      */
-    public void pause();
+    void pause();
 
     /**
      * Get list of sprites to be shown when paused
      */
-    public List<ISprite> getPausedSprites();
+    List<ISprite> getPausedSprites();
 
     /**
      * Add a new power up sprite to the game. Usually triggered when an alien is
@@ -62,7 +62,7 @@ public interface GameHandler extends PlayModel {
      *
      * @param powerUp
      */
-    public void addPowerUp(PowerUpBean powerUp);
+    void addPowerUp(PowerUpBean powerUp);
 
     /**
      * Add a new shield sprite to the game. Usually triggered when base or
@@ -85,31 +85,31 @@ public interface GameHandler extends PlayModel {
      *
      * @param missiles
      */
-    public void fireBaseMissiles(BaseMissileBean missiles);
+    void fireBaseMissiles(BaseMissileBean missiles);
 
     /**
      * Fire alien missiles. Add new missiles being fired by aliens.
      *
      * @param missiles
      */
-    public void fireAlienMissiles(AlienMissileBean missiles);
+    void fireAlienMissiles(AlienMissileBean missiles);
 
     /**
      * Return an actively selected active alien.
      *
      * @return
      */
-    public IAlien chooseActiveAlien();
+    IAlien chooseActiveAlien();
 
     /**
      * Spawns new aliens, which are added to the game.
      * <p>
      * e.g. a mothership that creates new aliens
      */
-    public void spawnAliens(SpawnedAlienBean aliens);
+    void spawnAliens(SpawnedAlienBean aliens);
 
     /**
      * Return number of lives remaining
      */
-    public int getLives();
+    int getLives();
 }

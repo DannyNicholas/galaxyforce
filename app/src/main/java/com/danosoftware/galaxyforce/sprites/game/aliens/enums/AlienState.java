@@ -32,5 +32,5 @@ public enum AlienState {
      * Sprite is now completely destroyed and can be removed. Sprite should
      * not be displayed on screen and must not interact with other sprites.
      */
-    DESTROYED;
+    DESTROYED
 }

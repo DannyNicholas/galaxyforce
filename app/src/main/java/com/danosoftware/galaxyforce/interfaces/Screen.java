@@ -7,19 +7,19 @@ public interface Screen
     /**
      * draw components of current screen
      */
-    public void draw(float deltaTime);
+    void draw(float deltaTime);
 
     /** update model associated with current screen */
-    public void update(float deltaTime);
+    void update(float deltaTime);
 
     /** pause the components of current screen */
-    public void pause();
+    void pause();
 
     /** resume the components of current screen */
-    public void resume();
+    void resume();
 
     /** dispose of current screen */
-    public void dispose();
+    void dispose();
 
     /**
      * return true if back button is handled internally and we don't want
@@ -27,6 +27,6 @@ public interface Screen
      * 
      * @return true if back button handled internally
      */
-    public boolean handleBackButton();
+    boolean handleBackButton();
 
 }

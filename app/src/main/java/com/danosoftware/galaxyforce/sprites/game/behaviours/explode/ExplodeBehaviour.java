@@ -8,7 +8,7 @@ public interface ExplodeBehaviour
     /**
      * Initialise start of explosion
      */
-    public void startExplosion();
+    void startExplosion();
 
     /**
      * Get the current explosion sprite.
@@ -16,13 +16,13 @@ public interface ExplodeBehaviour
      * @param deltaTime
      * @return
      */
-    public ISpriteIdentifier getExplosion(float deltaTime);
+    ISpriteIdentifier getExplosion(float deltaTime);
 
     /**
      * Has the explosion finished?
      * 
      * @return
      */
-    public boolean finishedExploding();
+    boolean finishedExploding();
 
 }

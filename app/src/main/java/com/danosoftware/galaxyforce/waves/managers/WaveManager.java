@@ -22,7 +22,7 @@ public interface WaveManager
      * 
      * @param wave
      */
-    public void setUpWave(int wave);
+    void setUpWave(int wave);
 
     /**
      * Sets wave ready. Normally via a callback from a wave creation task. Once
@@ -31,7 +31,7 @@ public interface WaveManager
      * @param wave
      *            - created wave of aliens
      */
-    public void setWaveReady(Wave wave);
+    void setWaveReady(Wave wave);
 
     /**
      * Returns true if requested wave is now ready to use.
@@ -41,7 +41,7 @@ public interface WaveManager
      * 
      * @return true is wave ready to use
      */
-    public boolean isWaveReady();
+    boolean isWaveReady();
 
     /**
      * Is there another sub-wave to retrieve. If true, a call to next() will
@@ -49,12 +49,12 @@ public interface WaveManager
      * 
      * @return true if there are more sub-waves to retrieve
      */
-    public boolean hasNext();
+    boolean hasNext();
 
     /**
      * Return the next sub-wave in the current wave.
      * 
      * @return sub-wave
      */
-    public SubWave next();
+    SubWave next();
 }

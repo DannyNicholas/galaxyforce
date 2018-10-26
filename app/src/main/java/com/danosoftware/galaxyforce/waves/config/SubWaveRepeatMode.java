@@ -9,5 +9,5 @@ public enum SubWaveRepeatMode {
     REPEAT_UNTIL_DESTROYED,
 
     // do not repeat the subwave once path is completed.
-    SINGLE_PASS;
+    SINGLE_PASS
 }

@@ -7,25 +7,25 @@ import com.danosoftware.galaxyforce.view.GLGraphics;
 
 public interface Game
 {
-    public void start();
+    void start();
 
-    public void resume();
+    void resume();
 
-    public void pause();
+    void pause();
 
-    public void dispose();
+    void dispose();
 
-    public void draw(float deltaTime);
+    void draw(float deltaTime);
 
-    public void update(float deltaTime);
+    void update(float deltaTime);
 
-    public GLGraphics getGlGraphics();
+    GLGraphics getGlGraphics();
 
-    public Screen getScreen();
+    Screen getScreen();
 
-    public FileIO getFileIO();
+    FileIO getFileIO();
 
-    public void setScreen(Screen gameScreen);
+    void setScreen(Screen gameScreen);
 
     /**
      * Change to a screen that will eventually return back to this screen. A
@@ -34,13 +34,13 @@ public interface Game
      * 
      * @param gameScreen
      */
-    public void setReturningScreen(Screen gameScreen);
+    void setReturningScreen(Screen gameScreen);
 
     /**
      * Change back to previous screen. That is the screen that we were on when
      * setReturningScreen() was called.
      */
-    public void screenReturn();
+    void screenReturn();
 
     /**
      * return true if back button is handled internally and we don't want
@@ -48,11 +48,11 @@ public interface Game
      * 
      * @return true if back button handled internally
      */
-    public boolean handleBackButton();
+    boolean handleBackButton();
 
-    public Audio getAudio();
+    Audio getAudio();
 
-    public Context getContext();
+    Context getContext();
 
-    public IBillingService getBillingService();
+    IBillingService getBillingService();
 }

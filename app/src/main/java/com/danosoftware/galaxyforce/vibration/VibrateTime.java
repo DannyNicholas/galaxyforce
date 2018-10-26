@@ -7,7 +7,7 @@ public enum VibrateTime
 
     private long timeInMilliseconds;
 
-    private VibrateTime(long timeInMilliseconds)
+    VibrateTime(long timeInMilliseconds)
     {
         this.timeInMilliseconds = timeInMilliseconds;
     }

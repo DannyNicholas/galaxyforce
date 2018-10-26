@@ -8,5 +8,5 @@ public interface PowerUpBehaviour
      * Checks to see if power-up should be released when alien is destroyed. If
      * so a new power-up is sent to model.
      */
-    public void releasePowerUp(IAlien alien);
+    void releasePowerUp(IAlien alien);
 }

@@ -6,7 +6,6 @@ import com.danosoftware.galaxyforce.flightpath.dto.PathDTO;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
 import com.danosoftware.galaxyforce.legacy.flightpath.FlightPath;
 import com.danosoftware.galaxyforce.legacy.flightpath.Path;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Ignore;
@@ -33,11 +32,10 @@ public class CreatePathJsonFiles {
     /**
      * Create JSON files holding path data for all paths.
      *
-     * @throws JsonProcessingException
      */
     @Test
     @Ignore
-    public void createJsonFiles() throws JsonProcessingException {
+    public void createJsonFiles() {
 
         for (Path path : Path.values()) {
 

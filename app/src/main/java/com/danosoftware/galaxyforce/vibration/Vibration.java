@@ -12,7 +12,7 @@ public interface Vibration
      * 
      * @param vibrateTime
      */
-    public void vibrate(VibrateTime vibrateTime);
+    void vibrate(VibrateTime vibrateTime);
 
     /**
      * Set whether device should vibrate.
@@ -21,6 +21,6 @@ public interface Vibration
      * 
      * @param vibrateEnabled
      */
-    public void setVibrationEnabled(OptionVibration optionVibration);
+    void setVibrationEnabled(OptionVibration optionVibration);
 
 }

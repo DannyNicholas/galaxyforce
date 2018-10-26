@@ -24,14 +24,7 @@ public class VibrationSingleton implements Vibration
     {
         this.vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (vibrator.hasVibrator())
-        {
-            supportsVibration = true;
-        }
-        else
-        {
-            supportsVibration = false;
-        }
+        supportsVibration = vibrator.hasVibrator();
     }
 
     // must initialise singleton with context before it can be used
