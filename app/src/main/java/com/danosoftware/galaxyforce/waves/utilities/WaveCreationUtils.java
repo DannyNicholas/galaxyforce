@@ -4,8 +4,8 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
@@ -33,11 +33,11 @@ public final class WaveCreationUtils {
      * @param model - reference to model
      * @return list of aliens
      */
-    public static List<SpriteAlien> createPathAlienSubWave(
+    public static List<IAlien> createPathAlienSubWave(
             final SubWavePathConfig config,
             final GameHandler model) {
 
-        List<SpriteAlien> aliens = new ArrayList<>();
+        List<IAlien> aliens = new ArrayList<>();
 
         final AlienType alienType = config.getAlien();
         final List<PowerUpType> powerUps = config.getPowerUps();
@@ -79,11 +79,11 @@ public final class WaveCreationUtils {
      * @param model - reference to model
      * @return list of aliens
      */
-    public static List<SpriteAlien> createNoPathAlienSubWave(
+    public static List<IAlien> createNoPathAlienSubWave(
             final SubWaveNoPathConfig config,
             final GameHandler model) {
 
-        List<SpriteAlien> aliens = new ArrayList<>();
+        List<IAlien> aliens = new ArrayList<>();
 
         final AlienType alienType = config.getAlien();
         final SubWaveRule rules = config.getSubWaveRule();
@@ -122,7 +122,7 @@ public final class WaveCreationUtils {
      * adds a wanted number of aliens with a path. each alien is spaced by
      * the delay seconds specified.
      */
-    private static List<SpriteAlien> createAliens(
+    private static List<IAlien> createAliens(
             final AlienType alienType,
             final PowerUpAllocator powerUpAllocator,
             final List<Point> path,
@@ -130,7 +130,7 @@ public final class WaveCreationUtils {
             final GameHandler model)
     {
 
-        List<SpriteAlien> aliensOnPath = new ArrayList<>();
+        List<IAlien> aliensOnPath = new ArrayList<>();
 
         for (int i = 0; i < props.getNumberOfAliens(); i++)
         {

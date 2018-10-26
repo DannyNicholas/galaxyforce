@@ -9,8 +9,8 @@ import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteAlien;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,7 +82,7 @@ public class WaveFactoryTest {
         when(VibrationSingleton.getInstance()).thenReturn(vibration);
 
         // creating aliens is complex so mock it for this test
-        List<SpriteAlien> mockedAliens = new ArrayList<>();
+        List<IAlien> mockedAliens = new ArrayList<>();
         mockStatic(AlienFactory.class);
         when(AlienFactory.createAlien(
                 any(AlienType.class),
