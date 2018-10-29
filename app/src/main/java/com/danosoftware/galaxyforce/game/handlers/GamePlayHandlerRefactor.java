@@ -35,9 +35,11 @@ import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
+import com.danosoftware.galaxyforce.sprites.refactor.AlienManager;
 import com.danosoftware.galaxyforce.sprites.refactor.IAlienManager;
 import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -45,6 +47,9 @@ import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
 import com.danosoftware.galaxyforce.vibration.Vibration;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
+import com.danosoftware.galaxyforce.waves.managers.WaveManager;
+import com.danosoftware.galaxyforce.waves.managers.WaveManagerImpl;
+import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,25 +156,22 @@ public class GamePlayHandlerRefactor implements GameHandler {
     public GamePlayHandlerRefactor(
             GameModel model,
             Controller controller,
-            IAlienManager alienManager,
+            List<Star> stars,
             int wave,
             IBillingService billingService) {
 
         this.model = model;
         this.controller = controller;
         this.wave = wave;
-
-        this.alienManager = alienManager;
-
         this.billingService = billingService;
 
         /*
          * create wave factory and manager to create lists of aliens on each
          * wave
          */
-//        WaveFactory waveFactory = new WaveFactory(this);
-//        waveManager = new WaveManagerImpl(waveFactory);
-//        this.alienManager = new AlienManager(waveManager);
+        WaveFactory waveFactory = new WaveFactory(this);
+        WaveManager waveManager = new WaveManagerImpl(waveFactory);
+        this.alienManager = new AlienManager(waveManager);
 
 
 
@@ -178,7 +180,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
         SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
         powerUpCollisionSound = soundBank.get(SoundEffect.POWER_UP_COLLIDE);
 
-        this.assets = new GamePlayAssetsManager(soundPlayer);
+        this.assets = new GamePlayAssetsManager(stars, soundPlayer);
 
         // set-up vibration
         this.vibrator = VibrationSingleton.getInstance();
@@ -225,7 +227,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
         gameSprites.add(pauseButton.getSprite());
         gameSprites.addAll(assets.getFlags());
         gameSprites.addAll(assets.getLives());
-        gameSprites.addAll(primaryBase.energyBar());
+        gameSprites.addAll(assets.getEnergyBar());
 //        gameSprites.addAll(baseController.getSprites());
 
         return gameSprites;
@@ -242,7 +244,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
         pausedSprites.addAll(assets.getPowerUps());
         pausedSprites.addAll(assets.getFlags());
         pausedSprites.addAll(assets.getLives());
-        pausedSprites.addAll(primaryBase.energyBar());
+        pausedSprites.addAll(assets.getEnergyBar());
 
         return pausedSprites;
     }
@@ -396,6 +398,11 @@ public class GamePlayHandlerRefactor implements GameHandler {
     @Override
     public int getLives() {
         return lives;
+    }
+
+    @Override
+    public void energyUpdate(int energy) {
+        assets.updateEnergyBar(energy);
     }
 
     @Override

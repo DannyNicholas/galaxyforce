@@ -21,7 +21,6 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.EnergyBar;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
@@ -38,6 +37,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.BASE_MAX_ENERGY_LEVEL;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_BOTTOM;
@@ -62,9 +62,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     // base's start y position when ready
     private static final int BASE_START_Y = 192;
-
-    // base's energy bar
-    private final EnergyBar energyBar;
 
     // explosion behaviour
     private final ExplodeBehaviour explosion;
@@ -134,7 +131,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private boolean shielded = false;
 
     /* reference to model */
-    private GameHandler model = null;
+    private final GameHandler model;
 
     /* reference to sound player and sounds */
     private final SoundPlayer soundPlayer;
@@ -172,8 +169,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         addShield(2f, 0f);
 
         // reset energy bar to maximum. new energy level returned.
-        this.energyBar = new EnergyBar();
-        energy = energyBar.resetEnergy();
+        this.energy = BASE_MAX_ENERGY_LEVEL;
+        model.energyUpdate(energy);
     }
 
     /**
@@ -301,9 +298,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         // can only be hit if not shielded
         if (!shielded) {
-            int energy = energyBar.decreaseEnergy(
-                    missile.energyDamage()
-            );
+            energy -= missile.energyDamage();
+            model.energyUpdate(energy);
 
             if (energy <= 0) {
                 destroy();
@@ -345,7 +341,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         switch (powerUpType) {
             // add energy to base
             case ENERGY:
-                energyBar.increaseEnergy(2);
+                energy += 2;
+                model.energyUpdate(energy);
                 break;
 
             // add extra life
@@ -406,11 +403,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public List<ISprite> allSprites() {
         return allSprites;
-    }
-
-    @Override
-    public List<ISprite> energyBar() {
-        return energyBar.getEnergyBar();
     }
 
     @Override

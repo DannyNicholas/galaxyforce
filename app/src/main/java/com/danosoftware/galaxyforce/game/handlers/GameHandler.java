@@ -112,4 +112,10 @@ public interface GameHandler extends PlayModel {
      * Return number of lives remaining
      */
     int getLives();
+
+    /**
+     * Update following a base's energy change.
+     * Typically used to update the energy bar assets.
+     */
+    void energyUpdate(int energy);
 }

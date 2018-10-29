@@ -19,6 +19,9 @@ public class GameConstants
     // public final static int MAX_FREE_ZONE = 12;
     public final static int MAX_FREE_ZONE = 100;
 
+    public final static Integer BASE_MAX_ENERGY_LEVEL = 8;
+
+
     // request code sent with billing requests
     public final static int BILLING_REQUEST = 10001;
 

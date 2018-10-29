@@ -9,6 +9,7 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.refactor.Flag;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.List;
 
@@ -28,4 +29,14 @@ public interface IGamePlayAssetsManager {
     List<Flag> getFlags();
     List<Life> getLives();
 
+    /**
+     * Update base's energy bar assets.
+     * Typically used to update the energy levels after gaining or losing power.
+     */
+    void updateEnergyBar(int energy);
+
+    /**
+     * Get base's energy bar assets.
+     */
+    List<ISprite> getEnergyBar();
 }

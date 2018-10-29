@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.BASE_MAX_ENERGY_LEVEL;
+
 public class EnergyBar {
     /* logger tag */
     private static final String TAG = "EnergyBar";
@@ -36,8 +38,6 @@ public class EnergyBar {
     private static final Integer WARNING_LEVEL = 4;
     private static final Integer GOOD_LEVEL = 6;
 
-    private static final Integer MAX_LEVEL = 8;
-
     // variable to hold the current energy level
     private int energyLevel;
 
@@ -62,34 +62,21 @@ public class EnergyBar {
      * Reset the energy levels to maximum.
      */
     public void resetEnergy() {
-        energyLevel = MAX_LEVEL;
-        energyBar = buildEnergyBar();
+        updateEnergy(BASE_MAX_ENERGY_LEVEL);
     }
 
     /**
-     * Decrease the energy levels by delta. Can't drop below zero.
+     * Set the current energy levels.
      */
-    public int decreaseEnergy(int delta) {
-        energyLevel = energyLevel - delta;
-
-        if (energyLevel < 0) {
+    public void updateEnergy(int newEnergyLevel) {
+        if (newEnergyLevel < 0) {
             energyLevel = 0;
+        } else if (newEnergyLevel > BASE_MAX_ENERGY_LEVEL) {
+            energyLevel = BASE_MAX_ENERGY_LEVEL;
+        } else {
+            energyLevel = newEnergyLevel;
         }
         energyBar = buildEnergyBar();
-        return energyLevel;
-    }
-
-    /**
-     * Increase the energy levels by delta. Can't exceed maximum level.
-     */
-    public int increaseEnergy(int delta) {
-        energyLevel = energyLevel + delta;
-
-        if (energyLevel > MAX_LEVEL) {
-            energyLevel = MAX_LEVEL;
-        }
-        energyBar = buildEnergyBar();
-        return energyLevel;
     }
 
     /**
@@ -121,7 +108,7 @@ public class EnergyBar {
         barXPosition += ENERGY_WIDTH;
 
         // add the energy bar outline
-        for (int i = 0; i < MAX_LEVEL - 2; i++) {
+        for (int i = 0; i < BASE_MAX_ENERGY_LEVEL - 2; i++) {
             energyBarList.add(new Energy(barXPosition, ENERGY_START_Y, GameSpriteIdentifier.ENERGY_BAR_MIDDLE));
             barXPosition += ENERGY_WIDTH;
         }

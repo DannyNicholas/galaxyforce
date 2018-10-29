@@ -14,8 +14,10 @@ import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
-import com.danosoftware.galaxyforce.sprites.game.missiles.bases.AbstractBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileSimple;
+import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
+import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
@@ -215,9 +217,10 @@ public class BaseHelperTest {
 
     @Test()
     public void shouldCallPrimaryBasePowerUp() {
+        IPowerUp energyPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_BATTERY, 0, 0, PowerUpType.ENERGY);
         baseHelper = shieldedHelper(LEFT);
-        baseHelper.collectPowerUp(PowerUpType.ENERGY);
-        verify(primaryBase, times(1)).collectPowerUp(PowerUpType.ENERGY);
+        baseHelper.collectPowerUp(energyPowerUp);
+        verify(primaryBase, times(1)).collectPowerUp(energyPowerUp);
     }
 
     @Test()
@@ -225,7 +228,7 @@ public class BaseHelperTest {
         baseHelper = shieldedHelper(LEFT);
         BaseMissileBean missile = baseHelper.fire(SIMPLE);
         assertThat(missile.getMissiles().size() > 0, is(true));
-        for (AbstractBaseMissile aMissile : missile.getMissiles()) {
+        for (IBaseMissile aMissile : missile.getMissiles()) {
             assertThat(aMissile instanceof BaseMissileSimple, is(true));
         }
     }

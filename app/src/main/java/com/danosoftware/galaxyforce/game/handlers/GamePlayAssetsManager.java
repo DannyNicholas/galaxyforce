@@ -4,12 +4,14 @@ import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.sound.SoundPlayer;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.EnergyBar;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Life;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.refactor.Flag;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +28,21 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager{
     private List<Flag> flags;
     private List<Life> lives;
 
-    public GamePlayAssetsManager(SoundPlayer soundPlayer) {
+    // base's energy bar
+    private final EnergyBar energyBar;
+
+    public GamePlayAssetsManager(
+            List<Star> stars,
+            SoundPlayer soundPlayer) {
+
         this.soundPlayer = soundPlayer;
         this.aliensMissiles = new ArrayList<>();
         this.baseMissiles = new ArrayList<>();
         this.powerUps = new ArrayList<>();
-        this.stars = new ArrayList<>();
+        this.stars = stars;
         this.flags = new ArrayList<>();
         this.lives = new ArrayList<>();
+        this.energyBar = new EnergyBar();
     }
 
     @Override
@@ -124,5 +133,15 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager{
     @Override
     public List<Life> getLives() {
         return lives;
+    }
+
+    @Override
+    public void updateEnergyBar(int energy) {
+        energyBar.updateEnergy(energy);
+    }
+
+    @Override
+    public List<ISprite> getEnergyBar() {
+        return energyBar.getEnergyBar();
     }
 }

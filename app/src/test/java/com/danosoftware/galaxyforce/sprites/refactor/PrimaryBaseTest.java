@@ -14,6 +14,8 @@ import com.danosoftware.galaxyforce.sprites.game.bases.IBaseHelper;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
+import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
+import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
@@ -92,7 +94,7 @@ public class PrimaryBaseTest {
         }
 
         model = mock(GameHandler.class);
-        primaryBase = new BasePrimary(INITIAL_X, INITIAL_Y, model);
+        primaryBase = new BasePrimary(model);
         primaryBaseSpy = spy(primaryBase);
 
         leftHelper = mock(IBaseHelper.class);
@@ -163,7 +165,8 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shieldedBaseShouldNotBeDestroyedWhenHitByMissile() {
-        primaryBaseSpy.collectPowerUp(PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        primaryBaseSpy.collectPowerUp(shieldPowerUp);
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(100);
         primaryBaseSpy.onHitBy(missile);
@@ -198,7 +201,8 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shieldedBaseShouldNotBeDestroyedWhenHitByAlien() {
-        primaryBaseSpy.collectPowerUp(PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        primaryBaseSpy.collectPowerUp(shieldPowerUp);
         primaryBaseSpy.onHitBy(mock(IAlien.class));
         verify(primaryBaseSpy, times(0)).destroy();
     }
@@ -218,7 +222,8 @@ public class PrimaryBaseTest {
 
     @Test
     public void baseShouldCollectPowerUp() throws NoSuchFieldException, IllegalAccessException {
-        primaryBase.collectPowerUp(PowerUpType.MISSILE_GUIDED);
+        IPowerUp guidedMissilePowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_MISSILE_GUIDED, 0, 0, PowerUpType.MISSILE_GUIDED);
+        primaryBase.collectPowerUp(guidedMissilePowerUp);
         BaseMissileType missileType = missileType(primaryBase);
         assertThat(missileType, is(BaseMissileType.GUIDED));
     }
@@ -226,8 +231,9 @@ public class PrimaryBaseTest {
     // this may not be a valid test since destroyed base will never collide with power-up
     @Test
     public void baseShouldNotCollectPowerUpWhenDestroyed() throws NoSuchFieldException, IllegalAccessException {
+        IPowerUp guidedMissilePowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_MISSILE_GUIDED, 0, 0, PowerUpType.MISSILE_GUIDED);
         primaryBase.destroy();
-        primaryBase.collectPowerUp(PowerUpType.MISSILE_GUIDED);
+        primaryBase.collectPowerUp(guidedMissilePowerUp);
         BaseMissileType missileType = missileType(primaryBase);
         assertThat(missileType, not(BaseMissileType.GUIDED));
     }
@@ -300,7 +306,8 @@ public class PrimaryBaseTest {
         primaryBase.helperCreated(RIGHT, rightHelper);
 
         // add shield to primary base
-        primaryBase.collectPowerUp(PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        primaryBase.collectPowerUp(shieldPowerUp);
 
         // verify helper bases were also given shields
         verify(leftHelper, times(1)).addShield(any(float.class));
@@ -324,7 +331,8 @@ public class PrimaryBaseTest {
         primaryBase.helperCreated(RIGHT, rightHelper);
 
         // add shield to primary base
-        primaryBase.collectPowerUp(PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        primaryBase.collectPowerUp(shieldPowerUp);
         primaryBase.animate(20f);
 
         // verify helper bases were also given shields
