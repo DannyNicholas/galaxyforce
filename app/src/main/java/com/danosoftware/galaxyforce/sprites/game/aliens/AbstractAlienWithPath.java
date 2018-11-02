@@ -95,7 +95,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
                 } else {
                     // alien set to end of path. will wait until manually reset
                     // or destroyed by model
-                    isEndOfPass();
+                    endOfPass();
                 }
             } else {
                 // set alien new position

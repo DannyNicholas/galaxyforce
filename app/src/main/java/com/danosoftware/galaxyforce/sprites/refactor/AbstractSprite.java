@@ -1,8 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SpriteState;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.textures.TextureRegion;
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 
 public abstract class AbstractSprite implements ISprite {
 
@@ -10,13 +9,15 @@ public abstract class AbstractSprite implements ISprite {
     protected int x, y;
 
     // sprite's angle rotation
-    private int rotation;
+    protected int rotation;
 
-    // sprite's width and height
+    // sprite's width and height.
+    // this is obtained from the sprite's properties
+    // but not available until the sprite is loaded.
+    // these may not be available on construction
+    // but will be cached once available.
     private int width, height;
-
-    // sprite's texture to allow image to be drawn
-    private TextureRegion textureRegion;
+    private boolean dimensionsCached;
 
     // sprite properties
     private ISpriteIdentifier spriteId;
@@ -30,6 +31,7 @@ public abstract class AbstractSprite implements ISprite {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
+        this.dimensionsCached = false;
     }
 
     public AbstractSprite(
@@ -40,40 +42,27 @@ public abstract class AbstractSprite implements ISprite {
     }
 
     @Override
-    public void move(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public void rotate(int rotation) {
-        this.rotation = rotation;
-    }
-
-    @Override
-    public void changeType(ISpriteIdentifier spriteId) {
-        this.spriteId = spriteId;
-    }
-
-    @Override
-    public void changeStatus(SpriteState state) {
-
-    }
-
-    public void refresh() {
-        this.width = spriteId.getProperties().getWidth();
-        this.height = spriteId.getProperties().getHeight();
-        this.textureRegion = spriteId.getProperties().getTextureRegion();
+    public void changeType(ISpriteIdentifier newSpriteId) {
+        if (this.spriteId != newSpriteId) {
+            this.spriteId = newSpriteId;
+            this.dimensionsCached = false;
+        }
     }
 
     @Override
     public int width() {
-        return spriteId.getProperties().getWidth();
+        if (dimensionsCached) {
+            return width;
+        }
+        return cacheWidth();
     }
 
     @Override
     public int height() {
-        return spriteId.getProperties().getHeight();
+        if (dimensionsCached) {
+            return height;
+        }
+        return cacheHeight();
     }
 
     @Override
@@ -92,7 +81,33 @@ public abstract class AbstractSprite implements ISprite {
     }
 
     @Override
-    public TextureRegion textureRegion() {
-        return spriteId.getProperties().getTextureRegion();
+    public ISpriteIdentifier spriteId() {
+        return spriteId;
+    }
+
+    // cache and return width from sprite properties if available
+    private int cacheWidth() {
+        ISpriteProperties props = spriteId.getProperties();
+        if (props != null) {
+            cacheDimenions(props);
+            return width;
+        }
+        return 0;
+    }
+
+    // cache and return height from sprite properties if available
+    private int cacheHeight() {
+        ISpriteProperties props = spriteId.getProperties();
+        if (props != null) {
+            cacheDimenions(props);
+            return height;
+        }
+        return 0;
+    }
+
+    private void cacheDimenions(ISpriteProperties props) {
+        this.width = props.getWidth();
+        this.height = props.getHeight();
+        this.dimensionsCached = true;
     }
 }

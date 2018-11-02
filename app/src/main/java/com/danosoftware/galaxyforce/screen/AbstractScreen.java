@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.interfaces.Model;
 import com.danosoftware.galaxyforce.interfaces.Screen;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.Texture;
@@ -19,8 +20,7 @@ import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public abstract class AbstractScreen implements Screen
-{
+public abstract class AbstractScreen implements Screen {
     /* maximum number of sprites that can be displayed on screen at once */
     private static final int MAX_SPRITES = 1000;
 
@@ -30,10 +30,10 @@ public abstract class AbstractScreen implements Screen
     /**
      * Reference to model and controller. Each screen will have different
      * implementations of models and controllers.
-     * 
+     * <p>
      * All screen implementations of this abstract class must construct their
      * models and controller after calling this abstract super constructor.
-     * 
+     * <p>
      * Some models/controllers require views to be created before they can be
      * constructed.
      */
@@ -61,9 +61,9 @@ public abstract class AbstractScreen implements Screen
     /* TextureState identifies the texture map being used */
     private final TextureMap textureMap;
 
+
     public AbstractScreen(Model model, Controller controller, TextureMap textureMap, GLGraphics glGraphics, Camera2D camera,
-            SpriteBatcher batcher)
-    {
+                          SpriteBatcher batcher) {
         /*
          * initialise texture map containing sprite identifiers and properties
          */
@@ -82,8 +82,7 @@ public abstract class AbstractScreen implements Screen
     }
 
     @Override
-    public void draw(float deltaTime)
-    {
+    public void draw(float deltaTime) {
         GL10 gl = glGraphics.getGl();
 
         /* clear colour buffer */
@@ -97,27 +96,39 @@ public abstract class AbstractScreen implements Screen
         batcher.beginBatch(texture);
 
         // gets sprites from model
-        for (ISprite eachSprite : model.getSprites())
-        {
-                if (eachSprite.rotation() != 0)
-                {
-                    // use sprite with rotation method
-                    batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
-                            eachSprite.rotation(), eachSprite.textureRegion());
-                }
-                else
-                {
-                    // use normal sprite method
-                    batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
-                            eachSprite.textureRegion());
-                }
+        for (ISprite sprite : model.getSprites()) {
+            ISpriteIdentifier spriteId = sprite.spriteId();
+            ISpriteProperties props = spriteId.getProperties();
+
+            if (sprite.rotation() != 0) {
+                // use sprite with rotation method
+                batcher.drawSprite(
+                        sprite.x(),
+                        sprite.y(),
+                        props.getWidth(),
+                        props.getHeight(),
+                        sprite.rotation(),
+                        props.getTextureRegion());
+            } else {
+                // use normal sprite method
+                batcher.drawSprite(
+                        sprite.x(),
+                        sprite.y(),
+                        props.getWidth(),
+                        props.getHeight(),
+                        props.getTextureRegion());
+            }
         }
 
         // draw any text
-        for (Text eachText : model.getText())
-        {
-            gameFont.drawText(batcher, eachText.getText(), eachText.getX(), eachText.getY(), eachText.getTextPositionX(),
-                    eachText.getTextPositionY());
+        for (Text text : model.getText()) {
+            gameFont.drawText(
+                    batcher,
+                    text.getText(),
+                    text.getX(),
+                    text.getY(),
+                    text.getTextPositionX(),
+                    text.getTextPositionY());
         }
 
         batcher.endBatch();
@@ -125,15 +136,13 @@ public abstract class AbstractScreen implements Screen
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
         controller.update(deltaTime);
         model.update(deltaTime);
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         // pause model if whole game is paused (e.g. user presses home button)
         model.pause();
 
@@ -145,8 +154,7 @@ public abstract class AbstractScreen implements Screen
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Screen Resume.");
 
         /*
@@ -162,18 +170,21 @@ public abstract class AbstractScreen implements Screen
          * called after a new texture is re-loaded and before sprites can be
          * displayed.
          */
-        for (ISpriteIdentifier sprite : textureMap.getSpriteIdentifiers())
-        {
+        for (ISpriteIdentifier sprite : textureMap.getSpriteIdentifiers()) {
             sprite.updateProperties(texture);
         }
 
         // set-up fonts - can be null if sprite map has no fonts
         ISpriteIdentifier fontId = textureMap.getFontIdentifier();
 
-        if (fontId != null)
-        {
-            this.gameFont = new Font(texture, fontId.getProperties().getxPos(), fontId.getProperties().getyPos(),
-                    GameConstants.FONT_GLYPHS_PER_ROW, GameConstants.FONT_GLYPHS_WIDTH, GameConstants.FONT_GLYPHS_HEIGHT,
+        if (fontId != null) {
+            this.gameFont = new Font(
+                    texture,
+                    fontId.getProperties().getxPos(),
+                    fontId.getProperties().getyPos(),
+                    GameConstants.FONT_GLYPHS_PER_ROW,
+                    GameConstants.FONT_GLYPHS_WIDTH,
+                    GameConstants.FONT_GLYPHS_HEIGHT,
                     GameConstants.FONT_CHARACTER_MAP);
         }
 
@@ -181,8 +192,7 @@ public abstract class AbstractScreen implements Screen
          * can only initialise after textures have been loaded however must only
          * initialise once - not after pausing
          */
-        if (!initialised)
-        {
+        if (!initialised) {
             model.initialise();
             initialised = true;
         }
@@ -191,14 +201,12 @@ public abstract class AbstractScreen implements Screen
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         model.dispose();
     }
 
     @Override
-    public boolean handleBackButton()
-    {
+    public boolean handleBackButton() {
         model.goBack();
         return true;
     }

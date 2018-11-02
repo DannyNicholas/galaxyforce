@@ -21,6 +21,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
@@ -269,7 +270,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      */
     @Override
     public void moveBase(float weightingX, float weightingY, float deltaTime) {
-        if (state == ACTIVE) {
+        if (state == ACTIVE || state == MOVING_TO_START_POSITION) {
             // move and animate base
             moveHelper.moveBase(weightingX, weightingY, deltaTime);
 
@@ -559,8 +560,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         timeSinceBaseLastFired = 0f;
 
         // create and return missile
-        //return BaseMissileFactory.createBaseMissile(this, baseMissileType, direction, model);
-        return null;
+        return BaseMissileFactory.createBaseMissile(this, baseMissileType, model);
     }
 
 

@@ -12,15 +12,10 @@ import java.util.TreeMap;
 import static com.danosoftware.galaxyforce.constants.GameConstants.BASE_MAX_ENERGY_LEVEL;
 
 public class EnergyBar {
-    /* logger tag */
-    private static final String TAG = "EnergyBar";
 
-    // energy block height
-    private static final int ENERGY_HEIGHT = GameSpriteIdentifier.ENERGY_GREEN.getProperties().getHeight();
-
-    // energy block width - add 4 pixels to allow 2 pixel gap at either end when
-    // displayed
-    private static final int ENERGY_WIDTH = GameSpriteIdentifier.ENERGY_GREEN.getProperties().getWidth() + 4;
+    // energy block width - add 4 pixels to allow 2 pixel gap at either end
+    private static final int ENERGY_HEIGHT = 32;
+    private static final int ENERGY_WIDTH = 28 + 4;
 
     // start x,y position of flags
     private static final int ENERGY_START_X = 142 + (ENERGY_WIDTH / 2);

@@ -3,6 +3,8 @@ package com.danosoftware.galaxyforce.screen;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.interfaces.LevelModel;
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.TextureMap;
@@ -12,8 +14,7 @@ import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class SelectLevelScreen extends AbstractScreen
-{
+public class SelectLevelScreen extends AbstractScreen {
     /*
      * contains reference to level model needed for local override. This a
      * version of a model that has extra methods required for this screen.
@@ -21,8 +22,7 @@ public class SelectLevelScreen extends AbstractScreen
     private final LevelModel levelModel;
 
     public SelectLevelScreen(LevelModel model, Controller controller, TextureMap textureMap, GLGraphics glGraphics, Camera2D camera,
-            SpriteBatcher batcher)
-    {
+                             SpriteBatcher batcher) {
         /* use superclass constructor to create screen */
         super(model, controller, textureMap, glGraphics, camera, batcher);
 
@@ -34,8 +34,7 @@ public class SelectLevelScreen extends AbstractScreen
      * to right.
      */
     @Override
-    public void draw(float deltaTime)
-    {
+    public void draw(float deltaTime) {
         GL10 gl = glGraphics.getGl();
 
         /* clear colour buffer */
@@ -56,34 +55,52 @@ public class SelectLevelScreen extends AbstractScreen
          * scroll with other elements so offset stars by current camera offset.
          */
         float cameraOffset = levelModel.getScrollPosition();
-        for (ISprite eachSprite : levelModel.getStaticSprites())
-        {
-                batcher.drawSprite(eachSprite.x() + cameraOffset, eachSprite.y(), eachSprite.width(), eachSprite.height(),
-                        eachSprite.textureRegion());
+        for (ISprite sprite : levelModel.getStaticSprites()) {
+            ISpriteIdentifier spriteId = sprite.spriteId();
+            ISpriteProperties props = spriteId.getProperties();
+            batcher.drawSprite(
+                    sprite.x() + cameraOffset,
+                    sprite.y(),
+                    props.getWidth(),
+                    props.getHeight(),
+                    props.getTextureRegion());
         }
 
         // gets sprites from model
-        for (ISprite eachSprite : model.getSprites())
-        {
-            batcher.drawSprite(eachSprite.x(), eachSprite.y(), eachSprite.width(), eachSprite.height(),
-                    eachSprite.textureRegion());
+        for (ISprite sprite : model.getSprites()) {
+            ISpriteIdentifier spriteId = sprite.spriteId();
+            ISpriteProperties props = spriteId.getProperties();
+            batcher.drawSprite(
+                    sprite.x(),
+                    sprite.y(),
+                    props.getWidth(),
+                    props.getHeight(),
+                    props.getTextureRegion());
         }
 
         /*
          * gets static text from model - this text must not scroll with other
          * elements so offset stars by current camera offset.
          */
-        for (Text eachText : levelModel.getStaticText())
-        {
-            gameFont.drawText(batcher, eachText.getText(), eachText.getX() + cameraOffset, eachText.getY(), eachText.getTextPositionX(),
-                    eachText.getTextPositionY());
+        for (Text text : levelModel.getStaticText()) {
+            gameFont.drawText(
+                    batcher,
+                    text.getText(),
+                    text.getX() + cameraOffset,
+                    text.getY(),
+                    text.getTextPositionX(),
+                    text.getTextPositionY());
         }
 
         // draw any text
-        for (Text eachText : model.getText())
-        {
-            gameFont.drawText(batcher, eachText.getText(), eachText.getX(), eachText.getY(), eachText.getTextPositionX(),
-                    eachText.getTextPositionY());
+        for (Text text : model.getText()) {
+            gameFont.drawText(
+                    batcher,
+                    text.getText(),
+                    text.getX(),
+                    text.getY(),
+                    text.getTextPositionX(),
+                    text.getTextPositionY());
         }
 
         batcher.endBatch();

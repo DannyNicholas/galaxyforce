@@ -10,37 +10,27 @@ import com.danosoftware.galaxyforce.view.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuController implements Controller
-{
+public class MenuController implements Controller {
 
     /* reference to game input */
-    private Input input = null;
+    private final Input input;
 
     /* reference to the camera */
-    private Camera2D camera = null;
+    private final Camera2D camera;
 
     // list of any touch controllers to be processed (e.g. joystick, buttons).
-    private List<TouchController> touchControllers = null;
+    private final List<TouchController> touchControllers;
 
-    public MenuController(Input input, Camera2D camera)
-    {
+    public MenuController(Input input, Camera2D camera) {
         this.input = input;
         this.camera = camera;
-        this.touchControllers = new ArrayList<TouchController>();
+        this.touchControllers = new ArrayList<>();
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
 
-        List<TouchEvent> touchEvents = input.getTouchEvents();
-        int len = touchEvents.size();
-
-        for (int i = 0; i < len; i++)
-        {
-            // get current touch event
-            TouchEvent event = touchEvents.get(i);
-
+        for (TouchEvent event : input.getTouchEvents()) {
             // get pointer to identify touch event
             int pointerID = event.pointer;
 
@@ -54,12 +44,10 @@ public class MenuController implements Controller
             boolean processed = false;
 
             // process any wanted touch controllers (e.g. buttons, joysticks).
-            for (TouchController aTouchController : touchControllers)
-            {
+            for (TouchController aTouchController : touchControllers) {
                 // only process touch controller if no other controllers have
                 // already processed this touch point.
-                if (!processed)
-                {
+                if (!processed) {
                     processed = aTouchController.processTouchEvent(event, touchPoint, pointerID, deltaTime);
                 }
             }
@@ -68,14 +56,12 @@ public class MenuController implements Controller
     }
 
     @Override
-    public void addTouchController(TouchController touchController)
-    {
+    public void addTouchController(TouchController touchController) {
         touchControllers.add(touchController);
     }
 
     @Override
-    public void clearTouchControllers()
-    {
+    public void clearTouchControllers() {
         touchControllers.clear();
     }
 }

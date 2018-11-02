@@ -1,7 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
-import android.util.Log;
-
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
@@ -15,14 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Flag extends AbstractSprite implements ISprite
-{
-    /* logger tag */
-    private static final String TAG = "Flag";
-
+public class Flag extends AbstractSprite implements ISprite {
     // flags height and width
-    private static final int FLAGS_HEIGHT = GameSpriteIdentifier.FLAG_1.getProperties().getHeight();
-    private static final int FLAGS_WIDTH = GameSpriteIdentifier.FLAG_1.getProperties().getWidth();
+    private static final int FLAGS_HEIGHT = 32;
+    private static final int FLAGS_WIDTH = 32;
 
     // start x,y position of flags
     private static final int FLAGS_START_X = 0 + (FLAGS_WIDTH / 2);
@@ -36,9 +30,9 @@ public class Flag extends AbstractSprite implements ISprite
     private static final ISpriteIdentifier FLAG_1 = GameSpriteIdentifier.FLAG_1;
 
     // static map of level values to level flags
-    private static final Map<Integer, ISpriteIdentifier> flagMap = new HashMap<Integer, ISpriteIdentifier>();
-    static
-    {
+    private static final Map<Integer, ISpriteIdentifier> flagMap = new HashMap<>();
+
+    static {
         flagMap.put(100, Flag.FLAG_100);
         flagMap.put(50, Flag.FLAG_50);
         flagMap.put(10, Flag.FLAG_10);
@@ -46,8 +40,7 @@ public class Flag extends AbstractSprite implements ISprite
         flagMap.put(1, Flag.FLAG_1);
     }
 
-    public Flag(int x, int y, ISpriteIdentifier spriteId)
-    {
+    public Flag(int x, int y, ISpriteIdentifier spriteId) {
         super(spriteId, x, y);
     }
 
@@ -55,14 +48,13 @@ public class Flag extends AbstractSprite implements ISprite
      * Creates a map of used to illustrate the level using a set of flags. The
      * map key is the flag number and the map value contains the number of flags
      * needed of this type.
-     * 
+     * <p>
      * Flags used are 100, 50, 10, 5 and 1.
-     * 
+     * <p>
      * Example: Level 276 would be represented by 2 x 100 flags, 1 x 50 flag, 2
      * x 10 flags, 1 x 5 flag and 1 x 1 flag.
      */
-    public static List<Flag> getFlagList(int levelNumber)
-    {
+    public static List<Flag> getFlagList(int levelNumber) {
         List<Flag> flags = new ArrayList<Flag>();
 
         int remainder = levelNumber;
@@ -74,18 +66,14 @@ public class Flag extends AbstractSprite implements ISprite
         Collections.sort(flagKeysAsList);
 
         // calculate how many flags of each flag type are needed
-        for (int flag : Reversed.reversed(flagKeysAsList))
-        {
+        for (int flag : Reversed.reversed(flagKeysAsList)) {
             int numberOfFlags = remainder / flag;
             remainder = remainder - (numberOfFlags * flag);
-
-            Log.d(TAG, "Flag: " + flag + ". Number Of: " + numberOfFlags);
 
             ISpriteIdentifier flagSprite = flagMap.get(flag);
 
             // add the number of flags needed to the list
-            for (int i = 0; i < numberOfFlags; i++)
-            {
+            for (int i = 0; i < numberOfFlags; i++) {
                 flags.add(new Flag(flagXPosition, FLAGS_START_Y, flagSprite));
                 flagXPosition += FLAGS_WIDTH;
             }
