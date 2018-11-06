@@ -89,7 +89,7 @@ public abstract class AbstractSprite implements ISprite {
     private int cacheWidth() {
         ISpriteProperties props = spriteId.getProperties();
         if (props != null) {
-            cacheDimenions(props);
+            cacheDimensions(props);
             return width;
         }
         return 0;
@@ -99,13 +99,13 @@ public abstract class AbstractSprite implements ISprite {
     private int cacheHeight() {
         ISpriteProperties props = spriteId.getProperties();
         if (props != null) {
-            cacheDimenions(props);
+            cacheDimensions(props);
             return height;
         }
         return 0;
     }
 
-    private void cacheDimenions(ISpriteProperties props) {
+    private void cacheDimensions(ISpriteProperties props) {
         this.width = props.getWidth();
         this.height = props.getHeight();
         this.dimensionsCached = true;

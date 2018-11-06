@@ -16,7 +16,14 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
     // but will be cached once available.
     private int halfHeight;
     private int halfWidth;
-    private boolean cachedDimensions = false;
+
+    // are bounds cached?
+    // once cached, bounds are valid until sprite moves or changes size
+    private boolean boundsCached;
+
+    // are half-height/width dimensions cached?
+    // once cached, dimensions are valid until sprite changes size
+    private boolean dimensionsCached;
 
     public AbstractCollidingSprite(
             final ISpriteIdentifier spriteId,
@@ -24,7 +31,8 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
             final int y,
             final int rotation) {
         super(spriteId, x, y, rotation);
-        cacheDimensions();
+        this.dimensionsCached = false;
+        this.boundsCached = false;
     }
 
     public AbstractCollidingSprite(
@@ -36,57 +44,51 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
 
     @Override
     public Rectangle getBounds() {
-        if (cachedDimensions) {
+        if (boundsCached) {
             return bounds;
         }
-        return cacheDimensions();
+        return bounds();
     }
 
     @Override
     public void move(int x, int y) {
         super.move(x, y);
-        updateBounds();
+        this.boundsCached = false;
     }
 
     @Override
     public void changeType(ISpriteIdentifier newSpriteId) {
-        ISpriteIdentifier oldSprite = spriteId();
-        super.changeType(newSpriteId);
-        if (oldSprite != newSpriteId) {
-            cacheDimensions();
+        if (this.spriteId() != newSpriteId) {
+            this.dimensionsCached = false;
+            this.boundsCached = false;
         }
+        super.changeType(newSpriteId);
     }
 
-    // cache bounds using sprite properties if available
-    private Rectangle cacheDimensions() {
-        if (spriteId().getProperties() != null) {
-            this.halfHeight = this.height() / 2;
-            this.halfWidth = this.width() / 2;
-            this.cachedDimensions = true;
-            updateBounds();
+    // create and return bounds.
+    // will try to create bounds from sprite properties (if available) and cache result
+    // otherwise zero width/height bounds are returned
+    private Rectangle bounds() {
+        if (dimensionsCached || spriteId().getProperties() != null) {
+            cacheBounds();
             return bounds;
         }
-
-        return new Rectangle(
-                0,
-                0,
-                0,
-                0);
+        return new Rectangle(x(), y(), 0, 0);
     }
 
-    /**
-     * Recalculates sprite's bounding rectangle.
-     * Used for collision detection.
-     * Must be updated on sprite creation,
-     * sprite change and after every position move.
-     */
-    private void updateBounds() {
-        if (cachedDimensions) {
-            this.bounds = new Rectangle(
-                    x() - halfWidth,
-                    y() - halfHeight,
-                    width(),
-                    height());
+    // cache dimensions and bounds
+    private void cacheBounds() {
+        if (!dimensionsCached) {
+            this.halfHeight = height() / 2;
+            this.halfWidth = width() / 2;
+            this.dimensionsCached = true;
         }
+
+        this.bounds = new Rectangle(
+                x() - halfWidth,
+                y() - halfHeight,
+                width(),
+                height());
+        this.boundsCached = true;
     }
 }
