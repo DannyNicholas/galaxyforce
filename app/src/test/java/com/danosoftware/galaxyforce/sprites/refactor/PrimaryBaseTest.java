@@ -58,9 +58,6 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({Log.class, SoundEffectBankSingleton.class, VibrationSingleton.class, Textures.class})
 public class PrimaryBaseTest {
 
-    private static final int INITIAL_X = 100;
-    private static final int INITIAL_Y = 100;
-
     TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
 
     private IBasePrimary primaryBase;
@@ -102,18 +99,25 @@ public class PrimaryBaseTest {
     }
 
 
+    @Test
+    public void baseShouldBeActive() {
+        assertThat(primaryBase.activeBases(), hasItem(primaryBase));
+    }
+
     @Test()
     public void shouldMoveBaseX() {
+        primaryBase.move(0, 0);
         primaryBase.moveBase(1,0,0.5f);
-        assertThat(primaryBase.x(), is(INITIAL_X + 300));
-        assertThat(primaryBase.y(), is(INITIAL_Y));
+        assertThat(primaryBase.x(), is(300));
+        assertThat(primaryBase.y(), is(0));
     }
 
     @Test()
     public void shouldMoveBaseY() {
+        primaryBase.move(0, 0);
         primaryBase.moveBase(0,1,0.5f);
-        assertThat(primaryBase.x(), is(INITIAL_X));
-        assertThat(primaryBase.y(), is(INITIAL_Y + 300));
+        assertThat(primaryBase.x(), is(0));
+        assertThat(primaryBase.y(), is(300));
     }
 
     // this test will move test sprite to max position
@@ -138,12 +142,13 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shouldNotMoveAfterBeingDestroyed() {
+        primaryBase.move(0, 0);
         primaryBase.destroy();
         primaryBase.moveBase(1,1,5f);
 
         // confirm base hasn't moved
-        assertThat(primaryBase.x(), is(INITIAL_X));
-        assertThat(primaryBase.y(), is(INITIAL_Y));
+        assertThat(primaryBase.x(), is(0));
+        assertThat(primaryBase.y(), is(0));
     }
 
     @Test()
@@ -156,11 +161,13 @@ public class PrimaryBaseTest {
     }
 
     @Test()
-    public void baseShouldBeDestroyedWhenHitByPowerfulMissile() {
+    public void baseShouldBeDestroyedWhenHitByPowerfulMissile() throws NoSuchFieldException, IllegalAccessException {
+        removeShield(primaryBase);
+        IBasePrimary baseSpy = spy(primaryBase);
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(100);
-        primaryBaseSpy.onHitBy(missile);
-        verify(primaryBaseSpy, times(1)).destroy();
+        baseSpy.onHitBy(missile);
+        verify(baseSpy, times(1)).destroy();
     }
 
     @Test()
@@ -174,34 +181,41 @@ public class PrimaryBaseTest {
     }
 
     @Test()
-    public void baseShouldRemainActiveWhenHitByWeakMissile() {
+    public void baseShouldRemainActiveWhenHitByWeakMissile() throws NoSuchFieldException, IllegalAccessException {
+        removeShield(primaryBase);
+        IBasePrimary baseSpy = spy(primaryBase);
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(1);
-        primaryBaseSpy.onHitBy(missile);
-        verify(primaryBaseSpy, times(0)).destroy();
+        baseSpy.onHitBy(missile);
+        verify(baseSpy, times(0)).destroy();
     }
 
     @Test()
-    public void baseShouldBeDestroyedAfterEightHits() {
+    public void baseShouldBeDestroyedAfterEightHits() throws NoSuchFieldException, IllegalAccessException {
+        removeShield(primaryBase);
+        IBasePrimary baseSpy = spy(primaryBase);
         IAlienMissile missile = mock(IAlienMissile.class);
         when(missile.energyDamage()).thenReturn(1);
         for (int i = 0; i < 7; i++) {
-            primaryBaseSpy.onHitBy(missile);
-            verify(primaryBaseSpy, times(0)).destroy();
+            baseSpy.onHitBy(missile);
+            verify(baseSpy, times(0)).destroy();
         }
-        primaryBaseSpy.onHitBy(missile);
-        verify(primaryBaseSpy, times(1)).destroy();
+        baseSpy.onHitBy(missile);
+        verify(baseSpy, times(1)).destroy();
     }
 
     @Test()
-    public void baseShouldBeDestroyedWhenHitByAlien() {
-        primaryBaseSpy.onHitBy(mock(IAlien.class));
-        verify(primaryBaseSpy, times(1)).destroy();
+    public void baseShouldBeDestroyedWhenHitByAlien() throws NoSuchFieldException, IllegalAccessException {
+        removeShield(primaryBase);
+        IBasePrimary baseSpy = spy(primaryBase);
+        baseSpy.onHitBy(mock(IAlien.class));
+        verify(baseSpy, times(1)).destroy();
     }
 
     @Test()
     public void shieldedBaseShouldNotBeDestroyedWhenHitByAlien() {
-        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = mock(IPowerUp.class);
+        when(shieldPowerUp.getPowerUpType()).thenReturn(PowerUpType.SHIELD);
         primaryBaseSpy.collectPowerUp(shieldPowerUp);
         primaryBaseSpy.onHitBy(mock(IAlien.class));
         verify(primaryBaseSpy, times(0)).destroy();
@@ -222,28 +236,13 @@ public class PrimaryBaseTest {
 
     @Test
     public void baseShouldCollectPowerUp() throws NoSuchFieldException, IllegalAccessException {
-        IPowerUp guidedMissilePowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_MISSILE_GUIDED, 0, 0, PowerUpType.MISSILE_GUIDED);
+        IPowerUp guidedMissilePowerUp = mock(IPowerUp.class);
+        when(guidedMissilePowerUp.getPowerUpType()).thenReturn(PowerUpType.MISSILE_GUIDED);
         primaryBase.collectPowerUp(guidedMissilePowerUp);
+
         BaseMissileType missileType = missileType(primaryBase);
         assertThat(missileType, is(BaseMissileType.GUIDED));
     }
-
-    // this may not be a valid test since destroyed base will never collide with power-up
-    @Test
-    public void baseShouldNotCollectPowerUpWhenDestroyed() throws NoSuchFieldException, IllegalAccessException {
-        IPowerUp guidedMissilePowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_MISSILE_GUIDED, 0, 0, PowerUpType.MISSILE_GUIDED);
-        primaryBase.destroy();
-        primaryBase.collectPowerUp(guidedMissilePowerUp);
-        BaseMissileType missileType = missileType(primaryBase);
-        assertThat(missileType, not(BaseMissileType.GUIDED));
-    }
-
-
-
-
-
-
-
 
 
     ///////
@@ -306,7 +305,8 @@ public class PrimaryBaseTest {
         primaryBase.helperCreated(RIGHT, rightHelper);
 
         // add shield to primary base
-        IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
+        IPowerUp shieldPowerUp = mock(IPowerUp.class);
+        when(shieldPowerUp.getPowerUpType()).thenReturn(PowerUpType.SHIELD);
         primaryBase.collectPowerUp(shieldPowerUp);
 
         // verify helper bases were also given shields
@@ -376,6 +376,13 @@ public class PrimaryBaseTest {
         Field f = helper.getClass().getDeclaredField("state");
         f.setAccessible(true);
         return (BaseState) f.get(helper);
+    }
+
+    // use reflection to remove base shield - base shielded on construction
+    private void removeShield(IBasePrimary base) throws NoSuchFieldException, IllegalAccessException {
+        Field f = base.getClass().getDeclaredField("shielded");
+        f.setAccessible(true);
+        f.set(base, false);
     }
 
     // use reflection to get base internal state

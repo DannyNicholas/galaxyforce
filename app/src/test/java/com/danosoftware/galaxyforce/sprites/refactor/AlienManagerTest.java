@@ -131,9 +131,9 @@ public class AlienManagerTest {
 
     @Test
     public void shouldReturnNullIfSelectingFromNoActiveAliens() {
-        // destroy all aliens
+        // destroy all mocked aliens
         for (IAlien alien : alienMgr.activeAliens()) {
-            alien.destroy();
+            when(alien.isActive()).thenReturn(false);
         }
 
         IAlien selectedAlien = alienMgr.chooseActiveAlien();
@@ -149,7 +149,9 @@ public class AlienManagerTest {
     @Test
     public void spawnAlienTest() {
         // when animate is called on an alien, call the spawn alien method
-        final List<IAlien> spawnedAliens = Arrays.asList(mock(IAlien.class));
+        IAlien spawnedAlien = mock(IAlien.class);
+        when(spawnedAlien.isVisible()).thenReturn(true);
+        final List<IAlien> spawnedAliens = Arrays.asList(spawnedAlien);
         doAnswer(new Answer() {
             @Override
             public Object answer(InvocationOnMock invocation) {
@@ -158,13 +160,13 @@ public class AlienManagerTest {
             }
         }).when(mockAlien).animate(any(Float.class));
 
+        // first animation loop will queue up the spawned aliens
+        alienMgr.animate(0);
 
-        // confirm that the animate cycle successfully allows existing aliens to spawns new aliens
+        // spawned aliens will be added in second loop
         alienMgr.animate(0);
 
         // confirm every alien has spawned a new alien
-        //TODO this may throw a concurrent exception in which case the alien manager
-        // should queue spawned aliens and add them at end of animation loop
         assertThat(alienMgr.allAliens().size(), equalTo(20));
     }
 }

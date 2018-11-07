@@ -35,12 +35,17 @@ public class AlienManager implements IAlienManager {
     private SubWaveState subWaveState;
     private boolean repeatedSubWave;
 
+    // temporary queue of spawned aliens that will be added to the
+    // main alien list at start of each animation loop
+    private List<IAlien> spawnedAliens;
+
 
     public AlienManager(WaveManager waveManager) {
         this.waveManager = waveManager;
         this.aliens = new ArrayList<>();
         this.activeAliens = new ArrayList<>();
         this.visibleAliens = new ArrayList<>();
+        this.spawnedAliens = new ArrayList<>();
         this.subWaveState = IDLE;
     }
 
@@ -60,6 +65,12 @@ public class AlienManager implements IAlienManager {
         List<IAlien> nonDestroyedAliens = new ArrayList<>();
         List<IAlien> currentActiveAliens = new ArrayList<>();
         List<IAlien> currentVisibleAliens = new ArrayList<>();
+
+        // add queued spawned aliens.
+        // spawned aliens are newly created aliens to the wave.
+        // they should appear behind existing sprites so are added to beginning of list
+        aliens.addAll(0, spawnedAliens);
+        spawnedAliens.clear();
 
         for (IAlien alien : aliens) {
             alien.animate(deltaTime);
@@ -97,9 +108,10 @@ public class AlienManager implements IAlienManager {
 
     @Override
     public void spawnAliens(List<IAlien> spawnedAliens) {
-        // spawned aliens are newly created aliens to the wave.
-        // they should appear behind existing sprites so are added to beginning of list
-        this.aliens.addAll(0, spawnedAliens);
+        // add spawned aliens to temporary queue.
+        // we can't add them directly to the main alien list as this would cause a
+        // concurrent modification exception within the animation loop.
+        this.spawnedAliens.addAll(spawnedAliens);
     }
 
     @Override
@@ -130,6 +142,16 @@ public class AlienManager implements IAlienManager {
 
     @Override
     public IAlien chooseActiveAlien() {
+
+        // refresh active alien list
+        List<IAlien> currentActiveAliens = new ArrayList<>();
+        for (IAlien alien : aliens) {
+            if (alien.isActive()) {
+                currentActiveAliens.add(alien);
+            }
+        }
+        this.activeAliens = currentActiveAliens;
+
         // if no aliens are active return null
         if (activeAliens.size() == 0) {
             return null;

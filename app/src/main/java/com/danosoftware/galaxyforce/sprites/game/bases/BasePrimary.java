@@ -204,7 +204,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private List<IBase> buildActiveBases() {
         final List<IBase> activeBases = new ArrayList<>();
 
-        if (state == ACTIVE) {
+        if (state == ACTIVE || state == MOVING_TO_START_POSITION) {
             activeBases.add(this);
             activeBases.addAll(activeHelpers.values());
         }
@@ -580,6 +580,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         if (!shielded) {
             shielded = true;
             shield = new BaseShield(x(), y(), SHIELD_PULSE, syncTime);
+        }
 
             // add shield for any helper bases
             for (IBaseHelper aHelperBase : helpers.values()) {
@@ -588,7 +589,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
             // refresh list of sprites
             this.allSprites = buildAllSprites();
-        }
     }
 
     private void removeShield() {
