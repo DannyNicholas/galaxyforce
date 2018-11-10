@@ -29,7 +29,7 @@ public class AlienAsteroid extends AbstractAlien {
 
     // hit animation
     private static final Animation HIT_ANIMATION = new Animation(
-            0f, GameSpriteIdentifier.EXPLODE_03);
+            0f, GameSpriteIdentifier.ALIEN_GOBBY_LEFT);
 
     /*
      * ******************************************************

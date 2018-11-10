@@ -15,7 +15,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 public class HitAnimation implements HitBehaviour {
 
     // max time to display hit
-    private static float HIT_TIME_MILLISECONDS = 1000 * 1f;
+    private static float HIT_TIME_SECONDS = 0.5f;
 
     // hit animation
     private final Animation hitAnimation;
@@ -49,7 +49,7 @@ public class HitAnimation implements HitBehaviour {
     public ISpriteIdentifier getHit(float deltaTime) {
         stateTime += deltaTime;
         timeSinceHit += deltaTime;
-        if (timeSinceHit > HIT_TIME_MILLISECONDS) {
+        if (timeSinceHit > HIT_TIME_SECONDS) {
             this.hit = false;
         }
         return hitAnimation.getKeyFrame(stateTime, Animation.ANIMATION_NONLOOPING);
