@@ -118,4 +118,9 @@ public interface GameHandler extends PlayModel {
      * Typically used to update the energy bar assets.
      */
     void energyUpdate(int energy);
+
+    /**
+     * Add an extra base life to the game.
+     */
+    void addLife();
 }

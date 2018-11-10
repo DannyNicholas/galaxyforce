@@ -404,6 +404,12 @@ public class GamePlayHandlerRefactor implements GameHandler {
     }
 
     @Override
+    public void addLife() {
+        lives++;
+        assets.setLives(lives);
+    }
+
+    @Override
     public void flashText(Text text, boolean flashState) {
         if (flashState) {
             getReadyTexts.add(text);

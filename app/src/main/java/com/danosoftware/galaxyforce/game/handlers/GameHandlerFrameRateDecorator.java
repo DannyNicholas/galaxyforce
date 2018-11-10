@@ -139,6 +139,11 @@ public class GameHandlerFrameRateDecorator implements GameHandler {
     }
 
     @Override
+    public void addLife() {
+        gameHandler.addLife();
+    }
+
+    @Override
     public void flashText(Text text, boolean flashState) {
         gameHandler.flashText(text, flashState);
     }

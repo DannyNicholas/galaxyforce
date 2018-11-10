@@ -348,7 +348,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
             // add extra life
             case LIFE:
-                //model.increaseLives();
+                model.addLife();
                 break;
 
             // add blast missile for set time
