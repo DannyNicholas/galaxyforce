@@ -19,8 +19,8 @@ public class Flag extends AbstractSprite
     private static final String TAG = "Flag";
 
     // flags height and width
-    private static final int FLAGS_HEIGHT = GameSpriteIdentifier.FLAG_1.getProperties().getHeight();
-    private static final int FLAGS_WIDTH = GameSpriteIdentifier.FLAG_1.getProperties().getWidth();
+    private static final int FLAGS_HEIGHT = 32;
+    private static final int FLAGS_WIDTH = 32;
 
     // start x,y position of flags
     private static final int FLAGS_START_X = 0 + (FLAGS_WIDTH / 2);

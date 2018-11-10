@@ -16,7 +16,8 @@ import com.danosoftware.galaxyforce.view.Animation;
 public class ExplodeSimple implements ExplodeBehaviour
 {
     // explosion animation
-    private static final Animation EXPLOSION_ANIMATION = new Animation(0.15f, GameSpriteIdentifier.EXPLODE_01,
+    // NOTE: not static. each instance needs it's own animation
+    private final Animation animation = new Animation(0.15f, GameSpriteIdentifier.EXPLODE_01,
             GameSpriteIdentifier.EXPLODE_02, GameSpriteIdentifier.EXPLODE_03);
 
     /* initialise sound effects */
@@ -57,12 +58,12 @@ public class ExplodeSimple implements ExplodeBehaviour
     public ISpriteIdentifier getExplosion(float deltaTime)
     {
         explosionTime += deltaTime;
-        return EXPLOSION_ANIMATION.getKeyFrame(explosionTime, Animation.ANIMATION_NONLOOPING);
+        return animation.getKeyFrame(explosionTime, Animation.ANIMATION_NONLOOPING);
     }
 
     @Override
     public boolean finishedExploding()
     {
-        return EXPLOSION_ANIMATION.isAnimationComplete();
+        return animation.isAnimationComplete();
     }
 }

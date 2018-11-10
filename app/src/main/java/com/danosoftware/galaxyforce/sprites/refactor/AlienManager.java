@@ -141,6 +141,11 @@ public class AlienManager implements IAlienManager {
     }
 
     @Override
+    public boolean isWaveIdle() {
+        return (subWaveState == IDLE);
+    }
+
+    @Override
     public IAlien chooseActiveAlien() {
 
         // refresh active alien list

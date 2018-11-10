@@ -607,6 +607,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     @Override
     public boolean isDestroyed() {
-        return false;
+        return state == DESTROYED;
     }
 }

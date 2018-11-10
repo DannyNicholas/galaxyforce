@@ -142,9 +142,6 @@ public class GamePlayHandlerRefactor implements GameHandler {
      * Instance variables required in NEW_BASE state
      */
 
-    // previous model state before adding a new base
-    private ModelState previousModelState;
-
     /*
      * ******************************************************
      *
@@ -192,6 +189,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
         /* create new base at default position */
         addNewBase();
+
     }
 
     /*
@@ -318,15 +316,15 @@ public class GamePlayHandlerRefactor implements GameHandler {
         //baseController.reset();
 
         // if we were previously playing, return to playing state.
-        if (previousModelState == ModelState.PLAYING)
-        {
+//        if (previousModelState == ModelState.PLAYING)
+//        {
             modelState = ModelState.PLAYING;
-        }
-        // otherwise set-up next level
-        else
-        {
-            setupLevel();
-        }
+//        }
+//        // otherwise set-up next level
+//        else
+//        {
+//            setupLevel();
+//        }
     }
 
     @Override
@@ -530,13 +528,19 @@ public class GamePlayHandlerRefactor implements GameHandler {
              */
             setupNewBase();
         }
-        else if (alienManager.isWaveComplete())
-        {
+        else if (alienManager.isWaveComplete()) {
             /*
              * if base not destroyed and wave finished then start next level.
              * special case: if the base and last alien was destroyed at the
              * same time, then the new base state will handle the setting up of
              * the next level after it leaves the new base state.
+             */
+            setupLevel();
+        } else if (alienManager.isWaveIdle()) {
+            /*
+             * only occurs after wave manager construction before any waves have been set-up.
+             * used to set-up the first wave after adding the base without triggering all
+             * the unwanted wave complete events.
              */
             setupLevel();
         }
@@ -673,12 +677,12 @@ public class GamePlayHandlerRefactor implements GameHandler {
          */
         if (timeSinceGetReady > GET_READY_DELAY && alienManager.isWaveReady()) {
             getReadyTexts.clear();
-            if (primaryBase == null) {
-                addNewBase();
-            }
-            else {
+//            if (primaryBase == null) {
+//                addNewBase();
+//            }
+//            else {
                 modelState = ModelState.PLAYING;
-            }
+//            }
         }
     }
 
