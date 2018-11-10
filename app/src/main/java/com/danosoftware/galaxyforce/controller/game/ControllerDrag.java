@@ -1,11 +1,11 @@
 package com.danosoftware.galaxyforce.controller.game;
 
+import com.danosoftware.galaxyforce.controller.interfaces.BaseTouchController;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
-import com.danosoftware.galaxyforce.controller.interfaces.TouchController;
 import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Vector2;
 
-public class ControllerDrag implements TouchController //BaseController
+public class ControllerDrag implements BaseTouchController //BaseController
 {
     // pointer to finger currently controlling this drag
     private int dragPointer = -1;
@@ -14,12 +14,12 @@ public class ControllerDrag implements TouchController //BaseController
 //    private final GameHandler model;
 
     /* reference to drag model */
-    private final TouchBaseControllerModel dragModel;
+    private TouchBaseControllerModel dragModel;
 
-    public ControllerDrag(TouchBaseControllerModel dragModel)
-    {
-//        this.model = model;
+    @Override
+    public void setBaseController(TouchBaseControllerModel dragModel) {
         this.dragModel = dragModel;
+
     }
 
     @Override
@@ -57,6 +57,7 @@ public class ControllerDrag implements TouchController //BaseController
 
         return processed;
     }
+
 
 //    @Override
 //    public void reset()

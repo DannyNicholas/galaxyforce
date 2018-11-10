@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.buttons.interfaces.SpriteButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controller.game.BaseDragModel;
 import com.danosoftware.galaxyforce.controller.game.ControllerDrag;
+import com.danosoftware.galaxyforce.controller.interfaces.BaseTouchController;
 import com.danosoftware.galaxyforce.controller.interfaces.Controller;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
 import com.danosoftware.galaxyforce.controller.utilities.DetectButtonTouch;
@@ -113,6 +114,9 @@ public class GamePlayHandlerRefactor implements GameHandler {
     // allows the current base controller method (e.g. drag) to be changed
     private Controller controller;
 
+    // specific controller to move current base
+    private BaseTouchController baseTouchController;
+
     // used to change the current model state
     private GameModel model;
 
@@ -186,6 +190,9 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
         /* reset lives */
         lives = START_LIVES;
+
+        // set-up controllers
+        initialiseControllers();
 
         /* create new base at default position */
         addNewBase();
@@ -433,17 +440,33 @@ public class GamePlayHandlerRefactor implements GameHandler {
         controller.clearTouchControllers();
 
         /*
+         * initialise pause and flip buttons
+         */
+        pauseButton = new PauseButton(this);
+
+        // add a new button to controller's list of touch controllers
+        controller.addTouchController(new DetectButtonTouch(pauseButton));
+
+        /*
          * get the base controller using currently selected option. if option
          * has not changed then the same base controller will be returned.
          */
-        TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
+//        TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
 //        TouchController baseTouchController = new ControllerDrag(baseController);
 
 
 
 //       TouchController baseTouchController = BaseControllerFactory.getBaseController(primaryBase);
         // set controller's base controller to use drag
-        controller.addTouchController(new ControllerDrag(baseController));
+        this.baseTouchController = new ControllerDrag();
+        if (primaryBase != null) {
+            TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
+            baseTouchController.setBaseController(baseController);
+        }
+
+
+        controller.addTouchController(baseTouchController);
+
 
         /*
          * reset controller. important for drag controller as sets target to
@@ -451,14 +474,8 @@ public class GamePlayHandlerRefactor implements GameHandler {
          */
 //        baseController.reset();
 
-        /*
-         * initialise pause and flip buttons
-         */
-        pauseButton = new PauseButton(this);
-
-        // add a new button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(pauseButton));
     }
+
 
     /**
      * Checks if the level has finished. if so set-up next level.
@@ -653,7 +670,8 @@ public class GamePlayHandlerRefactor implements GameHandler {
         primaryBase = new BasePrimary(this);
 
         // bind controller to the new base
-        initialiseControllers();
+        TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
+        baseTouchController.setBaseController(baseController);
 
         // reduce remaining lives by 1
         lives--;

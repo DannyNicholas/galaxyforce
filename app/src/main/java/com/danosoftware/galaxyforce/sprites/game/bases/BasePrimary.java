@@ -182,11 +182,14 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      */
     private List<ISprite> buildAllSprites() {
         final List<ISprite> sprites = new ArrayList<>();
-        sprites.add(this);
-//        sprites.addAll(energyBar.getEnergyBar());
-        if (shielded) {
-            sprites.add(shield);
+
+        if (!isDestroyed()) {
+            sprites.add(this);
+            if (shielded) {
+                sprites.add(shield);
+            }
         }
+
         for (IBaseHelper helper : helpers.values()) {
             sprites.addAll(helper.allSprites());
         }
@@ -252,6 +255,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         if (state == EXPLODING) {
             if (explosion.finishedExploding()) {
                 state = DESTROYED;
+                this.allSprites = buildAllSprites();
+                this.activeBases = buildActiveBases();
             } else {
                 changeType(explosion.getExplosion(deltaTime));
             }

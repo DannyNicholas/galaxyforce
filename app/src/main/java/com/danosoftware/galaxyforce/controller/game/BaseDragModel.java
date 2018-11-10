@@ -148,11 +148,11 @@ public class BaseDragModel implements TouchBaseControllerModel
         // if distance is small then don't change current point.
         float touchDistance = (float) Math.sqrt(
                 Math.pow(touchX - targetX, 2) + Math.pow(touchY - targetY, 2));
-        if (touchDistance > TOUCH_MOVE_RADIUS)
-        {
+        if (touchDistance > TOUCH_MOVE_RADIUS) {
             // update target position based on new touch point
             this.targetX = touchX;
             this.targetY = touchY;
+        }
 
             // adjust base position by the offset
             // weighting is calculated from base to touch point
@@ -177,7 +177,7 @@ public class BaseDragModel implements TouchBaseControllerModel
 
             // remove drag sprite when touching screen
 //            sprites.clear();
-        }
+
 
 //        else
 //        {
