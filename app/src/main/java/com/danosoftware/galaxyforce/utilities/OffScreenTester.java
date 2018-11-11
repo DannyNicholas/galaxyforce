@@ -15,10 +15,10 @@ public class OffScreenTester {
      * position/dimensions against all screen edges.
      */
     public static final boolean offScreenAnySide(ISprite sprite) {
-        return (sprite.y() > GAME_HEIGHT - sprite.height()
-                || sprite.y() < 0 - sprite.height()
-                || sprite.x() > GAME_WIDTH - sprite.width()
-                || sprite.x() < 0 - sprite.width());
+        return (sprite.y() >= GAME_HEIGHT + sprite.halfHeight()
+                || sprite.y() <= 0 - sprite.halfHeight()
+                || sprite.x() >= GAME_WIDTH + sprite.halfWidth()
+                || sprite.x() <= 0 - sprite.halfWidth());
     }
 
     /**
@@ -26,7 +26,7 @@ public class OffScreenTester {
      * position/dimensions against the top edge.
      */
     public static final boolean offScreenTop(ISprite sprite) {
-        return (sprite.y() > (GAME_HEIGHT - sprite.height()));
+        return (sprite.y() >= (GAME_HEIGHT + sprite.halfHeight()));
     }
 
     /**
@@ -34,6 +34,6 @@ public class OffScreenTester {
      * position/dimensions against the bottom edge.
      */
     public static final boolean offScreenBottom(ISprite sprite) {
-        return (sprite.y() < 0 - sprite.height());
+        return (sprite.y() <= 0 - sprite.halfHeight());
     }
 }

@@ -17,6 +17,8 @@ public class AbstractSpriteTest {
 
     private static final int HEIGHT = 24;
     private static final int WIDTH = 32;
+    private static final int HALF_HEIGHT = HEIGHT / 2;
+    private static final int HALF_WIDTH = WIDTH / 2;
 
     // test implementation of an abstract sprite
     private static class TestSprite extends AbstractSprite {
@@ -43,10 +45,14 @@ public class AbstractSpriteTest {
     public void shouldReturnZeroWidthAndHeightWhenSpriteNotLoaded() {
         int height = sprite.height();
         int width = sprite.width();
+        int halfHeight = sprite.halfHeight();
+        int halfWidth = sprite.halfWidth();
 
         assertThat(height, equalTo(0));
         assertThat(width, equalTo(0));
-        verify(spriteId, times(2)).getProperties();
+        assertThat(halfHeight, equalTo(0));
+        assertThat(halfWidth, equalTo(0));
+        verify(spriteId, times(4)).getProperties();
         verify(props, times(0)).getHeight();
         verify(props, times(0)).getWidth();
     }
@@ -59,9 +65,13 @@ public class AbstractSpriteTest {
 
         int height = sprite.height();
         int width = sprite.width();
+        int halfHeight = sprite.halfHeight();
+        int halfWidth = sprite.halfWidth();
 
         assertThat(height, equalTo(HEIGHT));
         assertThat(width, equalTo(WIDTH));
+        assertThat(halfHeight, equalTo(HALF_HEIGHT));
+        assertThat(halfWidth, equalTo(HALF_WIDTH));
         verify(spriteId, times(1)).getProperties();
         verify(props, times(1)).getHeight();
         verify(props, times(1)).getWidth();
@@ -75,15 +85,23 @@ public class AbstractSpriteTest {
 
         int height = sprite.height();
         int width = sprite.width();
+        int halfHeight = sprite.halfHeight();
+        int halfWidth = sprite.halfWidth();
 
         // multiple unneccessary calls - should all be cached
         sprite.height();
         sprite.width();
+        sprite.halfHeight();
+        sprite.halfWidth();
         sprite.height();
         sprite.width();
+        sprite.halfHeight();
+        sprite.halfWidth();
 
         assertThat(height, equalTo(HEIGHT));
         assertThat(width, equalTo(WIDTH));
+        assertThat(halfHeight, equalTo(HALF_HEIGHT));
+        assertThat(halfWidth, equalTo(HALF_WIDTH));
         verify(spriteId, times(1)).getProperties();
         verify(props, times(1)).getHeight();
         verify(props, times(1)).getWidth();
@@ -105,6 +123,8 @@ public class AbstractSpriteTest {
         // confirm initial behaviour
         assertThat(sprite.height(), equalTo(HEIGHT));
         assertThat(sprite.width(), equalTo(WIDTH));
+        assertThat(sprite.halfHeight(), equalTo(HALF_HEIGHT));
+        assertThat(sprite.halfWidth(), equalTo(HALF_WIDTH));
         verify(spriteId, times(1)).getProperties();
         verify(props, times(1)).getHeight();
         verify(props, times(1)).getWidth();
@@ -115,6 +135,8 @@ public class AbstractSpriteTest {
         // confirm new sprite results in additional call to props and different dimensions
         assertThat(sprite.height(), equalTo(100));
         assertThat(sprite.width(), equalTo(200));
+        assertThat(sprite.halfHeight(), equalTo(50));
+        assertThat(sprite.halfWidth(), equalTo(100));
         verify(alternativeSpriteId, times(1)).getProperties();
         verify(altProps, times(1)).getHeight();
         verify(altProps, times(1)).getWidth();

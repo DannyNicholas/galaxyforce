@@ -162,8 +162,8 @@ public class AbstractCollidingSpriteTest {
         // confirm new sprite results in additional call to props and different dimensions
         verifyRectangle(sprite.getBounds(), MOVED_BOUNDS);
 
-        // shouldn't make any extra calls to properties
-        verify(spriteId, times(2)).getProperties();
+        // should only make any extra call to check properties
+        verify(spriteId, times(3)).getProperties();
         verify(props, times(1)).getWidth();
         verify(props, times(1)).getHeight();
     }

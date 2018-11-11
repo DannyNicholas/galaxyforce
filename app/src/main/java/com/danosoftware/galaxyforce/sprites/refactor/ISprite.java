@@ -10,6 +10,10 @@ public interface ISprite {
 
     int height();
 
+    int halfWidth();
+
+    int halfHeight();
+
     int rotation();
 
     int x();
