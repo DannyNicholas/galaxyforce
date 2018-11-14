@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class GamePlayHandlerRefactor implements GameHandler {
+public class GamePlayHandler implements GameHandler {
 
     /*
      * ******************************************************
@@ -68,7 +68,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
         GET_READY, NEW_BASE, PLAYING
     }
 
-    private static final String TAG = GamePlayHandlerRefactor.class.getSimpleName();
+    private static final String TAG = GamePlayHandler.class.getSimpleName();
 
     // number of lives for new game
     private static final int START_LIVES = 3;
@@ -107,18 +107,14 @@ public class GamePlayHandlerRefactor implements GameHandler {
     // provides vibration within the game
     private final Vibration vibrator;
 
-    //TODO make immutable in future
-    // provides updates on the base movement
-//    private BaseControllerModel baseController;
-
     // allows the current base controller method (e.g. drag) to be changed
-    private Controller controller;
+    private final Controller controller;
 
     // specific controller to move current base
     private BaseTouchController baseTouchController;
 
     // used to change the current model state
-    private GameModel model;
+    private final GameModel model;
 
     // manages other game assets such as missiles and power-ups
     private final IGamePlayAssetsManager assets;
@@ -154,7 +150,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
      * ******************************************************
      */
 
-    public GamePlayHandlerRefactor(
+    public GamePlayHandler(
             GameModel model,
             Controller controller,
             List<Star> stars,
@@ -175,7 +171,6 @@ public class GamePlayHandlerRefactor implements GameHandler {
         this.alienManager = new AlienManager(waveManager);
 
 
-
         // set-up sound effects
         this.soundPlayer = SoundPlayerSingleton.getInstance();
         SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
@@ -186,17 +181,14 @@ public class GamePlayHandlerRefactor implements GameHandler {
         // set-up vibration
         this.vibrator = VibrationSingleton.getInstance();
 
-//        this.modelState = ModelState.PLAYING;
-
-        /* reset lives */
+        // reset lives
         lives = START_LIVES;
 
         // set-up controllers
         initialiseControllers();
 
-        /* create new base at default position */
+        // create new base at default position
         addNewBase();
-
     }
 
     /*
@@ -208,20 +200,10 @@ public class GamePlayHandlerRefactor implements GameHandler {
     // TODO - can we remove this method?
     @Override
     public void initialise() {
-
-        /* initialise base controllers and buttons */
-//        initialiseControllers();
-
-        /* reset lives */
-//        lives = START_LIVES;
-//
-//        /* create new base at default position */
-//        addNewBase();
     }
 
     @Override
     public List<ISprite> getSprites() {
-
         List<ISprite> gameSprites = new ArrayList<>();
         gameSprites.addAll(assets.getStars());
         gameSprites.addAll(alienManager.allAliens());
@@ -233,7 +215,6 @@ public class GamePlayHandlerRefactor implements GameHandler {
         gameSprites.addAll(assets.getFlags());
         gameSprites.addAll(assets.getLives());
         gameSprites.addAll(assets.getEnergyBar());
-//        gameSprites.addAll(baseController.getSprites());
 
         return gameSprites;
     }
@@ -265,8 +246,6 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
             case PLAYING:
 
-                // use the base controller to move the base
-//                baseController.update(deltaTime);
                 primaryBase.animate(deltaTime);
 
                 // check if level is finished and set-up next level.
@@ -276,8 +255,6 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
             case GET_READY:
 
-                // use the base controller to move the base
-//                baseController.update(deltaTime);
                 primaryBase.animate(deltaTime);
 
                 // flash get ready message
@@ -288,13 +265,12 @@ public class GamePlayHandlerRefactor implements GameHandler {
             case NEW_BASE:
 
                 // Move new base to starting position.
-                // Base will not be controlled by the base controller until in position.
                 primaryBase.animate(deltaTime);
 
                 break;
 
             default:
-                String errorMsg = "Illegal Model State : " +  modelState.name();
+                String errorMsg = "Illegal Model State : " + modelState.name();
                 Log.e(TAG, errorMsg);
                 throw new GalaxyForceException(errorMsg);
         }
@@ -315,23 +291,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     // called by the base when it is in position and ready to start
     @Override
     public void baseReady() {
-
-        // reset base controller to current base position
-
-//        TODO - is this a problem is we don't reset controller?
-// once base in starting position - only touch events will update the controller
-        //baseController.reset();
-
-        // if we were previously playing, return to playing state.
-//        if (previousModelState == ModelState.PLAYING)
-//        {
-            modelState = ModelState.PLAYING;
-//        }
-//        // otherwise set-up next level
-//        else
-//        {
-//            setupLevel();
-//        }
+        modelState = ModelState.PLAYING;
     }
 
     @Override
@@ -341,7 +301,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
 
     /**
      * triggered by pressing pause button. pass pause request back to model.
-      */
+     */
     @Override
     public void pause() {
         Log.i(TAG, "'Pause Button' selected. Pause.");
@@ -436,6 +396,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
      * resume when all touch controllers will have been lost.
      */
     private void initialiseControllers() {
+
         // remove any existing touch controllers
         controller.clearTouchControllers();
 
@@ -443,37 +404,17 @@ public class GamePlayHandlerRefactor implements GameHandler {
          * initialise pause and flip buttons
          */
         pauseButton = new PauseButton(this);
-
-        // add a new button to controller's list of touch controllers
         controller.addTouchController(new DetectButtonTouch(pauseButton));
 
         /*
-         * get the base controller using currently selected option. if option
-         * has not changed then the same base controller will be returned.
+         * initialise base controllers
          */
-//        TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
-//        TouchController baseTouchController = new ControllerDrag(baseController);
-
-
-
-//       TouchController baseTouchController = BaseControllerFactory.getBaseController(primaryBase);
-        // set controller's base controller to use drag
         this.baseTouchController = new ControllerDrag();
         if (primaryBase != null) {
             TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
             baseTouchController.setBaseController(baseController);
         }
-
-
         controller.addTouchController(baseTouchController);
-
-
-        /*
-         * reset controller. important for drag controller as sets target to
-         * current base location.
-         */
-//        baseController.reset();
-
     }
 
 
@@ -543,15 +484,13 @@ public class GamePlayHandlerRefactor implements GameHandler {
          * determine whether to set-up next base or next level. must not do both
          * as set-up level will bypass the new base state.
          */
-        if (primaryBase.isDestroyed())
-        {
+        if (primaryBase.isDestroyed()) {
             /*
              * if destroyed object primary base then add new base and change
              * model state.
              */
             setupNewBase();
-        }
-        else if (alienManager.isWaveComplete()) {
+        } else if (alienManager.isWaveComplete()) {
             /*
              * if base not destroyed and wave finished then start next level.
              * special case: if the base and last alien was destroyed at the
@@ -626,8 +565,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     /**
      * initialise next wave.
      */
-    private void setupLevel()
-    {
+    private void setupLevel() {
         // set-up level flags
         assets.setLevelFlags(wave);
 
@@ -645,8 +583,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     /**
      * Set-up "Get Ready" text for start of a new level
      */
-    private void setupGetReady()
-    {
+    private void setupGetReady() {
         modelState = ModelState.GET_READY;
 
         int yPosition = 100 + (3 * 170);
@@ -665,8 +602,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     /**
      * add new base - normally called at start of game or after losing a life.
      */
-    private void addNewBase()
-    {
+    private void addNewBase() {
         primaryBase = new BasePrimary(this);
 
         // bind controller to the new base
@@ -676,11 +612,8 @@ public class GamePlayHandlerRefactor implements GameHandler {
         // reduce remaining lives by 1
         lives--;
 
-        // update number of lives
+        // update displayed number of lives
         assets.setLives(lives);
-
-        // reset base controller to current base position
-//        baseController.reset();
 
         // change model state to handle movement of base to starting position
         modelState = ModelState.NEW_BASE;
@@ -689,8 +622,7 @@ public class GamePlayHandlerRefactor implements GameHandler {
     /**
      * Update "Get Ready" at start of a new level
      */
-    private void updateGetReady(float deltaTime)
-    {
+    private void updateGetReady(float deltaTime) {
         flashingText.update(deltaTime);
 
         timeSinceGetReady += deltaTime;
@@ -701,47 +633,23 @@ public class GamePlayHandlerRefactor implements GameHandler {
          */
         if (timeSinceGetReady > GET_READY_DELAY && alienManager.isWaveReady()) {
             getReadyTexts.clear();
-//            if (primaryBase == null) {
-//                addNewBase();
-//            }
-//            else {
-                modelState = ModelState.PLAYING;
-//            }
+            modelState = ModelState.PLAYING;
         }
     }
 
     /**
      * Set-up a new a base.
      */
-    private void setupNewBase()
-    {
-        // reset stars direction as last base could have been flipped
-//        Star.reset();
+    private void setupNewBase() {
 
         /* if lives left then create new base */
-        if (lives > 0)
-        {
-            /*
-             * store previous model state before adding new base and changing
-             * state.
-             */
-//            previousModelState = modelState;
-
+        if (lives > 0) {
             // create new base at default position and change state
             addNewBase();
-
-            /* if we are playing, add a shield to the base for 2 seconds */
-            // TODO we don't need to do this as new base is always shielded
-//            if (previousModelState == ModelState.PLAYING)
-//            {
-//                primaryBase.addShield(2f, 0f);
-//            }
         }
         /* if no lives left then game over */
-        else
-        {
+        else {
             model.gameOver(wave);
         }
     }
-
 }

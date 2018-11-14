@@ -12,33 +12,10 @@ import java.util.List;
 
 public interface GameHandler extends PlayModel {
 
-
+    /**
+     * Returns the current base
+     */
     IBasePrimary getBase();
-//
-//    public float getBaseX();
-//
-//    public float getBaseY();
-
-    /**
-     * Returns the bounds of the base. Used by button classes that use the base
-     * as a button (e.g. when base itself is a button used to flip base).
-     *
-     * @return Rectangle representing the base's bounds area.
-     */
-//    public Rectangle getBaseTouchBounds();
-
-//    public void flipBase();
-
-    /**
-     * Add a new direction listener to be notified following any direction
-     * changes
-     *
-     * @param listener
-     *            to be notified following a direction change
-     */
-//    public void addDirectionListener(DirectionListener listener);
-
-    // called by the base when it is in position and ready to start
 
     /**
      * Called by the base when it is in position and ready to start.
@@ -59,45 +36,22 @@ public interface GameHandler extends PlayModel {
     /**
      * Add a new power up sprite to the game. Usually triggered when an alien is
      * destroyed.
-     *
-     * @param powerUp
      */
     void addPowerUp(PowerUpBean powerUp);
 
-    /**
-     * Add a new shield sprite to the game. Usually triggered when base or
-     * helper base gets a shield.
-     *
-     * @param powerUp
-     */
-//    public void addShield(SpriteShield shield);
-
-    /**
-     * Add a new power up sprite to the game. Usually triggered when base or
-     * helper base is destroyed or shield expires.
-     *
-     * @param powerUp
-     */
-//    public void removeShield(SpriteShield shield);
 
     /**
      * Fire base missiles. Add new missiles being fired by bases.
-     *
-     * @param missiles
      */
     void fireBaseMissiles(BaseMissileBean missiles);
 
     /**
      * Fire alien missiles. Add new missiles being fired by aliens.
-     *
-     * @param missiles
      */
     void fireAlienMissiles(AlienMissileBean missiles);
 
     /**
      * Return an actively selected active alien.
-     *
-     * @return
      */
     IAlien chooseActiveAlien();
 

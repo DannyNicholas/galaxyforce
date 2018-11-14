@@ -180,16 +180,6 @@ public class WaveFactory {
                                 )
                         )
                 );
-                subWaves.add(
-                        createSubWave(
-                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
-                                new SubWaveNoPathConfig(
-                                        SubWaveRule.ASTEROIDS_REVERSE,
-                                        AlienType.ASTEROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
-                                )
-                        )
-                );
                 break;
 
             case 8:

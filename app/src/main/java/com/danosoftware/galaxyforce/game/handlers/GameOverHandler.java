@@ -21,8 +21,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameOverHandler implements PlayModel, MenuButtonModel
-{
+public class GameOverHandler implements PlayModel, MenuButtonModel {
 
     /*
      * ******************************************************
@@ -40,10 +39,10 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
      */
 
     /* reference to controller */
-    private Controller controller;
+    private final Controller controller;
 
     /* reference to pause menu buttons */
-    private List<SpriteTextButton> menuButtons = null;
+    private List<SpriteTextButton> menuButtons;
 
     /* Stores list of all text to be returned. */
     private List<Text> allText;
@@ -55,24 +54,23 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
     private ModelState modelState;
 
     /* Reference to the game model */
-    GameModel gameModel = null;
+    private final GameModel gameModel;
 
     /* stars sprites */
     private List<Star> stars = null;
 
     /* reference to flashing game over text */
-    FlashingText flashingGameOverText = null;
+    private FlashingText flashingGameOverText;
 
     /*
      * ******************************************************
-     * 
+     *
      * PUBLIC CONSTRUCTOR
-     * 
+     *
      * ******************************************************
      */
 
-    public GameOverHandler(GameModel gameModel, Controller controller, List<Star> stars)
-    {
+    public GameOverHandler(GameModel gameModel, Controller controller, List<Star> stars) {
         this.controller = controller;
         this.gameModel = gameModel;
         this.stars = stars;
@@ -91,8 +89,7 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
      */
 
     @Override
-    public void initialise()
-    {
+    public void initialise() {
         // remove any existing touch controllers
         controller.clearTouchControllers();
 
@@ -112,117 +109,102 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
     }
 
     @Override
-    public List<ISprite> getSprites()
-    {
+    public List<ISprite> getSprites() {
         return allSprites;
     }
 
     @Override
-    public List<Text> getText()
-    {
+    public List<Text> getText() {
         return allText;
     }
 
     @Override
-    public void update(float deltaTime)
-    {
-        switch (getState())
-        {
+    public void update(float deltaTime) {
+        switch (getState()) {
 
-        case GAME_OVER:
-            // normal state before any buttons are pressed
+            case GAME_OVER:
+                // normal state before any buttons are pressed
+                moveStars(deltaTime);
+                break;
 
-            moveStars(deltaTime);
-            break;
+            case GO_BACK:
+                // if back button pressed then quit
+                gameModel.quit();
+                break;
 
-        case GO_BACK:
-            // if back button pressed then quit
-            gameModel.quit();
-            break;
+            case PLAYING:
+                gameModel.play();
+                break;
 
-        case PLAYING:
-            gameModel.play();
-            break;
+            case OPTIONS:
+                // set back to game over state so model will be in
+                // game over state when returning from options.
+                // otherwise will keep calling options() method.
+                setState(ModelState.GAME_OVER);
 
-        case OPTIONS:
-            // set back to game over state so model will be in
-            // game over state when returning from options.
-            // otherwise will keep calling options() method.
-            setState(ModelState.GAME_OVER);
+                gameModel.options();
+                break;
 
-            gameModel.options();
-            break;
-
-        default:
-            Log.e(TAG, "Illegal Model State.");
-            throw new IllegalArgumentException("Illegal Model State.");
+            default:
+                Log.e(TAG, "Illegal Model State.");
+                throw new IllegalArgumentException("Illegal Model State.");
         }
 
         flashingGameOverText.update(deltaTime);
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void processButton(ButtonType buttonType)
-    {
-        switch (buttonType)
-        {
+    public void processButton(ButtonType buttonType) {
+        switch (buttonType) {
 
-        case MAIN_MENU:
-            Log.i(TAG, "'Main Menu' selected.");
-            setState(ModelState.GO_BACK);
-            break;
-        case PLAY:
-            Log.i(TAG, "'Play' selected.");
-            setState(ModelState.PLAYING);
-            break;
-        case OPTIONS:
-            Log.i(TAG, "'Options' selected.");
-            setState(ModelState.OPTIONS);
-            break;
+            case MAIN_MENU:
+                Log.i(TAG, "'Main Menu' selected.");
+                setState(ModelState.GO_BACK);
+                break;
+            case PLAY:
+                Log.i(TAG, "'Play' selected.");
+                setState(ModelState.PLAYING);
+                break;
+            case OPTIONS:
+                Log.i(TAG, "'Options' selected.");
+                setState(ModelState.OPTIONS);
+                break;
 
-        default:
-            Log.e(TAG, "Illegal Button Type.");
-            throw new IllegalArgumentException("Illegal Button Type.");
+            default:
+                Log.e(TAG, "Illegal Button Type.");
+                throw new IllegalArgumentException("Illegal Button Type.");
 
         }
     }
 
     @Override
-    public void goBack()
-    {
+    public void goBack() {
         Log.i(TAG, "'Back Button' selected.");
         setState(ModelState.GO_BACK);
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         // no action for this model
     }
 
     @Override
-    public void flashText(Text text, boolean flashState)
-    {
-        if (flashState)
-        {
+    public void flashText(Text text, boolean flashState) {
+        if (flashState) {
             allText.add(text);
-        }
-        else
-        {
+        } else {
             allText.remove(text);
         }
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         // no action for this model
     }
 
@@ -232,20 +214,24 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
      * ******************************************************
      */
 
-    private void setState(ModelState modelState)
-    {
+    private void setState(ModelState modelState) {
         this.modelState = modelState;
     }
 
-    private ModelState getState()
-    {
+    private ModelState getState() {
         return modelState;
     }
 
-    private void addNewMenuButton(int row, String label, ButtonType buttonType)
-    {
-        MenuButton button = new MenuButton(this, controller, GameConstants.GAME_WIDTH / 2, 100 + (row * 170), label, buttonType,
-                GameSpriteIdentifier.MENU_BUTTON_UP, GameSpriteIdentifier.MENU_BUTTON_DOWN);
+    private void addNewMenuButton(int row, String label, ButtonType buttonType) {
+        MenuButton button = new MenuButton(
+                this,
+                controller,
+                GameConstants.GAME_WIDTH / 2,
+                100 + (row * 170),
+                label,
+                buttonType,
+                GameSpriteIdentifier.MENU_BUTTON_UP,
+                GameSpriteIdentifier.MENU_BUTTON_DOWN);
 
         // add new button to list
         menuButtons.add(button);
@@ -254,17 +240,10 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
     /**
      * Build up a list of all sprites to be returned by the model.
      */
-    private void buildSpriteList()
-    {
+    private void buildSpriteList() {
         allSprites.clear();
-
         allSprites.addAll(stars);
-
-        // get sprites from game
-        // allSprites.addAll(gameHandler.getSprites());
-
-        for (SpriteTextButton eachButton : menuButtons)
-        {
+        for (SpriteTextButton eachButton : menuButtons) {
             allSprites.add(eachButton.getSprite());
         }
     }
@@ -272,29 +251,20 @@ public class GameOverHandler implements PlayModel, MenuButtonModel
     /**
      * Build up a list of all text to be returned by the model.
      */
-    private void buildTextList()
-    {
+    private void buildTextList() {
         /*
          * adds text for the buttons. no need to add text for flashing text as
          * this is added and removed to the text list by callbacks.
          */
-
         allText.clear();
-
-        // get text from game
-        // allText.addAll(gameHandler.getText());
-
-        for (SpriteTextButton eachButton : menuButtons)
-        {
+        for (SpriteTextButton eachButton : menuButtons) {
             allText.add(eachButton.getText());
         }
 
     }
 
-    private void moveStars(float deltaTime)
-    {
-        for (Star eachStar : stars)
-        {
+    private void moveStars(float deltaTime) {
+        for (Star eachStar : stars) {
             eachStar.animate(deltaTime);
         }
     }

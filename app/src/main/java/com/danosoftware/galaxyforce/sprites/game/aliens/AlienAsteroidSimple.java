@@ -117,7 +117,7 @@ public class AlienAsteroidSimple extends AbstractAlien {
         if (isActive()) {
 
             // move until off the screen and then either destroy it or reset it
-            distanceYMoved -= speed * deltaTime;
+            distanceYMoved += speed * deltaTime;
             move(
                     x(),
                     originalYPosition - (int) distanceYMoved);

@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.controller.interfaces;
 
-public interface Controller
-{
+public interface Controller {
     /**
      * update model using any set-up controllers.
      */
@@ -9,7 +8,7 @@ public interface Controller
 
     /**
      * add a touch controller to be monitored.
-     * 
+     *
      * @param touchController
      */
     void addTouchController(TouchController touchController);
@@ -18,10 +17,4 @@ public interface Controller
      * Remove all existing touch controllers
      */
     void clearTouchControllers();
-
-    /**
-     * reset controller on game re-start
-     */
-//    public void reset();
-
 }

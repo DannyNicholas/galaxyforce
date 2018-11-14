@@ -102,6 +102,8 @@ public class AlienManager implements IAlienManager {
 
         // handles complex sub-wave scenarios
         updateSubWaveState();
+
+        Log.i("AlienManager", "SubWave State: " + subWaveState + ". Total Aliens: " + aliens.size() + ". Active Aliens: " + activeAliens.size());
     }
 
     @Override

@@ -13,20 +13,33 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.List;
 
+/**
+ * Manages all in-game assets
+ */
 public interface IGamePlayAssetsManager {
 
-
     void animate(float deltaTime);
+
     void setLevelFlags(int wave);
+
     void setLives(int lives);
+
     void addPowerUp(PowerUpBean powerUp);
+
     void fireBaseMissiles(BaseMissileBean missiles);
+
     void fireAlienMissiles(AlienMissileBean missiles);
+
     List<IAlienMissile> getAliensMissiles();
+
     List<IBaseMissile> getBaseMissiles();
+
     List<IPowerUp> getPowerUps();
+
     List<Star> getStars();
+
     List<Flag> getFlags();
+
     List<Life> getLives();
 
     /**
