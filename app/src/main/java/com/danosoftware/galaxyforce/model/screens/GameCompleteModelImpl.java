@@ -33,24 +33,24 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel {
     private static final String TAG = "GameCompleteImpl";
 
     // references to stars
-    private List<Star> stars = null;
+    private List<Star> stars;
 
     // reference to all sprites in model
-    List<ISprite> allSprites;
+    private final List<ISprite> allSprites;
 
     // reference to all sprites in model to be rotated
-    List<RotatingSprite> rotatedSprites;
+    private final List<RotatingSprite> rotatedSprites;
 
     private ModelState modelState;
 
     // reference to all text objects in model
-    List<Text> allText;
+    private final List<Text> allText;
 
     /* reference to controller */
     private final Controller controller;
 
     /* reference to screen button */
-    private ScreenTouch screenTouch = null;
+    private ScreenTouch screenTouch;
 
     /* reference to screen button */
     private final Context context;
@@ -61,11 +61,6 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel {
         this.allSprites = new ArrayList<>();
         this.rotatedSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
-
-        // add screen touch to trigger screenTouch method when user touches
-        // screen
-        // this.screenTouch = new ScreenTouch(this, controller, 0, 0,
-        // GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
     }
 
     @Override
@@ -85,8 +80,6 @@ public class GameCompleteModelImpl implements TouchScreenModel, AboutModel {
 
         allText.add(Text.newTextRelativePositionX("GAME COMPLETED!", TextPositionX.CENTRE, 175 + (3 * 170)));
 
-        // allText.add(Text.newTextRelativePositionX("DANOSOFTWARE.COM",
-        // TextPositionX.CENTRE, 100));
         allText.add(Text.newTextAbsolutePosition("LIKE US", 290, 100 + (2 * 170)));
         allText.add(Text.newTextAbsolutePosition("FOLLOW US", 320, 100 + (1 * 170)));
         allText.add(Text.newTextAbsolutePosition("OUR WEBSITE", 350, 100));

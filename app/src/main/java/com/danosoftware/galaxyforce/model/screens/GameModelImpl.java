@@ -48,21 +48,21 @@ public class GameModelImpl implements GameModel
      */
 
     /* reference to current game state */
-    private ModelState modelState = null;
+    private ModelState modelState;
 
-    private Controller controller = null;
+    private final Controller controller;
 
     /* current handler looking after the current state of game model */
-    private Model modelHandler = null;
+    private Model modelHandler;
 
     /*
      * temporary reference to a game handler when paused. used to reinstate
      * paused game.
      */
-    private Model pausedGameHandler = null;
+    private Model pausedGameHandler;
 
     /* stars sprites to be passed around handlers */
-    private List<Star> stars = null;
+    private final List<Star> stars;
 
     /* the wave we were playing before last game over */
     private int lastWave;
