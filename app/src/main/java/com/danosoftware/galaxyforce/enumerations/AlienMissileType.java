@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.enumerations;
 
-public enum AlienMissileType
-{
+public enum AlienMissileType {
     SIMPLE, ROTATED
 }

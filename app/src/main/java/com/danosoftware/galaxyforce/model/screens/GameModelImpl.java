@@ -29,8 +29,7 @@ import java.util.List;
  * contains game model. Model includes game objects, fonts, screen size and game
  * state. Model is updated as game objects move or change state.
  */
-public class GameModelImpl implements GameModel
-{
+public class GameModelImpl implements GameModel {
 
     /*
      * ******************************************************
@@ -72,14 +71,13 @@ public class GameModelImpl implements GameModel
 
     /*
      * ******************************************************
-     * 
+     *
      * PUBLIC CONSTRUCTOR
-     * 
+     *
      * ******************************************************
      */
 
-    public GameModelImpl(Controller controller, int wave, IBillingService billingService)
-    {
+    public GameModelImpl(Controller controller, int wave, IBillingService billingService) {
         this.controller = controller;
         this.billingService = billingService;
 
@@ -99,20 +97,17 @@ public class GameModelImpl implements GameModel
      */
 
     @Override
-    public List<ISprite> getSprites()
-    {
+    public List<ISprite> getSprites() {
         return modelHandler.getSprites();
     }
 
     @Override
-    public List<Text> getText()
-    {
+    public List<Text> getText() {
         return modelHandler.getText();
     }
 
     @Override
-    public void initialise()
-    {
+    public void initialise() {
         modelHandler.initialise();
     }
 
@@ -120,107 +115,100 @@ public class GameModelImpl implements GameModel
      * update screen game model in playing state. move game objects to next
      * position.
      */
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
 
-        switch (getState())
-        {
-        case RUNNING:
+        switch (getState()) {
+            case RUNNING:
 
-            // normal model state
-            break;
+                // normal model state
+                break;
 
-        case QUIT:
+            case QUIT:
 
-            // exit game. go to select level screen
-            Screen selectScreen = ScreenFactory.newScreen(ScreenType.SELECT_LEVEL);
-            Games.getGame().setScreen(selectScreen);
-            break;
+                // exit game. go to select level screen
+                Screen selectScreen = ScreenFactory.newScreen(ScreenType.SELECT_LEVEL);
+                Games.getGame().setScreen(selectScreen);
+                break;
 
-        case OPTIONS:
+            case OPTIONS:
 
-            // go to options screen - will return back when done
-            Screen optionsScreen = ScreenFactory.newScreen(ScreenType.OPTIONS);
-            Games.getGame().setReturningScreen(optionsScreen);
+                // go to options screen - will return back when done
+                Screen optionsScreen = ScreenFactory.newScreen(ScreenType.OPTIONS);
+                Games.getGame().setReturningScreen(optionsScreen);
 
-            // set state back to running so doesn't change screens every time
-            setState(ModelState.RUNNING);
-            break;
+                // set state back to running so doesn't change screens every time
+                setState(ModelState.RUNNING);
+                break;
 
-        case PAUSED:
+            case PAUSED:
 
-            // keep reference of game handler
-            pausedGameHandler = modelHandler;
+                // keep reference of game handler
+                pausedGameHandler = modelHandler;
 
-            // get list of game sprites to show on pause screen
-            List<ISprite> pausedSprites;
-            if (modelHandler instanceof GameHandler)
-            {
-                GameHandler gameHandler = (GameHandler) modelHandler;
-                pausedSprites = gameHandler.getPausedSprites();
+                // get list of game sprites to show on pause screen
+                List<ISprite> pausedSprites;
+                if (modelHandler instanceof GameHandler) {
+                    GameHandler gameHandler = (GameHandler) modelHandler;
+                    pausedSprites = gameHandler.getPausedSprites();
 
-            }
-            else
-            {
-                pausedSprites = new ArrayList<>();
-            }
+                } else {
+                    pausedSprites = new ArrayList<>();
+                }
 
-            // create new pause handler
-            modelHandler = new PausedHandler(this, controller, pausedSprites);
-            modelHandler.initialise();
+                // create new pause handler
+                modelHandler = new PausedHandler(this, controller, pausedSprites);
+                modelHandler.initialise();
 
-            // set state back to running so doesn't create new handlers every
-            // time.
-            setState(ModelState.RUNNING);
-            break;
+                // set state back to running so doesn't create new handlers every
+                // time.
+                setState(ModelState.RUNNING);
+                break;
 
-        case RESUME:
+            case RESUME:
 
-            // restore previous game handler
-            if (pausedGameHandler == null)
-            {
-                Log.e(TAG, "Unable to resume paused game using handler.");
-                throw new IllegalStateException("Unable to resume paused game using handler..");
-            }
-            modelHandler = pausedGameHandler;
-            modelHandler.resume();
-            pausedGameHandler = null;
+                // restore previous game handler
+                if (pausedGameHandler == null) {
+                    Log.e(TAG, "Unable to resume paused game using handler.");
+                    throw new IllegalStateException("Unable to resume paused game using handler..");
+                }
+                modelHandler = pausedGameHandler;
+                modelHandler.resume();
+                pausedGameHandler = null;
 
-            // set state back to running so doesn't resume every time.
-            setState(ModelState.RUNNING);
-            break;
+                // set state back to running so doesn't resume every time.
+                setState(ModelState.RUNNING);
+                break;
 
-        case PLAYING:
+            case PLAYING:
 
-            // after game over, restart on last level reached (if valid)
-            if (!WaveUtilities.isValidWave(lastWave))
-            {
-                this.lastWave = 1;
-            }
+                // after game over, restart on last level reached (if valid)
+                if (!WaveUtilities.isValidWave(lastWave)) {
+                    this.lastWave = 1;
+                }
 
-            modelHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
-            modelHandler.initialise();
+                modelHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
+                modelHandler.initialise();
 
-            // set state back to running so doesn't create new handlers every
-            // time.
-            setState(ModelState.RUNNING);
-            break;
+                // set state back to running so doesn't create new handlers every
+                // time.
+                setState(ModelState.RUNNING);
+                break;
 
-        case GAME_OVER:
+            case GAME_OVER:
 
-            // create game over handler
-            modelHandler = new GameOverHandler(this, controller, stars);
-            modelHandler.initialise();
+                // create game over handler
+                modelHandler = new GameOverHandler(this, controller, stars);
+                modelHandler.initialise();
 
-            // set state back to running so doesn't create new handlers every
-            // time.
-            setState(ModelState.RUNNING);
-            break;
+                // set state back to running so doesn't create new handlers every
+                // time.
+                setState(ModelState.RUNNING);
+                break;
 
-        default:
+            default:
 
-            Log.e(TAG, "Illegal Model State.");
-            throw new IllegalArgumentException("Illegal Model State.");
+                Log.e(TAG, "Illegal Model State.");
+                throw new IllegalArgumentException("Illegal Model State.");
 
         }
 
@@ -228,14 +216,12 @@ public class GameModelImpl implements GameModel
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
 
         /*
          * It is possible for pause to be called when whole game is suspended by
@@ -243,8 +229,7 @@ public class GameModelImpl implements GameModel
          * if game handler is running. Trying to pause from other handlers (e.g.
          * game over or already paused) could cause unexpected behaviour.
          */
-        if (modelHandler instanceof GameHandler)
-        {
+        if (modelHandler instanceof GameHandler) {
             Log.i(TAG, "State: 'Paused'.");
 
             // will cause change to pause handler
@@ -253,8 +238,7 @@ public class GameModelImpl implements GameModel
     }
 
     @Override
-    public void quit()
-    {
+    public void quit() {
         Log.i(TAG, "State: 'Quit'.");
 
         // change state to quit
@@ -265,8 +249,7 @@ public class GameModelImpl implements GameModel
      * Resume an existing new game
      */
     @Override
-    public void resumeAfterPause()
-    {
+    public void resumeAfterPause() {
         Log.i(TAG, "State: 'Resume'.");
 
         // will cause change to game handler
@@ -274,8 +257,7 @@ public class GameModelImpl implements GameModel
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         // no action for this model
     }
 
@@ -283,8 +265,7 @@ public class GameModelImpl implements GameModel
      * Start a new game
      */
     @Override
-    public void play()
-    {
+    public void play() {
         Log.i(TAG, "State: 'Play'.");
 
         // will cause change to game handler
@@ -292,8 +273,7 @@ public class GameModelImpl implements GameModel
     }
 
     @Override
-    public void gameOver(int wave)
-    {
+    public void gameOver(int wave) {
         Log.i(TAG, "State: 'Game Over'.");
 
         this.lastWave = wave;
@@ -303,8 +283,7 @@ public class GameModelImpl implements GameModel
     }
 
     @Override
-    public void options()
-    {
+    public void options() {
         Log.i(TAG, "State: 'Options'.");
 
         // will cause switch to options screen
@@ -316,8 +295,7 @@ public class GameModelImpl implements GameModel
      * already paused should exit the game screen.
      */
     @Override
-    public void goBack()
-    {
+    public void goBack() {
         modelHandler.goBack();
     }
 
@@ -327,13 +305,11 @@ public class GameModelImpl implements GameModel
      * ******************************************************
      */
 
-    private void setState(ModelState modelState)
-    {
+    private void setState(ModelState modelState) {
         this.modelState = modelState;
     }
 
-    private ModelState getState()
-    {
+    private ModelState getState() {
         return modelState;
     }
 }

@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Represents the base class for all Data Transfer Object paths.
- *
+ * <p>
  * Jackson annotations ensure the correct concrete implementation
  * is constructed on deserialization.
- *
+ * <p>
  * e.g. if the JSON path holds...
  * "type": "bezier"
  * ...then a Bezier path DTO is constructed using the other JSON fields.

@@ -2,16 +2,14 @@ package com.danosoftware.galaxyforce.view;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Camera2D
-{
+public class Camera2D {
     public final Vector2 position;
     public float zoom;
     public final float frustumWidth;
     public final float frustumHeight;
     final GLGraphics glGraphics;
 
-    public Camera2D(GLGraphics glGraphics, float frustumWidth, float frustumHeight)
-    {
+    public Camera2D(GLGraphics glGraphics, float frustumWidth, float frustumHeight) {
         this.glGraphics = glGraphics;
         this.frustumWidth = frustumWidth;
         this.frustumHeight = frustumHeight;
@@ -19,8 +17,7 @@ public class Camera2D
         this.zoom = 1.0f;
     }
 
-    public void setViewportAndMatrices()
-    {
+    public void setViewportAndMatrices() {
         GL10 gl = glGraphics.getGl();
         gl.glViewport(0, 0, glGraphics.getWidth(), glGraphics.getHeight());
         gl.glMatrixMode(GL10.GL_PROJECTION);
@@ -31,8 +28,7 @@ public class Camera2D
         gl.glLoadIdentity();
     }
 
-    public void touchToWorld(Vector2 touch)
-    {
+    public void touchToWorld(Vector2 touch) {
         touch.x = (touch.x / (float) glGraphics.getWidth()) * frustumWidth * zoom;
         touch.y = (1 - touch.y / (float) glGraphics.getHeight()) * frustumHeight * zoom;
         touch.add(position).sub(frustumWidth * zoom / 2, frustumHeight * zoom / 2);

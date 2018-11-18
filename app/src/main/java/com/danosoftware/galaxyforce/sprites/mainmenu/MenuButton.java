@@ -15,8 +15,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * Represents a level selector. Level selector has a border, level number and
  * position.
  */
-public class MenuButton implements SpriteTextButton
-{
+public class MenuButton implements SpriteTextButton {
     // reference to Text representing level number
     private final Text text;
 
@@ -34,8 +33,7 @@ public class MenuButton implements SpriteTextButton
     ButtonType buttonType;
 
     public MenuButton(MenuButtonModel model, Controller controller, int xPos, int yPos, String text, ButtonType buttonType,
-            ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown)
-    {
+                      ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.buttonType = buttonType;
@@ -48,40 +46,34 @@ public class MenuButton implements SpriteTextButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return buttonSprite.getBounds();
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         buttonSprite.changeType(spriteButtonUp);
 
         model.processButton(buttonType);
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         buttonSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         buttonSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return buttonSprite;
     }
 
     @Override
-    public Text getText()
-    {
+    public Text getText() {
         return text;
     }
 }

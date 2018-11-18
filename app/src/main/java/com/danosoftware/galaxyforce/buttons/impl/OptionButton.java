@@ -15,8 +15,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * Represents a level selector. Level selector has a border, level number and
  * position.
  */
-public class OptionButton implements SpriteTextButton
-{
+public class OptionButton implements SpriteTextButton {
     // reference to Text representing level number
     private final Text text;
 
@@ -34,8 +33,7 @@ public class OptionButton implements SpriteTextButton
     Option optionType;
 
     public OptionButton(Controller controller, int xPos, int yPos, Option optionType, ISpriteIdentifier spriteButtonUp,
-            ISpriteIdentifier spriteButtonDown, ToggleButtonGroup toggleButtonGroup)
-    {
+                        ISpriteIdentifier spriteButtonDown, ToggleButtonGroup toggleButtonGroup) {
         this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
@@ -48,45 +46,38 @@ public class OptionButton implements SpriteTextButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return levelSprite.getBounds();
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         toggleButtonGroup.optionSelected(this, optionType);
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         levelSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         // only release button if current button is not the current option
         // selected. Stops the currently selected controller from being
         // accidently
         // unselected leaving nothing selected.
-        if (optionType != toggleButtonGroup.getSelectedOption())
-        {
+        if (optionType != toggleButtonGroup.getSelectedOption()) {
             levelSprite.changeType(spriteButtonUp);
         }
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return levelSprite;
     }
 
     @Override
-    public Text getText()
-    {
+    public Text getText() {
         return text;
     }
 }

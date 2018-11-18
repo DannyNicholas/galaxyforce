@@ -30,7 +30,7 @@ public final class WaveCreationUtils {
      * the supplied config and model.
      *
      * @param config - contains sub-wave configuration
-     * @param model - reference to model
+     * @param model  - reference to model
      * @return list of aliens
      */
     public static List<IAlien> createPathAlienSubWave(
@@ -76,7 +76,7 @@ public final class WaveCreationUtils {
      * aliens do not follow a normal pre-defined path.
      *
      * @param config - contains sub-wave configuration
-     * @param model - reference to model
+     * @param model  - reference to model
      * @return list of aliens
      */
     public static List<IAlien> createNoPathAlienSubWave(
@@ -127,13 +127,11 @@ public final class WaveCreationUtils {
             final PowerUpAllocator powerUpAllocator,
             final List<Point> path,
             final SubWavePathRuleProperties props,
-            final GameHandler model)
-    {
+            final GameHandler model) {
 
         List<IAlien> aliensOnPath = new ArrayList<>();
 
-        for (int i = 0; i < props.getNumberOfAliens(); i++)
-        {
+        for (int i = 0; i < props.getNumberOfAliens(); i++) {
             aliensOnPath.addAll(
                     AlienFactory.createAlien(
                             alienType,

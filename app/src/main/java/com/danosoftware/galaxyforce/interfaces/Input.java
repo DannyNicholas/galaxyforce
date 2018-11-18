@@ -2,11 +2,9 @@ package com.danosoftware.galaxyforce.interfaces;
 
 import java.util.List;
 
-public interface Input
-{
+public interface Input {
 
-    class TouchEvent
-    {
+    class TouchEvent {
         public static final int TOUCH_DOWN = 0;
         public static final int TOUCH_UP = 1;
         public static final int TOUCH_DRAGGED = 2;
@@ -15,8 +13,7 @@ public interface Input
         public int x, y;
         public int pointer;
 
-        public String toString()
-        {
+        public String toString() {
             StringBuilder builder = new StringBuilder();
             if (type == TOUCH_DOWN)
                 builder.append("touch down, ");

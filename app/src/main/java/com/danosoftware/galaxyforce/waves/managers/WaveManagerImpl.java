@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class WaveManagerImpl implements WaveManager
-{
+public class WaveManagerImpl implements WaveManager {
 
-    private enum WaveManagerState
-    {
+    private enum WaveManagerState {
         NONE, CREATING_WAVE, WAVE_READY, ITERATING_WAVE
     }
 
@@ -32,8 +30,7 @@ public class WaveManagerImpl implements WaveManager
     // wave manager state
     private WaveManagerState state;
 
-    public WaveManagerImpl(WaveFactory waveFactory)
-    {
+    public WaveManagerImpl(WaveFactory waveFactory) {
         this.waveFactory = waveFactory;
 
         // created single thread pool for creating waves
@@ -44,8 +41,7 @@ public class WaveManagerImpl implements WaveManager
     }
 
     @Override
-    public synchronized void setUpWave(int wave)
-    {
+    public synchronized void setUpWave(int wave) {
         this.state = WaveManagerState.CREATING_WAVE;
         WaveCreator waveCreator = new WaveCreator(this, waveFactory, wave);
         pool.execute(waveCreator);
@@ -56,8 +52,7 @@ public class WaveManagerImpl implements WaveManager
      * alters state. Could happen concurrently with isWaveReady() method.
      */
     @Override
-    public synchronized void setWaveReady(Wave wave)
-    {
+    public synchronized void setWaveReady(Wave wave) {
         this.subWaves = wave.getSubWaves();
         this.iterator = subWaves.iterator();
         this.state = WaveManagerState.WAVE_READY;
@@ -68,14 +63,12 @@ public class WaveManagerImpl implements WaveManager
      * state. Could happen concurrently with setWaveReady() method.
      */
     @Override
-    public synchronized boolean isWaveReady()
-    {
+    public synchronized boolean isWaveReady() {
         // check if wave is ready
         boolean isReady = (state == WaveManagerState.WAVE_READY);
 
         // if ready switch to iterating state
-        if (isReady)
-        {
+        if (isReady) {
             this.state = WaveManagerState.ITERATING_WAVE;
         }
 
@@ -83,14 +76,12 @@ public class WaveManagerImpl implements WaveManager
     }
 
     @Override
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return iterator.hasNext();
     }
 
     @Override
-    public SubWave next()
-    {
+    public SubWave next() {
         return iterator.next();
     }
 }

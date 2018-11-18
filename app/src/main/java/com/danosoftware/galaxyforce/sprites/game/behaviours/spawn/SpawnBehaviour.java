@@ -2,18 +2,17 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
-public interface SpawnBehaviour
-{
+public interface SpawnBehaviour {
     /**
      * Returns true if alien is ready to spawn.
-     * 
+     *
      * @param deltaTime
      */
     boolean readyToSpawn(float deltaTime);
 
     /**
      * Spawn a new alien.
-     * 
+     *
      * @param alien
      */
     void spawn(IAlien alien);

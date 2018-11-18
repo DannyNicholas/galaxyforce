@@ -5,8 +5,7 @@ import android.content.Context;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
-public interface Game
-{
+public interface Game {
     void start();
 
     void resume();
@@ -31,7 +30,7 @@ public interface Game
      * Change to a screen that will eventually return back to this screen. A
      * subsequent call to screenReturn() will return back to the the previous
      * screen.
-     * 
+     *
      * @param gameScreen
      */
     void setReturningScreen(Screen gameScreen);
@@ -45,7 +44,7 @@ public interface Game
     /**
      * return true if back button is handled internally and we don't want
      * application to exit.
-     * 
+     *
      * @return true if back button handled internally
      */
     boolean handleBackButton();

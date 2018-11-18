@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SavedGame
-{
+public class SavedGame {
     // static values to be used for game level encryption
     private static int KEY = 13 * 13;
     private static int OFFSET = 13;
@@ -27,40 +26,30 @@ public class SavedGame
     private static SavedGame instance = null;
 
     // private constructor
-    private SavedGame(IPreferences<Integer> preferences)
-    {
+    private SavedGame(IPreferences<Integer> preferences) {
         this.preferences = preferences;
     }
 
     // must initialise singleton with preferences before it can be used
-    public static void initialise(IPreferences<Integer> preferences)
-    {
-        if (instance == null)
-        {
+    public static void initialise(IPreferences<Integer> preferences) {
+        if (instance == null) {
             instance = new SavedGame(preferences);
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("SavedGame singleton has already been initialised.");
         }
     }
 
     // have SavedGame been initialised with preferences.
-    public static boolean isInitialised()
-    {
+    public static boolean isInitialised() {
         // return true if initialised
         return (instance != null);
     }
 
     // get configurations singleton
-    public static SavedGame getInstance()
-    {
-        if (instance != null)
-        {
+    public static SavedGame getInstance() {
+        if (instance != null) {
             return instance;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("SavedGame singleton has not been initialised.");
         }
     }
@@ -70,10 +59,8 @@ public class SavedGame
      */
 
     // return the game level
-    public Integer getGameLevel()
-    {
-        if (gameLevel == null)
-        {
+    public Integer getGameLevel() {
+        if (gameLevel == null) {
 
             /*
              * since we store an encrypted version of the game level, first
@@ -81,28 +68,23 @@ public class SavedGame
              * immediately return default level. we don't want to decrypt the
              * default level as this will corrupt it.
              */
-            if (!preferences.preferenceExists(GAME_LEVEL_KEY))
-            {
+            if (!preferences.preferenceExists(GAME_LEVEL_KEY)) {
                 this.gameLevel = DEFAULT_GAME_LEVEL;
             }
             /*
              * otherwise get the encrypted game level, then decrypt and check it
              * is valid. if the level is not valid, return the default level.
              */
-            else
-            {
+            else {
                 // get encrypted game level from preferences
                 int encryptedGameLevel = preferences.getPreference(GAME_LEVEL_KEY, DEFAULT_GAME_LEVEL);
 
                 // create decrypted version of level number from persistence
                 int decrypted = decrypt(encryptedGameLevel);
 
-                if (WaveUtilities.isValidWave(decrypted))
-                {
+                if (WaveUtilities.isValidWave(decrypted)) {
                     this.gameLevel = decrypted;
-                }
-                else
-                {
+                } else {
                     this.gameLevel = DEFAULT_GAME_LEVEL;
                 }
             }
@@ -112,18 +94,15 @@ public class SavedGame
     }
 
     // set new controller type
-    public void setGameLevel(Integer gameLevel)
-    {
-        if (gameLevel == null)
-        {
+    public void setGameLevel(Integer gameLevel) {
+        if (gameLevel == null) {
             throw new IllegalArgumentException("Supplied gameLevel can not be null.");
         }
 
         this.gameLevel = gameLevel;
     }
 
-    public void persistSavedGame()
-    {
+    public void persistSavedGame() {
         Map<String, Integer> keyValueMap = new HashMap<String, Integer>();
 
         // create encrypted version of level number for persistence
@@ -139,15 +118,13 @@ public class SavedGame
      * stored in preference file. This should deter users from trying to edit
      * these files to access later levels.
      */
-    private int encrypt(int original)
-    {
+    private int encrypt(int original) {
         int encrypted = (original + OFFSET) * KEY;
 
         return encrypted;
     }
 
-    private int decrypt(int encrypted)
-    {
+    private int decrypt(int encrypted) {
         int decrypted = (encrypted / KEY) - OFFSET;
 
         return decrypted;

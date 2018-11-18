@@ -10,8 +10,7 @@ import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 
 import java.util.List;
 
-public class SpawnRandomDelay implements SpawnBehaviour
-{
+public class SpawnRandomDelay implements SpawnBehaviour {
     /*
      * ******************************************************
      * PRIVATE INSTANCE VARIABLES
@@ -48,21 +47,17 @@ public class SpawnRandomDelay implements SpawnBehaviour
     private final static int POWER_UP_MULTIPLIER = 10;
 
     /**
-     * 
      * @param model
      * @param alienType
-     * @param minSpawnDelay
-     *            - minimum delay between spawns
-     * @param spawnDelayRandom
-     *            - additional maximum random time before spawns
+     * @param minSpawnDelay    - minimum delay between spawns
+     * @param spawnDelayRandom - additional maximum random time before spawns
      */
     public SpawnRandomDelay(
             final GameHandler model,
             final AlienType alienType,
             final List<PowerUpType> powerUpTypes,
             final float minSpawnDelay,
-            final float spawnDelayRandom)
-    {
+            final float spawnDelayRandom) {
         this.model = model;
         this.alienType = alienType;
         this.minSpawnDelay = minSpawnDelay;
@@ -81,8 +76,7 @@ public class SpawnRandomDelay implements SpawnBehaviour
     }
 
     @Override
-    public boolean readyToSpawn(float deltaTime)
-    {
+    public boolean readyToSpawn(float deltaTime) {
         // increment timer referencing time since alien last spawned
         timeSinceLastSpawn = timeSinceLastSpawn + deltaTime;
 
@@ -91,8 +85,7 @@ public class SpawnRandomDelay implements SpawnBehaviour
     }
 
     @Override
-    public void spawn(IAlien alien)
-    {
+    public void spawn(IAlien alien) {
         /* reset time since base last spawned */
         timeSinceLastSpawn = 0f;
 

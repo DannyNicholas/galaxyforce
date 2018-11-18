@@ -25,8 +25,7 @@ import com.danosoftware.galaxyforce.view.GLGraphics;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MainActivity extends Activity
-{
+public class MainActivity extends Activity {
 
     /* logger tag */
     private static final String ACTIVITY_TAG = "MainActivity";
@@ -51,8 +50,7 @@ public class MainActivity extends Activity
 
     /* runs when application initially starts */
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Create Application");
@@ -89,8 +87,7 @@ public class MainActivity extends Activity
 
     /* runs after onCreate or resuming after being paused */
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
 
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Resume Application");
         super.onResume();
@@ -102,8 +99,7 @@ public class MainActivity extends Activity
          * also called after product purchases and so will refresh any product
          * state changes.
          */
-        if (billingService != null)
-        {
+        if (billingService != null) {
             billingService.refreshProductStates();
         }
 
@@ -112,32 +108,23 @@ public class MainActivity extends Activity
 
     /* runs when application is paused */
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Pause Application");
 
-        synchronized (stateChanged)
-        {
-            if (isFinishing())
-            {
+        synchronized (stateChanged) {
+            if (isFinishing()) {
                 Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Finish Application");
                 state = ActivityState.FINISHED;
 
-            }
-            else
-            {
+            } else {
                 state = ActivityState.PAUSED;
             }
 
-            while (true)
-            {
-                try
-                {
+            while (true) {
+                try {
                     stateChanged.wait();
                     break;
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
 
                 }
             }
@@ -149,8 +136,7 @@ public class MainActivity extends Activity
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
 
         // destroy billing service on activity destroy to avoid degrading device
@@ -161,36 +147,30 @@ public class MainActivity extends Activity
      * Handles the results of any results sent back to the activity.
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(GameConstants.LOG_TAG, ACTIVITY_TAG + ": onActivityResult(" + requestCode + "," + resultCode + "," + data + ").");
 
         // Pass on the activity result to the billing service for handling
         boolean processed = false;
-        if (billingService != null && requestCode == GameConstants.BILLING_REQUEST)
-        {
+        if (billingService != null && requestCode == GameConstants.BILLING_REQUEST) {
             processed = billingService.processActivityResult(requestCode, resultCode, data);
         }
 
         // uses superclass methods if not handled
-        if (processed == false)
-        {
+        if (processed == false) {
             Log.d(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Pass activity result to superclass.");
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Back Button Pressed");
 
             // if back button is handled internally then don't use normal
             // superclass's method
-            if (game.handleBackButton())
-            {
+            if (game.handleBackButton()) {
                 return true;
             }
         }
@@ -226,24 +206,20 @@ public class MainActivity extends Activity
     /**
      * Inner class to handle graphics
      */
-    private class GLRenderer implements Renderer
-    {
+    private class GLRenderer implements Renderer {
 
         private static final String LOCAL_TAG = "GLRenderer";
         long startTime;
 
         @Override
-        public void onDrawFrame(GL10 gl)
-        {
+        public void onDrawFrame(GL10 gl) {
             ActivityState stateCheck = null;
 
-            synchronized (stateChanged)
-            {
+            synchronized (stateChanged) {
                 stateCheck = state;
             }
 
-            if (stateCheck == ActivityState.RUNNING)
-            {
+            if (stateCheck == ActivityState.RUNNING) {
                 float deltaTime = (System.nanoTime() - startTime) / 1000000000.0f;
                 startTime = System.nanoTime();
 
@@ -251,24 +227,20 @@ public class MainActivity extends Activity
                 game.draw(deltaTime);
             }
 
-            if (stateCheck == ActivityState.PAUSED)
-            {
+            if (stateCheck == ActivityState.PAUSED) {
                 game.pause();
 
-                synchronized (stateChanged)
-                {
+                synchronized (stateChanged) {
                     state = ActivityState.IDLE;
                     stateChanged.notifyAll();
                 }
             }
 
-            if (stateCheck == ActivityState.FINISHED)
-            {
+            if (stateCheck == ActivityState.FINISHED) {
                 game.pause();
                 game.dispose();
 
-                synchronized (stateChanged)
-                {
+                synchronized (stateChanged) {
                     state = ActivityState.IDLE;
                     stateChanged.notifyAll();
                 }
@@ -276,22 +248,18 @@ public class MainActivity extends Activity
         }
 
         @Override
-        public void onSurfaceChanged(GL10 gl, int width, int height)
-        {
+        public void onSurfaceChanged(GL10 gl, int width, int height) {
             Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": onSurfaceChanged. width: " + width + ". height: " + height + ".");
         }
 
         @Override
-        public void onSurfaceCreated(GL10 gl, EGLConfig config)
-        {
+        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": onSurfaceCreated");
 
             glGraphics.setGl(gl);
 
-            synchronized (stateChanged)
-            {
-                if (state == ActivityState.INITIALISED)
-                {
+            synchronized (stateChanged) {
+                if (state == ActivityState.INITIALISED) {
                     game.start();
                 }
                 state = ActivityState.RUNNING;

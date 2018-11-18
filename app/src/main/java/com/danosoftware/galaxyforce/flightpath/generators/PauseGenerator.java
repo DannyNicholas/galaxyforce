@@ -27,8 +27,7 @@ public class PauseGenerator implements PathGenerator {
      * @param pauseData
      * @param translators
      */
-    public PauseGenerator(PausePathDTO pauseData, PointTranslatorChain translators)
-    {
+    public PauseGenerator(PausePathDTO pauseData, PointTranslatorChain translators) {
         this.pausePosition = convertAndTranslatePoint(pauseData.getPosition(), translators);
         this.pauseTime = pauseData.getPauseTime();
     }

@@ -2,8 +2,7 @@ package com.danosoftware.galaxyforce.sprites.properties;
 
 import com.danosoftware.galaxyforce.textures.TextureRegion;
 
-public interface ISpriteProperties
-{
+public interface ISpriteProperties {
 
     int getWidth();
 

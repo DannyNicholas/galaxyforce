@@ -20,10 +20,10 @@ public class BezierMathematicsTest {
 
         // create bezier control points
         final int pathPoints = 100;
-        final Point start = new Point(10,20);
-        final Point finish = new Point(30,40);
-        final Point startControl = new Point(50,60);
-        final Point finishControl = new Point(70,80);
+        final Point start = new Point(10, 20);
+        final Point finish = new Point(30, 40);
+        final Point startControl = new Point(50, 60);
+        final Point finishControl = new Point(70, 80);
 
         // create a bezier path from control points
         final List<Point> bezierPoints = createBezierPath(

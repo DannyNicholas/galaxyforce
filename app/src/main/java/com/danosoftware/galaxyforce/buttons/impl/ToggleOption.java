@@ -12,8 +12,7 @@ import java.util.List;
  * Represents a level selector. Level selector has a border, level number and
  * position.
  */
-public class ToggleOption implements ToggleButtonGroup
-{
+public class ToggleOption implements ToggleButtonGroup {
     // reference to list of buttons
     private List<Button> options = null;
 
@@ -23,8 +22,7 @@ public class ToggleOption implements ToggleButtonGroup
     // reference to the currently selected option
     Option currentOption = null;
 
-    public ToggleOption(OptionsModel model, Option currentOption)
-    {
+    public ToggleOption(OptionsModel model, Option currentOption) {
         this.model = model;
         this.currentOption = currentOption;
         this.options = new ArrayList<Button>();
@@ -32,39 +30,30 @@ public class ToggleOption implements ToggleButtonGroup
 
     // allows buttons to be added to option group.
     @Override
-    public void addOption(Button button, Option optionType)
-    {
+    public void addOption(Button button, Option optionType) {
         options.add(button);
 
         // selects button if it is currently selected option
-        if (optionType == currentOption)
-        {
+        if (optionType == currentOption) {
             button.buttonDown();
-        }
-        else
-        {
+        } else {
             button.buttonReleased();
         }
     }
 
     // allows buttons to call back when selected
     @Override
-    public void optionSelected(Button buttonSelected, Option optionType)
-    {
+    public void optionSelected(Button buttonSelected, Option optionType) {
 
         // set current option to new selection
         currentOption = optionType;
 
         // show down button for button selected.
         // show up button for all other buttons.
-        for (Button anOption : options)
-        {
-            if (anOption == buttonSelected)
-            {
+        for (Button anOption : options) {
+            if (anOption == buttonSelected) {
                 anOption.buttonDown();
-            }
-            else
-            {
+            } else {
                 anOption.buttonReleased();
             }
         }
@@ -74,8 +63,7 @@ public class ToggleOption implements ToggleButtonGroup
     }
 
     @Override
-    public Option getSelectedOption()
-    {
+    public Option getSelectedOption() {
         return currentOption;
     }
 }

@@ -1,24 +1,28 @@
 {
-  "pathData" : [ {
-    "type" : "pause",
-    "pauseTime" : 0.5,
-    "position" : {
-      "x" : 32,
-      "y" : 480
+  "pathData": [
+    {
+      "type": "pause",
+      "pauseTime": 0.5,
+      "position": {
+        "x": 32,
+        "y": 480
+      }
+    },
+    {
+      "type": "pause",
+      "pauseTime": 0.5,
+      "position": {
+        "x": 32,
+        "y": 480
+      }
+    },
+    {
+      "type": "pause",
+      "pauseTime": 0.5,
+      "position": {
+        "x": 32,
+        "y": 480
+      }
     }
-  }, {
-    "type" : "pause",
-    "pauseTime" : 0.5,
-    "position" : {
-      "x" : 32,
-      "y" : 480
-    }
-  }, {
-    "type" : "pause",
-    "pauseTime" : 0.5,
-    "position" : {
-      "x" : 32,
-      "y" : 480
-    }
-  } ]
+  ]
 }

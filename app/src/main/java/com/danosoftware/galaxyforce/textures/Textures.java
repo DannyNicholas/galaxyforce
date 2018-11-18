@@ -13,13 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Textures
-{
+public class Textures {
     private static final String TAG = "Textures";
 
     // private constructor
-    private Textures()
-    {
+    private Textures() {
 
     }
 
@@ -31,16 +29,13 @@ public class Textures
     private static Map<String, TextureDetail> textureDetailMap = new HashMap<String, TextureDetail>();
 
     // return TextureDetail for the supplied sprite name
-    public static TextureDetail getTextureDetail(String name)
-    {
+    public static TextureDetail getTextureDetail(String name) {
         return textureDetailMap.get(name);
     }
 
     // static factory to create instances
-    public static Texture newTexture(TextureMap textureState)
-    {
-        if (textureState == null)
-        {
+    public static Texture newTexture(TextureMap textureState) {
+        if (textureState == null) {
             throw new IllegalArgumentException("Supplied TextureState object can not be null.");
         }
 
@@ -60,16 +55,13 @@ public class Textures
         // if texture is new then create and add to map.
         // constructing a new texture triggers texture to be loaded so avoid if
         // not needed.
-        if (textureMap.containsKey(textureState))
-        {
+        if (textureMap.containsKey(textureState)) {
 
             Log.i(TAG, "Reload existing texture.");
             newTexture = textureMap.get(textureState);
             // if retrieving an existing texture then reload/bind for OpenGL
             newTexture.reload();
-        }
-        else
-        {
+        } else {
             Log.i(TAG, "Create new texture.");
             newTexture = new Texture(game, textureState.getTextureImage());
             textureMap.put(textureState, newTexture);
@@ -80,26 +72,19 @@ public class Textures
 
     // get textures from texture file
     // store textures into texture details map
-    private static void storeTextureDetails(FileIO fileIO, String textureXml)
-    {
+    private static void storeTextureDetails(FileIO fileIO, String textureXml) {
         TextureRegionXmlParser textureParser = new TextureRegionXmlParser();
 
         List<TextureDetail> listOfTextureRegions = null;
-        try
-        {
+        try {
             listOfTextureRegions = textureParser.readTextures(fileIO, textureXml);
-        }
-        catch (XmlPullParserException e)
-        {
+        } catch (XmlPullParserException e) {
             Log.e(TAG, "Error parsing texture region xml file.");
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             Log.e(TAG, "Error reading texture region xml file.");
         }
 
-        for (TextureDetail texture : listOfTextureRegions)
-        {
+        for (TextureDetail texture : listOfTextureRegions) {
             // store texture details into map
             textureDetailMap.put(texture.name, texture);
         }

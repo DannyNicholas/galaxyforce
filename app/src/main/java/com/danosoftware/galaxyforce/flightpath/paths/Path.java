@@ -2,18 +2,17 @@ package com.danosoftware.galaxyforce.flightpath.paths;
 
 /**
  * enum containing all the possible flight paths for aliens.
- *
+ * <p>
  * Useful Bezier Curve sites:
- *
+ * <p>
  * http://cubic-bezier.com/#.06,.93,0,1.01
  * https://www.desmos.com/calculator/cahqdxeshd
- *
  */
 public enum Path {
 
     /*
-    * Triangular path where aliens cross-over where the top of the triangle.
-    */
+     * Triangular path where aliens cross-over where the top of the triangle.
+     */
     TRIANGULAR("triangular.json"),
 
     /*
@@ -87,7 +86,6 @@ public enum Path {
     SPIRAL("spiral.json");
 
 
-    
     // file name holding path data
     private final String pathFile;
 

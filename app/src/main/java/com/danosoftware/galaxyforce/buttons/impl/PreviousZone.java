@@ -12,8 +12,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
 /**
  * Represents a previous zone button. Has a sprite and position.
  */
-public class PreviousZone implements SpriteButton
-{
+public class PreviousZone implements SpriteButton {
 
     // wanted buffer around the button
     private final int buffer = 32;
@@ -32,8 +31,7 @@ public class PreviousZone implements SpriteButton
     private final ISpriteIdentifier spriteButtonDown;
 
     public PreviousZone(SelectLevelModel model, Controller controller, int xPos, int yPos, int zone, ISpriteIdentifier spriteButtonUp,
-            ISpriteIdentifier spriteButtonDown)
-    {
+                        ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos, buffer);
         this.spriteButtonUp = spriteButtonUp;
@@ -46,34 +44,29 @@ public class PreviousZone implements SpriteButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return levelSprite.getBounds();
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         levelSprite.changeType(spriteButtonUp);
 
         model.changeZone(zone - 1);
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         levelSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         levelSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return levelSprite;
     }
 }

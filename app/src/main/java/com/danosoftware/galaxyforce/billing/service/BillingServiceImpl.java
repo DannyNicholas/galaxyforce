@@ -20,8 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-public class BillingServiceImpl implements IBillingService
-{
+public class BillingServiceImpl implements IBillingService {
     /* logger tag */
     private static final String BILLING_TAG = "BillingService";
 
@@ -29,14 +28,13 @@ public class BillingServiceImpl implements IBillingService
     private static final String PAYLOAD = "Galaxy-Force-Purchase-Payload";
 
     /*
-     * 
+     *
      * START OF DEVELOPMENT OVERRIDE
-     * 
+     *
      * FIXME - Danny - Static product over-ride in development mode only!! Avoid
      * limitations of not being to test billing in development mode.
      */
-    private static final Map<String, ProductState> staticDevMap = new HashMap<String, ProductState>()
-    {
+    private static final Map<String, ProductState> staticDevMap = new HashMap<String, ProductState>() {
         private static final long serialVersionUID = 1L;
 
         {
@@ -46,28 +44,26 @@ public class BillingServiceImpl implements IBillingService
     };
 
     /**
-     * 
      * BILLING KNOWN BUGS AND ISSUES
-     * 
-     * 
+     * <p>
+     * <p>
      * When testing with static responses, there are known problems with
      * Security.verifyPurchase() that reports that purchase verification failed.
      * This happens because static responses have no valid signature.
-     * 
+     * <p>
      * Code should work with real purchases but not static purchases. Method may
      * need replacing for testing. See below for fix:
-     * 
+     * <p>
      * http://stackoverflow.com/questions
      * /19534210/in-app-billing-not-working-after
      * -update-google-store/19539213#19539213
-     * 
+     * <p>
      * Sometime get IllegalStateException: Can't start async operation (xxx)
      * because another async operation(xxx) is in progress. This requires catch
      * blocks to manually catch and clear flags. See...
-     * 
+     * <p>
      * http://stackoverflow.com/questions/15628155/android
      * -in-app-billing-cant-start-launchpurchaseflow-because-launchpurchaseflo
-     * 
      */
 
     /*
@@ -91,14 +87,12 @@ public class BillingServiceImpl implements IBillingService
     // TEST_PRODUCT_UNAVAILABLE;
 
     // state of billing service
-    private enum BillingState
-    {
+    private enum BillingState {
         NOT_READY, READY, FAILURE
     }
 
     // state of products
-    public enum ProductState
-    {
+    public enum ProductState {
         NOT_PURCHASED, PURCHASED, FAILURE
     }
 
@@ -132,8 +126,7 @@ public class BillingServiceImpl implements IBillingService
     private Set<BillingObserver> observers;
 
     // private constructor
-    public BillingServiceImpl(Activity activity)
-    {
+    public BillingServiceImpl(Activity activity) {
         this.activity = activity;
 
         // initialise state to not ready
@@ -156,18 +149,13 @@ public class BillingServiceImpl implements IBillingService
         this.observers = new HashSet<BillingObserver>();
 
         // setup billing service
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener()
-        {
-            public void onIabSetupFinished(IabResult result)
-            {
-                if (!result.isSuccess())
-                {
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
                     // billing service could not be set-up
                     Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": Problem setting up In-app Billing: " + result);
                     state = BillingState.FAILURE;
-                }
-                else
-                {
+                } else {
                     // IAB is fully set up!
                     Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Successfully set-up In-app Billing: " + result);
                     state = BillingState.READY;
@@ -180,10 +168,8 @@ public class BillingServiceImpl implements IBillingService
     }
 
     @Override
-    public void destroy()
-    {
-        if (mHelper != null)
-        {
+    public void destroy() {
+        if (mHelper != null) {
             mHelper.dispose();
             mHelper = null;
             Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Destroy In-app Billing.");
@@ -193,13 +179,12 @@ public class BillingServiceImpl implements IBillingService
     /*
      * Register an observer for any product state refreshes. Normally called
      * when a observer is constructed.
-     * 
+     *
      * Synchronized to avoid adding observer in main thread while notifying
      * observers in billing thread.
      */
     @Override
-    public synchronized void registerProductObserver(BillingObserver billingObserver)
-    {
+    public synchronized void registerProductObserver(BillingObserver billingObserver) {
         Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Register Billing Observer '" + billingObserver + "'.");
         observers.add(billingObserver);
     }
@@ -207,13 +192,12 @@ public class BillingServiceImpl implements IBillingService
     /*
      * Unregister an observer for any product state refreshes. Normally called
      * when a observer is disposed.
-     * 
+     *
      * Synchronized to avoid removing observer in main thread while notifying
      * observers in billing thread.
      */
     @Override
-    public synchronized void unregisterProductObserver(BillingObserver billingObserver)
-    {
+    public synchronized void unregisterProductObserver(BillingObserver billingObserver) {
         Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Unregister Billing Observer '" + billingObserver + "'.");
         observers.remove(billingObserver);
     }
@@ -224,20 +208,18 @@ public class BillingServiceImpl implements IBillingService
      * immediately.
      */
     @Override
-    public void refreshProductStates()
-    {
+    public void refreshProductStates() {
         /*
          * only refresh once billing service is set-up. trying to refresh before
          * service is ready will cause an IllegalStateException by the IAB
          * helper. this may happen when activity calls on resume for the first
          * time.
-         * 
+         *
          * to avoid the product states not being refreshed on start-up, the
          * billing set-up method will also request a refresh once initial set-up
          * is complete.
          */
-        if (state == BillingState.READY)
-        {
+        if (state == BillingState.READY) {
             List<String> additionalSkuList = new ArrayList<String>();
             additionalSkuList.add(GameConstants.FULL_GAME_PRODUCT_ID);
             additionalSkuList.add(GameConstants.ALL_LEVELS_PRODUCT_ID);
@@ -249,17 +231,14 @@ public class BillingServiceImpl implements IBillingService
              * execute async query request. result will callback listener when
              * finished.
              */
-            try
-            {
+            try {
                 mHelper.queryInventoryAsync(true, additionalSkuList, mQueryFinishedListener);
             }
             /*
              * Illegal State Exceptions can be thrown if the purchase fails but
              * the IabHelper still believes the async purchase is in progress.
              * In these scenarios catch the exception and clear the async flag.
-             */
-            catch (IllegalStateException e)
-            {
+             */ catch (IllegalStateException e) {
                 Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": IllegalStateException while refreshing products. Clearing async flag.");
                 mHelper.flagEndAsync();
             }
@@ -267,40 +246,33 @@ public class BillingServiceImpl implements IBillingService
     }
 
     @Override
-    public boolean isPurchased(String productId)
-    {
+    public boolean isPurchased(String productId) {
         return products.get(productId) == ProductState.PURCHASED;
     }
 
     @Override
-    public boolean isNotPurchased(String productId)
-    {
+    public boolean isNotPurchased(String productId) {
         return products.get(productId) == ProductState.NOT_PURCHASED;
     }
 
     @Override
-    public String getPrice(String productId)
-    {
+    public String getPrice(String productId) {
         // return price of product. will return null if price is not yet known
         return prices.get(productId);
     }
 
     @Override
-    public void purchase(String productId)
-    {
+    public void purchase(String productId) {
         IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new PurchaseFinishedListener(productId);
 
-        try
-        {
+        try {
             mHelper.launchPurchaseFlow(activity, productId, GameConstants.BILLING_REQUEST, mPurchaseFinishedListener, PAYLOAD);
         }
         /*
          * Illegal State Exceptions can be thrown if another async process is in
          * progress or previous async purchase failed. In these scenarios catch
          * the exception and clear the async flag.
-         */
-        catch (IllegalStateException e)
-        {
+         */ catch (IllegalStateException e) {
             Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": IllegalStateException while starting purchase flow for '" + productId
                     + "'. Clearing async flag.");
             mHelper.flagEndAsync();
@@ -308,10 +280,8 @@ public class BillingServiceImpl implements IBillingService
     }
 
     @Override
-    public boolean processActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (mHelper == null || state != BillingState.READY)
-        {
+    public boolean processActivityResult(int requestCode, int resultCode, Intent data) {
+        if (mHelper == null || state != BillingState.READY) {
             Log.w(GameConstants.LOG_TAG, BILLING_TAG + ": Unable to handle activity request. Billing Service not available.");
             return false;
         }
@@ -323,25 +293,21 @@ public class BillingServiceImpl implements IBillingService
 
     /**
      * Consume the purchased product Id.
-     * 
+     *
      * @param purchase
      * @param productId
      */
-    private void consume(Purchase purchase, String productId)
-    {
+    private void consume(Purchase purchase, String productId) {
         IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new ConsumeFinishedListener(productId);
 
-        try
-        {
+        try {
             mHelper.consumeAsync(purchase, mConsumeFinishedListener);
         }
         /*
          * Illegal State Exceptions can be thrown if another async process is in
          * progress or previous async purchase failed. In these scenarios catch
          * the exception and clear the async flag.
-         */
-        catch (IllegalStateException e)
-        {
+         */ catch (IllegalStateException e) {
             Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": IllegalStateException while starting consume for '" + productId
                     + "'. Clearing async flag.");
             mHelper.flagEndAsync();
@@ -351,26 +317,24 @@ public class BillingServiceImpl implements IBillingService
     /**
      * Reverses the supplied string. Used to help hide the real in-app billing
      * public key.
-     * 
+     *
      * @param original
      * @return
      */
-    private String reverse(String original)
-    {
+    private String reverse(String original) {
         return new StringBuilder(original).reverse().toString();
     }
 
     /**
      * Computes the IAB public key.
-     * 
+     *
      * @return
      */
-    private String getPublicKey()
-    {
+    private String getPublicKey() {
         /*
          * in-app billing public key - reversed and broken in sections to hide real
          * key. Key parts also placed to random order to further hide real key.
-        */
+         */
 //        final String KEY_PART1 = activity.getResources().getText(R.string.public_key1).toString();
 //        final String KEY_PART2 = activity.getResources().getText(R.string.public_key2).toString();
 //        final String KEY_PART3 = activity.getResources().getText(R.string.public_key3).toString();
@@ -391,13 +355,12 @@ public class BillingServiceImpl implements IBillingService
     /**
      * Splits a public key into sections. Used when you want to turn an original
      * public key into a split reversed key usable by this billing service.
-     * 
+     * <p>
      * This method should never be called in production but is available when a
      * new key needs to be split.
      */
     @SuppressWarnings("unused")
-    private void splitPublicKey(String publicKey)
-    {
+    private void splitPublicKey(String publicKey) {
         // firstly reverse entire key
         String reverse = reverse(publicKey);
 
@@ -409,8 +372,7 @@ public class BillingServiceImpl implements IBillingService
         Log.i(GameConstants.LOG_TAG, BILLING_TAG + ": Length per Part = " + lengthPerPart);
 
         // ouput each part
-        for (int i = 0; i < totallength; i = i + lengthPerPart)
-        {
+        for (int i = 0; i < totallength; i = i + lengthPerPart) {
             Log.i(GameConstants.LOG_TAG, BILLING_TAG + ": Part: " + ((i / lengthPerPart) + 1));
 
             String part = reverse.substring(i, i + lengthPerPart);
@@ -423,26 +385,21 @@ public class BillingServiceImpl implements IBillingService
      * Internal class that acts as a listener to any query requests to the IAB
      * service.
      */
-    private class QueryFinishedListener implements IabHelper.QueryInventoryFinishedListener
-    {
+    private class QueryFinishedListener implements IabHelper.QueryInventoryFinishedListener {
         // list of product Ids that are bring queried for
         private final List<String> productList;
 
-        private QueryFinishedListener(List<String> productId)
-        {
+        private QueryFinishedListener(List<String> productId) {
             this.productList = productId;
         }
 
         @Override
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory)
-        {
-            if (result.isFailure())
-            {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            if (result.isFailure()) {
                 // handle error
                 Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": Failed to get items!");
 
-                for (String productId : productList)
-                {
+                for (String productId : productList) {
                     ProductState productState = ProductState.FAILURE;
 
                     /*
@@ -456,15 +413,13 @@ public class BillingServiceImpl implements IBillingService
 
                     /*
                      * START OF DEVELOPMENT OVERRIDE
-                     * 
+                     *
                      * FIXME - Danny - manual override for testing in
                      * development mode (will normally fail in dev mode).
                      */
-                    if (BuildConfig.DEBUG)
-                    {
+                    if (BuildConfig.DEBUG) {
                         ProductState devProductState = staticDevMap.get(productId);
-                        if (devProductState != null)
-                        {
+                        if (devProductState != null) {
                             productState = devProductState;
                             Log.w(GameConstants.LOG_TAG, BILLING_TAG + ": Debug Override. Manually Setting Product: " + productId + " = "
                                     + productState);
@@ -484,11 +439,9 @@ public class BillingServiceImpl implements IBillingService
             }
 
             // we now have a valid result. check status of each product
-            for (String productId : productList)
-            {
+            for (String productId : productList) {
                 ProductState productState;
-                if (inventory.hasPurchase(productId))
-                {
+                if (inventory.hasPurchase(productId)) {
                     productState = ProductState.PURCHASED;
 
                     /*
@@ -497,9 +450,7 @@ public class BillingServiceImpl implements IBillingService
                      * consumes.
                      */
                     // consume(inventory.getPurchase(productId), productId);
-                }
-                else
-                {
+                } else {
                     productState = ProductState.NOT_PURCHASED;
                 }
 
@@ -508,8 +459,7 @@ public class BillingServiceImpl implements IBillingService
                 String currencyCode = inventory.getSkuDetails(productId).getCurrencyCode();
 
                 String combinedPrice = null;
-                if (price != null && currencyCode != null)
-                {
+                if (price != null && currencyCode != null) {
                     combinedPrice = currencyCode + " " + price;
                 }
 
@@ -525,10 +475,8 @@ public class BillingServiceImpl implements IBillingService
              * billing thread so must be synchronized to avoid new observers
              * being added/removed by the main thread at same time.
              */
-            synchronized (this)
-            {
-                for (BillingObserver anObserver : observers)
-                {
+            synchronized (this) {
+                for (BillingObserver anObserver : observers) {
                     anObserver.billingProductsStateChange();
                 }
             }
@@ -539,29 +487,23 @@ public class BillingServiceImpl implements IBillingService
      * Internal class that acts as a listener to any query purchases to the IAB
      * service.
      */
-    private class PurchaseFinishedListener implements IabHelper.OnIabPurchaseFinishedListener
-    {
+    private class PurchaseFinishedListener implements IabHelper.OnIabPurchaseFinishedListener {
         private final String productId;
 
-        private PurchaseFinishedListener(String productId)
-        {
+        private PurchaseFinishedListener(String productId) {
             this.productId = productId;
         }
 
         @Override
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase)
-        {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
             Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Purhase result received.");
 
-            if (result.isFailure())
-            {
+            if (result.isFailure()) {
                 // this could occur after an attempt to try and purchase a
                 // product you already own.
                 Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Error purchasing: " + result);
                 return;
-            }
-            else if (purchase.getSku().equals(productId))
-            {
+            } else if (purchase.getSku().equals(productId)) {
                 /*
                  * there is no need to refresh product states here. onResume()
                  * will be called after a purchase that will trigger a refresh.
@@ -575,24 +517,18 @@ public class BillingServiceImpl implements IBillingService
      * Internal class that acts as a listener to any purchase consumes to the
      * IAB service.
      */
-    private class ConsumeFinishedListener implements IabHelper.OnConsumeFinishedListener
-    {
+    private class ConsumeFinishedListener implements IabHelper.OnConsumeFinishedListener {
         private final String productId;
 
-        private ConsumeFinishedListener(String productId)
-        {
+        private ConsumeFinishedListener(String productId) {
             this.productId = productId;
         }
 
         @Override
-        public void onConsumeFinished(Purchase purchase, IabResult result)
-        {
-            if (result.isSuccess())
-            {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            if (result.isSuccess()) {
                 Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Successful consume of: " + productId);
-            }
-            else
-            {
+            } else {
                 Log.e(GameConstants.LOG_TAG, BILLING_TAG + ": Failed to consume: " + productId);
             }
         }

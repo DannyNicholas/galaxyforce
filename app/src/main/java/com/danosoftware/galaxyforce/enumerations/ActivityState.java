@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.enumerations;
 
-public enum ActivityState
-{
+public enum ActivityState {
     INITIALISED, RUNNING, PAUSED, FINISHED, IDLE
 }

@@ -16,7 +16,7 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GamePlayAssetsManager implements IGamePlayAssetsManager{
+public class GamePlayAssetsManager implements IGamePlayAssetsManager {
 
     // sound player that provide sound effects
     private final SoundPlayer soundPlayer;

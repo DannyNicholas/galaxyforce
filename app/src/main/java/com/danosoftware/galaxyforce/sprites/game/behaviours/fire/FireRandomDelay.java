@@ -6,8 +6,7 @@ import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
 
-public class FireRandomDelay implements FireBehaviour
-{
+public class FireRandomDelay implements FireBehaviour {
     /*
      * ******************************************************
      * PRIVATE INSTANCE VARIABLES
@@ -36,16 +35,12 @@ public class FireRandomDelay implements FireBehaviour
     private final AlienMissileType missileType;
 
     /**
-     * 
      * @param model
      * @param missileType
-     * @param minMissileDelay
-     *            - minimum delay between missile fires
-     * @param missleDelayRandom
-     *            - additional maximum random time before missile fires
+     * @param minMissileDelay   - minimum delay between missile fires
+     * @param missleDelayRandom - additional maximum random time before missile fires
      */
-    public FireRandomDelay(GameHandler model, AlienMissileType missileType, float minMissileDelay, float missleDelayRandom)
-    {
+    public FireRandomDelay(GameHandler model, AlienMissileType missileType, float minMissileDelay, float missleDelayRandom) {
         this.model = model;
         this.missileType = missileType;
         this.minMissileDelay = minMissileDelay;
@@ -62,8 +57,7 @@ public class FireRandomDelay implements FireBehaviour
     }
 
     @Override
-    public boolean readyToFire(float deltaTime)
-    {
+    public boolean readyToFire(float deltaTime) {
         // increment timer referencing time since alienlast fired
         timeSinceLastFired = timeSinceLastFired + deltaTime;
 
@@ -73,8 +67,7 @@ public class FireRandomDelay implements FireBehaviour
     }
 
     @Override
-    public void fire(IAlien alien)
-    {
+    public void fire(IAlien alien) {
         // reset timer since last fired
         timeSinceLastFired = 0f;
 

@@ -6,14 +6,12 @@ package com.danosoftware.galaxyforce.interfaces;
  * This is is so they can be notified following the direction change to allow
  * any required updates.
  */
-public interface DirectionListener
-{
+public interface DirectionListener {
 
     /**
      * Used to update any listeners of a direction change.
-     * 
-     * @param direction
-     *            new direction to be updated
+     *
+     * @param direction new direction to be updated
      */
     void completeDirectionChange();
 

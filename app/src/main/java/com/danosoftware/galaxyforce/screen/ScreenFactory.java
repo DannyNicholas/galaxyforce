@@ -25,22 +25,18 @@ import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
-public class ScreenFactory
-{
+public class ScreenFactory {
 
     private static final int MAX_SPRITES = 1000;
 
-    public enum ScreenType
-    {
+    public enum ScreenType {
         SPLASH, MAIN_MENU, OPTIONS, ABOUT, SELECT_LEVEL, UPGRADE_FULL_VERSION, UPGRADE_ALL_ZONES, GAME_COMPLETE
     }
 
-    private ScreenFactory()
-    {
+    private ScreenFactory() {
     }
 
-    public static Screen newScreen(ScreenType screenType)
-    {
+    public static Screen newScreen(ScreenType screenType) {
         // screen to be returned
         Screen screen = null;
 
@@ -58,148 +54,146 @@ public class ScreenFactory
         Controller controller;
         Model model;
 
-        switch (screenType)
-        {
+        switch (screenType) {
 
-        case SPLASH:
+            case SPLASH:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.SPLASH;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.SPLASH;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new SplashModelImpl(controller);
+                /* set-up model */
+                model = new SplashModelImpl(controller);
 
-            /* create screen */
-            screen = new SplashScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new SplashScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case MAIN_MENU:
+            case MAIN_MENU:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new MainMenuModelImpl(controller, game.getBillingService());
+                /* set-up model */
+                model = new MainMenuModelImpl(controller, game.getBillingService());
 
-            /* create screen */
-            screen = new MainMenuScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new MainMenuScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case OPTIONS:
+            case OPTIONS:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new OptionsModelImpl(controller);
+                /* set-up model */
+                model = new OptionsModelImpl(controller);
 
-            /* create screen */
-            screen = new OptionsScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new OptionsScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case ABOUT:
+            case ABOUT:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new AboutModelImpl(controller, game.getContext());
+                /* set-up model */
+                model = new AboutModelImpl(controller, game.getContext());
 
-            /* create screen */
-            screen = new AboutScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new AboutScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case SELECT_LEVEL:
+            case SELECT_LEVEL:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            LevelModel levelModel = new SelectLevelModelImpl(controller, game.getBillingService());
+                /* set-up model */
+                LevelModel levelModel = new SelectLevelModelImpl(controller, game.getBillingService());
 
-            /* create screen */
-            screen = new SelectLevelScreen(levelModel, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new SelectLevelScreen(levelModel, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case UPGRADE_FULL_VERSION:
+            case UPGRADE_FULL_VERSION:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new UnlockFullVersionModelImpl(controller, game.getBillingService());
+                /* set-up model */
+                model = new UnlockFullVersionModelImpl(controller, game.getBillingService());
 
-            /* create screen */
-            screen = new UnlockFullVersionScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new UnlockFullVersionScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case UPGRADE_ALL_ZONES:
+            case UPGRADE_ALL_ZONES:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new UnlockAllZonesModelImpl(controller, game.getBillingService());
+                /* set-up model */
+                model = new UnlockAllZonesModelImpl(controller, game.getBillingService());
 
-            /* create screen */
-            screen = new UnlockAllZonesScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new UnlockAllZonesScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        case GAME_COMPLETE:
+            case GAME_COMPLETE:
 
-            /* texture map containing sprite identifiers and properties */
-            textureMap = TextureMap.MENU;
+                /* texture map containing sprite identifiers and properties */
+                textureMap = TextureMap.MENU;
 
-            /* set-up controller */
-            controller = new MenuController(input, camera);
+                /* set-up controller */
+                controller = new MenuController(input, camera);
 
-            /* set-up model */
-            model = new GameCompleteModelImpl(controller, game.getContext());
+                /* set-up model */
+                model = new GameCompleteModelImpl(controller, game.getContext());
 
-            /* create screen */
-            screen = new GameCompleteScreen(model, controller, textureMap, glGraphics, camera, batcher);
+                /* create screen */
+                screen = new GameCompleteScreen(model, controller, textureMap, glGraphics, camera, batcher);
 
-            break;
+                break;
 
-        default:
+            default:
 
-            throw new IllegalArgumentException("Unsupported screen type: '" + screenType + "'.");
+                throw new IllegalArgumentException("Unsupported screen type: '" + screenType + "'.");
 
         }
 
         return screen;
     }
 
-    public static Screen newGameScreen(int startingWave)
-    {
+    public static Screen newGameScreen(int startingWave) {
         /* set-up view */
         Game game = Games.getGame();
         GLGraphics glGraphics = game.getGlGraphics();

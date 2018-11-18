@@ -41,7 +41,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
  * Test to confirm behaviour of wave factory to create all waves.
- *
+ * <p>
  * Also tries to create waves that are not yet supported.
  */
 @RunWith(PowerMockRunner.class)

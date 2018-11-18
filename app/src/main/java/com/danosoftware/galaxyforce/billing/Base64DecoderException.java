@@ -19,15 +19,12 @@ package com.danosoftware.galaxyforce.billing;
  *
  * @author nelson
  */
-public class Base64DecoderException extends Exception
-{
-    public Base64DecoderException()
-    {
+public class Base64DecoderException extends Exception {
+    public Base64DecoderException() {
         super();
     }
 
-    public Base64DecoderException(String s)
-    {
+    public Base64DecoderException(String s) {
         super(s);
     }
 

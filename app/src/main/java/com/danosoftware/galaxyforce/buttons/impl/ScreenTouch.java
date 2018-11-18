@@ -10,8 +10,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * Represents a screen touch. Registers a new button that covers the whole
  * screen. No sprite associated with screen - whole screen acts as button.
  */
-public class ScreenTouch implements Button
-{
+public class ScreenTouch implements Button {
 
     // reference to button's parent model
     private TouchScreenModel model;
@@ -19,8 +18,7 @@ public class ScreenTouch implements Button
     // reference to button bounds
     private Rectangle bounds;
 
-    public ScreenTouch(TouchScreenModel model, Controller controller, int topLeftX, int topLeftY, int width, int height)
-    {
+    public ScreenTouch(TouchScreenModel model, Controller controller, int topLeftX, int topLeftY, int width, int height) {
         this.model = model;
 
         // create bounds using the supplied co-ordinates, width and height
@@ -31,27 +29,23 @@ public class ScreenTouch implements Button
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return bounds;
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         // call screen touched when screen button pressed
         model.screenTouched();
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         // no action when screen pressed
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         // no action when screen released (not registered as button press)
     }
 }

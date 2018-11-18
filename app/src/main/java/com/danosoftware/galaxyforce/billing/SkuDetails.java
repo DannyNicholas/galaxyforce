@@ -21,8 +21,7 @@ import org.json.JSONObject;
 /**
  * Represents an in-app product's listing details.
  */
-public class SkuDetails
-{
+public class SkuDetails {
     String mItemType;
     String mSku;
     String mType;
@@ -32,13 +31,11 @@ public class SkuDetails
     String mCurrencyCode;
     String mJson;
 
-    public SkuDetails(String jsonSkuDetails) throws JSONException
-    {
+    public SkuDetails(String jsonSkuDetails) throws JSONException {
         this(IabHelper.ITEM_TYPE_INAPP, jsonSkuDetails);
     }
 
-    public SkuDetails(String itemType, String jsonSkuDetails) throws JSONException
-    {
+    public SkuDetails(String itemType, String jsonSkuDetails) throws JSONException {
         mItemType = itemType;
         mJson = jsonSkuDetails;
         JSONObject o = new JSONObject(mJson);
@@ -50,39 +47,32 @@ public class SkuDetails
         mCurrencyCode = o.optString("price_currency_code");
     }
 
-    public String getSku()
-    {
+    public String getSku() {
         return mSku;
     }
 
-    public String getType()
-    {
+    public String getType() {
         return mType;
     }
 
-    public String getPrice()
-    {
+    public String getPrice() {
         return mPrice;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return mTitle;
     }
 
-    public String getDescription()
-    {
+    public String getDescription() {
         return mDescription;
     }
 
-    public String getCurrencyCode()
-    {
+    public String getCurrencyCode() {
         return mCurrencyCode;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "SkuDetails:" + mJson;
     }
 }

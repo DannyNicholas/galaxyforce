@@ -7,12 +7,11 @@ import java.util.List;
 
 /**
  * Represents a sub-wave. A wave represents a collection of sub-waves.
- * 
+ * <p>
  * Each sub-wave contains a collection of aliens and parameters about the
  * sub-wave
  */
-public class SubWave
-{
+public class SubWave {
     // list of aliens in this sub-wave
     private final List<IAlien> aliens;
 
@@ -21,19 +20,16 @@ public class SubWave
 
     public SubWave(
             final List<IAlien> aliens,
-            final SubWaveRepeatMode waveRepeatedMode)
-    {
+            final SubWaveRepeatMode waveRepeatedMode) {
         this.aliens = aliens;
         this.waveRepeatedMode = waveRepeatedMode;
     }
 
-    public List<IAlien> getAliens()
-    {
+    public List<IAlien> getAliens() {
         return aliens;
     }
 
-    public boolean isWaveRepeated()
-    {
+    public boolean isWaveRepeated() {
         return (waveRepeatedMode == SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED);
     }
 }

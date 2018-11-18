@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
-public class BaseMissileBlast extends AbstractBaseMissile
-{
+public class BaseMissileBlast extends AbstractBaseMissile {
 
     /* missile sprite */
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
@@ -21,8 +20,7 @@ public class BaseMissileBlast extends AbstractBaseMissile
     private int xDelta;
     private int yDelta;
 
-    public BaseMissileBlast(int xStart, int yStart, float angle)
-    {
+    public BaseMissileBlast(int xStart, int yStart, float angle) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);
 
         // convert angle to degrees for sprite rotation.

@@ -224,8 +224,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         // if moving upwards into y start position
         if (state == MOVING_TO_START_POSITION) {
             moveBase(0, 0.7f, deltaTime);
-            if (y() >= BASE_START_Y)
-            {
+            if (y() >= BASE_START_Y) {
                 move(x(), BASE_START_Y);
                 if (shielded) {
                     shield.move(x(), BASE_START_Y);
@@ -587,13 +586,13 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             shield = new BaseShield(x(), y(), SHIELD_PULSE, syncTime);
         }
 
-            // add shield for any helper bases
-            for (IBaseHelper aHelperBase : helpers.values()) {
-                aHelperBase.addShield(syncTime);
-            }
+        // add shield for any helper bases
+        for (IBaseHelper aHelperBase : helpers.values()) {
+            aHelperBase.addShield(syncTime);
+        }
 
-            // refresh list of sprites
-            this.allSprites = buildAllSprites();
+        // refresh list of sprites
+        this.allSprites = buildAllSprites();
     }
 
     private void removeShield() {

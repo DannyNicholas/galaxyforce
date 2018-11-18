@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.enumerations;
 
-public enum ShapeType
-{
+public enum ShapeType {
     RECTANGLE, CIRCLE
 }

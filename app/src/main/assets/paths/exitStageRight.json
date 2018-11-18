@@ -1,40 +1,44 @@
 {
-  "pathData" : [ {
-    "type" : "linear",
-    "pathPoints" : 102,
-    "start" : {
-      "x" : 32,
-      "y" : 992
+  "pathData": [
+    {
+      "type": "linear",
+      "pathPoints": 102,
+      "start": {
+        "x": 32,
+        "y": 992
+      },
+      "finish": {
+        "x": 32,
+        "y": 480
+      }
     },
-    "finish" : {
-      "x" : 32,
-      "y" : 480
+    {
+      "type": "pause",
+      "pauseTime": 0.5,
+      "position": {
+        "x": 32,
+        "y": 480
+      }
+    },
+    {
+      "type": "bezier",
+      "pathPoints": 100,
+      "start": {
+        "x": 32,
+        "y": 480
+      },
+      "startControl": {
+        "x": 118,
+        "y": 118
+      },
+      "finish": {
+        "x": 572,
+        "y": 32
+      },
+      "finishControl": {
+        "x": 32,
+        "y": 118
+      }
     }
-  }, {
-    "type" : "pause",
-    "pauseTime" : 0.5,
-    "position" : {
-      "x" : 32,
-      "y" : 480
-    }
-  }, {
-    "type" : "bezier",
-    "pathPoints" : 100,
-    "start" : {
-      "x" : 32,
-      "y" : 480
-    },
-    "startControl" : {
-      "x" : 118,
-      "y" : 118
-    },
-    "finish" : {
-      "x" : 572,
-      "y" : 32
-    },
-    "finishControl" : {
-      "x" : 32,
-      "y" : 118
-    }
-  } ]
+  ]
 }

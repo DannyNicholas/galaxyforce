@@ -16,12 +16,11 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 
 /**
  * Each sub-wave consists of one or more sub-wave properties.
- *
+ * <p>
  * Each sub-wave property contains enough data to create a sub-wave
  * of aliens that follow a path.
  */
-public enum SubWavePathRule
-{
+public enum SubWavePathRule {
 
     /**
      * space invader style attack
@@ -338,7 +337,7 @@ public enum SubWavePathRule
                     0,
                     false,
                     new PointTranslatorChain()
-                            .add(new OffsetXPointTranslator( - SCREEN_MID_X / 2))
+                            .add(new OffsetXPointTranslator(-SCREEN_MID_X / 2))
             )
     ),
 
@@ -358,8 +357,7 @@ public enum SubWavePathRule
     // list of properties for a sub-wave
     private final List<SubWavePathRuleProperties> subWaveProps;
 
-    SubWavePathRule(SubWavePathRuleProperties... subWaveProps)
-    {
+    SubWavePathRule(SubWavePathRuleProperties... subWaveProps) {
         this.subWaveProps = Arrays.asList(subWaveProps);
     }
 
@@ -368,8 +366,7 @@ public enum SubWavePathRule
      *
      * @return
      */
-    public List<SubWavePathRuleProperties> subWaveProps()
-    {
+    public List<SubWavePathRuleProperties> subWaveProps() {
         return subWaveProps;
     }
 }

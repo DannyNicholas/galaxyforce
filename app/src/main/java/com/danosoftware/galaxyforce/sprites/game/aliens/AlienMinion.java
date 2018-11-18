@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienMinion extends AbstractAlienWithPath
-{
+public class AlienMinion extends AbstractAlienWithPath {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -41,14 +40,14 @@ public class AlienMinion extends AbstractAlienWithPath
     /*
      * ******************************************************
      * CONSTRUCTOR
-     * 
+     *
      * ******************************************************
      */
 
     /**
      * Create Alien Minion that has simple directional missiles and only
      * generates guided missile power-ups.
-     * 
+     *
      * @param model
      * @param alienPath
      * @param delayStart
@@ -59,8 +58,7 @@ public class AlienMinion extends AbstractAlienWithPath
             final PowerUpType powerUpType,
             final List<Point> alienPath,
             final float delayStart,
-            final boolean restartImmediately)
-    {
+            final boolean restartImmediately) {
         super(
                 ANIMATION,
                 new FireRandomDelay(

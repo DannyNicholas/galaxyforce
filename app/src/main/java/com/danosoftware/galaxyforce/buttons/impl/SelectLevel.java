@@ -15,11 +15,9 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * Represents a level selector. Level selector has a border, level number and
  * position.
  */
-public class SelectLevel implements SpriteTextButton
-{
+public class SelectLevel implements SpriteTextButton {
     // enum used to determine if button is locked
-    public enum LockStatus
-    {
+    public enum LockStatus {
         UNLOCKED, LOCKED
     }
 
@@ -49,22 +47,18 @@ public class SelectLevel implements SpriteTextButton
     private final ISpriteIdentifier spriteButtonUp;
     private final ISpriteIdentifier spriteButtonDown;
 
-    public SelectLevel(SelectLevelModel model, Controller controller, int xPos, int yPos, int levelInt, LockStatus lockStatus)
-    {
+    public SelectLevel(SelectLevelModel model, Controller controller, int xPos, int yPos, int levelInt, LockStatus lockStatus) {
         this.model = model;
         this.lockStatus = lockStatus;
 
-        if (lockStatus == LockStatus.UNLOCKED)
-        {
+        if (lockStatus == LockStatus.UNLOCKED) {
             // unlocked button
             this.spriteButtonUp = levelButton;
             this.spriteButtonDown = levelButtonPressed;
             this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
             this.text = Text.newTextAbsolutePosition(Integer.toString(levelInt), xPos, yPos);
             this.levelNumber = levelInt;
-        }
-        else
-        {
+        } else {
             // locked button
             this.spriteButtonUp = lockedButton;
             this.spriteButtonDown = lockedButtonPressed;
@@ -79,44 +73,37 @@ public class SelectLevel implements SpriteTextButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return levelSprite.getBounds();
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         levelSprite.changeType(spriteButtonUp);
 
-        if (lockStatus == LockStatus.UNLOCKED)
-        {
+        if (lockStatus == LockStatus.UNLOCKED) {
             model.setLevel(levelNumber);
         }
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
 
         levelSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         levelSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return levelSprite;
     }
 
     @Override
-    public Text getText()
-    {
+    public Text getText() {
         return text;
     }
 }

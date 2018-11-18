@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.enumerations.Direction;
 /*
  * Holds a set of properties that describe a sub-wave (without a path).
  */
-public class SubWaveRuleProperties
-{
+public class SubWaveRuleProperties {
     // use random x position
     private final boolean xRandom;
 
@@ -58,8 +57,7 @@ public class SubWaveRuleProperties
             float delayBetweenAliens,
             float delayOffet,
             boolean restartImmediately,
-            Direction direction)
-    {
+            Direction direction) {
         this.xRandom = xRandom;
         this.yRandom = yRandom;
         this.xStart = xStart;
@@ -71,48 +69,39 @@ public class SubWaveRuleProperties
         this.direction = direction;
     }
 
-    public boolean isxRandom()
-    {
+    public boolean isxRandom() {
         return xRandom;
     }
 
-    public boolean isyRandom()
-    {
+    public boolean isyRandom() {
         return yRandom;
     }
 
-    public int getxStart()
-    {
+    public int getxStart() {
         return xStart;
     }
 
-    public int getyStart()
-    {
+    public int getyStart() {
         return yStart;
     }
 
-    public int getNumberOfAliens()
-    {
+    public int getNumberOfAliens() {
         return numberOfAliens;
     }
 
-    public float getDelayBetweenAliens()
-    {
+    public float getDelayBetweenAliens() {
         return delayBetweenAliens;
     }
 
-    public float getDelayOffet()
-    {
+    public float getDelayOffet() {
         return delayOffet;
     }
 
-    public boolean isRestartImmediately()
-    {
+    public boolean isRestartImmediately() {
         return restartImmediately;
     }
 
-    public Direction getDirection()
-    {
+    public Direction getDirection() {
         return direction;
     }
 }

@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.waves.AlienType;
 
 import java.util.List;
 
-public class AlienMothership extends AbstractAlienWithPath
-{
+public class AlienMothership extends AbstractAlienWithPath {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -41,7 +40,7 @@ public class AlienMothership extends AbstractAlienWithPath
     /**
      * Create Alien Mothership that has rotated missiles and generates random
      * power-ups.
-     * 
+     *
      * @param model
      * @param alienPath
      * @param delayStart
@@ -53,8 +52,7 @@ public class AlienMothership extends AbstractAlienWithPath
             final List<PowerUpType> spwanPowerUpTypes,
             final List<Point> alienPath,
             final float delayStart,
-            final boolean restartImmediately)
-    {
+            final boolean restartImmediately) {
         super(
                 ANIMATION,
                 new FireDisabled(),

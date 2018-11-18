@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Flag extends AbstractSprite
-{
+public class Flag extends AbstractSprite {
     /* logger tag */
     private static final String TAG = "Flag";
 
@@ -35,8 +34,8 @@ public class Flag extends AbstractSprite
 
     // static map of level values to level flags
     private static final Map<Integer, ISpriteIdentifier> flagMap = new HashMap<Integer, ISpriteIdentifier>();
-    static
-    {
+
+    static {
         flagMap.put(100, Flag.FLAG_100);
         flagMap.put(50, Flag.FLAG_50);
         flagMap.put(10, Flag.FLAG_10);
@@ -44,8 +43,7 @@ public class Flag extends AbstractSprite
         flagMap.put(1, Flag.FLAG_1);
     }
 
-    public Flag(ISpriteIdentifier spriteId, int x, int y)
-    {
+    public Flag(ISpriteIdentifier spriteId, int x, int y) {
         super(spriteId, x, y);
     }
 
@@ -53,14 +51,13 @@ public class Flag extends AbstractSprite
      * Creates a map of used to illustrate the level using a set of flags. The
      * map key is the flag number and the map value contains the number of flags
      * needed of this type.
-     * 
+     * <p>
      * Flags used are 100, 50, 10, 5 and 1.
-     * 
+     * <p>
      * Example: Level 276 would be represented by 2 x 100 flags, 1 x 50 flag, 2
      * x 10 flags, 1 x 5 flag and 1 x 1 flag.
      */
-    public static List<Flag> getFlagList(int levelNumber)
-    {
+    public static List<Flag> getFlagList(int levelNumber) {
         List<Flag> flags = new ArrayList<Flag>();
 
         int remainder = levelNumber;
@@ -72,8 +69,7 @@ public class Flag extends AbstractSprite
         Collections.sort(flagKeysAsList);
 
         // calculate how many flags of each flag type are needed
-        for (int flag : Reversed.reversed(flagKeysAsList))
-        {
+        for (int flag : Reversed.reversed(flagKeysAsList)) {
             int numberOfFlags = remainder / flag;
             remainder = remainder - (numberOfFlags * flag);
 
@@ -82,8 +78,7 @@ public class Flag extends AbstractSprite
             ISpriteIdentifier flagSprite = flagMap.get(flag);
 
             // add the number of flags needed to the list
-            for (int i = 0; i < numberOfFlags; i++)
-            {
+            for (int i = 0; i < numberOfFlags; i++) {
                 flags.add(new Flag(flagSprite, flagXPosition, FLAGS_START_Y));
                 flagXPosition += FLAGS_WIDTH;
             }

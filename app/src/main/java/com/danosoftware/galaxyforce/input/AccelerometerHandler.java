@@ -8,27 +8,24 @@ import android.hardware.SensorManager;
 
 import com.danosoftware.galaxyforce.services.WindowManagers;
 
-public class AccelerometerHandler implements SensorEventListener
-{
+public class AccelerometerHandler implements SensorEventListener {
     float accelX;
     float accelY;
     float accelZ;
     int screenRotation;
 
     static final int ACCELEROMETER_AXIS_SWAP[][] =
-    {
-    { 1, -1, 0, 1 }, // ROTATION_0
-            { -1, -1, 1, 0 }, // ROTATION_90
-            { -1, 1, 0, 1 }, // ROTATION_180
-            { 1, 1, 1, 0 } // ROTATION_270
-    };
+            {
+                    {1, -1, 0, 1}, // ROTATION_0
+                    {-1, -1, 1, 0}, // ROTATION_90
+                    {-1, 1, 0, 1}, // ROTATION_180
+                    {1, 1, 1, 0} // ROTATION_270
+            };
 
-    public AccelerometerHandler(Context context)
-    {
+    public AccelerometerHandler(Context context) {
         SensorManager manager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
-        if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0)
-        {
+        if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() != 0) {
             Sensor accelerometer = manager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0);
             manager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);
         }
@@ -39,13 +36,11 @@ public class AccelerometerHandler implements SensorEventListener
 
     }
 
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // nothing to do here
     }
 
-    public void onSensorChanged(SensorEvent event)
-    {
+    public void onSensorChanged(SensorEvent event) {
         // accelX = event.values[0];
         // accelY = event.values[1];
         // accelZ = event.values[2];
@@ -57,18 +52,15 @@ public class AccelerometerHandler implements SensorEventListener
         accelZ = event.values[2];
     }
 
-    public float getAccelX()
-    {
+    public float getAccelX() {
         return accelX;
     }
 
-    public float getAccelY()
-    {
+    public float getAccelY() {
         return accelY;
     }
 
-    public float getAccelZ()
-    {
+    public float getAccelZ() {
         return accelZ;
     }
 

@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienStork extends AbstractAlienWithPath
-{
+public class AlienStork extends AbstractAlienWithPath {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -46,8 +45,7 @@ public class AlienStork extends AbstractAlienWithPath
             final PowerUpType powerUpType,
             final List<Point> alienPath,
             final float delayStart,
-            final boolean restartImmediately)
-    {
+            final boolean restartImmediately) {
         super(
                 ANIMATION,
                 new FireRandomDelay(

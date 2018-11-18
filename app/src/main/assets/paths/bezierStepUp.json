@@ -1,22 +1,24 @@
 {
-  "pathData" : [ {
-    "type" : "bezier",
-    "pathPoints" : 100,
-    "start" : {
-      "x" : 32,
-      "y" : -32
-    },
-    "startControl" : {
-      "x" : 32,
-      "y" : 992
-    },
-    "finish" : {
-      "x" : 508,
-      "y" : 992
-    },
-    "finishControl" : {
-      "x" : 508,
-      "y" : -32
+  "pathData": [
+    {
+      "type": "bezier",
+      "pathPoints": 100,
+      "start": {
+        "x": 32,
+        "y": -32
+      },
+      "startControl": {
+        "x": 32,
+        "y": 992
+      },
+      "finish": {
+        "x": 508,
+        "y": 992
+      },
+      "finishControl": {
+        "x": 508,
+        "y": -32
+      }
     }
-  } ]
+  ]
 }

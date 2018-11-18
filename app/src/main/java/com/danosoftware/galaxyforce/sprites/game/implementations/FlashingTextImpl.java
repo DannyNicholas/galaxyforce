@@ -4,8 +4,7 @@ import com.danosoftware.galaxyforce.game.handlers.PlayModel;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.text.Text;
 
-public class FlashingTextImpl implements FlashingText
-{
+public class FlashingTextImpl implements FlashingText {
     /* reference to flashing text */
     private final Text flashingText;
 
@@ -21,8 +20,7 @@ public class FlashingTextImpl implements FlashingText
     /* current flash state - show text or hide text. */
     private boolean flashState;
 
-    public FlashingTextImpl(Text flashingText, float flashDelay, PlayModel model)
-    {
+    public FlashingTextImpl(Text flashingText, float flashDelay, PlayModel model) {
         this.flashingText = flashingText;
         this.flashDelay = flashDelay;
         this.model = model;
@@ -33,16 +31,14 @@ public class FlashingTextImpl implements FlashingText
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
 
         timeSinceflashStateChange += deltaTime;
 
         /*
          * check to see if flash state should change.
          */
-        if (timeSinceflashStateChange > flashDelay)
-        {
+        if (timeSinceflashStateChange > flashDelay) {
             // invert current flash state
             flashState = (!flashState);
 

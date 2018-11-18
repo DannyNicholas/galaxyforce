@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.enumerations;
 
-public enum TextPositionX
-{
+public enum TextPositionX {
     LEFT, CENTRE, RIGHT
 }

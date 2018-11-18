@@ -15,13 +15,11 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlienMissileFactory
-{
+public class AlienMissileFactory {
     /* initialise sound effects */
     private final static Sound SIMPLE_MISSILE_SOUND;
 
-    static
-    {
+    static {
         /* create reference to sound effects */
         SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
         SIMPLE_MISSILE_SOUND = soundBank.get(SoundEffect.ALIEN_FIRE);
@@ -32,8 +30,7 @@ public class AlienMissileFactory
      * will be based on the base's position. Direction will be used to determine
      * initial position and direction of travel.
      */
-    public static AlienMissileBean createAlienMissile(IBasePrimary base, IAlien alien, AlienMissileType missileType)
-    {
+    public static AlienMissileBean createAlienMissile(IBasePrimary base, IAlien alien, AlienMissileType missileType) {
 
         List<IAlienMissile> missiles = new ArrayList<>();
         Sound soundEffect;
@@ -48,24 +45,23 @@ public class AlienMissileFactory
         /*
          * Create new missiles
          */
-        switch (missileType)
-        {
+        switch (missileType) {
 
-        case SIMPLE:
+            case SIMPLE:
 
-            missiles.add(new AlienMissileSimple(x, y));
-            soundEffect = SIMPLE_MISSILE_SOUND;
-            break;
+                missiles.add(new AlienMissileSimple(x, y));
+                soundEffect = SIMPLE_MISSILE_SOUND;
+                break;
 
-        case ROTATED:
+            case ROTATED:
 
-            missiles.add(new AlienMissileRotated(x, y, base));
-            soundEffect = SIMPLE_MISSILE_SOUND;
-            break;
+                missiles.add(new AlienMissileRotated(x, y, base));
+                soundEffect = SIMPLE_MISSILE_SOUND;
+                break;
 
-        default:
+            default:
 
-            throw new IllegalStateException("Unsupported missile type '" + missileType.name() + "'.");
+                throw new IllegalStateException("Unsupported missile type '" + missileType.name() + "'.");
         }
 
         // create bean of missiles and sound effect

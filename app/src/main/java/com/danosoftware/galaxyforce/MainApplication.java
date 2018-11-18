@@ -8,8 +8,7 @@ import android.content.Context;
  * is created. This context is then available statically anywhere across
  * the application.
  */
-public class MainApplication extends Application
-{
+public class MainApplication extends Application {
     private static Context context;
 
     @Override

@@ -8,15 +8,13 @@ import java.util.List;
 
 /**
  * enum containing all the possible flight paths for aliens.
- * 
+ * <p>
  * Useful Bezier Curve sites:
- * 
+ * <p>
  * http://cubic-bezier.com/#.06,.93,0,1.01
  * https://www.desmos.com/calculator/cahqdxeshd
- * 
  */
-public enum Path
-{
+public enum Path {
 
     /*
      * Triangular path where aliens cross-over where the top of the triangle.
@@ -38,19 +36,19 @@ public enum Path
      */
     SPACE_INVADER(5, new Point(50, GameConstants.SCREEN_TOP),
 
-    new Point(50, 800), new Point(490, 800),
+            new Point(50, 800), new Point(490, 800),
 
-    new Point(490, 650), new Point(50, 650),
+            new Point(490, 650), new Point(50, 650),
 
-    new Point(50, 500), new Point(490, 500),
+            new Point(50, 500), new Point(490, 500),
 
-    new Point(490, 350), new Point(50, 350),
+            new Point(490, 350), new Point(50, 350),
 
-    new Point(50, 200), new Point(490, 200),
+            new Point(50, 200), new Point(490, 200),
 
-    new Point(490, 50), new Point(50, 50),
+            new Point(490, 50), new Point(50, 50),
 
-    new Point(50, GameConstants.SCREEN_BOTTOM)
+            new Point(50, GameConstants.SCREEN_BOTTOM)
 
     ),
 
@@ -111,7 +109,7 @@ public enum Path
      */
     STRAIGHT_DOWN(5, new Point(0, GameConstants.SCREEN_TOP),
 
-    new Point(0, GameConstants.SCREEN_BOTTOM)
+            new Point(0, GameConstants.SCREEN_BOTTOM)
 
     ),
 
@@ -122,9 +120,9 @@ public enum Path
      */
     BOUNCE_DOWN_AND_UP(5, new Point(0, GameConstants.SCREEN_TOP),
 
-    new Point(0, GameConstants.SCREEN_BOTTOM + 350),
+            new Point(0, GameConstants.SCREEN_BOTTOM + 350),
 
-    new Point(0, GameConstants.SCREEN_TOP)
+            new Point(0, GameConstants.SCREEN_TOP)
 
     ),
 
@@ -148,9 +146,9 @@ public enum Path
             GameConstants.SCREEN_MID_X, GameConstants.SCREEN_BOTTOM_EDGE), new Point(GameConstants.SCREEN_LEFT,
             GameConstants.SCREEN_TOP_EDGE), new Point(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_TOP_EDGE)),
 
-    new BezierCurve(100, new Point(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_TOP_EDGE), new Point(GameConstants.SCREEN_RIGHT,
-            GameConstants.SCREEN_TOP_EDGE), new Point(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_BOTTOM_EDGE), new Point(
-            GameConstants.SCREEN_RIGHT, GameConstants.SCREEN_BOTTOM_EDGE))),
+            new BezierCurve(100, new Point(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_TOP_EDGE), new Point(GameConstants.SCREEN_RIGHT,
+                    GameConstants.SCREEN_TOP_EDGE), new Point(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_BOTTOM_EDGE), new Point(
+                    GameConstants.SCREEN_RIGHT, GameConstants.SCREEN_BOTTOM_EDGE))),
     /*
      * Starts bottom left, twists around loop and exits top right
      */
@@ -206,27 +204,23 @@ public enum Path
     /**
      * construct list of FlightPath objects from variable size array
      */
-    Path(FlightPath... pathArray)
-    {
+    Path(FlightPath... pathArray) {
         this.pathList = Arrays.asList(pathArray);
     }
 
     /**
      * Easier constructor for an array of lines where the starting point begins
      * where the last line ended.
-     * 
+     *
      * @param time
      * @param pointArray
      */
-    Path(int speed, Point... pointArray)
-    {
+    Path(int speed, Point... pointArray) {
         Point startPoint = null;
         List<FlightPath> lines = new ArrayList<FlightPath>();
 
-        for (Point endPoint : pointArray)
-        {
-            if (startPoint != null)
-            {
+        for (Point endPoint : pointArray) {
+            if (startPoint != null) {
                 StraightLine nextLine = new StraightLine(speed, startPoint, endPoint);
                 lines.add(nextLine);
             }
@@ -236,8 +230,7 @@ public enum Path
         this.pathList = lines;
     }
 
-    public List<FlightPath> getPathList()
-    {
+    public List<FlightPath> getPathList() {
         return pathList;
     }
 

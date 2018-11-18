@@ -31,7 +31,6 @@ public class CreatePathJsonFiles {
 
     /**
      * Create JSON files holding path data for all paths.
-     *
      */
     @Test
     @Ignore
@@ -54,7 +53,7 @@ public class CreatePathJsonFiles {
     /**
      * Save a JSON file for the supplied path DTO
      *
-     * @param listDTO list of path DTOs
+     * @param listDTO  list of path DTOs
      * @param fileName name of JSON file to export to
      */
     private void savePaths(PathListDTO listDTO, String fileName) {

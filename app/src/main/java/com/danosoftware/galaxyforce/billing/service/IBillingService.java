@@ -2,12 +2,11 @@ package com.danosoftware.galaxyforce.billing.service;
 
 import android.content.Intent;
 
-public interface IBillingService
-{
+public interface IBillingService {
     /**
      * Register observer for any product state refreshes. Normally called when a
      * observer is constructed.
-     * 
+     *
      * @param billingObserver
      */
     void registerProductObserver(BillingObserver billingObserver);
@@ -15,7 +14,7 @@ public interface IBillingService
     /**
      * Unregister observer for any product state refreshes. Normally called when
      * a observer is disposed.
-     * 
+     *
      * @param billingObserver
      */
     void unregisterProductObserver(BillingObserver billingObserver);
@@ -29,31 +28,31 @@ public interface IBillingService
 
     /**
      * Is supplied product Id purchased?
-     * 
+     * <p>
      * A negative response does not necessarily mean the product has not been
      * purchased as the purchase state may be unknown. This can only be
      * confirmed by calling isNotPurchased().
-     * 
+     *
      * @param productId
      */
     boolean isPurchased(String productId);
 
     /**
      * Is supplied product Id not purchased?
-     * 
+     * <p>
      * A negative response does not necessarily mean the product has been
      * purchased as the purchase state may be unknown. This can only be
      * confirmed by calling isPurchased().
-     * 
+     *
      * @param productId
      */
     boolean isNotPurchased(String productId);
 
     /**
      * Get the price of the product Id.
-     * 
+     * <p>
      * May return null if price is not yet known.
-     * 
+     *
      * @param productId
      * @return
      */
@@ -61,7 +60,7 @@ public interface IBillingService
 
     /**
      * Purchase supplied product Id.
-     * 
+     *
      * @param productId
      */
     void purchase(String productId);
@@ -69,7 +68,7 @@ public interface IBillingService
     /**
      * Process the results returned back to the billing service. Typically this
      * gets called with the results of a purchase request.
-     * 
+     *
      * @param requestCode
      * @param resultCode
      * @param data

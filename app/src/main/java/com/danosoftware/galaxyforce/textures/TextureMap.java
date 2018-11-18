@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.SplashSpriteIdentifier;
 
-public enum TextureMap
-{
+public enum TextureMap {
 
     /*
      * enum for each screen containing the linked texture map, sprite xml
@@ -28,31 +27,26 @@ public enum TextureMap
     // identifier of fonts sprite (if one exists)
     private final ISpriteIdentifier fontIdentifier;
 
-    TextureMap(String textureImage, String textureXml, ISpriteIdentifier[] spriteIdentifiers, ISpriteIdentifier fontIdentifier)
-    {
+    TextureMap(String textureImage, String textureXml, ISpriteIdentifier[] spriteIdentifiers, ISpriteIdentifier fontIdentifier) {
         this.textureImage = textureImage;
         this.textureXml = textureXml;
         this.spriteIdentifiers = spriteIdentifiers;
         this.fontIdentifier = fontIdentifier;
     }
 
-    public String getTextureImage()
-    {
+    public String getTextureImage() {
         return textureImage;
     }
 
-    public String getTextureXml()
-    {
+    public String getTextureXml() {
         return textureXml;
     }
 
-    public ISpriteIdentifier[] getSpriteIdentifiers()
-    {
+    public ISpriteIdentifier[] getSpriteIdentifiers() {
         return spriteIdentifiers;
     }
 
-    public ISpriteIdentifier getFontIdentifier()
-    {
+    public ISpriteIdentifier getFontIdentifier() {
         return fontIdentifier;
     }
 }

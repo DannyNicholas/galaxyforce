@@ -17,8 +17,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * screen even if the user is swiping. This is achieved by shifting the button's
  * getBounds() by the current swipe offset.
  */
-public class SwipeMenuButton implements SpriteTextButton
-{
+public class SwipeMenuButton implements SpriteTextButton {
     // reference to Text representing level number
     private final Text text;
 
@@ -39,8 +38,7 @@ public class SwipeMenuButton implements SpriteTextButton
     ButtonType buttonType = null;
 
     public SwipeMenuButton(MenuButtonModel model, LevelModel swipeModel, Controller controller, int xPos, int yPos, String text,
-            ButtonType buttonType, ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown)
-    {
+                           ButtonType buttonType, ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.swipeModel = swipeModel;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
@@ -54,8 +52,7 @@ public class SwipeMenuButton implements SpriteTextButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         // get the current swipe offset
         float swipeOffset = swipeModel.getScrollPosition();
 
@@ -74,34 +71,29 @@ public class SwipeMenuButton implements SpriteTextButton
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         buttonSprite.changeType(spriteButtonUp);
 
         model.processButton(buttonType);
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         buttonSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         buttonSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return buttonSprite;
     }
 
     @Override
-    public Text getText()
-    {
+    public Text getText() {
         return text;
     }
 }

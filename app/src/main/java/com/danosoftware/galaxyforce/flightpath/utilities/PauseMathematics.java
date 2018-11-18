@@ -30,11 +30,10 @@ public class PauseMathematics {
 
         // number of points to create to pause of wanted time
         // e.g. 1 second pause requires 60 points
-        int numberPoints = (int)(60 * pauseTime);
+        int numberPoints = (int) (60 * pauseTime);
 
         // add the number of points needed to path
-        for (int t = 0; t < numberPoints; t++)
-        {
+        for (int t = 0; t < numberPoints; t++) {
             path.add(pausePosition);
         }
 

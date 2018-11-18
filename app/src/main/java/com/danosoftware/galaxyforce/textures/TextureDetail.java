@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.textures;
 
-public class TextureDetail
-{
+public class TextureDetail {
 
     public final String name;
     public final int xPos;
@@ -9,8 +8,7 @@ public class TextureDetail
     public final int width;
     public final int height;
 
-    public TextureDetail(String name, String xPos, String yPos, String width, String height)
-    {
+    public TextureDetail(String name, String xPos, String yPos, String width, String height) {
         this.name = name;
         this.xPos = convertNumeric(xPos);
         this.yPos = convertNumeric(yPos);
@@ -18,8 +16,7 @@ public class TextureDetail
         this.height = convertNumeric(height);
     }
 
-    public TextureDetail(String name, int xPos, int yPos, int width, int height)
-    {
+    public TextureDetail(String name, int xPos, int yPos, int width, int height) {
         this.name = name;
         this.xPos = xPos;
         this.yPos = yPos;
@@ -29,16 +26,12 @@ public class TextureDetail
 
     // converts string to int
     // returns 0 if NumberFormatException is thrown
-    private static int convertNumeric(String str)
-    {
+    private static int convertNumeric(String str) {
         int num = 0;
 
-        try
-        {
+        try {
             num = Integer.parseInt(str);
-        }
-        catch (NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             return 0;
         }
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * Allows chaining of translators that can be executed in sequence.
- *
+ * <p>
  * This allows a complex sequence of point translations to be build-up
  * and then executed.
  */

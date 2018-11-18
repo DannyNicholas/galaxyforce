@@ -7,8 +7,7 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Vertices
-{
+public class Vertices {
     final GLGraphics glGraphics;
     final boolean hasColor;
     final boolean hasTexCoords;
@@ -17,8 +16,7 @@ public class Vertices
     final int[] tmpBuffer;
     final ShortBuffer indices;
 
-    public Vertices(GLGraphics glGraphics, int maxVertices, int maxIndices, boolean hasColor, boolean hasTexCoords)
-    {
+    public Vertices(GLGraphics glGraphics, int maxVertices, int maxIndices, boolean hasColor, boolean hasTexCoords) {
         this.glGraphics = glGraphics;
         this.hasColor = hasColor;
         this.hasTexCoords = hasTexCoords;
@@ -29,20 +27,16 @@ public class Vertices
         buffer.order(ByteOrder.nativeOrder());
         vertices = buffer.asIntBuffer();
 
-        if (maxIndices > 0)
-        {
+        if (maxIndices > 0) {
             buffer = ByteBuffer.allocateDirect(maxIndices * Short.SIZE / 8);
             buffer.order(ByteOrder.nativeOrder());
             indices = buffer.asShortBuffer();
-        }
-        else
-        {
+        } else {
             indices = null;
         }
     }
 
-    public void setVertices(float[] vertices, int offset, int length)
-    {
+    public void setVertices(float[] vertices, int offset, int length) {
         this.vertices.clear();
         int len = offset + length;
         for (int i = offset, j = 0; i < len; i++, j++)
@@ -51,53 +45,44 @@ public class Vertices
         this.vertices.flip();
     }
 
-    public void setIndices(short[] indices, int offset, int length)
-    {
+    public void setIndices(short[] indices, int offset, int length) {
         this.indices.clear();
         this.indices.put(indices, offset, length);
         this.indices.flip();
     }
 
-    public void bind()
-    {
+    public void bind() {
         GL10 gl = glGraphics.getGl();
 
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
         vertices.position(0);
         gl.glVertexPointer(2, GL10.GL_FLOAT, vertexSize, vertices);
 
-        if (hasColor)
-        {
+        if (hasColor) {
             gl.glEnableClientState(GL10.GL_COLOR_ARRAY);
             vertices.position(2);
             gl.glColorPointer(4, GL10.GL_FLOAT, vertexSize, vertices);
         }
 
-        if (hasTexCoords)
-        {
+        if (hasTexCoords) {
             gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
             vertices.position(hasColor ? 6 : 2);
             gl.glTexCoordPointer(2, GL10.GL_FLOAT, vertexSize, vertices);
         }
     }
 
-    public void draw(int primitiveType, int offset, int numVertices)
-    {
+    public void draw(int primitiveType, int offset, int numVertices) {
         GL10 gl = glGraphics.getGl();
 
-        if (indices != null)
-        {
+        if (indices != null) {
             indices.position(offset);
             gl.glDrawElements(primitiveType, numVertices, GL10.GL_UNSIGNED_SHORT, indices);
-        }
-        else
-        {
+        } else {
             gl.glDrawArrays(primitiveType, offset, numVertices);
         }
     }
 
-    public void unbind()
-    {
+    public void unbind() {
         GL10 gl = glGraphics.getGl();
         if (hasTexCoords)
             gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);

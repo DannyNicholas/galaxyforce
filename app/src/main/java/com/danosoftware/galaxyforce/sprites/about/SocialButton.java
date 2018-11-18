@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * Represents a level selector. Level selector has a border, level number and
  * position.
  */
-public class SocialButton implements SpriteButton
-{
+public class SocialButton implements SpriteButton {
 
     // reference to button's parent model
     private final AboutModel model;
@@ -31,8 +30,7 @@ public class SocialButton implements SpriteButton
     private final ButtonType buttonType;
 
     public SocialButton(AboutModel model, Controller controller, int xPos, int yPos, ButtonType buttonType,
-            ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown)
-    {
+                        ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.buttonType = buttonType;
@@ -44,34 +42,29 @@ public class SocialButton implements SpriteButton
     }
 
     @Override
-    public Rectangle getBounds()
-    {
+    public Rectangle getBounds() {
         return buttonSprite.getBounds();
     }
 
     @Override
-    public void buttonUp()
-    {
+    public void buttonUp() {
         buttonSprite.changeType(spriteButtonUp);
 
         model.processButton(buttonType);
     }
 
     @Override
-    public void buttonDown()
-    {
+    public void buttonDown() {
         buttonSprite.changeType(spriteButtonDown);
     }
 
     @Override
-    public void buttonReleased()
-    {
+    public void buttonReleased() {
         buttonSprite.changeType(spriteButtonUp);
     }
 
     @Override
-    public IButtonSprite getSprite()
-    {
+    public IButtonSprite getSprite() {
         return buttonSprite;
     }
 }

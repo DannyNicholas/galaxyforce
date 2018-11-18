@@ -6,45 +6,36 @@ import android.content.SharedPreferences;
 
 import java.util.Map;
 
-public class PreferencesInteger implements IPreferences<Integer>
-{
+public class PreferencesInteger implements IPreferences<Integer> {
     private final SharedPreferences preferences;
 
-    public PreferencesInteger(Context context)
-    {
-        if (context instanceof Activity)
-        {
+    public PreferencesInteger(Context context) {
+        if (context instanceof Activity) {
             Activity activity = (Activity) context;
             this.preferences = activity.getPreferences(Context.MODE_PRIVATE);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Supplied context is not an instance of an Activity.");
         }
     }
 
     @Override
-    public boolean preferenceExists(String key)
-    {
+    public boolean preferenceExists(String key) {
         return preferences.contains(key);
     }
 
     @Override
-    public Integer getPreference(String key, Integer defaultValue)
-    {
+    public Integer getPreference(String key, Integer defaultValue) {
         // get preference from shared preferences persistence.
         // if none exists then use default.
         return preferences.getInt(key, defaultValue);
     }
 
     @Override
-    public void storePreference(Map<String, Integer> keyValueMap)
-    {
+    public void storePreference(Map<String, Integer> keyValueMap) {
         // persist keys and values
         SharedPreferences.Editor editor = preferences.edit();
 
-        for (String key : keyValueMap.keySet())
-        {
+        for (String key : keyValueMap.keySet()) {
             editor.putInt(key, keyValueMap.get(key));
         }
 

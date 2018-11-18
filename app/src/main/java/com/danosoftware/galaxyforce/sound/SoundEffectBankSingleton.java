@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.interfaces.Audio;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SoundEffectBankSingleton implements SoundEffectBank
-{
+public class SoundEffectBankSingleton implements SoundEffectBank {
 
     // map of effect enums to actual sound effects
     Map<SoundEffect, Sound> effectsBank;
@@ -18,47 +17,36 @@ public class SoundEffectBankSingleton implements SoundEffectBank
     private static SoundEffectBankSingleton instance = null;
 
     // private constructor - can only instatiated by static initialise methods
-    private SoundEffectBankSingleton(Audio audio)
-    {
+    private SoundEffectBankSingleton(Audio audio) {
         this.effectsBank = new HashMap<SoundEffect, Sound>();
         this.audio = audio;
 
         /* load sound effects - loading can take time */
-        for (SoundEffect aSoundEffect : SoundEffect.values())
-        {
+        for (SoundEffect aSoundEffect : SoundEffect.values()) {
             loadEffect(aSoundEffect);
         }
     }
 
     // must initialise singleton with audio before it can be used
-    public static void initialise(Audio audio)
-    {
-        if (instance == null)
-        {
+    public static void initialise(Audio audio) {
+        if (instance == null) {
             instance = new SoundEffectBankSingleton(audio);
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("SoundEffectBank singleton has already been initialised.");
         }
     }
 
     // has singleton been initialised.
-    public static boolean isInitialised()
-    {
+    public static boolean isInitialised() {
         // return true if initialised
         return (instance != null);
     }
 
     // get singleton
-    public static SoundEffectBank getInstance()
-    {
-        if (instance != null)
-        {
+    public static SoundEffectBank getInstance() {
+        if (instance != null) {
             return instance;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("SoundEffectBank singleton has not been initialised.");
         }
     }
@@ -68,8 +56,7 @@ public class SoundEffectBankSingleton implements SoundEffectBank
      */
 
     @Override
-    public Sound get(SoundEffect soundEffect)
-    {
+    public Sound get(SoundEffect soundEffect) {
         // return sound
         return effectsBank.get(soundEffect);
     }
@@ -78,8 +65,7 @@ public class SoundEffectBankSingleton implements SoundEffectBank
      * PRIVATE METHODS
      */
 
-    private void loadEffect(SoundEffect soundEffect)
-    {
+    private void loadEffect(SoundEffect soundEffect) {
         this.effectsBank.put(soundEffect, audio.newSound(soundEffect));
     }
 }

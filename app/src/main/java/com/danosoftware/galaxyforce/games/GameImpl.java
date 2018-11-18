@@ -30,13 +30,11 @@ import com.danosoftware.galaxyforce.view.GameFileIO;
 
 /**
  * @author Danny
- * 
- *         Initialises model, controller and view for game. Handles the main
- *         game loop using the controller, model and view.
- * 
+ * <p>
+ * Initialises model, controller and view for game. Handles the main
+ * game loop using the controller, model and view.
  */
-public class GameImpl implements Game
-{
+public class GameImpl implements Game {
 
     private static final String LOCAL_TAG = "GameImpl";
 
@@ -67,8 +65,7 @@ public class GameImpl implements Game
     /* reference to game audio */
     private Audio audio = null;
 
-    public GameImpl(Context context, GLGraphics glGraphics, GLSurfaceView glView, IBillingService billingService)
-    {
+    public GameImpl(Context context, GLGraphics glGraphics, GLSurfaceView glView, IBillingService billingService) {
         this.context = context;
         this.fileIO = new GameFileIO(context);
         this.audio = new AndroidAudio(context);
@@ -82,15 +79,13 @@ public class GameImpl implements Game
          * initialise sound effect bank singleton. initialise as early as
          * possible to ensure sound effects are available when needed.
          */
-        if (!SoundEffectBankSingleton.isInitialised())
-        {
+        if (!SoundEffectBankSingleton.isInitialised()) {
             // initialise configuration
             SoundEffectBankSingleton.initialise(audio);
         }
 
         /* initialise configuration singleton */
-        if (!Configurations.isInitialised())
-        {
+        if (!Configurations.isInitialised()) {
             // set-up reference to shared preference.
             // used for persisting configuration
             IPreferences<String> configPreferences = new PreferencesString(context);
@@ -100,8 +95,7 @@ public class GameImpl implements Game
         }
 
         /* initialise vibrator singleton */
-        if (!VibrationSingleton.isInitialised())
-        {
+        if (!VibrationSingleton.isInitialised()) {
             // initialise vibration
             VibrationSingleton.initialise(context);
         }
@@ -117,8 +111,7 @@ public class GameImpl implements Game
         soundPlayer.setSoundEnabled(configurations.getSoundOption());
 
         /* initialise saved game singleton */
-        if (!SavedGame.isInitialised())
-        {
+        if (!SavedGame.isInitialised()) {
             // set-up reference to shared preference.
             // used for persisting saved games
             IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
@@ -129,40 +122,34 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void start()
-    {
+    public void start() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Start Game");
 
         this.screen = ScreenFactory.newScreen(ScreenType.SPLASH);
     }
 
     @Override
-    public Context getContext()
-    {
+    public Context getContext() {
         return context;
     }
 
     @Override
-    public GLGraphics getGlGraphics()
-    {
+    public GLGraphics getGlGraphics() {
         return glGraphics;
     }
 
     @Override
-    public FileIO getFileIO()
-    {
+    public FileIO getFileIO() {
         return fileIO;
     }
 
     @Override
-    public Screen getScreen()
-    {
+    public Screen getScreen() {
         return screen;
     }
 
     @Override
-    public void setScreen(Screen screen)
-    {
+    public void setScreen(Screen screen) {
         if (screen == null)
             throw new IllegalArgumentException("Screen must not be null");
 
@@ -182,8 +169,7 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void setReturningScreen(Screen gameScreen)
-    {
+    public void setReturningScreen(Screen gameScreen) {
         Screen currentScreen = this.screen;
 
         // call normal set screen method to change screens
@@ -194,8 +180,7 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void screenReturn()
-    {
+    public void screenReturn() {
         if (returningScreen == null)
             throw new IllegalArgumentException("Returning Screen must not be null");
 
@@ -204,15 +189,13 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
 
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Resume Game");
 
         // check if screen exists as resume is also called onCreate before
         // screen exists
-        if (screen != null)
-        {
+        if (screen != null) {
             screen.resume();
         }
 
@@ -224,8 +207,7 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
 
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Pause Game");
 
@@ -240,40 +222,34 @@ public class GameImpl implements Game
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Dispose Game");
 
         screen.dispose();
     }
 
     @Override
-    public void draw(float deltaTime)
-    {
+    public void draw(float deltaTime) {
         screen.draw(deltaTime);
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
         screen.update(deltaTime);
     }
 
     @Override
-    public boolean handleBackButton()
-    {
+    public boolean handleBackButton() {
         return screen.handleBackButton();
     }
 
     @Override
-    public Audio getAudio()
-    {
+    public Audio getAudio() {
         return audio;
     }
 
     @Override
-    public IBillingService getBillingService()
-    {
+    public IBillingService getBillingService() {
         return billingService;
     }
 

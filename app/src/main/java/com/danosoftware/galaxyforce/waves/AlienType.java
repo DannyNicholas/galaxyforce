@@ -2,11 +2,10 @@ package com.danosoftware.galaxyforce.waves;
 
 /**
  * Enum representing the different types of alien that can be created.
- * 
+ * <p>
  * Used by WaveFactory to create instances of the wanted alien.
  */
-public enum AlienType
-{
+public enum AlienType {
 
     // OctoAlien
     OCTOPUS,

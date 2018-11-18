@@ -13,13 +13,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureRegionXmlParser
-{
+public class TextureRegionXmlParser {
     // We don't use namespaces
     private static final String ns = null;
 
-    public List<TextureDetail> readTextures(FileIO fileIO, String fileName) throws XmlPullParserException, IOException
-    {
+    public List<TextureDetail> readTextures(FileIO fileIO, String fileName) throws XmlPullParserException, IOException {
         TextureRegionXmlParser parser = new TextureRegionXmlParser();
         List<TextureDetail> listOfTextureRegions = null;
 
@@ -28,80 +26,64 @@ public class TextureRegionXmlParser
         in = fileIO.readAsset(fileName);
         listOfTextureRegions = parser.parse(in);
 
-        if (in != null)
-        {
+        if (in != null) {
             in.close();
         }
 
         return listOfTextureRegions;
     }
 
-    public List<TextureDetail> parse(InputStream in) throws XmlPullParserException, IOException
-    {
-        try
-        {
+    public List<TextureDetail> parse(InputStream in) throws XmlPullParserException, IOException {
+        try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
             parser.nextTag();
             return readTextureFile(parser);
-        }
-        finally
-        {
+        } finally {
             in.close();
         }
     }
 
-    private List<TextureDetail> readTextureFile(XmlPullParser parser) throws XmlPullParserException, IOException
-    {
+    private List<TextureDetail> readTextureFile(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<TextureDetail> entries = new ArrayList<TextureDetail>();
 
         parser.require(XmlPullParser.START_TAG, ns, "TextureAtlas");
-        while (parser.next() != XmlPullParser.END_TAG)
-        {
-            if (parser.getEventType() != XmlPullParser.START_TAG)
-            {
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
 
             // Starts by looking for the sub texture tag
-            if (name.equals("SubTexture"))
-            {
+            if (name.equals("SubTexture")) {
                 entries.add(readTextureRegion(parser));
-            }
-            else
-            {
+            } else {
                 skip(parser);
             }
         }
         return entries;
     }
 
-    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException
-    {
-        if (parser.getEventType() != XmlPullParser.START_TAG)
-        {
+    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
             throw new IllegalStateException();
         }
         int depth = 1;
-        while (depth != 0)
-        {
-            switch (parser.next())
-            {
-            case XmlPullParser.END_TAG:
-                depth--;
-                break;
-            case XmlPullParser.START_TAG:
-                depth++;
-                break;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    break;
             }
         }
     }
 
     // Parses the contents of SubTexture. Extracts attributes it encounters.
-    private TextureDetail readTextureRegion(XmlPullParser parser) throws XmlPullParserException, IOException
-    {
+    private TextureDetail readTextureRegion(XmlPullParser parser) throws XmlPullParserException, IOException {
         parser.require(XmlPullParser.START_TAG, ns, "SubTexture");
 
         String textureName = parser.getAttributeValue(null, "name");

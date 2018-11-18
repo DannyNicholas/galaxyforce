@@ -38,8 +38,7 @@ public class PowerUp extends AbstractCollidingSprite implements IPowerUp {
                 y() - (int) (POWER_UP_MOVE_PIXELS * deltaTime));
 
         // if power-up is now off screen then destory it
-        if (offScreenBottom(this))
-        {
+        if (offScreenBottom(this)) {
             destroy();
         }
     }

@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.game.handlers.GameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.PowerUpFactory;
 
-public class PowerUpSimple implements PowerUpBehaviour
-{
+public class PowerUpSimple implements PowerUpBehaviour {
     /*
      * ******************************************************
      * PRIVATE INSTANCE VARIABLES
@@ -21,41 +20,34 @@ public class PowerUpSimple implements PowerUpBehaviour
 
     /**
      * Behaviour that will create a random power-up when alien is destroyed.
-     * 
+     *
      * @param model
      */
-    public PowerUpSimple(GameHandler model)
-    {
+    public PowerUpSimple(GameHandler model) {
         this.model = model;
     }
 
     /**
      * Behaviour that will create a random power-up from a supplied list when
      * alien is destroyed.
-     * 
+     *
      * @param model
-     * @param powerUps
-     *            - list of power-ups to choose from
+     * @param powerUps - list of power-ups to choose from
      */
-    public PowerUpSimple(GameHandler model, PowerUpType... powerUps)
-    {
+    public PowerUpSimple(GameHandler model, PowerUpType... powerUps) {
         this(model);
         this.powerUps = powerUps;
     }
 
     @Override
-    public void releasePowerUp(IAlien alien)
-    {
+    public void releasePowerUp(IAlien alien) {
         /*
          * Choose from supplied list of power-ups if one exists. Otherwise
          * choose a completely random power-up.
          */
-        if (powerUps != null)
-        {
+        if (powerUps != null) {
             model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.x(), alien.y(), powerUps));
-        }
-        else
-        {
+        } else {
             model.addPowerUp(PowerUpFactory.generateRandomPowerUp(alien.x(), alien.y()));
         }
     }

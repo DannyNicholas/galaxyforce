@@ -9,8 +9,7 @@ import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SingleTouchHandler implements TouchHandler
-{
+public class SingleTouchHandler implements TouchHandler {
     boolean isTouched;
     int touchX;
     int touchY;
@@ -20,12 +19,9 @@ public class SingleTouchHandler implements TouchHandler
     float scaleX;
     float scaleY;
 
-    public SingleTouchHandler(View view, float scaleX, float scaleY)
-    {
-        PoolObjectFactory<TouchEvent> factory = new PoolObjectFactory<TouchEvent>()
-        {
-            public TouchEvent createObject()
-            {
+    public SingleTouchHandler(View view, float scaleX, float scaleY) {
+        PoolObjectFactory<TouchEvent> factory = new PoolObjectFactory<TouchEvent>() {
+            public TouchEvent createObject() {
                 return new TouchEvent();
             }
         };
@@ -36,26 +32,23 @@ public class SingleTouchHandler implements TouchHandler
         this.scaleY = scaleY;
     }
 
-    public boolean onTouch(View v, MotionEvent event)
-    {
-        synchronized (this)
-        {
+    public boolean onTouch(View v, MotionEvent event) {
+        synchronized (this) {
             TouchEvent touchEvent = touchEventPool.newObject();
-            switch (event.getAction())
-            {
-            case MotionEvent.ACTION_DOWN:
-                touchEvent.type = TouchEvent.TOUCH_DOWN;
-                isTouched = true;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touchEvent.type = TouchEvent.TOUCH_DRAGGED;
-                isTouched = true;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                touchEvent.type = TouchEvent.TOUCH_UP;
-                isTouched = false;
-                break;
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touchEvent.type = TouchEvent.TOUCH_DOWN;
+                    isTouched = true;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touchEvent.type = TouchEvent.TOUCH_DRAGGED;
+                    isTouched = true;
+                    break;
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    touchEvent.type = TouchEvent.TOUCH_UP;
+                    isTouched = false;
+                    break;
             }
 
             touchEvent.x = touchX = (int) (event.getX() * scaleX);
@@ -66,10 +59,8 @@ public class SingleTouchHandler implements TouchHandler
         }
     }
 
-    public boolean isTouchDown(int pointer)
-    {
-        synchronized (this)
-        {
+    public boolean isTouchDown(int pointer) {
+        synchronized (this) {
             if (pointer == 0)
                 return isTouched;
             else
@@ -77,26 +68,20 @@ public class SingleTouchHandler implements TouchHandler
         }
     }
 
-    public int getTouchX(int pointer)
-    {
-        synchronized (this)
-        {
+    public int getTouchX(int pointer) {
+        synchronized (this) {
             return touchX;
         }
     }
 
-    public int getTouchY(int pointer)
-    {
-        synchronized (this)
-        {
+    public int getTouchY(int pointer) {
+        synchronized (this) {
             return touchY;
         }
     }
 
-    public List<TouchEvent> getTouchEvents()
-    {
-        synchronized (this)
-        {
+    public List<TouchEvent> getTouchEvents() {
+        synchronized (this) {
             int len = touchEvents.size();
             for (int i = 0; i < len; i++)
                 touchEventPool.free(touchEvents.get(i));

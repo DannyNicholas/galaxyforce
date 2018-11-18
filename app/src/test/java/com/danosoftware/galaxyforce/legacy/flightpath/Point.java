@@ -1,53 +1,45 @@
 package com.danosoftware.galaxyforce.legacy.flightpath;
 
 /**
- * 
  * @author Danny
- * 
- *         class of Point objects used to store each x/y co-ordinate in path of
- *         alien
+ * <p>
+ * class of Point objects used to store each x/y co-ordinate in path of
+ * alien
  */
-public class Point
-{
+public class Point {
 
     private int x;
     private int y;
 
-    public Point(int xInt, int yInt)
-    {
+    public Point(int xInt, int yInt) {
         x = xInt;
         y = yInt;
     }
 
-    public int getX()
-    {
+    public int getX() {
         return x;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return y;
     }
 
-    public void setX(int x)
-    {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public void setY(int y)
-    {
+    public void setY(int y) {
         this.y = y;
     }
 
     /**
      * return new Point object where x and y has been scaled by the provided
      * scalar mutliplier.
-     * 
+     *
      * @param scalarMultiplier
      * @return
      */
-    public Point scalarMultiplication(double scalarMultiplier)
-    {
+    public Point scalarMultiplication(double scalarMultiplier) {
         // calculate scaled x and y points
         double scaledX = this.getX() * scalarMultiplier;
         double scaledY = this.getY() * scalarMultiplier;
@@ -60,12 +52,11 @@ public class Point
     /**
      * return new point object that is the addition of this point to provided
      * point
-     * 
+     *
      * @param addPoint
      * @return
      */
-    public Point addition(Point addPoint)
-    {
+    public Point addition(Point addPoint) {
         // calculate x and y point addition
         int addX = this.getX() + addPoint.getX();
         int addY = this.getY() + addPoint.getY();

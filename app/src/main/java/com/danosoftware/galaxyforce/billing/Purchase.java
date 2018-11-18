@@ -21,8 +21,7 @@ import org.json.JSONObject;
 /**
  * Represents an in-app billing purchase.
  */
-public class Purchase
-{
+public class Purchase {
     String mItemType; // ITEM_TYPE_INAPP or ITEM_TYPE_SUBS
     String mOrderId;
     String mPackageName;
@@ -34,8 +33,7 @@ public class Purchase
     String mOriginalJson;
     String mSignature;
 
-    public Purchase(String itemType, String jsonPurchaseInfo, String signature) throws JSONException
-    {
+    public Purchase(String itemType, String jsonPurchaseInfo, String signature) throws JSONException {
         mItemType = itemType;
         mOriginalJson = jsonPurchaseInfo;
         JSONObject o = new JSONObject(mOriginalJson);
@@ -49,59 +47,48 @@ public class Purchase
         mSignature = signature;
     }
 
-    public String getItemType()
-    {
+    public String getItemType() {
         return mItemType;
     }
 
-    public String getOrderId()
-    {
+    public String getOrderId() {
         return mOrderId;
     }
 
-    public String getPackageName()
-    {
+    public String getPackageName() {
         return mPackageName;
     }
 
-    public String getSku()
-    {
+    public String getSku() {
         return mSku;
     }
 
-    public long getPurchaseTime()
-    {
+    public long getPurchaseTime() {
         return mPurchaseTime;
     }
 
-    public int getPurchaseState()
-    {
+    public int getPurchaseState() {
         return mPurchaseState;
     }
 
-    public String getDeveloperPayload()
-    {
+    public String getDeveloperPayload() {
         return mDeveloperPayload;
     }
 
-    public String getToken()
-    {
+    public String getToken() {
         return mToken;
     }
 
-    public String getOriginalJson()
-    {
+    public String getOriginalJson() {
         return mOriginalJson;
     }
 
-    public String getSignature()
-    {
+    public String getSignature() {
         return mSignature;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "PurchaseInfo(type:" + mItemType + "):" + mOriginalJson;
     }
 }

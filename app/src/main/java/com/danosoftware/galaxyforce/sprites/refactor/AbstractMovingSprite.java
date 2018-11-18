@@ -18,7 +18,7 @@ public abstract class AbstractMovingSprite extends AbstractSprite implements IMo
             int x,
             int y) {
 
-        this(spriteId, x, y,0);
+        this(spriteId, x, y, 0);
     }
 
     @Override

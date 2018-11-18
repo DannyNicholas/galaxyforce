@@ -17,8 +17,7 @@ import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Configurations
-{
+public class Configurations {
 
     // keys for shared preference persistence
     private final static String CONTROLLER_KEY = "controller.option";
@@ -45,40 +44,30 @@ public class Configurations
     private static Configurations instance = null;
 
     // private constructor
-    private Configurations(IPreferences<String> preferences)
-    {
+    private Configurations(IPreferences<String> preferences) {
         this.preferences = preferences;
     }
 
     // must initialise singleton with preferences before it can be used
-    public static void initialise(IPreferences<String> preferences)
-    {
-        if (instance == null)
-        {
+    public static void initialise(IPreferences<String> preferences) {
+        if (instance == null) {
             instance = new Configurations(preferences);
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("Configurations singleton has already been initialised.");
         }
     }
 
     // have configurations been initialised with preferences.
-    public static boolean isInitialised()
-    {
+    public static boolean isInitialised() {
         // return true if initialised
         return (instance != null);
     }
 
     // get configurations singleton
-    public static Configurations getInstance()
-    {
-        if (instance != null)
-        {
+    public static Configurations getInstance() {
+        if (instance != null) {
             return instance;
-        }
-        else
-        {
+        } else {
             throw new IllegalStateException("Configurations singleton has not been initialised.");
         }
     }
@@ -88,10 +77,8 @@ public class Configurations
      */
 
     // return the configurations
-    public OptionController getControllerType()
-    {
-        if (controllerType == null)
-        {
+    public OptionController getControllerType() {
+        if (controllerType == null) {
             // get controller type from shared preferences
             String controllerString = preferences.getPreference(CONTROLLER_KEY, DEFAULT_CONTROLLER_OPTION);
 
@@ -103,10 +90,8 @@ public class Configurations
     }
 
     // set new controller type
-    public void newControllerType(OptionController controllerType)
-    {
-        if (controllerType == null)
-        {
+    public void newControllerType(OptionController controllerType) {
+        if (controllerType == null) {
             throw new IllegalArgumentException("Supplied ControllerType object can not be null.");
         }
 
@@ -118,10 +103,8 @@ public class Configurations
      */
 
     // return the configurations
-    public OptionSound getSoundOption()
-    {
-        if (soundOption == null)
-        {
+    public OptionSound getSoundOption() {
+        if (soundOption == null) {
             // get string from shared preferences
             String soundString = preferences.getPreference(SOUND_KEY, DEFAULT_SOUND_OPTION);
 
@@ -133,10 +116,8 @@ public class Configurations
     }
 
     // set sound option
-    public void setSoundOption(OptionSound soundOption)
-    {
-        if (soundOption == null)
-        {
+    public void setSoundOption(OptionSound soundOption) {
+        if (soundOption == null) {
             throw new IllegalArgumentException("Supplied OptionSound object can not be null.");
         }
 
@@ -159,10 +140,8 @@ public class Configurations
      */
 
     // return the configurations
-    public OptionMusic getMusicOption()
-    {
-        if (musicOption == null)
-        {
+    public OptionMusic getMusicOption() {
+        if (musicOption == null) {
             // get string from shared preferences
             String musicString = preferences.getPreference(MUSIC_KEY, DEFAULT_MUSIC_OPTION);
 
@@ -174,10 +153,8 @@ public class Configurations
     }
 
     // set music option
-    public void setMusicOption(OptionMusic musicOption)
-    {
-        if (musicOption == null)
-        {
+    public void setMusicOption(OptionMusic musicOption) {
+        if (musicOption == null) {
             throw new IllegalArgumentException("Supplied OptionMusic object can not be null.");
         }
 
@@ -189,10 +166,8 @@ public class Configurations
      */
 
     // return the configurations
-    public OptionVibration getVibrationOption()
-    {
-        if (vibrationOption == null)
-        {
+    public OptionVibration getVibrationOption() {
+        if (vibrationOption == null) {
             // get string from shared preferences
             String vibrationString = preferences.getPreference(VIBRATION_KEY, DEFAULT_VIBRATION_OPTION);
 
@@ -204,10 +179,8 @@ public class Configurations
     }
 
     // set vibration option
-    public void setVibrationOption(OptionVibration vibrationOption)
-    {
-        if (vibrationOption == null)
-        {
+    public void setVibrationOption(OptionVibration vibrationOption) {
+        if (vibrationOption == null) {
             throw new IllegalArgumentException("Supplied OptionVibration object can not be null.");
         }
 
@@ -223,8 +196,7 @@ public class Configurations
         vibrator.vibrate(VibrateTime.MEDIUM);
     }
 
-    public void persistConfigurations()
-    {
+    public void persistConfigurations() {
         Map<String, String> keyValueMap = new HashMap<String, String>();
         keyValueMap.put(CONTROLLER_KEY, controllerType.name());
         keyValueMap.put(SOUND_KEY, soundOption.name());

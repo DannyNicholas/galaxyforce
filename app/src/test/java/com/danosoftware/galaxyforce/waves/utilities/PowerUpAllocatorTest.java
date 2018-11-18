@@ -144,7 +144,7 @@ public class PowerUpAllocatorTest {
      * Check that all supplied power-ups were allocated to the aliens in the wave.
      *
      * @param numberOfAliens - number of aliens in wave
-     * @param powerUpTypes - list of power-ups to be allocated across aliens
+     * @param powerUpTypes   - list of power-ups to be allocated across aliens
      */
     private void shouldAllocateExpectedPowerUps(
             final int numberOfAliens,

@@ -20,7 +20,7 @@ public class PauseMathematicsTest {
 
         // create pause control points
         final float pauseTimeInSeconds = 0.5f;
-        final Point pausePosition = new Point(10,20);
+        final Point pausePosition = new Point(10, 20);
 
         // create a pause path from control points
         final List<Point> pausePoints = createPausePath(

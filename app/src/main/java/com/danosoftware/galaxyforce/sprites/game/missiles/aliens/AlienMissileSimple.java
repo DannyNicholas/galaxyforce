@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
-public class AlienMissileSimple extends AbstractAlienMissile
-{
+public class AlienMissileSimple extends AbstractAlienMissile {
 
     // how much energy will be lost by base when this missile hits it
     private static final int HIT_ENERGY = 2;
@@ -18,8 +17,7 @@ public class AlienMissileSimple extends AbstractAlienMissile
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_ALIEN;
 
 
-    public AlienMissileSimple(int xStart, int yStart)
-    {
+    public AlienMissileSimple(int xStart, int yStart) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);
     }
 
@@ -29,8 +27,7 @@ public class AlienMissileSimple extends AbstractAlienMissile
         move(x(), newY);
 
         // if missile is now off screen then destroy it
-        if (offScreenBottom(this))
-        {
+        if (offScreenBottom(this)) {
             destroy();
         }
     }

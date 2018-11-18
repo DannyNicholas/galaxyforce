@@ -3,8 +3,7 @@ package com.danosoftware.galaxyforce.controller.game;
 import com.danosoftware.galaxyforce.controller.interfaces.TouchBaseControllerModel;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 
-public class BaseDragModel implements TouchBaseControllerModel
-{
+public class BaseDragModel implements TouchBaseControllerModel {
     /* drag sprite animation */
 //    private static final Animation DRAG_ANIMATION = new Animation(0.75f, GameSpriteIdentifier.DRAG_1, GameSpriteIdentifier.DRAG_2);
 
@@ -25,7 +24,7 @@ public class BaseDragModel implements TouchBaseControllerModel
      * move goes back in other opposite direction as so on. the slower the game
      * is, the more the base will move and so the greater chance of overshooting
      * we have.
-     * 
+     *
      * game optimised to run at 1/60 fps so increase BASE_MOVE_RADIUS_LARGE by
      * ratio of actual speed to ideal speed.
      */
@@ -68,8 +67,7 @@ public class BaseDragModel implements TouchBaseControllerModel
     /* timer to store time since animation timer reset */
 //    private float animationTime = 0f;
 
-    public BaseDragModel(IBasePrimary base)
-    {
+    public BaseDragModel(IBasePrimary base) {
         this.base = base;
         this.targetX = base.x();
         this.targetY = base.y() + BASE_Y_OFFSET;
@@ -108,8 +106,7 @@ public class BaseDragModel implements TouchBaseControllerModel
 
     // when finger released, reset weightings so base no longer moves
     @Override
-    public void releaseTouchPoint()
-    {
+    public void releaseTouchPoint() {
         // reset weighting so that base stops moving
 //        this.weightingX = 0f;
 //        this.weightingY = 0f;
@@ -141,8 +138,7 @@ public class BaseDragModel implements TouchBaseControllerModel
 
     // update finger position when touched down or dragged
     @Override
-    public void updateTouchPoint(float touchX, float touchY, float deltaTime)
-    {
+    public void updateTouchPoint(float touchX, float touchY, float deltaTime) {
         // to avoid base jitter - check how far new touch point is away from
         // current touch point.
         // if distance is small then don't change current point.
@@ -154,28 +150,27 @@ public class BaseDragModel implements TouchBaseControllerModel
             this.targetY = touchY;
         }
 
-            // adjust base position by the offset
-            // weighting is calculated from base to touch point
+        // adjust base position by the offset
+        // weighting is calculated from base to touch point
 //            this.baseX = base.x();
 //            this.baseY = base.y() + BASE_Y_OFFSET;
 
-            // ensures weighting is recalculated to avoid jitter
-            updateWeighting(
-                    targetX - base.x(),
-                    targetY - (base.y() + BASE_Y_OFFSET),
-                    deltaTime);
+        // ensures weighting is recalculated to avoid jitter
+        updateWeighting(
+                targetX - base.x(),
+                targetY - (base.y() + BASE_Y_OFFSET),
+                deltaTime);
 
 //            float deltaX = targetX - baseX;
 //        float deltaY = targetY - baseY;
 
-            // move base by current weighting
+        // move base by current weighting
 //            setCentre(base.x(), base.y());
-
 
 
 //            base.moveBase(weightingX, weightingY, deltaTime);
 
-            // remove drag sprite when touching screen
+        // remove drag sprite when touching screen
 //            sprites.clear();
 
 
@@ -203,8 +198,7 @@ public class BaseDragModel implements TouchBaseControllerModel
 //        releaseTouchPoint();
 //    }
 
-    private void updateWeighting(float deltaX, float deltaY, float deltaTime)
-    {
+    private void updateWeighting(float deltaX, float deltaY, float deltaTime) {
 //        float deltaX = targetX - baseX;
 //        float deltaY = targetY - baseY;
 
@@ -216,8 +210,7 @@ public class BaseDragModel implements TouchBaseControllerModel
 
         // if distance large then calculate weighting purely on angle between
         // base and current touch point
-        if (baseDistance > BASE_MOVE_RADIUS_LARGE)
-        {
+        if (baseDistance > BASE_MOVE_RADIUS_LARGE) {
             // calculate angle from circle centre to touch point
             // atan2 doesn't have limitations of atan but is PI/2 greater than
             // expected so manually correct this.
@@ -237,8 +230,7 @@ public class BaseDragModel implements TouchBaseControllerModel
         // if distance small then calculate weighting based on angle but
         // multiply by a calculated weight. Much smoother movement for small
         // moves than previous calculation.
-        else if (baseDistance > BASE_MOVE_RADIUS_SMALL)
-        {
+        else if (baseDistance > BASE_MOVE_RADIUS_SMALL) {
             // calculate angle from circle centre to touch point
             // atan2 doesn't have limitations of atan but is PI/2 greater than
             // expected so manually correct this.

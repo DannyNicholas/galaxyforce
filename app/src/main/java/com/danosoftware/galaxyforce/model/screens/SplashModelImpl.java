@@ -17,8 +17,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplashModelImpl implements TouchScreenModel
-{
+public class SplashModelImpl implements TouchScreenModel {
 
     private List<Text> textList;
 
@@ -43,8 +42,7 @@ public class SplashModelImpl implements TouchScreenModel
     // how long splash screen should be displayed for (in seconds)
     private static final float SPLASH_SCREEN_WAIT = 4f;
 
-    public SplashModelImpl(Controller controller)
-    {
+    public SplashModelImpl(Controller controller) {
 
         this.allSprites = new ArrayList<>();
         this.textList = new ArrayList<>();
@@ -57,8 +55,7 @@ public class SplashModelImpl implements TouchScreenModel
     }
 
     @Override
-    public void initialise()
-    {
+    public void initialise() {
         // title = Text.newTextRelativePositionBoth("GALAXY FORCE",
         // TextPositionX.CENTRE, TextPositionY.TOP);
         // company = Text.newTextRelativePositionBoth("DANO SOFTWARE",
@@ -79,32 +76,27 @@ public class SplashModelImpl implements TouchScreenModel
     }
 
     @Override
-    public List<ISprite> getSprites()
-    {
+    public List<ISprite> getSprites() {
         return allSprites;
     }
 
     @Override
-    public List<Text> getText()
-    {
+    public List<Text> getText() {
         return textList;
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
         // increment splash screen time count by deltaTime
         splashScreenTime = splashScreenTime + deltaTime;
 
         // check if splash screen has been shown for required time
-        if (splashScreenTime >= SPLASH_SCREEN_WAIT)
-        {
+        if (splashScreenTime >= SPLASH_SCREEN_WAIT) {
             setState(ModelState.EXPIRED);
         }
 
         // if timer expired or screen pressed go to main menu
-        if (getState() == ModelState.EXPIRED)
-        {
+        if (getState() == ModelState.EXPIRED) {
             Screen screen = ScreenFactory.newScreen(ScreenType.MAIN_MENU);
             Games.getGame().setScreen(screen);
         }
@@ -112,8 +104,7 @@ public class SplashModelImpl implements TouchScreenModel
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         this.textList = null;
         this.title = null;
         this.company = null;
@@ -122,36 +113,30 @@ public class SplashModelImpl implements TouchScreenModel
     }
 
     @Override
-    public void screenTouched()
-    {
+    public void screenTouched() {
         setState(ModelState.EXPIRED);
     }
 
     @Override
-    public void goBack()
-    {
+    public void goBack() {
         // No action. Splash screen does not change back button behaviour.
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         // no action for this model
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         // no action for this model
     }
 
-    private void setState(ModelState modelState)
-    {
+    private void setState(ModelState modelState) {
         this.modelState = modelState;
     }
 
-    private ModelState getState()
-    {
+    private ModelState getState() {
         return this.modelState;
     }
 

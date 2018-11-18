@@ -12,8 +12,7 @@ import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics
 /**
  * Create bezier curve from provided control points
  */
-public class BezierCurveGenerator implements PathGenerator
-{
+public class BezierCurveGenerator implements PathGenerator {
     private final Point start;
     private final Point startControl;
     private final Point finish;
@@ -28,8 +27,7 @@ public class BezierCurveGenerator implements PathGenerator
      * @param bezierData
      * @param translators
      */
-    public BezierCurveGenerator(BezierPathDTO bezierData, PointTranslatorChain translators)
-    {
+    public BezierCurveGenerator(BezierPathDTO bezierData, PointTranslatorChain translators) {
         this.start = convertAndTranslatePoint(bezierData.getStart(), translators);
         this.startControl = convertAndTranslatePoint(bezierData.getStartControl(), translators);
         this.finish = convertAndTranslatePoint(bezierData.getFinish(), translators);
@@ -39,12 +37,11 @@ public class BezierCurveGenerator implements PathGenerator
 
     /**
      * return the bezier curve points for the current bezier curve object.
-     * 
+     *
      * @return array of points representing Bezier curve
      */
     @Override
-    public List<Point> path()
-    {
+    public List<Point> path() {
         return createBezierPath(
                 start,
                 startControl,

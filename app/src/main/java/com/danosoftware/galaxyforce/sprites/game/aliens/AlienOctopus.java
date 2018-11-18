@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienOctopus extends AbstractAlienWithPath
-{
+public class AlienOctopus extends AbstractAlienWithPath {
 
     /*
      * ******************************************************
@@ -47,8 +46,7 @@ public class AlienOctopus extends AbstractAlienWithPath
             final PowerUpType powerUp,
             final List<Point> alienPath,
             final float delayStart,
-            final boolean restartImmediately)
-    {
+            final boolean restartImmediately) {
         super(
                 ANIMATION,
                 new FireRandomDelay(

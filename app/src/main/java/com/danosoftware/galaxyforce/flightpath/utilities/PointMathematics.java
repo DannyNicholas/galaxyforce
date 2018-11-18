@@ -46,8 +46,7 @@ public final class PointMathematics {
      * @param multiplier
      * @return scaled point
      */
-    public static Point multiply(Point point, double multiplier)
-    {
+    public static Point multiply(Point point, double multiplier) {
         return new Point(
                 (int) (point.getX() * multiplier),
                 (int) (point.getY() * multiplier));
@@ -60,8 +59,7 @@ public final class PointMathematics {
      * @param point2
      * @return summed point
      */
-    public static Point addition(Point point1, Point point2)
-    {
+    public static Point addition(Point point1, Point point2) {
         return new Point(
                 point1.getX() + point2.getX(),
                 point1.getY() + point2.getY());
@@ -74,8 +72,7 @@ public final class PointMathematics {
      * @param point2
      * @return subtracted point
      */
-    public static Point subtraction(Point point1, Point point2)
-    {
+    public static Point subtraction(Point point1, Point point2) {
         return new Point(
                 point1.getX() - point2.getX(),
                 point1.getY() - point2.getY());

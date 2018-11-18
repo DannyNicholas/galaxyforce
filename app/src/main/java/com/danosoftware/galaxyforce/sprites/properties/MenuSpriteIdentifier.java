@@ -3,8 +3,7 @@ package com.danosoftware.galaxyforce.sprites.properties;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public enum MenuSpriteIdentifier implements ISpriteIdentifier
-{
+public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
     GALAXY_FORCE("GalaxyForceLogo.png"),
 
@@ -44,34 +43,31 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier
 
     // all possible star animations
     public static final Animation[] STAR_ANIMATIONS =
-    { MenuSpriteIdentifier.starAnimation1, MenuSpriteIdentifier.starAnimation2, MenuSpriteIdentifier.starAnimation3 };
+            {MenuSpriteIdentifier.starAnimation1, MenuSpriteIdentifier.starAnimation2, MenuSpriteIdentifier.starAnimation3};
 
     private final String name;
     private SpriteProperties properties;
 
-    MenuSpriteIdentifier(String name)
-    {
+    MenuSpriteIdentifier(String name) {
         this.name = name;
     }
 
     @Override
-    public ISpriteProperties getProperties()
-    {
+    public ISpriteProperties getProperties() {
         return properties;
     }
 
     /**
      * Update the sprite properties using this sprite's name and the supplied
      * texture map.
-     * 
+     * <p>
      * This method can be called once a texture is available or refreshed after
      * a resume.
-     * 
+     *
      * @param texture
      */
     @Override
-    public void updateProperties(Texture texture)
-    {
+    public void updateProperties(Texture texture) {
         this.properties = new SpriteProperties(name, texture);
     }
 }

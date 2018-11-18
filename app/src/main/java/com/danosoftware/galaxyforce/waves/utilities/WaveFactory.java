@@ -506,7 +506,7 @@ public class WaveFactory {
             }
         }
 
-         /*
+        /*
          * Reverse order of aliens.
          *
          * Collision detection routines are required to iterate through aliens

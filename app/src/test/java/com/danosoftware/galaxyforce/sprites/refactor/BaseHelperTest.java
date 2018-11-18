@@ -79,7 +79,7 @@ public class BaseHelperTest {
         mockStatic(VibrationSingleton.class);
         when(VibrationSingleton.getInstance()).thenReturn(vibration);
 
-        final TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
+        final TextureDetail mockTextureDetail = new TextureDetail("mock", 0, 0, 0, 0);
         Textures mockTextures = mock(Textures.class);
         mockStatic(Textures.class);
         when(Textures.getTextureDetail(any(String.class))).thenReturn(mockTextureDetail);
@@ -95,7 +95,7 @@ public class BaseHelperTest {
 
 
     private IBaseHelper shieldedHelper(HelperSide side) {
-        return createHelper(side,SHIELD_UP,SHIELD_SYNC_OFFSET);
+        return createHelper(side, SHIELD_UP, SHIELD_SYNC_OFFSET);
     }
 
     private IBaseHelper unShieldedHelper(HelperSide side) {

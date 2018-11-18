@@ -93,7 +93,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
 
     /**
      * Static Helper creator
-     *
+     * <p>
      * - Creates new helper
      * - Registers helper with primary base
      */
@@ -133,14 +133,14 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         super(
                 HELPER,
                 primaryBase.x() +
-                        (side == LEFT ? - X_OFFSET_FROM_PRIMARY_BASE : + X_OFFSET_FROM_PRIMARY_BASE),
+                        (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE),
                 primaryBase.y()
         );
         this.model = model;
         this.primaryBase = primaryBase;
         this.state = ACTIVE;
         this.side = side;
-        this.xOffset = (side == LEFT ? - X_OFFSET_FROM_PRIMARY_BASE : + X_OFFSET_FROM_PRIMARY_BASE);
+        this.xOffset = (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE);
         this.explosion = new ExplodeSimple();
 
         if (shieldUp) {

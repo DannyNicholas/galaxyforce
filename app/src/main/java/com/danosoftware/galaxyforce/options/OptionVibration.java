@@ -1,20 +1,17 @@
 package com.danosoftware.galaxyforce.options;
 
-public enum OptionVibration implements Option
-{
+public enum OptionVibration implements Option {
 
     ON("ON"), OFF("OFF");
 
     private String text = null;
 
-    OptionVibration(String text)
-    {
+    OptionVibration(String text) {
         this.text = text;
     }
 
     @Override
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 

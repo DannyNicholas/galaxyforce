@@ -27,8 +27,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionsModelImpl implements OptionsModel
-{
+public class OptionsModelImpl implements OptionsModel {
     /* logger tag */
     private static final String TAG = "OptionsModelImpl";
 
@@ -49,8 +48,7 @@ public class OptionsModelImpl implements OptionsModel
     /* reference to screen button */
     private ScreenTouch screenTouch = null;
 
-    public OptionsModelImpl(Controller controller)
-    {
+    public OptionsModelImpl(Controller controller) {
         this.controller = controller;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
@@ -62,8 +60,7 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public void initialise()
-    {
+    public void initialise() {
 
         /* set-up initial random position of stars */
         stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
@@ -103,22 +100,18 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public List<ISprite> getSprites()
-    {
+    public List<ISprite> getSprites() {
         return allSprites;
     }
 
     @Override
-    public List<Text> getText()
-    {
+    public List<Text> getText() {
         return allText;
     }
 
     @Override
-    public void update(float deltaTime)
-    {
-        if (getState() == ModelState.GO_BACK)
-        {
+    public void update(float deltaTime) {
+        if (getState() == ModelState.GO_BACK) {
             // return back to previous screen
             Games.getGame().screenReturn();
         }
@@ -128,22 +121,18 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         // TODO Auto-generated method stub
 
     }
 
-    private void moveStars(float deltaTime)
-    {
-        for (Star eachStar : stars)
-        {
+    private void moveStars(float deltaTime) {
+        for (Star eachStar : stars) {
             eachStar.animate(deltaTime);
         }
     }
 
-    private void addOptionsButton(int row, int column, Option optionType, ToggleButtonGroup toggleGroup, int offset)
-    {
+    private void addOptionsButton(int row, int column, Option optionType, ToggleButtonGroup toggleGroup, int offset) {
 
         OptionButton button = new OptionButton(controller, 90 + (column * 180) + offset, 100 + (row * 170), optionType,
                 MenuSpriteIdentifier.OPTION_UNSELECTED, MenuSpriteIdentifier.OPTION_SELECTED, toggleGroup);
@@ -159,33 +148,28 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public void optionSelected(Option optionSelected)
-    {
+    public void optionSelected(Option optionSelected) {
         Configurations configurations = Configurations.getInstance();
 
-        if (optionSelected instanceof OptionController)
-        {
+        if (optionSelected instanceof OptionController) {
             OptionController controllerType = (OptionController) optionSelected;
             Log.d(TAG, "Controller Option Selected: " + controllerType.getText());
             configurations.newControllerType(controllerType);
         }
 
-        if (optionSelected instanceof OptionSound)
-        {
+        if (optionSelected instanceof OptionSound) {
             OptionSound soundType = (OptionSound) optionSelected;
             Log.d(TAG, "Sound Option Selected: " + soundType.getText());
             configurations.setSoundOption(soundType);
         }
 
-        if (optionSelected instanceof OptionMusic)
-        {
+        if (optionSelected instanceof OptionMusic) {
             OptionMusic musicType = (OptionMusic) optionSelected;
             Log.d(TAG, "Music Option Selected: " + musicType.getText());
             configurations.setMusicOption(musicType);
         }
 
-        if (optionSelected instanceof OptionVibration)
-        {
+        if (optionSelected instanceof OptionVibration) {
             OptionVibration vibrationType = (OptionVibration) optionSelected;
             Log.d(TAG, "Vibration Option Selected: " + vibrationType.getText());
             configurations.setVibrationOption(vibrationType);
@@ -193,8 +177,7 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public void goBack()
-    {
+    public void goBack() {
         Configurations configurations = Configurations.getInstance();
         Log.d(TAG, "Persist Configurations.");
         configurations.persistConfigurations();
@@ -203,24 +186,20 @@ public class OptionsModelImpl implements OptionsModel
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         // no action for this model
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         // no action for this model
     }
 
-    private void setState(ModelState modelState)
-    {
+    private void setState(ModelState modelState) {
         this.modelState = modelState;
     }
 
-    private ModelState getState()
-    {
+    private ModelState getState() {
         return modelState;
     }
 

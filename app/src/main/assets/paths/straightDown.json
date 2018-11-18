@@ -1,14 +1,16 @@
 {
-  "pathData" : [ {
-    "type" : "linear",
-    "pathPoints" : 204,
-    "start" : {
-      "x" : 0,
-      "y" : 992
-    },
-    "finish" : {
-      "x" : 0,
-      "y" : -32
+  "pathData": [
+    {
+      "type": "linear",
+      "pathPoints": 204,
+      "start": {
+        "x": 0,
+        "y": 992
+      },
+      "finish": {
+        "x": 0,
+        "y": -32
+      }
     }
-  } ]
+  ]
 }

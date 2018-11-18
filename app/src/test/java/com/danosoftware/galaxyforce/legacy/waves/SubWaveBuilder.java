@@ -7,8 +7,7 @@ import com.danosoftware.galaxyforce.waves.AlienType;
 import java.util.Arrays;
 import java.util.List;
 
-public enum SubWaveBuilder
-{
+public enum SubWaveBuilder {
 
     /*
      * Each sub-wave consists of one or more sub-wave properties. Each sub-wave
@@ -111,20 +110,20 @@ public enum SubWaveBuilder
     STAGGERED_BOUNCE_ATTACK(true, new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE,
             PathFactory.Y_INVERT_FALSE, 40, 0, 5, 0.3f, 0, false),
 
-    new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + 92, 0, 5,
-            0.3f, 0.5f, false),
+            new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + 92, 0, 5,
+                    0.3f, 0.5f, false),
 
-    new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 2),
-            0, 5, 0.3f, 1f, false),
+            new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 2),
+                    0, 5, 0.3f, 1f, false),
 
-    new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 3),
-            0, 5, 0.3f, 1.5f, false),
+            new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 3),
+                    0, 5, 0.3f, 1.5f, false),
 
-    new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 4),
-            0, 5, 0.3f, 2f, false),
+            new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 4),
+                    0, 5, 0.3f, 2f, false),
 
-    new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 5),
-            0, 5, 0.3f, 2.5f, false)),
+            new SubWaveProperty(AlienType.OCTOPUS, Path.BOUNCE_DOWN_AND_UP, PathFactory.X_INVERT_FALSE, PathFactory.Y_INVERT_FALSE, 40 + (92 * 5),
+                    0, 5, 0.3f, 2.5f, false)),
 
     /**
      * Dragon attack - only head needs to be created. body parts will be spawned
@@ -171,19 +170,16 @@ public enum SubWaveBuilder
     /**
      * construct wave
      */
-    SubWaveBuilder(boolean repeatSubWave, SubWaveProperty... waveArray)
-    {
+    SubWaveBuilder(boolean repeatSubWave, SubWaveProperty... waveArray) {
         this.waveList = Arrays.asList(waveArray);
         this.repeatSubWave = repeatSubWave;
     }
 
-    public List<SubWaveProperty> getWaveList()
-    {
+    public List<SubWaveProperty> getWaveList() {
         return waveList;
     }
 
-    public boolean isRepeatSubWave()
-    {
+    public boolean isRepeatSubWave() {
         return repeatSubWave;
     }
 }

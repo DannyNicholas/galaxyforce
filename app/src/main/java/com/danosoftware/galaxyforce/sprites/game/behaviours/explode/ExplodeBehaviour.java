@@ -2,8 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.explode;
 
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
-public interface ExplodeBehaviour
-{
+public interface ExplodeBehaviour {
 
     /**
      * Initialise start of explosion
@@ -12,7 +11,7 @@ public interface ExplodeBehaviour
 
     /**
      * Get the current explosion sprite.
-     * 
+     *
      * @param deltaTime
      * @return
      */
@@ -20,7 +19,7 @@ public interface ExplodeBehaviour
 
     /**
      * Has the explosion finished?
-     * 
+     *
      * @return
      */
     boolean finishedExploding();

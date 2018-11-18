@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * Create bezier curve from provided control points
  */
-public class BezierCurve implements FlightPath
-{
+public class BezierCurve implements FlightPath {
 
     Point start = null;
     Point startControl = null;
@@ -19,8 +18,7 @@ public class BezierCurve implements FlightPath
     Point finish = null;
     Integer segments = null;
 
-    public BezierCurve(Integer segments, Point start, Point startControl, Point finishControl, Point finish)
-    {
+    public BezierCurve(Integer segments, Point start, Point startControl, Point finishControl, Point finish) {
         this.start = start;
         this.startControl = startControl;
         this.finishControl = finishControl;
@@ -30,17 +28,15 @@ public class BezierCurve implements FlightPath
 
     /**
      * return the bezier curve points for the current bezier curve object.
-     * 
+     *
      * @return array of points representing Bezier curve
      */
-    public List<Point> addPath()
-    {
+    public List<Point> addPath() {
 
         List<Point> path = new ArrayList<Point>();
 
         /* calculate point for each segment and add to path */
-        for (int i = 0; i <= segments; i++)
-        {
+        for (int i = 0; i <= segments; i++) {
             double t = (double) i / segments;
             Point position = calculateBezierPoint(t);
             path.add(position);
@@ -53,20 +49,19 @@ public class BezierCurve implements FlightPath
     public PathDTO createDTO() {
         return new BezierPathDTO(
                 segments,
-                new PointDTO(start.getX(),start.getY()),
-                new PointDTO(startControl.getX(),startControl.getY()),
-                new PointDTO(finish.getX(),finish.getY()),
-                new PointDTO(finishControl.getX(),finishControl.getY()));
+                new PointDTO(start.getX(), start.getY()),
+                new PointDTO(startControl.getX(), startControl.getY()),
+                new PointDTO(finish.getX(), finish.getY()),
+                new PointDTO(finishControl.getX(), finishControl.getY()));
     }
 
     /**
      * calculate current point on bezier curve based on parameter t
-     * 
+     *
      * @param t
      * @return current point on bezier curve
      */
-    private Point calculateBezierPoint(double t)
-    {
+    private Point calculateBezierPoint(double t) {
         double u = 1 - t;
         double tt = t * t;
         double uu = u * u;

@@ -7,8 +7,7 @@ import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
-public class GameScreen extends AbstractScreen
-{
+public class GameScreen extends AbstractScreen {
     // TODO - temp variables for optimisation - remove when not needed.
     // long controllerSum = 0;
     // long controllerSamples = 0;
@@ -16,8 +15,7 @@ public class GameScreen extends AbstractScreen
     // long modelSamples = 0;
 
     public GameScreen(Model model, Controller controller, TextureMap textureMap, GLGraphics glGraphics, Camera2D camera,
-            SpriteBatcher batcher)
-    {
+                      SpriteBatcher batcher) {
         /* use superclass constructor to create screen */
         super(model, controller, textureMap, glGraphics, camera, batcher);
     }

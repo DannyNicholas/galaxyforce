@@ -8,24 +8,20 @@ import java.util.List;
 /**
  * Base missile bean holding the base missiles and sound effects.
  */
-public class BaseMissileBean
-{
+public class BaseMissileBean {
     private final List<IBaseMissile> missiles;
     private final Sound soundEffect;
 
-    public BaseMissileBean(List<IBaseMissile> missiles, Sound soundEffect)
-    {
+    public BaseMissileBean(List<IBaseMissile> missiles, Sound soundEffect) {
         this.missiles = missiles;
         this.soundEffect = soundEffect;
     }
 
-    public List<IBaseMissile> getMissiles()
-    {
+    public List<IBaseMissile> getMissiles() {
         return missiles;
     }
 
-    public Sound getSoundEffect()
-    {
+    public Sound getSoundEffect() {
         return soundEffect;
     }
 }

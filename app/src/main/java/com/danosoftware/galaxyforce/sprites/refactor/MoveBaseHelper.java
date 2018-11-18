@@ -9,9 +9,9 @@ import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifi
 /**
  * Helper class that moves the base around the screen and changes sprites depending
  * on speed of turning.
- *
+ * <p>
  * For instance a sharp right turn, changes the base sprite to a banked right turn.
- *
+ * <p>
  * Instances of this class reference a specific base so a new instance must be created
  * every time a new base is created.
  */

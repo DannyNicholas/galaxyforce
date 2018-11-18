@@ -5,8 +5,7 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 
 
-public abstract class AbstractBaseMissile extends AbstractCollidingSprite implements IBaseMissile
-{
+public abstract class AbstractBaseMissile extends AbstractCollidingSprite implements IBaseMissile {
 
     // how much energy will be lost by alien when this missile hits it
     private final int hitEnergy;
@@ -20,7 +19,7 @@ public abstract class AbstractBaseMissile extends AbstractCollidingSprite implem
             int hitEnergy) {
 
         // adjust missile starting position by half the missile's height
-        super(spriteId, x, y + (spriteId.getProperties().getHeight()/2));
+        super(spriteId, x, y + (spriteId.getProperties().getHeight() / 2));
         this.hitEnergy = hitEnergy;
         this.isDestroyed = false;
     }

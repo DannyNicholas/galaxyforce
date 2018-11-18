@@ -22,46 +22,36 @@ package com.danosoftware.galaxyforce.billing;
  * respectively. You can also inquire whether a result is a success or a failure
  * by calling {@link #isSuccess()} and {@link #isFailure()}.
  */
-public class IabResult
-{
+public class IabResult {
     int mResponse;
     String mMessage;
 
-    public IabResult(int response, String message)
-    {
+    public IabResult(int response, String message) {
         mResponse = response;
-        if (message == null || message.trim().length() == 0)
-        {
+        if (message == null || message.trim().length() == 0) {
             mMessage = IabHelper.getResponseDesc(response);
-        }
-        else
-        {
+        } else {
             mMessage = message + " (response: " + IabHelper.getResponseDesc(response) + ")";
         }
     }
 
-    public int getResponse()
-    {
+    public int getResponse() {
         return mResponse;
     }
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return mMessage;
     }
 
-    public boolean isSuccess()
-    {
+    public boolean isSuccess() {
         return mResponse == IabHelper.BILLING_RESPONSE_RESULT_OK;
     }
 
-    public boolean isFailure()
-    {
+    public boolean isFailure() {
         return !isSuccess();
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "IabResult: " + getMessage();
     }
 }

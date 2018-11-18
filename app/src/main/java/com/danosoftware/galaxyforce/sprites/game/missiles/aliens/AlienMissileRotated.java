@@ -8,18 +8,16 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
 
 /**
  * Alien missile that targets the supplied base.
- * 
+ * <p>
  * The missile will calculate it's direction on construction and will continue
  * to move in that direction until off the screen.
- * 
+ * <p>
  * This missile will not change direction once fired even if the targeted base
  * moves.
- * 
+ *
  * @author Danny
- * 
  */
-public class AlienMissileRotated extends AbstractAlienMissile
-{
+public class AlienMissileRotated extends AbstractAlienMissile {
 
     // how much energy will be lost by base when this missile hits it
     private static final int HIT_ENERGY = 2;
@@ -34,20 +32,16 @@ public class AlienMissileRotated extends AbstractAlienMissile
     private int xDelta;
     private int yDelta;
 
-    public AlienMissileRotated(int xStart, int yStart, IBasePrimary base)
-    {
+    public AlienMissileRotated(int xStart, int yStart, IBasePrimary base) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);
 
         // calculate angle from missile position to base
         final float angle;
-        if (base != null)
-        {
+        if (base != null) {
             angle = (float) Math.atan2(
                     base.y() - yStart,
                     base.x() - xStart);
-        }
-        else
-        {
+        } else {
             // if base is null fire downwards
             angle = (float) Math.atan2(-1, 0);
         }

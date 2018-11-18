@@ -14,8 +14,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public class AlienInsectPath extends AbstractAlienWithPath
-{
+public class AlienInsectPath extends AbstractAlienWithPath {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -46,8 +45,7 @@ public class AlienInsectPath extends AbstractAlienWithPath
             final PowerUpType powerUpType,
             final List<Point> alienPath,
             final float delayStart,
-            final boolean restartImmediately)
-    {
+            final boolean restartImmediately) {
         super(
                 ANIMATION,
                 new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),

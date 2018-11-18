@@ -39,7 +39,7 @@ public abstract class AbstractSprite implements ISprite {
             ISpriteIdentifier spriteId,
             int x,
             int y) {
-        this(spriteId, x, y,0);
+        this(spriteId, x, y, 0);
     }
 
     @Override

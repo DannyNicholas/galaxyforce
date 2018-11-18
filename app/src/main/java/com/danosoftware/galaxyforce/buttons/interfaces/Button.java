@@ -5,12 +5,11 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
 /**
  * Button that can be selected by a user.
  */
-public interface Button
-{
+public interface Button {
 
     /**
      * Return the bounds of the button's area.
-     * 
+     *
      * @return area of button's bounds.
      */
     Rectangle getBounds();

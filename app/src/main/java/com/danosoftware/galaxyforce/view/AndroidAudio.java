@@ -15,16 +15,13 @@ import com.danosoftware.galaxyforce.sound.SoundEffect;
 
 import java.io.IOException;
 
-public class AndroidAudio implements Audio
-{
+public class AndroidAudio implements Audio {
     AssetManager assets;
     SoundPool soundPool;
 
-    public AndroidAudio(Context context)
-    {
+    public AndroidAudio(Context context) {
 
-        if (context instanceof Activity)
-        {
+        if (context instanceof Activity) {
             Activity activity = (Activity) context;
 
             // allows audio stream to have volume controlled by hardware buttons
@@ -35,31 +32,23 @@ public class AndroidAudio implements Audio
         this.soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
     }
 
-    public Music newMusic(String filename)
-    {
-        try
-        {
+    public Music newMusic(String filename) {
+        try {
             AssetFileDescriptor assetDescriptor = assets.openFd(filename);
             return new AndroidMusic(assetDescriptor);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException("Couldn't load music '" + filename + "'");
         }
     }
 
-    public Sound newSound(SoundEffect soundEffect)
-    {
+    public Sound newSound(SoundEffect soundEffect) {
         String filename = soundEffect.getFileName();
 
-        try
-        {
+        try {
             AssetFileDescriptor assetDescriptor = assets.openFd(filename);
             int soundId = soundPool.load(assetDescriptor, 0);
             return new AndroidSound(soundPool, soundId);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException("Couldn't load sound '" + filename + "'");
         }
     }

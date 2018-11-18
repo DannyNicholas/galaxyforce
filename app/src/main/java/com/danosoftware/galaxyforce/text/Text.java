@@ -9,8 +9,7 @@ import com.danosoftware.galaxyforce.enumerations.TextPositionY;
 import java.util.regex.Pattern;
 
 /* used to store any game text. contains a string of the actual text and the x, y position */
-public class Text
-{
+public class Text {
 
     /*
      * instance variables for text's x,y position - can be null if text position
@@ -29,32 +28,27 @@ public class Text
     private final String text;
 
     // static factory for text in absolute position
-    public static Text newTextAbsolutePosition(String text, int x, int y)
-    {
+    public static Text newTextAbsolutePosition(String text, int x, int y) {
         return new Text(text, x, y, null, null);
     }
 
     // static factory for text using relative position enum
-    public static Text newTextRelativePositionBoth(String text, TextPositionX textPositionX, TextPositionY textPositionY)
-    {
+    public static Text newTextRelativePositionBoth(String text, TextPositionX textPositionX, TextPositionY textPositionY) {
         return new Text(text, 0, 0, textPositionX, textPositionY);
     }
 
     // static factory for text using relative position enum
-    public static Text newTextRelativePositionX(String text, TextPositionX textPositionX, int y)
-    {
+    public static Text newTextRelativePositionX(String text, TextPositionX textPositionX, int y) {
         return new Text(text, 0, y, textPositionX, null);
     }
 
     // static factory for text using relative position enum
-    public static Text newTextRelativePositionY(String text, int x, TextPositionY textPositionY)
-    {
+    public static Text newTextRelativePositionY(String text, int x, TextPositionY textPositionY) {
         return new Text(text, x, 0, null, textPositionY);
     }
 
     // private constructor as static factories are used
-    private Text(String text, int x, int y, TextPositionX textPositionX, TextPositionY textPositionY)
-    {
+    private Text(String text, int x, int y, TextPositionX textPositionX, TextPositionY textPositionY) {
         this.text = removeInvalidCharacters(text);
         this.x = x;
         this.y = y;
@@ -62,28 +56,23 @@ public class Text
         this.textPositionY = textPositionY;
     }
 
-    public int getX()
-    {
+    public int getX() {
         return x;
     }
 
-    public int getY()
-    {
+    public int getY() {
         return y;
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
-    public TextPositionX getTextPositionX()
-    {
+    public TextPositionX getTextPositionX() {
         return textPositionX;
     }
 
-    public TextPositionY getTextPositionY()
-    {
+    public TextPositionY getTextPositionY() {
         return textPositionY;
     }
 
@@ -91,20 +80,18 @@ public class Text
      * Takes the original supplied text string and removes any invalid
      * characters. In this case, this will be any characters that don't exist in
      * the font character map.
-     * 
+     *
      * @param text
      * @return
      */
-    private String removeInvalidCharacters(String text)
-    {
+    private String removeInvalidCharacters(String text) {
         // string that contains only valid characters
         String validCharacters = GameConstants.FONT_CHARACTER_MAP;
 
         // string to hold invalid characters to be removed
         StringBuilder charsToRemove = new StringBuilder();
 
-        for (int i = 0; i < text.length(); i++)
-        {
+        for (int i = 0; i < text.length(); i++) {
 
             // returns index of current character within the character map
             // returns -1 if it can't be found.
@@ -116,8 +103,7 @@ public class Text
              * string. Only add it to the list of characters to remove if it
              * hasn't been seen before.
              */
-            if (charIndex == -1 && charsToRemove.indexOf(Character.toString(nextChar)) == -1)
-            {
+            if (charIndex == -1 && charsToRemove.indexOf(Character.toString(nextChar)) == -1) {
                 Log.w(GameConstants.LOG_TAG, "Text: Invalid Character: '" + nextChar + "'. ASCII Code: '" + (int) nextChar
                         + "'. Removing from text.");
 
@@ -129,8 +115,7 @@ public class Text
          * If invalid characters need to be removed, then create a regular
          * expression pattern to remove them from the original string.
          */
-        if (charsToRemove.length() > 0)
-        {
+        if (charsToRemove.length() > 0) {
             Log.d(GameConstants.LOG_TAG, "Text: Removing Invalid Characters: '" + charsToRemove + "' from '" + text + "'.");
 
             // create regular expression to remove unwanted characters

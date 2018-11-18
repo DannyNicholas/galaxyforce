@@ -7,11 +7,9 @@ import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
-public class UnlockAllZonesScreen extends AbstractScreen
-{
+public class UnlockAllZonesScreen extends AbstractScreen {
     public UnlockAllZonesScreen(Model model, Controller controller, TextureMap textureMap, GLGraphics glGraphics, Camera2D camera,
-            SpriteBatcher batcher)
-    {
+                                SpriteBatcher batcher) {
         /* use superclass constructor to create screen */
         super(model, controller, textureMap, glGraphics, camera, batcher);
     }

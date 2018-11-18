@@ -6,8 +6,7 @@ import com.danosoftware.galaxyforce.waves.AlienType;
 /*
  * Class references a sub-wave of aliens on a path
  */
-public class SubWaveProperty
-{
+public class SubWaveProperty {
     private AlienType alienType = null;
     private Path path = null;
     private boolean xInvert;
@@ -22,7 +21,7 @@ public class SubWaveProperty
     /**
      * Create a new alien sub-wave using a supplied path, positional offsets and
      * delays in seconds.
-     * 
+     *
      * @param alienType
      * @param path
      * @param xInvert
@@ -34,8 +33,7 @@ public class SubWaveProperty
      * @param delayOffet
      */
     public SubWaveProperty(AlienType alienType, Path path, boolean xInvert, boolean yInvert, int xOffset, int yOffset, int numberOfAliens,
-            float delayBetweenAliens, float delayOffet, boolean restartImmediately)
-    {
+                           float delayBetweenAliens, float delayOffet, boolean restartImmediately) {
         this.alienType = alienType;
         this.path = path;
         this.xInvert = xInvert;
@@ -48,53 +46,43 @@ public class SubWaveProperty
         this.restartImmediately = restartImmediately;
     }
 
-    public AlienType getAlienType()
-    {
+    public AlienType getAlienType() {
         return alienType;
     }
 
-    public Path getPath()
-    {
+    public Path getPath() {
         return path;
     }
 
-    public boolean isxInvert()
-    {
+    public boolean isxInvert() {
         return xInvert;
     }
 
-    public boolean isyInvert()
-    {
+    public boolean isyInvert() {
         return yInvert;
     }
 
-    public int getNumberOfAliens()
-    {
+    public int getNumberOfAliens() {
         return numberOfAliens;
     }
 
-    public float getDelayBetweenAliens()
-    {
+    public float getDelayBetweenAliens() {
         return delayBetweenAliens;
     }
 
-    public float getDelayOffet()
-    {
+    public float getDelayOffet() {
         return delayOffet;
     }
 
-    public int getxOffset()
-    {
+    public int getxOffset() {
         return xOffset;
     }
 
-    public int getyOffset()
-    {
+    public int getyOffset() {
         return yOffset;
     }
 
-    public boolean isRestartImmediately()
-    {
+    public boolean isRestartImmediately() {
         return restartImmediately;
     }
 }

@@ -58,7 +58,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({Log.class, SoundEffectBankSingleton.class, VibrationSingleton.class, Textures.class})
 public class PrimaryBaseTest {
 
-    TextureDetail mockTextureDetail = new TextureDetail("mock",0,0,0,0);
+    TextureDetail mockTextureDetail = new TextureDetail("mock", 0, 0, 0, 0);
 
     private IBasePrimary primaryBase;
     private IBasePrimary primaryBaseSpy;
@@ -107,7 +107,7 @@ public class PrimaryBaseTest {
     @Test()
     public void shouldMoveBaseX() {
         primaryBase.move(0, 0);
-        primaryBase.moveBase(1,0,0.5f);
+        primaryBase.moveBase(1, 0, 0.5f);
         assertThat(primaryBase.x(), is(300));
         assertThat(primaryBase.y(), is(0));
     }
@@ -115,7 +115,7 @@ public class PrimaryBaseTest {
     @Test()
     public void shouldMoveBaseY() {
         primaryBase.move(0, 0);
-        primaryBase.moveBase(0,1,0.5f);
+        primaryBase.moveBase(0, 1, 0.5f);
         assertThat(primaryBase.x(), is(0));
         assertThat(primaryBase.y(), is(300));
     }
@@ -125,7 +125,7 @@ public class PrimaryBaseTest {
     // normal sprite will take its size into account.
     @Test()
     public void shouldNotMoveBeyondMaximumPosition() {
-        primaryBase.moveBase(1,1,10f);
+        primaryBase.moveBase(1, 1, 10f);
         assertThat(primaryBase.x(), is(GAME_WIDTH));
         assertThat(primaryBase.y(), is(GAME_HEIGHT));
     }
@@ -135,7 +135,7 @@ public class PrimaryBaseTest {
     // normal sprite will take its size into account.
     @Test()
     public void shouldNotMoveBeyondOrigin() {
-        primaryBase.moveBase(-1,-1,10f);
+        primaryBase.moveBase(-1, -1, 10f);
         assertThat(primaryBase.x(), is(0));
         assertThat(primaryBase.y(), is(0));
     }
@@ -144,7 +144,7 @@ public class PrimaryBaseTest {
     public void shouldNotMoveAfterBeingDestroyed() {
         primaryBase.move(0, 0);
         primaryBase.destroy();
-        primaryBase.moveBase(1,1,5f);
+        primaryBase.moveBase(1, 1, 5f);
 
         // confirm base hasn't moved
         assertThat(primaryBase.x(), is(0));
@@ -392,13 +392,13 @@ public class PrimaryBaseTest {
         return (BaseMissileType) f.get(base);
     }
 
-        // use reflection to get helper internal state
-        private void verifyHelperState(IBasePrimary base, BaseState expectedState) throws NoSuchFieldException, IllegalAccessException {
+    // use reflection to get helper internal state
+    private void verifyHelperState(IBasePrimary base, BaseState expectedState) throws NoSuchFieldException, IllegalAccessException {
         Field f = base.getClass().getDeclaredField("helpers");
         f.setAccessible(true);
-            List<IBaseHelper> helpers = (List) f.get(base);
+        List<IBaseHelper> helpers = (List) f.get(base);
         assertThat(helpers.size(), is(2));
-            for (IBaseHelper helper : helpers) {
+        for (IBaseHelper helper : helpers) {
             Field fh = helper.getClass().getDeclaredField("state");
             fh.setAccessible(true);
             BaseState state = (BaseState) fh.get(helper);

@@ -20,7 +20,7 @@ public class CircularMathematicsTest {
 
         // create circular control points
         final double piMultiplier = 1;
-        final Point centre = new Point(0,0);
+        final Point centre = new Point(0, 0);
 
         // create a linear path from control points
         final List<Point> linearPoints = createCircularPath(

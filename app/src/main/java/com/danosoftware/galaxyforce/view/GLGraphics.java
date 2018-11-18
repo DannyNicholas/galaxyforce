@@ -4,33 +4,27 @@ import android.opengl.GLSurfaceView;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class GLGraphics
-{
+public class GLGraphics {
     private GLSurfaceView glView = null;
     private GL10 gl = null;
 
-    public GLGraphics(GLSurfaceView glView)
-    {
+    public GLGraphics(GLSurfaceView glView) {
         this.glView = glView;
     }
 
-    public GL10 getGl()
-    {
+    public GL10 getGl() {
         return gl;
     }
 
-    public void setGl(GL10 gl)
-    {
+    public void setGl(GL10 gl) {
         this.gl = gl;
     }
 
-    public int getWidth()
-    {
+    public int getWidth() {
         return glView.getWidth();
     }
 
-    public int getHeight()
-    {
+    public int getHeight() {
         return glView.getHeight();
     }
 

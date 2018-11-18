@@ -19,20 +19,18 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.flightpath.utilities.PathLoader.loadPaths;
 
-public final class PathFactory
-{
+public final class PathFactory {
 
     private PathFactory() {
     }
 
-    public static List<Point> createPath(Path path, PointTranslatorChain translators)
-    {
+    public static List<Point> createPath(Path path, PointTranslatorChain translators) {
         List<Point> pathPoints = new ArrayList<>();
 
         // load path data from file
         PathListDTO pathData = loadPaths(path.getPathFile());
 
-        for (PathDTO pathDTO: pathData.getPathList()) {
+        for (PathDTO pathDTO : pathData.getPathList()) {
             final PathGenerator generator;
             switch (pathDTO.getType()) {
                 case BEZIER:
@@ -52,7 +50,7 @@ public final class PathFactory
                     generator = new CircularGenerator(circularData, translators);
                     break;
                 default:
-                    throw new GalaxyForceException("Unknown path type: "+ pathDTO.getType().name());
+                    throw new GalaxyForceException("Unknown path type: " + pathDTO.getType().name());
             }
             pathPoints.addAll(generator.path());
         }

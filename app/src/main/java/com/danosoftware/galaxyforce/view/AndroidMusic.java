@@ -8,101 +8,78 @@ import com.danosoftware.galaxyforce.interfaces.Music;
 
 import java.io.IOException;
 
-public class AndroidMusic implements Music, OnCompletionListener
-{
+public class AndroidMusic implements Music, OnCompletionListener {
     MediaPlayer mediaPlayer;
     boolean isPrepared = false;
 
-    public AndroidMusic(AssetFileDescriptor assetDescriptor)
-    {
+    public AndroidMusic(AssetFileDescriptor assetDescriptor) {
         mediaPlayer = new MediaPlayer();
-        try
-        {
+        try {
             mediaPlayer.setDataSource(assetDescriptor.getFileDescriptor(), assetDescriptor.getStartOffset(), assetDescriptor.getLength());
             mediaPlayer.prepare();
             isPrepared = true;
             mediaPlayer.setOnCompletionListener(this);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new RuntimeException("Couldn't load music");
         }
     }
 
-    public void dispose()
-    {
+    public void dispose() {
         if (mediaPlayer.isPlaying())
             mediaPlayer.stop();
         mediaPlayer.release();
     }
 
-    public boolean isLooping()
-    {
+    public boolean isLooping() {
         return mediaPlayer.isLooping();
     }
 
-    public boolean isPlaying()
-    {
+    public boolean isPlaying() {
         return mediaPlayer.isPlaying();
     }
 
-    public boolean isStopped()
-    {
+    public boolean isStopped() {
         return !isPrepared;
     }
 
-    public void pause()
-    {
+    public void pause() {
         if (mediaPlayer.isPlaying())
             mediaPlayer.pause();
     }
 
-    public void play()
-    {
+    public void play() {
         if (mediaPlayer.isPlaying())
             return;
-        try
-        {
-            synchronized (this)
-            {
+        try {
+            synchronized (this) {
                 if (!isPrepared)
                     mediaPlayer.prepare();
                 mediaPlayer.start();
             }
-        }
-        catch (IllegalStateException e)
-        {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void setLooping(boolean isLooping)
-    {
+    public void setLooping(boolean isLooping) {
         mediaPlayer.setLooping(isLooping);
     }
 
-    public void setVolume(float volume)
-    {
+    public void setVolume(float volume) {
         mediaPlayer.setVolume(volume, volume);
     }
 
-    public void stop()
-    {
+    public void stop() {
         mediaPlayer.stop();
-        synchronized (this)
-        {
+        synchronized (this) {
             isPrepared = false;
         }
     }
 
-    public void onCompletion(MediaPlayer player)
-    {
-        synchronized (this)
-        {
+    public void onCompletion(MediaPlayer player) {
+        synchronized (this) {
             isPrepared = false;
         }
     }

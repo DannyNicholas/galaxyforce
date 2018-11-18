@@ -25,8 +25,7 @@ public class CircularGenerator implements PathGenerator {
      * @param circularData
      * @param translators
      */
-    public CircularGenerator(final CircularPathDTO circularData, final PointTranslatorChain translators)
-    {
+    public CircularGenerator(final CircularPathDTO circularData, final PointTranslatorChain translators) {
         this.centre = convertAndTranslatePoint(circularData.getCentre(), translators);
         this.piMultiplier = circularData.getPiMultiplier();
     }

@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * Create straight line from provided start/finish points and delta multiplier
  */
-public class CircularPath implements FlightPath
-{
+public class CircularPath implements FlightPath {
 
     /* references point representing centre of circle */
     Point centre = null;
@@ -22,19 +21,17 @@ public class CircularPath implements FlightPath
      */
     Double piMulitplier = null;
 
-    public CircularPath(Point centre, Double piMulitplier)
-    {
+    public CircularPath(Point centre, Double piMulitplier) {
         this.centre = centre;
         this.piMulitplier = piMulitplier;
     }
 
     /**
      * return the circular path points for the current circular path object.
-     * 
+     *
      * @return array of points representing circular path
      */
-    public List<Point> addPath()
-    {
+    public List<Point> addPath() {
 
         List<Point> path = new ArrayList<Point>();
 
@@ -43,8 +40,7 @@ public class CircularPath implements FlightPath
         double centreX = centre.getX();
         double centreY = centre.getY();
 
-        for (double t = 0; t < piMulitplier * Math.PI; t = t + 0.015)
-        {
+        for (double t = 0; t < piMulitplier * Math.PI; t = t + 0.015) {
             /* calculate position based on centre, radius and angle */
             double xPos = centreX + (radius * Math.cos(-t));
             double yPos = centreY + (radius * Math.sin(-t));

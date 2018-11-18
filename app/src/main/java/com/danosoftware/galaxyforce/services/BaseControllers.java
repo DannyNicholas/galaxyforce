@@ -6,27 +6,22 @@ import com.danosoftware.galaxyforce.options.OptionController;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseControllers
-{
+public class BaseControllers {
     // holds a map of controller type to base controller
     private static final Map<OptionController, BaseController> controllerMap = new HashMap<OptionController, BaseController>();
 
     // private constructor
-    private BaseControllers()
-    {
+    private BaseControllers() {
 
     }
 
     // register a controller type with controller implementation
-    public static void registerController(OptionController type, BaseController controller)
-    {
-        if (type == null)
-        {
+    public static void registerController(OptionController type, BaseController controller) {
+        if (type == null) {
             throw new IllegalArgumentException("Supplied ControllerType object can not be null.");
         }
 
-        if (controller == null)
-        {
+        if (controller == null) {
             throw new IllegalArgumentException("Supplied BaseController object can not be null.");
         }
 
@@ -34,8 +29,7 @@ public class BaseControllers
     }
 
     // return the controller
-    public static BaseController getBaseController(OptionController type)
-    {
+    public static BaseController getBaseController(OptionController type) {
         return controllerMap.get(type);
     }
 }

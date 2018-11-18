@@ -1,41 +1,44 @@
 {
-  "pathData" : [ {
-    "type" : "bezier",
-    "pathPoints" : 100,
-    "start" : {
-      "x" : -32,
-      "y" : 32
+  "pathData": [
+    {
+      "type": "bezier",
+      "pathPoints": 100,
+      "start": {
+        "x": -32,
+        "y": 32
+      },
+      "startControl": {
+        "x": 270,
+        "y": 32
+      },
+      "finish": {
+        "x": 270,
+        "y": 928
+      },
+      "finishControl": {
+        "x": -32,
+        "y": 928
+      }
     },
-    "startControl" : {
-      "x" : 270,
-      "y" : 32
-    },
-    "finish" : {
-      "x" : 270,
-      "y" : 928
-    },
-    "finishControl" : {
-      "x" : -32,
-      "y" : 928
+    {
+      "type": "bezier",
+      "pathPoints": 100,
+      "start": {
+        "x": 270,
+        "y": 928
+      },
+      "startControl": {
+        "x": 572,
+        "y": 928
+      },
+      "finish": {
+        "x": 572,
+        "y": 32
+      },
+      "finishControl": {
+        "x": 270,
+        "y": 32
+      }
     }
-  }, {
-    "type" : "bezier",
-    "pathPoints" : 100,
-    "start" : {
-      "x" : 270,
-      "y" : 928
-    },
-    "startControl" : {
-      "x" : 572,
-      "y" : 928
-    },
-    "finish" : {
-      "x" : 572,
-      "y" : 32
-    },
-    "finishControl" : {
-      "x" : 270,
-      "y" : 32
-    }
-  } ]
+  ]
 }

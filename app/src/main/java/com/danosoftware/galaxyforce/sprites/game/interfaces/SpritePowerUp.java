@@ -11,20 +11,17 @@ import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 //package invaders;
 
 /**
- * 
  * @author Danny
  */
-public abstract class SpritePowerUp extends AbstractCollidingSprite
-{
+public abstract class SpritePowerUp extends AbstractCollidingSprite {
 
-    public SpritePowerUp(int xStart, int yStart, ISpriteIdentifier spriteId)
-    {
+    public SpritePowerUp(int xStart, int yStart, ISpriteIdentifier spriteId) {
         super(spriteId, xStart, yStart);
     }
 
     /**
      * Return the power-up type for this power-up
-     * 
+     *
      * @return power up type
      */
     public abstract PowerUpType getPowerUpType();

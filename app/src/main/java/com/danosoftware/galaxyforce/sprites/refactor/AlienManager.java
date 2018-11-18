@@ -82,7 +82,7 @@ public class AlienManager implements IAlienManager {
                 currentVisibleAliens.add(alien);
             }
             if (alien instanceof IAlienWithPath && ((IAlienWithPath) alien).isEndOfPass()) {
-                    finishedAliens++;
+                finishedAliens++;
             }
             if (!alien.isDestroyed()) {
                 nonDestroyedAliens.add(alien);

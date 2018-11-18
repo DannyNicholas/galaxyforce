@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.billing.service;
 
-public interface BillingObserver
-{
+public interface BillingObserver {
 
     /**
      * Notify a billing service observer that the states of billing service's

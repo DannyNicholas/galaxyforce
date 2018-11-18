@@ -99,10 +99,10 @@ public class AlienHunter extends AbstractAlien {
         if (isActive()) {
             timeSinceLastDirectionChange += deltaTime;
 
-        /*
-         * Guide alien every x seconds so the alien changes direction to
-         * follow any changes in the base's position.
-         */
+            /*
+             * Guide alien every x seconds so the alien changes direction to
+             * follow any changes in the base's position.
+             */
             if (timeSinceLastDirectionChange > ALIEN_DIRECTION_CHANGE_DELAY) {
 
                 // recalculate direction angle

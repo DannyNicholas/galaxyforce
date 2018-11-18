@@ -20,8 +20,8 @@ public class LinearMathematicsTest {
 
         // create linear control points
         final int pathPoints = 100;
-        final Point start = new Point(10,20);
-        final Point finish = new Point(30,40);
+        final Point start = new Point(10, 20);
+        final Point finish = new Point(30, 40);
 
         // create a linear path from control points
         final List<Point> linearPoints = createLinearPath(

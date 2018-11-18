@@ -31,13 +31,11 @@ public final class BezierMathematics {
             final Point startControl,
             final Point finish,
             final Point finishControl,
-            final int pathPoints)
-    {
+            final int pathPoints) {
         List<Point> path = new ArrayList<>();
 
         /* calculate point for each segment and add to path */
-        for (int i = 0; i <= pathPoints; i++)
-        {
+        for (int i = 0; i <= pathPoints; i++) {
             double t = (double) i / pathPoints;
             path.add(
                     calculateBezierPoint(
@@ -66,8 +64,7 @@ public final class BezierMathematics {
                                               final Point startControl,
                                               final Point finish,
                                               final Point finishControl,
-                                              double t)
-    {
+                                              double t) {
         double u = 1 - t;
         double tt = t * t;
         double uu = u * u;

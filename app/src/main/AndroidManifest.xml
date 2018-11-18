@@ -5,24 +5,22 @@ See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.danosoftware.galaxyforce"
-    >
+    package="com.danosoftware.galaxyforce">
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
-    
+
     <!--
     Previous application theme: android:theme="@style/AppTheme".
     @android:style/Theme.Translucent.NoTitleBar : causes app to start without displaying white screen and title bar.
     Could also use following but requires SDK version 11: @android:style/Theme.Holo.NoActionBar
     -->
-    
+
     <application
         android:name="com.danosoftware.galaxyforce.MainApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar"
-        >
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
 
         <activity
             android:name="com.danosoftware.galaxyforce.MainActivity"
@@ -35,7 +33,7 @@ See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-    </application>  
+
+    </application>
 
 </manifest>

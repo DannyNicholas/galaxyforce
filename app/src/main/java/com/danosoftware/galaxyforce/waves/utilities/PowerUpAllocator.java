@@ -14,13 +14,13 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.MAX_LIVES;
 
 /**
  * Responsible for allocating a list of power-ups to a wave of aliens.
- *
+ * <p>
  * After construction, each alien must call the allocate() method and will
  * either receive a power-up or a null.
- *
+ * <p>
  * Allocator guarantees that all power-ups will be allocated by the time
  * the last alien has requested an allocation.
- *
+ * <p>
  * Since each alien can only be allocated 1 or 0 power-ups, if an allocator
  * is constructed with more power-ups than aliens, then an exception will
  * be thrown.
@@ -39,7 +39,7 @@ public class PowerUpAllocator {
      * Create an allocator responsible for allocating power-ups.
      *
      * @param powerUps - power-ups to allocate
-     * @param aliens - number of aliens in wave
+     * @param aliens   - number of aliens in wave
      */
     public PowerUpAllocator(
             final List<PowerUpType> powerUps,
@@ -69,7 +69,7 @@ public class PowerUpAllocator {
 
         this.aliensToAllocate = aliens;
 
-        if(filteredPowerUps.size() > aliensToAllocate) {
+        if (filteredPowerUps.size() > aliensToAllocate) {
             throw new GalaxyForceException(
                     "Attempted to allocate " + powerUps.size() + " power-ups to only " + aliensToAllocate + " aliens."
             );
@@ -78,7 +78,7 @@ public class PowerUpAllocator {
 
     /**
      * Request a power-up allocation.
-     *
+     * <p>
      * Will either receive a power-up or a null (no power-up).
      */
     public PowerUpType allocate() {

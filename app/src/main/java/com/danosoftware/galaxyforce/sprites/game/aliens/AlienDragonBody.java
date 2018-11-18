@@ -11,8 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class AlienDragonBody extends AbstractAlien implements IAlienFollower
-{
+public class AlienDragonBody extends AbstractAlien implements IAlienFollower {
     /*
      * ******************************************************
      * PRIVATE STATIC VARIABLES
@@ -97,8 +96,7 @@ public class AlienDragonBody extends AbstractAlien implements IAlienFollower
         // if we are too close we need to throttle our speed
         if (distSquared > MIN_DISTANCE_SQUARED) {
             move(newX, newY);
-        }
-        else {
+        } else {
             float throttleRatio = (float) distSquared / MIN_DISTANCE_SQUARED;
 
             // calculate new position based on reduced speed

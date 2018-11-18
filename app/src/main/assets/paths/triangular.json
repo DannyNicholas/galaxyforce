@@ -1,36 +1,40 @@
 {
-  "pathData" : [ {
-    "type" : "linear",
-    "pathPoints" : 155,
-    "start" : {
-      "x" : 60,
-      "y" : 992
+  "pathData": [
+    {
+      "type": "linear",
+      "pathPoints": 155,
+      "start": {
+        "x": 60,
+        "y": 992
+      },
+      "finish": {
+        "x": 480,
+        "y": 340
+      }
     },
-    "finish" : {
-      "x" : 480,
-      "y" : 340
-    }
-  }, {
-    "type" : "linear",
-    "pathPoints" : 84,
-    "start" : {
-      "x" : 480,
-      "y" : 340
+    {
+      "type": "linear",
+      "pathPoints": 84,
+      "start": {
+        "x": 480,
+        "y": 340
+      },
+      "finish": {
+        "x": 60,
+        "y": 340
+      }
     },
-    "finish" : {
-      "x" : 60,
-      "y" : 340
+    {
+      "type": "linear",
+      "pathPoints": 155,
+      "start": {
+        "x": 60,
+        "y": 340
+      },
+      "finish": {
+        "x": 480,
+        "y": 992
+      }
     }
-  }, {
-    "type" : "linear",
-    "pathPoints" : 155,
-    "start" : {
-      "x" : 60,
-      "y" : 340
-    },
-    "finish" : {
-      "x" : 480,
-      "y" : 992
-    }
-  } ]
+  ]
 }

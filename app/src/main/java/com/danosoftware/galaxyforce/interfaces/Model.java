@@ -7,12 +7,10 @@ import java.util.List;
 
 /**
  * Generic interface for any models containing the logic behind any screens.
- * 
+ *
  * @author Danny
- * 
  */
-public interface Model
-{
+public interface Model {
     // public void setState(ModelState modelState);
 
     // public ModelState getState();
@@ -41,7 +39,7 @@ public interface Model
 
     /**
      * Handle "back button" behaviour
-     * */
+     */
     void goBack();
 
     /**

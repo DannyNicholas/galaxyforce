@@ -10,14 +10,12 @@ import java.util.List;
  * Create straight line from provided start/finish points that should complete
  * in supplied time.
  */
-public class StraightLineTimed implements FlightPath
-{
+public class StraightLineTimed implements FlightPath {
     private final Point start;
     private final Point finish;
     private final float timeInSeconds;
 
-    public StraightLineTimed(float timeInSeconds, Point start, Point finish)
-    {
+    public StraightLineTimed(float timeInSeconds, Point start, Point finish) {
         this.start = start;
         this.finish = finish;
         this.timeInSeconds = timeInSeconds;
@@ -25,11 +23,10 @@ public class StraightLineTimed implements FlightPath
 
     /**
      * return the straight line points for the current straight line object.
-     * 
+     *
      * @return array of points representing straight line
      */
-    public List<Point> addPath()
-    {
+    public List<Point> addPath() {
         List<Point> path = new ArrayList<Point>();
 
         /*
@@ -39,8 +36,7 @@ public class StraightLineTimed implements FlightPath
          */
         Double delta = 1 / (60D * timeInSeconds);
 
-        for (double t = 0; t < 1; t = t + delta)
-        {
+        for (double t = 0; t < 1; t = t + delta) {
             /* calculate current position from parametric equation */
             double xPos = start.getX() + ((finish.getX() - start.getX()) * t);
             double yPos = start.getY() + ((finish.getY() - start.getY()) * t);

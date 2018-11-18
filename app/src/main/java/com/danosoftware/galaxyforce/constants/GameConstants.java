@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.constants;
 
-public class GameConstants
-{
+public class GameConstants {
     // global logging tag
     public final static String LOG_TAG = "GalaxyForce";
 

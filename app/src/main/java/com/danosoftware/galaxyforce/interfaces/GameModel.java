@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.interfaces;
 
-public interface GameModel extends Model
-{
+public interface GameModel extends Model {
     /**
      * Start a new game.
      */

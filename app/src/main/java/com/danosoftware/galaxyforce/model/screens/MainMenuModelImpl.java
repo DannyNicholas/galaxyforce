@@ -21,8 +21,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserver
-{
+public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserver {
     /* logger tag */
     private static final String LOCAL_TAG = "MainModelModelImpl";
 
@@ -54,8 +53,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
      */
     private boolean checkBillingProducts;
 
-    public MainMenuModelImpl(Controller controller, IBillingService billingService)
-    {
+    public MainMenuModelImpl(Controller controller, IBillingService billingService) {
         this.controller = controller;
         this.billingService = billingService;
 
@@ -80,8 +78,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public void initialise()
-    {
+    public void initialise() {
         /* set-up initial random position of stars */
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
 
@@ -101,8 +98,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
      * being set-up or after any changes to upgrade buttons following a billing
      * state change.
      */
-    private void refreshSprites()
-    {
+    private void refreshSprites() {
         allSprites.clear();
         allText.clear();
 
@@ -119,8 +115,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
          * if the full version has NOT been purchased then add the upgrade
          * button
          */
-        if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID))
-        {
+        if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
             // add upgrade button
             addUpgradeButton();
         }
@@ -129,8 +124,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
          * button
          */
         else if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
-                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID))
-        {
+                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
             // add unlock button
             addUnlockLevelsButton();
         }
@@ -139,8 +133,7 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     /**
      * add three permanent menu buttons
      */
-    private void addMandatoryButtons()
-    {
+    private void addMandatoryButtons() {
         // add wanted buttons
         addNewMenuButton(3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
@@ -150,28 +143,25 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     /**
      * add upgrade button
      */
-    private void addUpgradeButton()
-    {
+    private void addUpgradeButton() {
         addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
     }
 
     /**
      * add unlock button
      */
-    private void addUnlockLevelsButton()
-    {
+    private void addUnlockLevelsButton() {
         addNewMenuButton(0, "UNLOCK ALL", ButtonType.UNLOCK_ALL_LEVELS);
     }
 
     /**
      * add wanted menu button using the supplied row, label and type.
-     * 
+     *
      * @param row
      * @param label
      * @param buttonType
      */
-    private void addNewMenuButton(int row, String label, ButtonType buttonType)
-    {
+    private void addNewMenuButton(int row, String label, ButtonType buttonType) {
         MenuButton button = new MenuButton(this, controller, GameConstants.GAME_WIDTH / 2, 100 + (row * 170), label, buttonType,
                 MenuSpriteIdentifier.MAIN_MENU, MenuSpriteIdentifier.MAIN_MENU_PRESSED);
 
@@ -185,26 +175,22 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public List<ISprite> getSprites()
-    {
+    public List<ISprite> getSprites() {
         return allSprites;
     }
 
     @Override
-    public List<Text> getText()
-    {
+    public List<Text> getText() {
         return allText;
     }
 
     @Override
-    public void update(float deltaTime)
-    {
+    public void update(float deltaTime) {
         // move stars
         moveStars(deltaTime);
 
         // do we need to check billing service for product states
-        if (checkBillingProducts)
-        {
+        if (checkBillingProducts) {
             // firstly set to false so we don't repeatedly check this
             checkBillingProducts = false;
 
@@ -217,55 +203,50 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public void dispose()
-    {
+    public void dispose() {
         // unregister as observer of billing state changes
         // billingService.unregisterProductObserver(this);
     }
 
-    private void moveStars(float deltaTime)
-    {
-        for (Star eachStar : stars)
-        {
+    private void moveStars(float deltaTime) {
+        for (Star eachStar : stars) {
             eachStar.animate(deltaTime);
         }
     }
 
     @Override
-    public void processButton(ButtonType buttonType)
-    {
-        switch (buttonType)
-        {
-        case ABOUT:
-            Log.i(LOCAL_TAG, "About.");
-            Screen aboutScreen = ScreenFactory.newScreen(ScreenType.ABOUT);
-            Games.getGame().setScreen(aboutScreen);
-            break;
-        case OPTIONS:
-            Log.i(LOCAL_TAG, "Options.");
-            Screen optionsScreen = ScreenFactory.newScreen(ScreenType.OPTIONS);
-            Games.getGame().setReturningScreen(optionsScreen);
-            break;
-        case PLAY:
-            Log.i(LOCAL_TAG, "Play.");
-            Screen selectLevelScreen = ScreenFactory.newScreen(ScreenType.SELECT_LEVEL);
-            Games.getGame().setScreen(selectLevelScreen);
-            break;
-        case UPGRADE:
-            Log.i(LOCAL_TAG, "Upgrade.");
-            Screen unlockFullVersionScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_FULL_VERSION);
-            // Games.getGame().setScreen(unlockFullVersionScreen);
-            Games.getGame().setReturningScreen(unlockFullVersionScreen);
-            break;
-        case UNLOCK_ALL_LEVELS:
-            Log.i(LOCAL_TAG, "Unlock All Levels.");
-            Screen unlockAllZonesScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_ALL_ZONES);
-            // Games.getGame().setScreen(unlockAllZonesScreen);
-            Games.getGame().setReturningScreen(unlockAllZonesScreen);
-            break;
-        default:
-            // not valid option - do nothing
-            break;
+    public void processButton(ButtonType buttonType) {
+        switch (buttonType) {
+            case ABOUT:
+                Log.i(LOCAL_TAG, "About.");
+                Screen aboutScreen = ScreenFactory.newScreen(ScreenType.ABOUT);
+                Games.getGame().setScreen(aboutScreen);
+                break;
+            case OPTIONS:
+                Log.i(LOCAL_TAG, "Options.");
+                Screen optionsScreen = ScreenFactory.newScreen(ScreenType.OPTIONS);
+                Games.getGame().setReturningScreen(optionsScreen);
+                break;
+            case PLAY:
+                Log.i(LOCAL_TAG, "Play.");
+                Screen selectLevelScreen = ScreenFactory.newScreen(ScreenType.SELECT_LEVEL);
+                Games.getGame().setScreen(selectLevelScreen);
+                break;
+            case UPGRADE:
+                Log.i(LOCAL_TAG, "Upgrade.");
+                Screen unlockFullVersionScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_FULL_VERSION);
+                // Games.getGame().setScreen(unlockFullVersionScreen);
+                Games.getGame().setReturningScreen(unlockFullVersionScreen);
+                break;
+            case UNLOCK_ALL_LEVELS:
+                Log.i(LOCAL_TAG, "Unlock All Levels.");
+                Screen unlockAllZonesScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_ALL_ZONES);
+                // Games.getGame().setScreen(unlockAllZonesScreen);
+                Games.getGame().setReturningScreen(unlockAllZonesScreen);
+                break;
+            default:
+                // not valid option - do nothing
+                break;
         }
 
         // TODO Auto-generated method stub
@@ -273,14 +254,12 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public void goBack()
-    {
+    public void goBack() {
         // No action. Main menu does not change back button behaviour.
     }
 
     @Override
-    public void resume()
-    {
+    public void resume() {
         /*
          * register this model with the billing service. do this after a resume
          * so it re-registers when starting, after pausing or when returning
@@ -293,18 +272,16 @@ public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserve
     }
 
     @Override
-    public void pause()
-    {
+    public void pause() {
         // unregister as observer of billing state changes
         billingService.unregisterProductObserver(this);
     }
 
     @Override
-    public void billingProductsStateChange()
-    {
+    public void billingProductsStateChange() {
         /*
          * model must check the billing service's products on next update.
-         * 
+         *
          * don't take any other action at this stage. this method will be called
          * by a billing thread. to keep implementation simple just take the
          * necessary action in the next update in the main thread.

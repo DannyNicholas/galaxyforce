@@ -1,11 +1,10 @@
 package com.danosoftware.galaxyforce.sound;
 
-public interface Sound
-{
+public interface Sound {
 
     /**
      * Play sound at specified volume
-     * 
+     *
      * @param volume
      */
     void play(float volume);

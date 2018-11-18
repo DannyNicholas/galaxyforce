@@ -3,8 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 /**
  * Enum that represents the state of moving sprites
  */
-public enum SpriteState
-{
+public enum SpriteState {
 
     /**
      * Sprite is not yet active and so should not be manipulated. This could be

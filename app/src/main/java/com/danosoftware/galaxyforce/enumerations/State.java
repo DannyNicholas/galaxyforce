@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.enumerations;
 
-public enum State
-{
+public enum State {
     INTRODUCTION, PLAYING, PAUSED, GAMEOVER, DESTROYED
 }
