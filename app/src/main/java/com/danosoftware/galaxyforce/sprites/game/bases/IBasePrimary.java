@@ -6,7 +6,11 @@ import java.util.List;
 
 public interface IBasePrimary extends IBase {
 
-    void moveBase(float weightingX, float weightingY, float deltaTime);
+    /**
+     * Set the wanted target position of the base.
+     * Base will gradually move to this position.
+     */
+    void moveTarget(int targetX, int targetY);
 
     void helperExploding(HelperSide side);
 

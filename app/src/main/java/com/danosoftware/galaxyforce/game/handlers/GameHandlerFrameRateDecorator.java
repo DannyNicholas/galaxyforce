@@ -64,11 +64,6 @@ public class GameHandlerFrameRateDecorator implements GameHandler {
     }
 
     @Override
-    public void baseReady() {
-        gameHandler.baseReady();
-    }
-
-    @Override
     public void initialise() {
         gameHandler.initialise();
     }

@@ -26,7 +26,7 @@ public class DetectButtonTouch implements TouchController {
      * dragged away from button.
      */
     @Override
-    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID, float deltaTime) {
+    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID) {
         boolean processed = false;
 
         boolean buttonBounds = OverlapTester.pointInRectangle(button.getBounds(), touchPoint);

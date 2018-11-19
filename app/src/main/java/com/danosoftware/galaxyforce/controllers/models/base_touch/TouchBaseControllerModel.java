@@ -15,5 +15,5 @@ public interface TouchBaseControllerModel {
      * @param touchX x co-ordinate of touch point
      * @param touchY y co-ordinate of touch point
      */
-    void updateTouchPoint(float touchX, float touchY, float deltaTime);
+    void updateTouchPoint(float touchX, float touchY);
 }

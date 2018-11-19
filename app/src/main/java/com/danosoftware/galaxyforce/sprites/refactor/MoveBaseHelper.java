@@ -1,7 +1,10 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
+import android.util.Log;
+
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_LEFT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_RIGHT;
@@ -17,17 +20,34 @@ import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifi
  */
 public class MoveBaseHelper {
 
+    private static final double HALF_PI = (float) Math.PI / 2f;
+
+    /*
+     * large movement increased as base movement can be very jittery when the
+     * game is running slowly as base appears to be overshoot target so next
+     * move goes back in other opposite direction as so on. the slower the game
+     * is, the more the base will move and so the greater chance of overshooting
+     * we have.
+     *
+     * game optimised to run at 1/60 fps so increase BASE_MOVE_RADIUS_LARGE by
+     * ratio of actual speed to ideal speed.
+     */
+    private static final float BASE_MOVE_RADIUS_LARGE = 20;
+    private static final float BASE_MOVE_RADIUS_SMALL = 5;
+    private static final float BASE_MOVE_RADIUS_DELTA = BASE_MOVE_RADIUS_LARGE - BASE_MOVE_RADIUS_SMALL;
+
+
     // distance base can move each second in pixels
     private static final int BASE_MOVE_PIXELS = 10 * 60;
 
     // weighting that must be exceeded to trigger base left or right turn
-    private static float WEIGHTING_TURN = 0.5f;
+    private static final float WEIGHTING_TURN = 0.5f;
 
     // increased for tilt controller as weighting never goes close to zero in tilt mode
-    private static float WEIGHTING_STEADY = 0.1f;
+    private static final float WEIGHTING_STEADY = 0.1f;
 
     // number of seconds for base to be steady for before resetting left or right turn
-    private static float STEADY_DELAY = 0.1f;
+    private static final float STEADY_DELAY = 0.1f;
 
     // base being animated
     private final IBase base;
@@ -38,26 +58,38 @@ public class MoveBaseHelper {
     // is base currently turning left or right?
     private boolean baseTurning;
 
-    // width/height of actual usable screen */
-    private final int width, height;
+    // target position of where we want base to move to
+    private int targetX, targetY;
+
+    // current weighting of base movement
+    private float weightingX, weightingY;
 
 
     public MoveBaseHelper(
-            final IBase base,
-            final int width,
-            final int height) {
+            final IBase base) {
 
         this.base = base;
-        this.width = width;
-        this.height = height;
         this.baseTurnSteadyTime = 0f;
         this.baseTurning = false;
+        this.weightingX = 0f;
+        this.weightingY = 0f;
+        this.targetX = base.x();
+        this.targetY = base.y();
+    }
+
+    public void updateTarget(int targetX, int targetY) {
+        this.targetX = targetX;
+        this.targetY = targetY;
     }
 
     /**
      * Moves base by the supplied weighting
      */
-    public void moveBase(float weightingX, float weightingY, float deltaTime) {
+    public void moveBase(float deltaTime) {
+
+        updateWeighting(
+                targetX - base.x(),
+                targetY - base.y());
 
         /*
          * can cause jittery movement if game is running very slowly as base
@@ -68,24 +100,9 @@ public class MoveBaseHelper {
         int x = base.x() + (int) (maxDistanceMoved * weightingX);
         int y = base.y() + (int) (maxDistanceMoved * weightingY);
 
-        // don't allow base to go off screen left
-        if (x - base.halfWidth() < 0) {
-            x = base.halfWidth();
-        }
-
-        // don't allow base to go off screen right
-        if ((x + base.halfWidth()) > width) {
-            x = (width - base.halfWidth());
-        }
-
-        // don't allow base to go off screen bottom
-        if ((y - base.halfHeight()) < 0) {
-            y = base.halfHeight();
-        }
-
         // don't allow base to go off screen top
-        if ((y + base.halfHeight()) > height) {
-            y = (height - base.halfHeight());
+        if ((y + base.halfHeight()) > GAME_HEIGHT) {
+            y = (GAME_HEIGHT - base.halfHeight());
         }
 
         // move base to new position
@@ -122,6 +139,64 @@ public class MoveBaseHelper {
                 baseTurnSteadyTime = 0f;
                 baseTurning = false;
             }
+        }
+    }
+
+    private void updateWeighting(float deltaX, float deltaY) {
+
+        /*
+        to avoid jitter when moving - check how far base is away from target.
+         */
+        float baseDistance = (float) Math.sqrt(
+                (deltaX * deltaX) + (deltaY * deltaY));
+
+        /*
+         if distance large then calculate weighting purely on angle between
+         base and current touch point
+          */
+        if (baseDistance > BASE_MOVE_RADIUS_LARGE) {
+            /*
+             calculate angle from circle centre to touch point
+             atan2 doesn't have limitations of atan but is PI/2 greater than
+             expected so manually correct this.
+              */
+            float theta = (float) (HALF_PI - Math.atan2(deltaY, deltaX));
+
+            /*
+            calculate weighting (used to calculate how far to move base's x
+            and y). Ranges from 0 to 1.
+             */
+            weightingX = (float) Math.sin(theta);
+            weightingY = (float) Math.cos(theta);
+        }
+
+        /*
+         if distance small then calculate weighting based on angle but
+         multiply by a calculated weight. Much smoother movement for small
+         moves than previous calculation.
+          */
+        else if (baseDistance > BASE_MOVE_RADIUS_SMALL) {
+            /*
+             calculate angle from circle centre to touch point
+             atan2 doesn't have limitations of atan but is PI/2 greater than
+             expected so manually correct this.
+              */
+            float theta = (float) (HALF_PI - Math.atan2(deltaY, deltaX));
+
+            /*
+             calculate weighting using distance and threshold.
+             result ranges from 0-1.
+              */
+            float distanceWeight = (baseDistance - BASE_MOVE_RADIUS_SMALL)
+                    / (BASE_MOVE_RADIUS_DELTA);
+            Log.i("TEST", "- baseDistance");
+            weightingX = (float) (distanceWeight * Math.sin(theta));
+            weightingY = (float) (distanceWeight * Math.cos(theta));
+        }
+        // if base is very close to touch point then reset weightings
+        else {
+            weightingX = 0f;
+            weightingY = 0f;
         }
     }
 }

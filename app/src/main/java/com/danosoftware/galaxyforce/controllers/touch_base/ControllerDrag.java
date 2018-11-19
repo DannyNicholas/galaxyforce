@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.controllers.touch_base;
 
+import android.util.Log;
+
 import com.danosoftware.galaxyforce.controllers.models.base_touch.TouchBaseControllerModel;
 import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Vector2;
@@ -18,19 +20,19 @@ public class ControllerDrag implements BaseTouchController {
     }
 
     @Override
-    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID, float deltaTime) {
+    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID) {
         boolean processed = false;
 
         // on touch down: set drag pointer, update touch point
         if (event.type == TouchEvent.TOUCH_DOWN && dragPointer == -1) {
             dragPointer = pointerID;
-            model.updateTouchPoint(touchPoint.x, touchPoint.y, deltaTime);
+            model.updateTouchPoint(touchPoint.x, touchPoint.y);
             processed = true;
         }
 
         // on drag: update touch point
         if (event.type == TouchEvent.TOUCH_DRAGGED && pointerID == dragPointer) {
-            model.updateTouchPoint(touchPoint.x, touchPoint.y, deltaTime);
+            model.updateTouchPoint(touchPoint.x, touchPoint.y);
             processed = true;
         }
 
@@ -41,6 +43,7 @@ public class ControllerDrag implements BaseTouchController {
             processed = true;
         }
 
+        Log.i("PROCESS", Integer.toString(event.type));
         return processed;
     }
 }

@@ -25,7 +25,7 @@ public class SwipeTouch implements TouchController {
      * location of finger in each case.
      */
     @Override
-    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID, float deltaTime) {
+    public boolean processTouchEvent(TouchEvent event, Vector2 touchPoint, int pointerID) {
 
         // check finger pressed - no need to check bounds as anywhere on screen
         // is valid

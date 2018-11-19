@@ -38,14 +38,11 @@ import java.util.List;
 import java.util.Map;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.BASE_MAX_ENERGY_LEVEL;
-import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
-import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_BOTTOM;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.DESTROYED;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
-import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.MOVING_TO_START_POSITION;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
@@ -138,12 +135,13 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             final GameHandler model) {
 
         super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
-        this.state = MOVING_TO_START_POSITION;
+        this.state = ACTIVE;
         this.helpers = new EnumMap<>(HelperSide.class);
         this.activeHelpers = new EnumMap<>(HelperSide.class);
         this.allSprites = buildAllSprites();
         this.activeBases = buildActiveBases();
-        this.moveHelper = new MoveBaseHelper(this, GAME_WIDTH, GAME_HEIGHT);
+        this.moveHelper = new MoveBaseHelper(this);
+        moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
         this.explosion = new ExplodeSimple();
         this.hit = new HitAnimation(new Animation(0.25f, BASE_SPRITE, BASE_FLIP));
@@ -203,7 +201,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private List<IBase> buildActiveBases() {
         final List<IBase> activeBases = new ArrayList<>();
 
-        if (state == ACTIVE || state == MOVING_TO_START_POSITION) {
+        if (state == ACTIVE) {
             activeBases.add(this);
             activeBases.addAll(activeHelpers.values());
         }
@@ -217,17 +215,18 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public void animate(float deltaTime) {
 
-        // if moving upwards into y start position
-        if (state == MOVING_TO_START_POSITION) {
-            moveBase(0, 0.7f, deltaTime);
-            if (y() >= BASE_START_Y) {
-                move(x(), BASE_START_Y);
-                if (shielded) {
-                    shield.move(x(), BASE_START_Y);
-                }
-                state = ACTIVE;
-                // tell model that base is now in position and ready
-                model.baseReady();
+        // move and animate base based on current weightings
+        if (state == ACTIVE) {
+            // move and animate base
+            moveHelper.moveBase(deltaTime);
+
+            if (shielded) {
+                shield.move(x(), y());
+            }
+
+            // move helper bases using built in offset from this primary base
+            for (IBaseHelper helper : helpers.values()) {
+                helper.move(x(), y());
             }
         }
 
@@ -262,22 +261,17 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     }
 
     /**
-     * Moves base by the supplied weighting
+     * Set movement weightings of base
      */
     @Override
-    public void moveBase(float weightingX, float weightingY, float deltaTime) {
-        if (state == ACTIVE || state == MOVING_TO_START_POSITION) {
-            // move and animate base
-            moveHelper.moveBase(weightingX, weightingY, deltaTime);
-
-            if (shielded) {
-                shield.move(x(), y());
-            }
-
-            // move helper bases using built in offset from this primary base
-            for (IBaseHelper helper : helpers.values()) {
-                helper.move(x(), y());
-            }
+    public void moveTarget(int targetX, int targetY) {
+        /*
+         only allow target changes when ACTIVE.
+         when in MOVING_TO_START_POSITION state, base must move to a set
+         position before becoming ACTIVE
+          */
+        if (state == ACTIVE) {
+            moveHelper.updateTarget(targetX, targetY);
         }
     }
 

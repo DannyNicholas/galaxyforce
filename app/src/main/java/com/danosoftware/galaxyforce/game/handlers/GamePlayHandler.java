@@ -65,7 +65,7 @@ public class GamePlayHandler implements GameHandler {
      */
 
     private enum ModelState {
-        GET_READY, NEW_BASE, PLAYING
+        GET_READY, PLAYING
     }
 
     private static final String TAG = GamePlayHandler.class.getSimpleName();
@@ -262,13 +262,6 @@ public class GamePlayHandler implements GameHandler {
 
                 break;
 
-            case NEW_BASE:
-
-                // Move new base to starting position.
-                primaryBase.animate(deltaTime);
-
-                break;
-
             default:
                 String errorMsg = "Illegal Model State : " + modelState.name();
                 Log.e(TAG, errorMsg);
@@ -286,12 +279,6 @@ public class GamePlayHandler implements GameHandler {
     @Override
     public IBasePrimary getBase() {
         return primaryBase;
-    }
-
-    // called by the base when it is in position and ready to start
-    @Override
-    public void baseReady() {
-        modelState = ModelState.PLAYING;
     }
 
     @Override
@@ -615,8 +602,7 @@ public class GamePlayHandler implements GameHandler {
         // update displayed number of lives
         assets.setLives(lives);
 
-        // change model state to handle movement of base to starting position
-        modelState = ModelState.NEW_BASE;
+        modelState = ModelState.PLAYING;
     }
 
     /**

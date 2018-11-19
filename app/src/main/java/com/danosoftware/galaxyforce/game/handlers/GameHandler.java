@@ -18,12 +18,6 @@ public interface GameHandler extends PlayModel {
     IBasePrimary getBase();
 
     /**
-     * Called by the base when it is in position and ready to start.
-     * Allows model to start/continue the wave with the new base.
-     */
-    void baseReady();
-
-    /**
      * Pause the current game model.
      */
     void pause();

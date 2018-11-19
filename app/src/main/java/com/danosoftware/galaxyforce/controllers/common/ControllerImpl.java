@@ -47,7 +47,7 @@ public class ControllerImpl implements Controller {
                 // only process touch controller if no other controllers have
                 // already processed this touch point.
                 if (!processed) {
-                    processed = aTouchController.processTouchEvent(event, touchPoint, pointerID, deltaTime);
+                    processed = aTouchController.processTouchEvent(event, touchPoint, pointerID);
                 }
             }
 
