@@ -98,6 +98,20 @@ public class MoveBaseHelper {
         int x = base.x() + (int) (maxDistanceMoved * weightingX);
         int y = base.y() + (int) (maxDistanceMoved * weightingY);
 
+        // don't allow weightings to over-shoot targets
+        if (weightingX > 0 && x > targetX) {
+            x = targetX;
+        }
+        if (weightingX < 0 && x < targetX) {
+            x = targetX;
+        }
+        if (weightingY > 0 && y > targetY) {
+            y = targetY;
+        }
+        if (weightingY < 0 && y < targetY) {
+            y = targetY;
+        }
+
         // don't allow base to go off screen top
         if ((y + base.halfHeight()) > GAME_HEIGHT) {
             y = (GAME_HEIGHT - base.halfHeight());

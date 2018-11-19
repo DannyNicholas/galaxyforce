@@ -104,45 +104,44 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shouldMoveBaseX() {
+        // move x left to right
         primaryBase.move(0, 0);
-        primaryBase.moveBase(1, 0, 0.5f);
+        primaryBase.moveTarget(300, 0);
+        primaryBase.animate(10f);
+        assertThat(primaryBase.x(), is(300));
+        assertThat(primaryBase.y(), is(0));
+
+        // move x right to left
+        primaryBase.move(GAME_WIDTH, 0);
+        primaryBase.moveTarget(300, 0);
+        primaryBase.animate(10f);
         assertThat(primaryBase.x(), is(300));
         assertThat(primaryBase.y(), is(0));
     }
 
     @Test()
     public void shouldMoveBaseY() {
+        // move y bottom to top
         primaryBase.move(0, 0);
-        primaryBase.moveBase(0, 1, 0.5f);
+        primaryBase.moveTarget(0, 300);
+        primaryBase.animate(10f);
         assertThat(primaryBase.x(), is(0));
         assertThat(primaryBase.y(), is(300));
-    }
 
-    // this test will move test sprite to max position
-    // since mocked width and height are 0.
-    // normal sprite will take its size into account.
-    @Test()
-    public void shouldNotMoveBeyondMaximumPosition() {
-        primaryBase.moveBase(1, 1, 10f);
-        assertThat(primaryBase.x(), is(GAME_WIDTH));
-        assertThat(primaryBase.y(), is(GAME_HEIGHT));
-    }
-
-    // this test will move test sprite to origin position
-    // since mocked width and height are 0.
-    // normal sprite will take its size into account.
-    @Test()
-    public void shouldNotMoveBeyondOrigin() {
-        primaryBase.moveBase(-1, -1, 10f);
+        // move y top to bottom
+        primaryBase.move(0, GAME_HEIGHT);
+        primaryBase.moveTarget(0, 300);
+        primaryBase.animate(10f);
         assertThat(primaryBase.x(), is(0));
-        assertThat(primaryBase.y(), is(0));
+        assertThat(primaryBase.y(), is(300));
     }
 
     @Test()
     public void shouldNotMoveAfterBeingDestroyed() {
         primaryBase.move(0, 0);
         primaryBase.destroy();
-        primaryBase.moveBase(1, 1, 5f);
+        primaryBase.moveTarget(100, 100);
+        primaryBase.animate(10f);
 
         // confirm base hasn't moved
         assertThat(primaryBase.x(), is(0));
