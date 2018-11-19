@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.game.handlers.GameHandler;
+import com.danosoftware.galaxyforce.game.handlers.GameHandlerFrameRateDecorator;
 import com.danosoftware.galaxyforce.game.handlers.GameOverHandler;
 import com.danosoftware.galaxyforce.game.handlers.GamePlayHandler;
 import com.danosoftware.galaxyforce.game.handlers.PausedHandler;
@@ -85,8 +86,8 @@ public class GameModelImpl implements GameModel {
         stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
 
         // initial handler - goes straight into game
-        this.modelHandler = new GamePlayHandler(this, controller, stars, wave, billingService);
-
+        GameHandler gameHandler = new GamePlayHandler(this, controller, stars, wave, billingService);
+        this.modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
         this.modelState = ModelState.RUNNING;
     }
 
@@ -186,7 +187,8 @@ public class GameModelImpl implements GameModel {
                     this.lastWave = 1;
                 }
 
-                modelHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
+                GameHandler gameHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
+                modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
                 modelHandler.initialise();
 
                 // set state back to running so doesn't create new handlers every

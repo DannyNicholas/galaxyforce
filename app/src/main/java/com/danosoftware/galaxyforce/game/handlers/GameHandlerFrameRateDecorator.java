@@ -12,6 +12,7 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.view.FPSCounter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,8 @@ public class GameHandlerFrameRateDecorator implements GameHandler {
 
     @Override
     public List<Text> getText() {
-        List<Text> text = gameHandler.getText();
+        List<Text> text = new ArrayList<>();
+        text.addAll(gameHandler.getText());
         text.add(tempFps);
 
         return text;

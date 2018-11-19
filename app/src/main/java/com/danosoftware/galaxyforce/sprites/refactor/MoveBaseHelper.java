@@ -1,7 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.refactor;
 
-import android.util.Log;
-
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
@@ -189,7 +187,6 @@ public class MoveBaseHelper {
               */
             float distanceWeight = (baseDistance - BASE_MOVE_RADIUS_SMALL)
                     / (BASE_MOVE_RADIUS_DELTA);
-            Log.i("TEST", "- baseDistance");
             weightingX = (float) (distanceWeight * Math.sin(theta));
             weightingY = (float) (distanceWeight * Math.cos(theta));
         }
