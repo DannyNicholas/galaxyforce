@@ -1,6 +1,7 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.models.about;
 
-import com.danosoftware.galaxyforce.model.screens.ButtonType;
+import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.screens.ButtonType;
 
 public interface AboutModel extends Model {
 

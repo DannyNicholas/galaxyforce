@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.screens;
 
 import android.util.Log;
 
@@ -8,7 +8,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.interfaces.Model;
+import com.danosoftware.galaxyforce.models.Model;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;

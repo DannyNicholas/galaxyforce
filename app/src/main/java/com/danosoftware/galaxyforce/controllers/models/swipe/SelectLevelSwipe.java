@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.controllers.models.swipe;
 
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
-import com.danosoftware.galaxyforce.model.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
 import com.danosoftware.galaxyforce.view.Vector2;
 
 /**

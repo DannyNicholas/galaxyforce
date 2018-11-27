@@ -1,7 +1,5 @@
 package com.danosoftware.galaxyforce.waves.rules;
 
-import com.danosoftware.galaxyforce.enumerations.Direction;
-
 /*
  * Holds a set of properties that describe a sub-wave (without a path).
  */
@@ -43,8 +41,7 @@ public class SubWaveRuleProperties {
             int numberOfAliens,
             float delayBetweenAliens,
             float delayOffet,
-            boolean restartImmediately,
-            Direction direction) {
+            boolean restartImmediately) {
         this.xRandom = xRandom;
         this.yRandom = yRandom;
         this.xStart = xStart;

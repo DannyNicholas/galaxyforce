@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import com.danosoftware.galaxyforce.billing.service.BillingServiceImpl;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.enumerations.ActivityState;
 import com.danosoftware.galaxyforce.interfaces.Game;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.services.PackageManagers;
@@ -27,6 +26,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class MainActivity extends Activity {
 
+    private enum ActivityState {
+        INITIALISED, RUNNING, PAUSED, FINISHED, IDLE
+    }
+
     /* logger tag */
     private static final String ACTIVITY_TAG = "MainActivity";
 
@@ -34,7 +37,7 @@ public class MainActivity extends Activity {
     private Game game = null;
 
     /* used for state synchronisation */
-    private Object stateChanged = new Object();
+    private final Object stateChanged = new Object();
 
     /* application state */
     private ActivityState state = ActivityState.INITIALISED;

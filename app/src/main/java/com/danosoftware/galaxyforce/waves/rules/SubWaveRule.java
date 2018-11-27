@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.waves.rules;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.enumerations.Direction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +28,7 @@ public enum SubWaveRule {
                     30,
                     0.5f,
                     0f,
-                    false,
-                    Direction.DOWN
+                    false
             )),
 
     /**
@@ -60,8 +58,7 @@ public enum SubWaveRule {
                     2,
                     0.5f,
                     0f,
-                    false,
-                    Direction.DOWN
+                    false
             )),
 
     /**
@@ -76,8 +73,7 @@ public enum SubWaveRule {
                     1,
                     0f,
                     0f,
-                    false,
-                    Direction.DOWN
+                    false
             )
     );
 
@@ -165,8 +161,7 @@ public enum SubWaveRule {
                 1,
                 0,
                 row * delayBetweenRows,
-                false,
-                Direction.DOWN
+                false
         );
     }
 }

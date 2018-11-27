@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.game.handlers;
+package com.danosoftware.galaxyforce.models.play.game_handler;
 
 import android.util.Log;
 
@@ -18,8 +18,10 @@ import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.interfaces.GameModel;
-import com.danosoftware.galaxyforce.interfaces.Screen;
+import com.danosoftware.galaxyforce.game.handlers.GamePlayAssetsManager;
+import com.danosoftware.galaxyforce.game.handlers.IGamePlayAssetsManager;
+import com.danosoftware.galaxyforce.models.game.GameModel;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;

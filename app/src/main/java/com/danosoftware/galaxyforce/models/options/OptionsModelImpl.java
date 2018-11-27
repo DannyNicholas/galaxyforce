@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.options;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.interfaces.OptionsModel;
+import com.danosoftware.galaxyforce.models.options.OptionsModel;
 import com.danosoftware.galaxyforce.options.Option;
 import com.danosoftware.galaxyforce.options.OptionController;
 import com.danosoftware.galaxyforce.options.OptionMusic;

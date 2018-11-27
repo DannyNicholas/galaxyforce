@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.about;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +13,10 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.interfaces.AboutModel;
-import com.danosoftware.galaxyforce.interfaces.Screen;
-import com.danosoftware.galaxyforce.interfaces.TouchScreenModel;
+import com.danosoftware.galaxyforce.models.about.AboutModel;
+import com.danosoftware.galaxyforce.models.screens.ButtonType;
+import com.danosoftware.galaxyforce.screen.Screen;
+import com.danosoftware.galaxyforce.models.touch_screen.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;

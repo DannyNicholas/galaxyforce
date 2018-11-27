@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.model.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;

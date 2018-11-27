@@ -3,6 +3,7 @@ package com.danosoftware.galaxyforce.interfaces;
 import android.content.Context;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
 public interface Game {

@@ -4,8 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.interfaces.Model;
-import com.danosoftware.galaxyforce.interfaces.Screen;
+import com.danosoftware.galaxyforce.models.Model;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -38,44 +37,40 @@ public abstract class AbstractScreen implements Screen {
     protected final Model model;
     protected final Controller controller;
 
-    /* reference to openGL graphics */
+    // reference to openGL graphics
     protected final GLGraphics glGraphics;
 
-    /* reference to graphics texture map - set on resume */
-    protected Texture texture = null;
+    // reference to graphics texture map - set on resume
+    protected Texture texture;
 
-    /* sprite batcher used for displaying sprites */
+    // sprite batcher used for displaying sprites
     protected final SpriteBatcher batcher;
 
-    /* camera used for display views */
+    // camera used for display views
     protected final Camera2D camera;
 
-    /* font used for displaying text sprites */
+    // font used for displaying text sprites
     protected Font gameFont;
 
-    /* has model been initialised */
+    // has model been initialised
     private boolean initialised = false;
 
-    /* TextureState identifies the texture map being used */
+    // TextureState identifies the texture map being used
     private final TextureMap textureMap;
 
+    public AbstractScreen(
+            Model model,
+            Controller controller,
+            TextureMap textureMap,
+            GLGraphics glGraphics,
+            Camera2D camera,
+            SpriteBatcher batcher) {
 
-    public AbstractScreen(Model model, Controller controller, TextureMap textureMap, GLGraphics glGraphics, Camera2D camera,
-                          SpriteBatcher batcher) {
-        /*
-         * initialise texture map containing sprite identifiers and properties
-         */
         this.textureMap = textureMap;
-
-        /* store view variables */
         this.glGraphics = glGraphics;
         this.batcher = batcher;
         this.camera = camera;
-
-        /* store controller */
         this.controller = controller;
-
-        /* store model */
         this.model = model;
     }
 

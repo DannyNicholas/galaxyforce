@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.screen;
 
 /* Screen interface lists methods needed for screens to draw, update and manage the different types of screen in the game.*/
 public interface Screen {

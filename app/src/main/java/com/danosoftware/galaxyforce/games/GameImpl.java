@@ -10,7 +10,7 @@ import com.danosoftware.galaxyforce.interfaces.Audio;
 import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.interfaces.Game;
 import com.danosoftware.galaxyforce.interfaces.Input;
-import com.danosoftware.galaxyforce.interfaces.Screen;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Configurations;

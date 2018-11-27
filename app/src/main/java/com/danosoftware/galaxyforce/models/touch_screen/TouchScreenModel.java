@@ -1,5 +1,7 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.models.touch_screen;
 
+
+import com.danosoftware.galaxyforce.models.Model;
 
 public interface TouchScreenModel extends Model {
 

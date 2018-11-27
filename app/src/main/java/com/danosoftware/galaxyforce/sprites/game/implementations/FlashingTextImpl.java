@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.implementations;
 
-import com.danosoftware.galaxyforce.game.handlers.PlayModel;
+import com.danosoftware.galaxyforce.models.play.PlayModel;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.text.Text;
 

@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.buttons.toggle_group;
 
 import com.danosoftware.galaxyforce.buttons.button.Button;
-import com.danosoftware.galaxyforce.interfaces.OptionsModel;
+import com.danosoftware.galaxyforce.models.options.OptionsModel;
 import com.danosoftware.galaxyforce.options.Option;
 
 import java.util.ArrayList;

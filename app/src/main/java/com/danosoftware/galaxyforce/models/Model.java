@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.models;
 
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;

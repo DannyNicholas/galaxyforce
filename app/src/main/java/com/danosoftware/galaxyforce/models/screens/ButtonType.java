@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.screens;
 
 /**
  * Represents the different types of menu buttons. A menu button may hold this

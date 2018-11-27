@@ -1,4 +1,6 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.models.game;
+
+import com.danosoftware.galaxyforce.models.Model;
 
 public interface GameModel extends Model {
     /**

@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.level;
 
 import android.util.Log;
 
@@ -11,8 +11,11 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.models.swipe.SelectLevelSwipe;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
-import com.danosoftware.galaxyforce.interfaces.LevelModel;
-import com.danosoftware.galaxyforce.interfaces.Screen;
+import com.danosoftware.galaxyforce.models.level.LevelModel;
+import com.danosoftware.galaxyforce.models.screens.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.MenuButtonModel;
+import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;

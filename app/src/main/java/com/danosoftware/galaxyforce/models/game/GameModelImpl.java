@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.model.screens;
+package com.danosoftware.galaxyforce.models.game;
 
 import android.util.Log;
 
@@ -6,14 +6,13 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
-import com.danosoftware.galaxyforce.game.handlers.GameHandler;
-import com.danosoftware.galaxyforce.game.handlers.GameHandlerFrameRateDecorator;
+import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.play.game_handler.GameHandlerFrameRateDecorator;
 import com.danosoftware.galaxyforce.game.handlers.GameOverHandler;
-import com.danosoftware.galaxyforce.game.handlers.GamePlayHandler;
+import com.danosoftware.galaxyforce.models.play.game_handler.GamePlayHandler;
 import com.danosoftware.galaxyforce.game.handlers.PausedHandler;
-import com.danosoftware.galaxyforce.interfaces.GameModel;
-import com.danosoftware.galaxyforce.interfaces.Model;
-import com.danosoftware.galaxyforce.interfaces.Screen;
+import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
