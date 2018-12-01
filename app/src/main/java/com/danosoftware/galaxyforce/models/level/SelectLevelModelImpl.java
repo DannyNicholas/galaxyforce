@@ -6,15 +6,16 @@ import com.danosoftware.galaxyforce.billing.service.BillingObserver;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.buttons.sprite_button.NextZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.PreviousZone;
+import com.danosoftware.galaxyforce.buttons.sprite_button.SpriteButton;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SelectLevel;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.models.swipe.SelectLevelSwipe;
+import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
+import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
-import com.danosoftware.galaxyforce.models.level.LevelModel;
-import com.danosoftware.galaxyforce.models.screens.ButtonType;
-import com.danosoftware.galaxyforce.models.screens.MenuButtonModel;
-import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
@@ -31,16 +32,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuButtonModel, BillingObserver {
+public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, ButtonModel, BillingObserver {
+
     /* logger tag */
     private static final String LOCAL_TAG = "SelectLevelModelImpl";
 
-    private final List<SelectLevel> levels;
-
-    private SelectLevelSwipe swipe;
-
     // map of zone number to x position
-    private Map<Integer, Integer> zoneXPosition;
+    private final Map<Integer, Integer> zoneXPosition;
 
     // current screen x position
     private float xPosition;
@@ -55,20 +53,17 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     private int zone;
 
     // references to stars
-    private List<Star> stars;
+    private final List<Star> stars;
 
     // reference to all sprites in model
-    private List<ISprite> allSprites;
-    private List<ISprite> staticSprites;
-
-    // reference to all button sprites in model
-    // private final List<Sprite> buttons;
+    private final List<ISprite> allSprites;
+    private final List<ISprite> staticSprites;
 
     private ModelState modelState;
 
     // reference to all text objects in model
-    List<Text> allText;
-    List<Text> staticText;
+    private final List<Text> allText;
+    private final List<Text> staticText;
 
     /* reference to controller */
     private final Controller controller;
@@ -87,99 +82,59 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     private boolean checkBillingProducts;
 
     public SelectLevelModelImpl(Controller controller, IBillingService billingService) {
-        this.levels = new ArrayList<>();
         this.controller = controller;
         this.billingService = billingService;
 
         // model must check the billing service's products on next update
         this.checkBillingProducts = true;
 
-        // register this model with the billing service
-        // billingService.registerProductObserver(this);
-
         this.allSprites = new ArrayList<>();
         this.staticSprites = new ArrayList<>();
-        // this.buttons = new ArrayList<Sprite>();
-        this.allText = new ArrayList<Text>();
-        this.staticText = new ArrayList<Text>();
-        this.zoneXPosition = new HashMap<Integer, Integer>();
-
-        // create a new swipe controller - may not to keep a reference to this
-        // after creation as swipe controller will call back model when needed
-        // swipe = new SelectLevelSwipe(this, controller);
-
-        // set-up levels
-        // initialise();
-
-        // this.xPosition = zoneXPosition.get(zone);
-        // this.xTarget = zoneXPosition.get(zone);
-        // this.xOffset = 0;
-
-        this.savedGame = SavedGame.getInstance();
+        this.allText = new ArrayList<>();
+        this.staticText = new ArrayList<>();
+        this.zoneXPosition = new HashMap<>();
 
         /*
          * calculate zone from highest level reached - must use double to avoid
          * integer division problems.
          */
+        this.savedGame = SavedGame.getInstance();
         int maxLevelUnlocked = savedGame.getGameLevel();
         this.zone = (int) Math.ceil((double) maxLevelUnlocked / GameConstants.WAVES_PER_ZONE);
 
         /* set-up initial random position of stars */
-        stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+
+        // refresh sprites and controllers
+        refreshAssets();
     }
 
     @Override
     public void initialise() {
-
-        // build screen sprites
-        refreshSprites();
-
-        /* set-up initial random position of stars */
-        // stars = Star.setupStars(GameConstants.GAME_WIDTH,
-        // GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
-
-        // staticSprites.addAll(stars);
-
-        // create a page for each zone. each zone requires the zone, starting
-        // level number and the x position for the page.
-
-        // for (int zone = 0; zone < GameConstants.MAX_ZONES; zone++)
-        // {
-        // createZonePage(zone + 1, (zone * GameConstants.WAVES_PER_ZONE) + 1,
-        // (zone + 1) * GameConstants.GAME_WIDTH);
-        // }
-        //
-        // this.xPosition = zoneXPosition.get(zone);
-        // this.xTarget = zoneXPosition.get(zone);
-        // this.xOffset = 0;
-
-        // addUnlockLevelsButton();
-        // staticSprites.addAll(buttons);
     }
 
     /**
-     * Build all sprites required for screen. Normally called when screen is
+     * Build all sprites and controllers required for screen. Normally called when screen is
      * being set-up or after any changes to upgrade buttons following a billing
      * state change.
      */
-    private void refreshSprites() {
-        allSprites.clear();
-        allText.clear();
-        staticSprites.clear();
-        staticText.clear();
+    private void refreshAssets() {
 
         // clear any current touch controllers prior to adding buttons
         controller.clearTouchControllers();
 
-        // create a new swipe controller - may not to keep a reference to this
-        // after creation as swipe controller will call back model when needed
-        swipe = new SelectLevelSwipe(this, controller);
+        // add a swipe controller
+        SelectLevelSwipe swipe = new SelectLevelSwipe(this);
+        controller.addTouchController(new SwipeTouch(swipe));
 
+        allSprites.clear();
+        allText.clear();
+        staticSprites.clear();
+        staticText.clear();
         staticSprites.addAll(stars);
 
         // create a page for each zone. each zone requires the zone, starting
         // level number and the x position for the page.
-
         for (int zone = 0; zone < GameConstants.MAX_ZONES; zone++) {
             createZonePage(zone + 1, (zone * GameConstants.WAVES_PER_ZONE) + 1, (zone + 1) * GameConstants.GAME_WIDTH);
         }
@@ -187,9 +142,6 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
         this.xPosition = zoneXPosition.get(zone);
         this.xTarget = zoneXPosition.get(zone);
         this.xOffset = 0;
-
-        // addUnlockLevelsButton();
-        // staticSprites.addAll(buttons);
 
         /*
          * if the all levels unlocks have NOT been purchased then add the unlock
@@ -239,12 +191,10 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
                 lockedStatus = SelectLevel.LockStatus.LOCKED;
             }
 
-            // create a new select level model for current row and column
-            SelectLevel selectLevel = new SelectLevel(this, controller, xPosition + 100 + (column * 170), 100 + (row * 170),
+            // create a new select level button for current row and column
+            SelectLevel selectLevel = new SelectLevel(this, xPosition + 100 + (column * 170), 100 + (row * 170),
                     i + levelStart, lockedStatus);
-
-            // add new level to list of levels
-            levels.add(selectLevel);
+            controller.addTouchController(new DetectButtonTouch(selectLevel));
 
             // add new level's sprite to list of sprites
             allSprites.add(selectLevel.getSprite());
@@ -257,16 +207,20 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
         if (zone > 1) {
             column = 0;
             row = 4;
-            allSprites.add(new PreviousZone(this, controller, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
-                    MenuSpriteIdentifier.PREVIOUS_LEVEL, MenuSpriteIdentifier.PREVIOUS_LEVEL_PRESSED).getSprite());
+            SpriteButton prevButton = new PreviousZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
+                    MenuSpriteIdentifier.PREVIOUS_LEVEL, MenuSpriteIdentifier.PREVIOUS_LEVEL_PRESSED);
+            allSprites.add(prevButton.getSprite());
+            controller.addTouchController(new DetectButtonTouch(prevButton));
         }
 
         // add next zone to list of sprites
         if (zone < GameConstants.MAX_ZONES) {
             column = 2;
             row = 4;
-            allSprites.add(new NextZone(this, controller, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
-                    MenuSpriteIdentifier.NEXT_LEVEL, MenuSpriteIdentifier.NEXT_LEVEL_PRESSED).getSprite());
+            SpriteButton nextButton = new NextZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
+                    MenuSpriteIdentifier.NEXT_LEVEL, MenuSpriteIdentifier.NEXT_LEVEL_PRESSED);
+            allSprites.add(nextButton.getSprite());
+            controller.addTouchController(new DetectButtonTouch(nextButton));
         }
 
         // add zone text
@@ -297,7 +251,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
 
     @Override
     public void update(float deltaTime) {
-        if (getState() == ModelState.GO_BACK) {
+        if (modelState == ModelState.GO_BACK) {
             Screen screen = ScreenFactory.newScreen(ScreenType.MAIN_MENU);
             Games.getGame().setScreen(screen);
         }
@@ -307,7 +261,9 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
         xPosition = xPosition + (speed * deltaTime);
 
         // move stars
-        moveStars(deltaTime);
+        for (Star eachStar : stars) {
+            eachStar.animate(deltaTime);
+        }
 
         // do we need to check billing service for product states
         if (checkBillingProducts) {
@@ -315,17 +271,15 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
             checkBillingProducts = false;
 
             /*
-             * refresh screen sprites following the billing state change. the
-             * billing buttons displayed are likely to change.
+             * refresh screen sprites and buttons following the billing state change.
+             * The billing buttons and level buttons displayed may change.
              */
-            refreshSprites();
+            refreshAssets();
         }
     }
 
     @Override
     public void dispose() {
-        // unregister as observer of billing state changes
-        // billingService.unregisterProductObserver(this);
     }
 
     @Override
@@ -395,7 +349,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
 
     @Override
     public void goBack() {
-        setState(ModelState.GO_BACK);
+        this.modelState = ModelState.GO_BACK;
     }
 
     @Override
@@ -419,14 +373,12 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
             case UNLOCK_ALL_LEVELS:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unlock All Levels.");
                 Screen unlockAllZonesScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_ALL_ZONES);
-                // Games.getGame().setScreen(unlockAllZonesScreen);
                 Games.getGame().setReturningScreen(unlockAllZonesScreen);
                 break;
             default:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unsupported button type:'" + buttonType.name() + "'.");
                 break;
         }
-
     }
 
     /**
@@ -435,8 +387,16 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
     private void addUnlockLevelsButton() {
         int rowY = 100 + (int) (4.7f * 170);
 
-        SwipeMenuButton button = new SwipeMenuButton(this, this, controller, GameConstants.GAME_WIDTH / 2, rowY, "UNLOCK ALL",
-                ButtonType.UNLOCK_ALL_LEVELS, MenuSpriteIdentifier.MAIN_MENU, MenuSpriteIdentifier.MAIN_MENU_PRESSED);
+        SwipeMenuButton button = new SwipeMenuButton(
+                this,
+                this,
+                GameConstants.GAME_WIDTH / 2,
+                rowY,
+                "UNLOCK ALL",
+                ButtonType.UNLOCK_ALL_LEVELS,
+                MenuSpriteIdentifier.MAIN_MENU,
+                MenuSpriteIdentifier.MAIN_MENU_PRESSED);
+        controller.addTouchController(new DetectButtonTouch(button));
 
         /*
          * add new button's sprite to list of sprites. we don't add this button
@@ -446,20 +406,6 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, MenuB
 
         // add new button's text to list of text objects
         staticText.add(button.getText());
-    }
-
-    private void moveStars(float deltaTime) {
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
-    }
-
-    private void setState(ModelState modelState) {
-        this.modelState = modelState;
-    }
-
-    private ModelState getState() {
-        return modelState;
     }
 
     @Override

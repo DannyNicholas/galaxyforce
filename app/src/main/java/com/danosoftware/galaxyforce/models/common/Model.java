@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models;
+package com.danosoftware.galaxyforce.models.common;
 
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
@@ -7,13 +7,8 @@ import java.util.List;
 
 /**
  * Generic interface for any models containing the logic behind any screens.
- *
- * @author Danny
  */
 public interface Model {
-    // public void setState(ModelState modelState);
-
-    // public ModelState getState();
 
     /**
      * Used to initialise model after model has been instantiated. The model

@@ -8,7 +8,9 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
+import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -20,7 +22,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnlockFullVersionModelImpl implements Model, BillingObserver, MenuButtonModel {
+public class UnlockFullVersionModelImpl implements Model, BillingObserver, ButtonModel {
     /* logger tag */
     private static final String LOCAL_TAG = "UnlockFullVersionModel";
 

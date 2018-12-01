@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.game.handlers;
+package com.danosoftware.galaxyforce.models.play.game_handler;
 
 import android.util.Log;
 
@@ -7,10 +7,10 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.models.game.GameModel;
 import com.danosoftware.galaxyforce.models.play.PlayModel;
-import com.danosoftware.galaxyforce.models.screens.ButtonType;
-import com.danosoftware.galaxyforce.models.screens.MenuButtonModel;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -22,7 +22,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameOverHandler implements PlayModel, MenuButtonModel {
+public class GameOverHandler implements PlayModel, ButtonModel {
 
     /*
      * ******************************************************

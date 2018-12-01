@@ -3,8 +3,8 @@ package com.danosoftware.galaxyforce.sprites.mainmenu;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.models.screens.ButtonType;
-import com.danosoftware.galaxyforce.models.screens.MenuButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
@@ -20,7 +20,7 @@ public class MenuButton implements SpriteTextButton {
     private final Text text;
 
     // reference to button's parent model
-    private final MenuButtonModel model;
+    private final ButtonModel model;
 
     // reference to level selector button sprite
     private final IButtonSprite buttonSprite;
@@ -32,7 +32,7 @@ public class MenuButton implements SpriteTextButton {
     // this button's type
     ButtonType buttonType;
 
-    public MenuButton(MenuButtonModel model, Controller controller, int xPos, int yPos, String text, ButtonType buttonType,
+    public MenuButton(ButtonModel model, Controller controller, int xPos, int yPos, String text, ButtonType buttonType,
                       ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);

@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.buttons.sprite_button;
 
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.level.SelectLevelModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
@@ -29,17 +27,18 @@ public class PreviousZone implements SpriteButton {
     private final ISpriteIdentifier spriteButtonUp;
     private final ISpriteIdentifier spriteButtonDown;
 
-    public PreviousZone(SelectLevelModel model, Controller controller, int xPos, int yPos, int zone, ISpriteIdentifier spriteButtonUp,
-                        ISpriteIdentifier spriteButtonDown) {
+    public PreviousZone(
+            SelectLevelModel model,
+            int xPos,
+            int yPos,
+            int zone,
+            ISpriteIdentifier spriteButtonUp,
+            ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos, BUFFER);
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
         this.zone = zone;
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
-
     }
 
     @Override

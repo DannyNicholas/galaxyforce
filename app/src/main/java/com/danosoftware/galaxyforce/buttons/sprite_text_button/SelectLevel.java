@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.level.SelectLevelModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
@@ -46,7 +44,7 @@ public class SelectLevel implements SpriteTextButton {
     private final ISpriteIdentifier spriteButtonUp;
     private final ISpriteIdentifier spriteButtonDown;
 
-    public SelectLevel(SelectLevelModel model, Controller controller, int xPos, int yPos, int levelInt, LockStatus lockStatus) {
+    public SelectLevel(SelectLevelModel model, int xPos, int yPos, int levelInt, LockStatus lockStatus) {
         this.model = model;
         this.lockStatus = lockStatus;
 
@@ -65,10 +63,6 @@ public class SelectLevel implements SpriteTextButton {
             this.text = Text.newTextAbsolutePosition("", xPos, yPos);
             this.levelNumber = NO_LEVEL;
         }
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
-
     }
 
     @Override

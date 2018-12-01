@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.models.play;
 
-import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.text.Text;
 
 public interface PlayModel extends Model {

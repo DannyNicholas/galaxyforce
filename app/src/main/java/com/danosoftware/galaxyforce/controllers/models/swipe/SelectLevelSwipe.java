@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.controllers.models.swipe;
 
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
-import com.danosoftware.galaxyforce.models.screens.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.level.SelectLevelModel;
 import com.danosoftware.galaxyforce.view.Vector2;
 
 /**
@@ -10,18 +8,15 @@ import com.danosoftware.galaxyforce.view.Vector2;
  * position.
  */
 public class SelectLevelSwipe implements Swipe {
+
     // reference to parent model
     private SelectLevelModel model;
 
     // reference to swipe start point
-    private Vector2 startTouchPoint = null;
+    private Vector2 startTouchPoint;
 
-    public SelectLevelSwipe(SelectLevelModel model, Controller controller) {
+    public SelectLevelSwipe(SelectLevelModel model) {
         this.model = model;
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new SwipeTouch(this));
-
     }
 
     @Override

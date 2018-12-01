@@ -1,8 +1,9 @@
 package com.danosoftware.galaxyforce.models.game;
 
-import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.common.Model;
 
 public interface GameModel extends Model {
+
     /**
      * Start a new game.
      */

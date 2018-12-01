@@ -6,8 +6,9 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
-import com.danosoftware.galaxyforce.screen.Screen;
+import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.models.touch_screen.TouchScreenModel;
+import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
 import com.danosoftware.galaxyforce.services.Games;
@@ -19,7 +20,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SplashModelImpl implements TouchScreenModel {
+public class SplashModelImpl implements Model, TouchScreenModel {
 
     private final List<Text> textList;
 

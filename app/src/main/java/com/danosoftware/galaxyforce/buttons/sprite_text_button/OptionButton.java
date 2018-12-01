@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
 import com.danosoftware.galaxyforce.buttons.toggle_group.ToggleButtonGroup;
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.options.Option;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
@@ -15,6 +13,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * position.
  */
 public class OptionButton implements SpriteTextButton {
+
     // reference to Text representing level number
     private final Text text;
 
@@ -31,17 +30,19 @@ public class OptionButton implements SpriteTextButton {
     // option type associated with button
     Option optionType;
 
-    public OptionButton(Controller controller, int xPos, int yPos, Option optionType, ISpriteIdentifier spriteButtonUp,
-                        ISpriteIdentifier spriteButtonDown, ToggleButtonGroup toggleButtonGroup) {
+    public OptionButton(
+            int xPos,
+            int yPos,
+            Option optionType,
+            ISpriteIdentifier spriteButtonUp,
+            ISpriteIdentifier spriteButtonDown,
+            ToggleButtonGroup toggleButtonGroup) {
         this.levelSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
         this.text = Text.newTextAbsolutePosition(optionType.getText(), xPos, yPos);
         this.toggleButtonGroup = toggleButtonGroup;
         this.optionType = optionType;
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
     }
 
     @Override

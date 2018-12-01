@@ -1,10 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.about;
 
 import com.danosoftware.galaxyforce.buttons.sprite_button.SpriteButton;
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.models.about.AboutModel;
-import com.danosoftware.galaxyforce.models.screens.ButtonType;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
@@ -17,7 +15,7 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
 public class SocialButton implements SpriteButton {
 
     // reference to button's parent model
-    private final AboutModel model;
+    private final ButtonModel model;
 
     // reference to level selector button sprite
     private final IButtonSprite buttonSprite;
@@ -29,16 +27,13 @@ public class SocialButton implements SpriteButton {
     // this button's type
     private final ButtonType buttonType;
 
-    public SocialButton(AboutModel model, Controller controller, int xPos, int yPos, ButtonType buttonType,
+    public SocialButton(ButtonModel model, int xPos, int yPos, ButtonType buttonType,
                         ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.buttonType = buttonType;
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
     }
 
     @Override

@@ -1,11 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.mainmenu;
 
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.models.level.LevelModel;
-import com.danosoftware.galaxyforce.models.screens.ButtonType;
-import com.danosoftware.galaxyforce.models.screens.MenuButtonModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
@@ -18,11 +16,12 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
  * getBounds() by the current swipe offset.
  */
 public class SwipeMenuButton implements SpriteTextButton {
+
     // reference to Text representing level number
     private final Text text;
 
     // reference to button's parent model
-    private final MenuButtonModel model;
+    private final ButtonModel model;
 
     // reference to model that allows us to determine screen swipe offset
     private final LevelModel swipeModel;
@@ -37,8 +36,15 @@ public class SwipeMenuButton implements SpriteTextButton {
     // this button's type
     private final ButtonType buttonType;
 
-    public SwipeMenuButton(MenuButtonModel model, LevelModel swipeModel, Controller controller, int xPos, int yPos, String text,
-                           ButtonType buttonType, ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
+    public SwipeMenuButton(
+            ButtonModel model,
+            LevelModel swipeModel,
+            int xPos,
+            int yPos,
+            String text,
+            ButtonType buttonType,
+            ISpriteIdentifier spriteButtonUp,
+            ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.swipeModel = swipeModel;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
@@ -46,9 +52,6 @@ public class SwipeMenuButton implements SpriteTextButton {
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
         this.text = Text.newTextAbsolutePosition(text, xPos, yPos);
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
     }
 
     @Override

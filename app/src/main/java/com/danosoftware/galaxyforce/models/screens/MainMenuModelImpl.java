@@ -6,7 +6,9 @@ import com.danosoftware.galaxyforce.billing.service.BillingObserver;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.button.ButtonModel;
+import com.danosoftware.galaxyforce.models.button.ButtonType;
+import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
@@ -21,7 +23,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainMenuModelImpl implements Model, MenuButtonModel, BillingObserver {
+public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     /* logger tag */
     private static final String LOCAL_TAG = "MainModelModelImpl";
 

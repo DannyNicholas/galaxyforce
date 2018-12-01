@@ -6,12 +6,12 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
+import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
 import com.danosoftware.galaxyforce.models.play.game_handler.GameHandlerFrameRateDecorator;
-import com.danosoftware.galaxyforce.game.handlers.GameOverHandler;
+import com.danosoftware.galaxyforce.models.play.game_handler.GameOverHandler;
 import com.danosoftware.galaxyforce.models.play.game_handler.GamePlayHandler;
-import com.danosoftware.galaxyforce.game.handlers.PausedHandler;
-import com.danosoftware.galaxyforce.models.Model;
+import com.danosoftware.galaxyforce.models.play.game_handler.PausedHandler;
 import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.ScreenFactory;
 import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
@@ -82,7 +82,7 @@ public class GameModelImpl implements GameModel {
         this.billingService = billingService;
 
         /* set-up initial random position of stars to be passed around handlers */
-        stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
+        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
 
         // initial handler - goes straight into game
         GameHandler gameHandler = new GamePlayHandler(this, controller, stars, wave, billingService);
@@ -117,7 +117,7 @@ public class GameModelImpl implements GameModel {
      */
     public void update(float deltaTime) {
 
-        switch (getState()) {
+        switch (modelState) {
             case RUNNING:
 
                 // normal model state
@@ -137,7 +137,7 @@ public class GameModelImpl implements GameModel {
                 Games.getGame().setReturningScreen(optionsScreen);
 
                 // set state back to running so doesn't change screens every time
-                setState(ModelState.RUNNING);
+                this.modelState = ModelState.RUNNING;
                 break;
 
             case PAUSED:
@@ -161,7 +161,7 @@ public class GameModelImpl implements GameModel {
 
                 // set state back to running so doesn't create new handlers every
                 // time.
-                setState(ModelState.RUNNING);
+                this.modelState = ModelState.RUNNING;
                 break;
 
             case RESUME:
@@ -176,7 +176,7 @@ public class GameModelImpl implements GameModel {
                 pausedGameHandler = null;
 
                 // set state back to running so doesn't resume every time.
-                setState(ModelState.RUNNING);
+                this.modelState = ModelState.RUNNING;
                 break;
 
             case PLAYING:
@@ -192,7 +192,7 @@ public class GameModelImpl implements GameModel {
 
                 // set state back to running so doesn't create new handlers every
                 // time.
-                setState(ModelState.RUNNING);
+                this.modelState = ModelState.RUNNING;
                 break;
 
             case GAME_OVER:
@@ -203,7 +203,7 @@ public class GameModelImpl implements GameModel {
 
                 // set state back to running so doesn't create new handlers every
                 // time.
-                setState(ModelState.RUNNING);
+                this.modelState = ModelState.RUNNING;
                 break;
 
             default:
@@ -234,7 +234,7 @@ public class GameModelImpl implements GameModel {
             Log.i(TAG, "State: 'Paused'.");
 
             // will cause change to pause handler
-            setState(ModelState.PAUSED);
+            this.modelState = ModelState.PAUSED;
         }
     }
 
@@ -243,7 +243,7 @@ public class GameModelImpl implements GameModel {
         Log.i(TAG, "State: 'Quit'.");
 
         // change state to quit
-        setState(ModelState.QUIT);
+        this.modelState = ModelState.QUIT;
     }
 
     /*
@@ -254,7 +254,7 @@ public class GameModelImpl implements GameModel {
         Log.i(TAG, "State: 'Resume'.");
 
         // will cause change to game handler
-        setState(ModelState.RESUME);
+        this.modelState = ModelState.RESUME;
     }
 
     @Override
@@ -270,7 +270,7 @@ public class GameModelImpl implements GameModel {
         Log.i(TAG, "State: 'Play'.");
 
         // will cause change to game handler
-        setState(ModelState.PLAYING);
+        this.modelState = ModelState.PLAYING;
     }
 
     @Override
@@ -280,7 +280,7 @@ public class GameModelImpl implements GameModel {
         this.lastWave = wave;
 
         // will cause change to game over handler
-        setState(ModelState.GAME_OVER);
+        this.modelState = ModelState.GAME_OVER;
     }
 
     @Override
@@ -288,7 +288,7 @@ public class GameModelImpl implements GameModel {
         Log.i(TAG, "State: 'Options'.");
 
         // will cause switch to options screen
-        setState(ModelState.OPTIONS);
+        this.modelState = ModelState.OPTIONS;
     }
 
     /**
@@ -298,19 +298,5 @@ public class GameModelImpl implements GameModel {
     @Override
     public void goBack() {
         modelHandler.goBack();
-    }
-
-    /*
-     * ******************************************************
-     * PRIVATE HELPER METHODS
-     * ******************************************************
-     */
-
-    private void setState(ModelState modelState) {
-        this.modelState = modelState;
-    }
-
-    private ModelState getState() {
-        return modelState;
     }
 }
