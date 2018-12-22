@@ -47,13 +47,13 @@ public abstract class AbstractScreen implements IScreen {
     protected Texture texture;
 
     // sprite batcher used for displaying sprites
-    protected final SpriteBatcher batcher;
+    final SpriteBatcher batcher;
 
     // camera used for display views
-    protected final Camera2D camera;
+    final Camera2D camera;
 
     // font used for displaying text sprites
-    protected Font gameFont;
+    Font gameFont;
 
     // has model been initialised
     private boolean initialised = false;

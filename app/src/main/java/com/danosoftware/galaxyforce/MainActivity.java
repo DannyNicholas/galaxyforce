@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     private static final String ACTIVITY_TAG = "MainActivity";
 
     /* reference to game instance */
-    private Game game = null;
+    private Game game;
 
     /* used for state synchronisation */
     private final Object stateChanged = new Object();
@@ -43,10 +43,10 @@ public class MainActivity extends Activity {
     private ActivityState state = ActivityState.INITIALISED;
 
     /* GL Graphics reference */
-    private GLGraphics glGraphics = null;
+    private GLGraphics glGraphics;
 
     /* GL Surface View reference */
-    private GLSurfaceView glView = null;
+    private GLSurfaceView glView;
 
     /* Billing Service for In-App Billing Requests */
     private IBillingService billingService;
@@ -104,8 +104,6 @@ public class MainActivity extends Activity {
         if (billingService != null) {
             billingService.refreshProductStates();
         }
-
-        // game.resume();
     }
 
     /* runs when application is paused */
@@ -159,7 +157,7 @@ public class MainActivity extends Activity {
         }
 
         // uses superclass methods if not handled
-        if (processed == false) {
+        if (!processed) {
             Log.d(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Pass activity result to superclass.");
             super.onActivityResult(requestCode, resultCode, data);
         }

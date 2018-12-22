@@ -38,33 +38,34 @@ public class GameImpl implements Game {
 
     private static final String LOCAL_TAG = "GameImpl";
 
-    /* reference to GL graphics */
-    private GLGraphics glGraphics;
-
-    /* reference to file input/output */
-    private FileIO fileIO;
-
-    /* reference to game input */
-    private final Input input;
-
-    /* reference to current screen */
+    // reference to current screen
     private IScreen screen;
 
-    /* reference to current screen */
+    // reference to screen to return to.
+    // used in cases where we temporarily go to one
+    // screen but expect to return to where we came from.
+    // e.g. returning from an options screen back to the main game
     private IScreen returningScreen;
 
-    /* reference to billing service */
-    private final IBillingService billingService;
+    // factory used to create new screens
+    private final ScreenFactory screenFactory;
 
-    /* reference to game audio */
-    private Audio audio;
+    public GameImpl(
+            Context context,
+            GLGraphics glGraphics,
+            GLSurfaceView glView,
+            IBillingService billingService) {
 
-    public GameImpl(Context context, GLGraphics glGraphics, GLSurfaceView glView, IBillingService billingService) {
-        this.fileIO = new GameFileIO(context);
-        this.audio = new AndroidAudio(context);
-        this.glGraphics = glGraphics;
-        this.billingService = billingService;
-        this.input = new GameInput(glView, 1, 1);
+        FileIO fileIO = new GameFileIO(context);
+        Input input = new GameInput(glView, 1, 1);
+        Audio audio = new AndroidAudio(context);
+
+        this.screenFactory = new ScreenFactory(
+                glGraphics,
+                fileIO,
+                billingService,
+                this,
+                input);
 
         /*
          * initialise sound effect bank singleton. initialise as early as
@@ -115,39 +116,21 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Start Game");
-        this.screen = ScreenFactory.newScreen(
-                glGraphics,
-                fileIO,
-                billingService,
-                this,
-                input,
-                ScreenType.SPLASH);
+        this.screen = screenFactory.newScreen(ScreenType.SPLASH);
     }
 
     @Override
     public void setScreen(ScreenType screenType) {
 
         changeScreen(
-                ScreenFactory.newScreen(
-                        glGraphics,
-                        fileIO,
-                        billingService,
-                        this,
-                        input,
-                        screenType));
+                screenFactory.newScreen(screenType));
     }
 
     @Override
     public void setGameScreen(int wave) {
 
         changeScreen(
-                ScreenFactory.newGameScreen(
-                        glGraphics,
-                        fileIO,
-                        billingService,
-                        this,
-                        input,
-                        wave));
+                screenFactory.newGameScreen(wave));
     }
 
     private void changeScreen(IScreen newScreen) {

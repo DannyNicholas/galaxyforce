@@ -30,14 +30,35 @@ public class ScreenFactory {
 
     private static final int MAX_SPRITES = 1000;
 
-    private ScreenFactory() {
+    private final SpriteBatcher batcher;
+    private final Camera2D camera;
+    private final GLGraphics glGraphics;
+    private final FileIO fileIO;
+    private final IBillingService billingService;
+    private final Game game;
+    private final Input input;
+
+    public ScreenFactory(
+            GLGraphics glGraphics,
+            FileIO fileIO,
+            IBillingService billingService,
+            Game game,
+            Input input) {
+
+        this.glGraphics = glGraphics;
+        this.fileIO = fileIO;
+        this.billingService = billingService;
+        this.game = game;
+        this.input = input;
+        this.batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
+        this.camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
     }
 
-    public static IScreen newScreen(GLGraphics glGraphics, FileIO fileIO, IBillingService billingService, Game game, Input input, ScreenType screenType) {
+    public IScreen newScreen(ScreenType screenType) {
 
-        final SpriteBatcher batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
-        final Camera2D camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
-        final Controller controller = new ControllerImpl(input, camera);
+        // each screen needs it's own instance of a controller
+        // to handle specific user interactions.
+        Controller controller = new ControllerImpl(input, camera);
 
         switch (screenType) {
 
@@ -126,11 +147,11 @@ public class ScreenFactory {
         }
     }
 
-    public static IScreen newGameScreen(GLGraphics glGraphics, FileIO fileIO, IBillingService billingService, Game game, Input input, int startingWave) {
+    public IScreen newGameScreen(int startingWave) {
 
-        final SpriteBatcher batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
-        final Camera2D camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
-        final Controller controller = new ControllerImpl(input, camera);
+        // each screen needs it's own instance of a controller
+        // to handle specific user interactions.
+        Controller controller = new ControllerImpl(input, camera);
 
         return new Screen(
                 new GameModelImpl(game, controller, startingWave, billingService),

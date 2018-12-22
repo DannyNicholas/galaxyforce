@@ -16,6 +16,9 @@ import com.danosoftware.galaxyforce.view.SpriteBatcher;
 import javax.microedition.khronos.opengles.GL10;
 
 public class SelectLevelScreen extends AbstractScreen {
+
+    private static final float SCREEN_CENTRE = GameConstants.GAME_WIDTH / 2;
+
     /*
      * contains reference to level model needed for local override. This a
      * version of a model that has extra methods required for this screen.
@@ -46,8 +49,9 @@ public class SelectLevelScreen extends AbstractScreen {
         /* clear colour buffer */
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        // scroll screen by model's current scroll speed
-        camera.position.x = (GameConstants.GAME_WIDTH / 2) + levelModel.getScrollPosition();
+        // move camera's x position on screen by model's current scroll speed
+        float cameraOffset = levelModel.getScrollPosition();
+        camera.moveX(SCREEN_CENTRE + cameraOffset);
 
         camera.setViewportAndMatrices();
         gl.glEnable(GL10.GL_TEXTURE_2D);
@@ -60,7 +64,6 @@ public class SelectLevelScreen extends AbstractScreen {
          * gets static sprites from model (e.g. stars) - these sprites must not
          * scroll with other elements so offset stars by current camera offset.
          */
-        float cameraOffset = levelModel.getScrollPosition();
         for (ISprite sprite : levelModel.getStaticSprites()) {
             ISpriteIdentifier spriteId = sprite.spriteId();
             ISpriteProperties props = spriteId.getProperties();
@@ -111,5 +114,13 @@ public class SelectLevelScreen extends AbstractScreen {
 
         batcher.endBatch();
         gl.glDisable(GL10.GL_BLEND);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        // reset camera position
+        camera.resetPosition();
     }
 }

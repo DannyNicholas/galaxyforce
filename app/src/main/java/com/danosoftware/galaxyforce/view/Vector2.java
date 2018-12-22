@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.view;
 
 public class Vector2 {
-    public static float TO_RADIANS = (1 / 180.0f) * (float) Math.PI;
-    public static float TO_DEGREES = (1 / (float) Math.PI) * 180;
+    public static final float TO_RADIANS = (1 / 180.0f) * (float) Math.PI;
+    public static final float TO_DEGREES = (1 / (float) Math.PI) * 180;
     public float x, y;
 
     public Vector2() {
