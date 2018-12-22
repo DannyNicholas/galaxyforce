@@ -6,7 +6,6 @@ import android.opengl.GLUtils;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.interfaces.FileIO;
-import com.danosoftware.galaxyforce.interfaces.Game;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
 import java.io.IOException;
@@ -15,20 +14,21 @@ import java.io.InputStream;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Texture {
-    GLGraphics glGraphics;
-    FileIO fileIO;
-    String fileName;
-    int textureId;
-    int minFilter;
-    int magFilter;
-    int width;
-    int height;
+    private final GLGraphics glGraphics;
+    private final FileIO fileIO;
+    private final String fileName;
+
+    private int textureId;
+    private int minFilter;
+    private int magFilter;
+    private int width;
+    private int height;
 
     private static final String TAG = "Texture";
 
-    public Texture(Game game, String fileName) {
-        this.glGraphics = game.getGlGraphics();
-        this.fileIO = game.getFileIO();
+    public Texture(GLGraphics glGraphics, FileIO fileIO, String fileName) {
+        this.glGraphics = glGraphics;
+        this.fileIO = fileIO;
         this.fileName = fileName;
         load();
     }
@@ -43,8 +43,8 @@ public class Texture {
         try {
             in = fileIO.readAsset(fileName);
             Bitmap bitmap = BitmapFactory.decodeStream(in);
-            width = bitmap.getWidth();
-            height = bitmap.getHeight();
+            this.width = bitmap.getWidth();
+            this.height = bitmap.getHeight();
             gl.glBindTexture(GL10.GL_TEXTURE_2D, textureId);
             GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
             setFilters(GL10.GL_NEAREST, GL10.GL_NEAREST);
@@ -69,7 +69,7 @@ public class Texture {
         glGraphics.getGl().glBindTexture(GL10.GL_TEXTURE_2D, 0);
     }
 
-    public void setFilters(int minFilter, int magFilter) {
+    private void setFilters(int minFilter, int magFilter) {
         this.minFilter = minFilter;
         this.magFilter = magFilter;
         GL10 gl = glGraphics.getGl();
@@ -90,5 +90,13 @@ public class Texture {
         gl.glDeleteTextures(1, textureIds, 0);
 
         Log.d(TAG, "Disposed texture. Id: " + textureId + ". Filename: " + fileName + ".");
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
     }
 }

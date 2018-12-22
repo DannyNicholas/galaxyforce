@@ -6,16 +6,16 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
+import com.danosoftware.galaxyforce.input.GameInput;
 import com.danosoftware.galaxyforce.interfaces.Audio;
 import com.danosoftware.galaxyforce.interfaces.FileIO;
-import com.danosoftware.galaxyforce.interfaces.Game;
 import com.danosoftware.galaxyforce.interfaces.Input;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.screen.ScreenFactory;
-import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
+import com.danosoftware.galaxyforce.screen.IScreen;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
 import com.danosoftware.galaxyforce.services.Configurations;
 import com.danosoftware.galaxyforce.services.IPreferences;
-import com.danosoftware.galaxyforce.services.Inputs;
 import com.danosoftware.galaxyforce.services.PreferencesInteger;
 import com.danosoftware.galaxyforce.services.PreferencesString;
 import com.danosoftware.galaxyforce.services.SavedGame;
@@ -38,9 +38,6 @@ public class GameImpl implements Game {
 
     private static final String LOCAL_TAG = "GameImpl";
 
-    /* references the static application context */
-    private final Context context;
-
     /* reference to GL graphics */
     private GLGraphics glGraphics;
 
@@ -48,13 +45,13 @@ public class GameImpl implements Game {
     private FileIO fileIO;
 
     /* reference to game input */
-    private Input input;
+    private final Input input;
 
     /* reference to current screen */
-    private Screen screen;
+    private IScreen screen;
 
     /* reference to current screen */
-    private Screen returningScreen;
+    private IScreen returningScreen;
 
     /* reference to billing service */
     private final IBillingService billingService;
@@ -63,14 +60,11 @@ public class GameImpl implements Game {
     private Audio audio;
 
     public GameImpl(Context context, GLGraphics glGraphics, GLSurfaceView glView, IBillingService billingService) {
-        this.context = context;
         this.fileIO = new GameFileIO(context);
         this.audio = new AndroidAudio(context);
         this.glGraphics = glGraphics;
         this.billingService = billingService;
-
-        // create new input implementation
-        Inputs.newInput(glView, 1, 1);
+        this.input = new GameInput(glView, 1, 1);
 
         /*
          * initialise sound effect bank singleton. initialise as early as
@@ -121,68 +115,73 @@ public class GameImpl implements Game {
     @Override
     public void start() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Start Game");
-
-        this.screen = ScreenFactory.newScreen(ScreenType.SPLASH);
+        this.screen = ScreenFactory.newScreen(
+                glGraphics,
+                fileIO,
+                billingService,
+                this,
+                input,
+                ScreenType.SPLASH);
     }
 
     @Override
-    public Context getContext() {
-        return context;
+    public void setScreen(ScreenType screenType) {
+
+        changeScreen(
+                ScreenFactory.newScreen(
+                        glGraphics,
+                        fileIO,
+                        billingService,
+                        this,
+                        input,
+                        screenType));
     }
 
     @Override
-    public GLGraphics getGlGraphics() {
-        return glGraphics;
+    public void setGameScreen(int wave) {
+
+        changeScreen(
+                ScreenFactory.newGameScreen(
+                        glGraphics,
+                        fileIO,
+                        billingService,
+                        this,
+                        input,
+                        wave));
     }
 
-    @Override
-    public FileIO getFileIO() {
-        return fileIO;
-    }
-
-    @Override
-    public Screen getScreen() {
-        return screen;
-    }
-
-    @Override
-    public void setScreen(Screen screen) {
-        if (screen == null)
-            throw new IllegalArgumentException("Screen must not be null");
+    private void changeScreen(IScreen newScreen) {
 
         // pause and dispose current screen
         this.screen.pause();
         this.screen.dispose();
 
         // resume and update new screen
-        screen.resume();
-        screen.update(0);
-
-        // set current screen
-        this.screen = screen;
-
-        // clear returning screen if needed.
-        this.returningScreen = null;
+        this.screen = newScreen;
+        this.screen.resume();
+        this.screen.update(0);
     }
 
     @Override
-    public void setReturningScreen(Screen gameScreen) {
-        Screen currentScreen = this.screen;
+    public void setReturningScreen(ScreenType gameScreen) {
+
+        // set returning screen to current screen
+        this.returningScreen = this.screen;
 
         // call normal set screen method to change screens
         setScreen(gameScreen);
-
-        // set returning screen to current screen
-        this.returningScreen = currentScreen;
     }
 
     @Override
     public void screenReturn() {
         if (returningScreen == null)
-            throw new IllegalArgumentException("Returning Screen must not be null");
+            throw new GalaxyForceException("Returning Screen must not be null");
 
         // return back to previous screens
-        setScreen(returningScreen);
+        changeScreen(returningScreen);
+
+        // clear returning screen
+        this.returningScreen = null;
     }
 
     @Override
@@ -239,15 +238,4 @@ public class GameImpl implements Game {
     public boolean handleBackButton() {
         return screen.handleBackButton();
     }
-
-    @Override
-    public Audio getAudio() {
-        return audio;
-    }
-
-    @Override
-    public IBillingService getBillingService() {
-        return billingService;
-    }
-
 }

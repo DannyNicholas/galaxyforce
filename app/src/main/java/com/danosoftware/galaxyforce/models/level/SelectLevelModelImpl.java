@@ -14,12 +14,10 @@ import com.danosoftware.galaxyforce.controllers.models.swipe.SelectLevelSwipe;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.button.ButtonModel;
 import com.danosoftware.galaxyforce.models.button.ButtonType;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.screen.ScreenFactory;
-import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
-import com.danosoftware.galaxyforce.services.Games;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.SwipeMenuButton;
@@ -36,6 +34,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
     /* logger tag */
     private static final String LOCAL_TAG = "SelectLevelModelImpl";
+
+    private final Game game;
 
     // map of zone number to x position
     private final Map<Integer, Integer> zoneXPosition;
@@ -81,7 +81,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
      */
     private boolean checkBillingProducts;
 
-    public SelectLevelModelImpl(Controller controller, IBillingService billingService) {
+    public SelectLevelModelImpl(Game game, Controller controller, IBillingService billingService) {
+        this.game = game;
         this.controller = controller;
         this.billingService = billingService;
 
@@ -252,8 +253,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     @Override
     public void update(float deltaTime) {
         if (modelState == ModelState.GO_BACK) {
-            Screen screen = ScreenFactory.newScreen(ScreenType.MAIN_MENU);
-            Games.getGame().setScreen(screen);
+            game.setScreen(ScreenType.MAIN_MENU);
         }
 
         // calculate screen level scroll speed based on distance from target.
@@ -286,12 +286,10 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     public void setLevel(int level) {
         if (level > GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
             Log.i(LOCAL_TAG, "Exceeded maximum free zone. Must upgrade.");
-            Screen unlockFullVersionScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_FULL_VERSION);
-            Games.getGame().setReturningScreen(unlockFullVersionScreen);
+            game.setReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
         } else {
             Log.i(LOCAL_TAG, "Selected Level: " + level);
-            Screen screen = ScreenFactory.newGameScreen(level);
-            Games.getGame().setScreen(screen);
+            game.setGameScreen(level);
         }
     }
 
@@ -372,8 +370,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         switch (buttonType) {
             case UNLOCK_ALL_LEVELS:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unlock All Levels.");
-                Screen unlockAllZonesScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_ALL_ZONES);
-                Games.getGame().setReturningScreen(unlockAllZonesScreen);
+                game.setReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
                 break;
             default:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unsupported button type:'" + buttonType.name() + "'.");

@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.screen;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
+import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.models.level.LevelModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
@@ -26,10 +27,11 @@ public class SelectLevelScreen extends AbstractScreen {
             Controller controller,
             TextureMap textureMap,
             GLGraphics glGraphics,
+            FileIO fileIO,
             Camera2D camera,
             SpriteBatcher batcher) {
 
-        super(model, controller, textureMap, glGraphics, camera, batcher);
+        super(model, controller, textureMap, glGraphics, fileIO, camera, batcher);
         this.levelModel = model;
     }
 

@@ -13,6 +13,7 @@ public interface Input {
         public int x, y;
         public int pointer;
 
+        @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();
             if (type == TOUCH_DOWN)

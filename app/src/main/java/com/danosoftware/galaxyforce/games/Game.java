@@ -1,10 +1,6 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.games;
 
-import android.content.Context;
-
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.view.GLGraphics;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 
 public interface Game {
     void start();
@@ -19,20 +15,16 @@ public interface Game {
 
     void update(float deltaTime);
 
-    GLGraphics getGlGraphics();
+    void setScreen(ScreenType gameScreen);
 
-    Screen getScreen();
-
-    FileIO getFileIO();
-
-    void setScreen(Screen gameScreen);
+    void setGameScreen(int wave);
 
     /**
      * Change to a screen that will eventually return back to this screen. A
      * subsequent call to screenReturn() will return back to the the previous
      * screen.
      */
-    void setReturningScreen(Screen gameScreen);
+    void setReturningScreen(ScreenType gameScreen);
 
     /**
      * Change back to previous screen. That is the screen that we were on when
@@ -47,10 +39,4 @@ public interface Game {
      * @return true if back button handled internally
      */
     boolean handleBackButton();
-
-    Audio getAudio();
-
-    Context getContext();
-
-    IBillingService getBillingService();
 }

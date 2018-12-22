@@ -1,39 +1,24 @@
 package com.danosoftware.galaxyforce.screen;
 
-/* Screen interface lists methods needed for screens to draw, update and manage the different types of screen in the game.*/
-public interface Screen {
+import com.danosoftware.galaxyforce.controllers.common.Controller;
+import com.danosoftware.galaxyforce.interfaces.FileIO;
+import com.danosoftware.galaxyforce.models.common.Model;
+import com.danosoftware.galaxyforce.textures.TextureMap;
+import com.danosoftware.galaxyforce.view.Camera2D;
+import com.danosoftware.galaxyforce.view.GLGraphics;
+import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
-    /**
-     * draw components of current screen
-     */
-    void draw(float deltaTime);
+public class Screen extends AbstractScreen {
 
-    /**
-     * update model associated with current screen
-     */
-    void update(float deltaTime);
+    public Screen(
+            Model model,
+            Controller controller,
+            TextureMap textureMap,
+            GLGraphics glGraphics,
+            FileIO fileIO,
+            Camera2D camera,
+            SpriteBatcher batcher) {
 
-    /**
-     * pause the components of current screen
-     */
-    void pause();
-
-    /**
-     * resume the components of current screen
-     */
-    void resume();
-
-    /**
-     * dispose of current screen
-     */
-    void dispose();
-
-    /**
-     * return true if back button is handled internally and we don't want
-     * application to exit.
-     *
-     * @return true if back button handled internally
-     */
-    boolean handleBackButton();
-
+        super(model, controller, textureMap, glGraphics, fileIO, camera, batcher);
+    }
 }

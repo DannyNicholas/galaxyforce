@@ -1,8 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.mainmenu;
 
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
-import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.models.button.ButtonModel;
 import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
@@ -12,10 +10,10 @@ import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 /**
- * Represents a level selector. Level selector has a border, level number and
- * position.
+ * Represents a menu button with text.
  */
 public class MenuButton implements SpriteTextButton {
+
     // reference to Text representing level number
     private final Text text;
 
@@ -32,17 +30,20 @@ public class MenuButton implements SpriteTextButton {
     // this button's type
     ButtonType buttonType;
 
-    public MenuButton(ButtonModel model, Controller controller, int xPos, int yPos, String text, ButtonType buttonType,
-                      ISpriteIdentifier spriteButtonUp, ISpriteIdentifier spriteButtonDown) {
+    public MenuButton(
+            ButtonModel model,
+            int xPos,
+            int yPos,
+            String text,
+            ButtonType buttonType,
+            ISpriteIdentifier spriteButtonUp,
+            ISpriteIdentifier spriteButtonDown) {
         this.model = model;
         this.buttonSprite = new ButtonSprite(spriteButtonUp, xPos, yPos);
         this.buttonType = buttonType;
         this.spriteButtonUp = spriteButtonUp;
         this.spriteButtonDown = spriteButtonDown;
         this.text = Text.newTextAbsolutePosition(text, xPos, yPos);
-
-        // add a new menu button to controller's list of touch controllers
-        controller.addTouchController(new DetectButtonTouch(this));
     }
 
     @Override
@@ -53,7 +54,6 @@ public class MenuButton implements SpriteTextButton {
     @Override
     public void buttonUp() {
         buttonSprite.changeType(spriteButtonUp);
-
         model.processButton(buttonType);
     }
 

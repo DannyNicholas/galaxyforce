@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
+import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
@@ -19,7 +20,7 @@ import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public abstract class AbstractScreen implements Screen {
+public abstract class AbstractScreen implements IScreen {
 
     /* logger tag */
     private static final String LOCAL_TAG = "Screen";
@@ -39,6 +40,8 @@ public abstract class AbstractScreen implements Screen {
 
     // reference to openGL graphics
     protected final GLGraphics glGraphics;
+
+    private final FileIO fileIO;
 
     // reference to graphics texture map - set on resume
     protected Texture texture;
@@ -63,11 +66,13 @@ public abstract class AbstractScreen implements Screen {
             Controller controller,
             TextureMap textureMap,
             GLGraphics glGraphics,
+            FileIO fileIO,
             Camera2D camera,
             SpriteBatcher batcher) {
 
         this.textureMap = textureMap;
         this.glGraphics = glGraphics;
+        this.fileIO = fileIO;
         this.batcher = batcher;
         this.camera = camera;
         this.controller = controller;
@@ -155,7 +160,7 @@ public abstract class AbstractScreen implements Screen {
          * re-loaded. re-loading must happen each time screen is resumed as
          * textures can be disposed by OpenGL when the game is paused.
          */
-        this.texture = Textures.newTexture(textureMap);
+        this.texture = Textures.newTexture(glGraphics, fileIO, textureMap);
 
         /*
          * create each sprite's individual properties (e.g. width, height) from

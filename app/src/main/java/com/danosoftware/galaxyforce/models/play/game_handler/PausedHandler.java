@@ -5,6 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
+import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
 import com.danosoftware.galaxyforce.models.button.ButtonModel;
@@ -230,13 +231,15 @@ public class PausedHandler implements PlayModel, ButtonModel {
     private void addNewMenuButton(int row, String label, ButtonType buttonType) {
         MenuButton button = new MenuButton(
                 this,
-                controller,
                 GameConstants.GAME_WIDTH / 2,
                 100 + (row * 170),
                 label,
                 buttonType,
                 GameSpriteIdentifier.MENU_BUTTON_UP,
                 GameSpriteIdentifier.MENU_BUTTON_DOWN);
+
+        // add a new menu button to controller's list of touch controllers
+        controller.addTouchController(new DetectButtonTouch(button));
 
         // add new button to list
         menuButtons.add(button);

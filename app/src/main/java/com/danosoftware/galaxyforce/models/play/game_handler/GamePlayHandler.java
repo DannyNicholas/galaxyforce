@@ -20,11 +20,9 @@ import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.game.handlers.GamePlayAssetsManager;
 import com.danosoftware.galaxyforce.game.handlers.IGamePlayAssetsManager;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.game.GameModel;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.screen.ScreenFactory;
-import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
-import com.danosoftware.galaxyforce.services.Games;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
@@ -81,6 +79,9 @@ public class GamePlayHandler implements GameHandler {
      * PRIVATE INSTANCE VARIABLES
      * ******************************************************
      */
+
+
+    private final Game game;
 
     // current model state
     private ModelState modelState;
@@ -153,12 +154,14 @@ public class GamePlayHandler implements GameHandler {
      */
 
     public GamePlayHandler(
+            Game game,
             GameModel model,
             Controller controller,
             List<Star> stars,
             int wave,
             IBillingService billingService) {
 
+        this.game = game;
         this.model = model;
         this.controller = controller;
         this.wave = wave;
@@ -421,8 +424,7 @@ public class GamePlayHandler implements GameHandler {
             if (wave >= GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
                 Log.i(TAG, "Exceeded maximum free zone. Must upgrade.");
                 pause();
-                Screen unlockFullVersionScreen = ScreenFactory.newScreen(ScreenType.UPGRADE_FULL_VERSION);
-                Games.getGame().setReturningScreen(unlockFullVersionScreen);
+                game.setReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
 
                 /*
                  * the user may not upgrade but we still want to store the
@@ -458,8 +460,7 @@ public class GamePlayHandler implements GameHandler {
             else if (wave >= GameConstants.MAX_WAVES) {
                 Log.i(TAG, "Game completed.");
                 pause();
-                Screen gameComplete = ScreenFactory.newScreen(ScreenType.GAME_COMPLETE);
-                Games.getGame().setScreen(gameComplete);
+                game.setScreen(ScreenType.GAME_COMPLETE);
                 return;
             }
             // advance to next level

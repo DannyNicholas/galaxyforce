@@ -10,13 +10,13 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.options.Option;
 import com.danosoftware.galaxyforce.options.OptionController;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.Configurations;
-import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
@@ -31,6 +31,8 @@ public class OptionsModelImpl implements OptionsModel {
     /* logger tag */
     private static final String TAG = "OptionsModelImpl";
 
+    private final Game game;
+
     // references to stars
     private final List<Star> stars;
 
@@ -42,7 +44,8 @@ public class OptionsModelImpl implements OptionsModel {
     // reference to all text objects in model
     private final List<Text> allText;
 
-    public OptionsModelImpl(Controller controller) {
+    public OptionsModelImpl(Game game, Controller controller) {
+        this.game = game;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
         stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
@@ -99,7 +102,7 @@ public class OptionsModelImpl implements OptionsModel {
     public void update(float deltaTime) {
         if (modelState == ModelState.GO_BACK) {
             // return back to previous screen
-            Games.getGame().screenReturn();
+            game.screenReturn();
         }
 
         // move stars

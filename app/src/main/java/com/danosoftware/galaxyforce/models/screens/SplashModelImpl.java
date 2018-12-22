@@ -6,12 +6,10 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.models.touch_screen.TouchScreenModel;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.screen.ScreenFactory;
-import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
-import com.danosoftware.galaxyforce.services.Games;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.properties.SplashSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -21,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SplashModelImpl implements Model, TouchScreenModel {
+
+    private final Game game;
 
     private final List<Text> textList;
 
@@ -35,8 +35,9 @@ public class SplashModelImpl implements Model, TouchScreenModel {
     // how long splash screen should be displayed for (in seconds)
     private static final float SPLASH_SCREEN_WAIT = 4f;
 
-    public SplashModelImpl(Controller controller) {
+    public SplashModelImpl(Game game, Controller controller) {
 
+        this.game = game;
         this.allSprites = new ArrayList<>();
         this.textList = new ArrayList<>();
 
@@ -75,8 +76,7 @@ public class SplashModelImpl implements Model, TouchScreenModel {
 
         // if timer expired or screen pressed go to main menu
         if (getState() == ModelState.EXPIRED) {
-            Screen screen = ScreenFactory.newScreen(ScreenType.MAIN_MENU);
-            Games.getGame().setScreen(screen);
+            game.setScreen(ScreenType.MAIN_MENU);
         }
     }
 

@@ -6,16 +6,14 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.common.Model;
 import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
 import com.danosoftware.galaxyforce.models.play.game_handler.GameHandlerFrameRateDecorator;
 import com.danosoftware.galaxyforce.models.play.game_handler.GameOverHandler;
 import com.danosoftware.galaxyforce.models.play.game_handler.GamePlayHandler;
 import com.danosoftware.galaxyforce.models.play.game_handler.PausedHandler;
-import com.danosoftware.galaxyforce.screen.Screen;
-import com.danosoftware.galaxyforce.screen.ScreenFactory;
-import com.danosoftware.galaxyforce.screen.ScreenFactory.ScreenType;
-import com.danosoftware.galaxyforce.services.Games;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -45,6 +43,8 @@ public class GameModelImpl implements GameModel {
      * PRIVATE INSTANCE VARIABLES
      * ******************************************************
      */
+
+    private final Game game;
 
     /* reference to current game state */
     private ModelState modelState;
@@ -77,7 +77,8 @@ public class GameModelImpl implements GameModel {
      * ******************************************************
      */
 
-    public GameModelImpl(Controller controller, int wave, IBillingService billingService) {
+    public GameModelImpl(Game game, Controller controller, int wave, IBillingService billingService) {
+        this.game = game;
         this.controller = controller;
         this.billingService = billingService;
 
@@ -85,7 +86,7 @@ public class GameModelImpl implements GameModel {
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
 
         // initial handler - goes straight into game
-        GameHandler gameHandler = new GamePlayHandler(this, controller, stars, wave, billingService);
+        GameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, wave, billingService);
         this.modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
         this.modelState = ModelState.RUNNING;
     }
@@ -126,15 +127,13 @@ public class GameModelImpl implements GameModel {
             case QUIT:
 
                 // exit game. go to select level screen
-                Screen selectScreen = ScreenFactory.newScreen(ScreenType.SELECT_LEVEL);
-                Games.getGame().setScreen(selectScreen);
+                game.setScreen(ScreenType.SELECT_LEVEL);
                 break;
 
             case OPTIONS:
 
                 // go to options screen - will return back when done
-                Screen optionsScreen = ScreenFactory.newScreen(ScreenType.OPTIONS);
-                Games.getGame().setReturningScreen(optionsScreen);
+                game.setReturningScreen(ScreenType.OPTIONS);
 
                 // set state back to running so doesn't change screens every time
                 this.modelState = ModelState.RUNNING;
@@ -186,7 +185,7 @@ public class GameModelImpl implements GameModel {
                     this.lastWave = 1;
                 }
 
-                GameHandler gameHandler = new GamePlayHandler(this, controller, stars, lastWave, billingService);
+                GameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, lastWave, billingService);
                 modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
                 modelHandler.initialise();
 

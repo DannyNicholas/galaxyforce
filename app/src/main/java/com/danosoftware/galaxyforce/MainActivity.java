@@ -15,8 +15,8 @@ import android.view.WindowManager;
 import com.danosoftware.galaxyforce.billing.service.BillingServiceImpl;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.interfaces.Game;
-import com.danosoftware.galaxyforce.services.Games;
+import com.danosoftware.galaxyforce.games.Game;
+import com.danosoftware.galaxyforce.games.GameImpl;
 import com.danosoftware.galaxyforce.services.PackageManagers;
 import com.danosoftware.galaxyforce.services.WindowManagers;
 import com.danosoftware.galaxyforce.view.GLGraphics;
@@ -84,8 +84,7 @@ public class MainActivity extends Activity {
         PackageManagers.newPackageMgr(packageMgr, packageName);
 
         // create instance of game
-        Games.newGame(this, glGraphics, glView, billingService);
-        game = Games.getGame();
+        game = new GameImpl(this, glGraphics, glView, billingService);
     }
 
     /* runs after onCreate or resuming after being paused */

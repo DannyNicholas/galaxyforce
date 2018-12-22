@@ -6,12 +6,13 @@ import com.danosoftware.galaxyforce.billing.service.BillingObserver;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
+import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.button.ButtonModel;
 import com.danosoftware.galaxyforce.models.button.ButtonType;
 import com.danosoftware.galaxyforce.models.common.Model;
-import com.danosoftware.galaxyforce.services.Games;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
@@ -25,6 +26,8 @@ import java.util.List;
 public class UnlockFullVersionModelImpl implements Model, BillingObserver, ButtonModel {
     /* logger tag */
     private static final String LOCAL_TAG = "UnlockFullVersionModel";
+
+    private final Game game;
 
     // references to stars
     private List<Star> stars;
@@ -56,7 +59,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     // reference to all button sprites in model
     private final List<ISprite> buttons;
 
-    public UnlockFullVersionModelImpl(Controller controller, IBillingService billingService) {
+    public UnlockFullVersionModelImpl(Game game, Controller controller, IBillingService billingService) {
+        this.game = game;
         this.controller = controller;
         this.billingService = billingService;
         this.allSprites = new ArrayList<>();
@@ -148,8 +152,11 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
      * add wanted menu button using the supplied row, label and type.
      */
     private void addNewMenuButton(int row, String label, ButtonType buttonType) {
-        MenuButton button = new MenuButton(this, controller, GameConstants.GAME_WIDTH / 2, 100 + (row * 170), label, buttonType,
+        MenuButton button = new MenuButton(this, GameConstants.GAME_WIDTH / 2, 100 + (row * 170), label, buttonType,
                 MenuSpriteIdentifier.MAIN_MENU, MenuSpriteIdentifier.MAIN_MENU_PRESSED);
+
+        // add a new menu button to controller's list of touch controllers
+        controller.addTouchController(new DetectButtonTouch(button));
 
         // add new button's sprite to list of sprites
         buttons.add(button.getSprite());
@@ -183,7 +190,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         // return to previous screen
         if (getState() == ModelState.GO_BACK) {
             // return back to previous screen
-            Games.getGame().screenReturn();
+            game.screenReturn();
             return;
         }
 
