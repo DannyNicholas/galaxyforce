@@ -222,23 +222,23 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         switch (buttonType) {
             case ABOUT:
                 Log.i(LOCAL_TAG, "About.");
-                game.setScreen(ScreenType.ABOUT);
+                game.changeToScreen(ScreenType.ABOUT);
                 break;
             case OPTIONS:
                 Log.i(LOCAL_TAG, "Options.");
-                game.setReturningScreen(ScreenType.OPTIONS);
+                game.changeToReturningScreen(ScreenType.OPTIONS);
                 break;
             case PLAY:
                 Log.i(LOCAL_TAG, "Play.");
-                game.setScreen(ScreenType.SELECT_LEVEL);
+                game.changeToScreen(ScreenType.SELECT_LEVEL);
                 break;
             case UPGRADE:
                 Log.i(LOCAL_TAG, "Upgrade.");
-                game.setReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
+                game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
                 break;
             case UNLOCK_ALL_LEVELS:
                 Log.i(LOCAL_TAG, "Unlock All Levels.");
-                game.setReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
+                game.changeToReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
                 break;
             default:
                 // not valid option - do nothing

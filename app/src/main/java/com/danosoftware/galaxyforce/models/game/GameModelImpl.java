@@ -127,13 +127,13 @@ public class GameModelImpl implements GameModel {
             case QUIT:
 
                 // exit game. go to select level screen
-                game.setScreen(ScreenType.SELECT_LEVEL);
+                game.changeToScreen(ScreenType.SELECT_LEVEL);
                 break;
 
             case OPTIONS:
 
                 // go to options screen - will return back when done
-                game.setReturningScreen(ScreenType.OPTIONS);
+                game.changeToReturningScreen(ScreenType.OPTIONS);
 
                 // set state back to running so doesn't change screens every time
                 this.modelState = ModelState.RUNNING;

@@ -424,7 +424,7 @@ public class GamePlayHandler implements GameHandler {
             if (wave >= GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
                 Log.i(TAG, "Exceeded maximum free zone. Must upgrade.");
                 pause();
-                game.setReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
+                game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
 
                 /*
                  * the user may not upgrade but we still want to store the
@@ -460,7 +460,7 @@ public class GamePlayHandler implements GameHandler {
             else if (wave >= GameConstants.MAX_WAVES) {
                 Log.i(TAG, "Game completed.");
                 pause();
-                game.setScreen(ScreenType.GAME_COMPLETE);
+                game.changeToScreen(ScreenType.GAME_COMPLETE);
                 return;
             }
             // advance to next level

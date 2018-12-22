@@ -253,7 +253,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     @Override
     public void update(float deltaTime) {
         if (modelState == ModelState.GO_BACK) {
-            game.setScreen(ScreenType.MAIN_MENU);
+            game.changeToScreen(ScreenType.MAIN_MENU);
         }
 
         // calculate screen level scroll speed based on distance from target.
@@ -286,10 +286,10 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     public void setLevel(int level) {
         if (level > GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
             Log.i(LOCAL_TAG, "Exceeded maximum free zone. Must upgrade.");
-            game.setReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
+            game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
         } else {
             Log.i(LOCAL_TAG, "Selected Level: " + level);
-            game.setGameScreen(level);
+            game.changeToGameScreen(level);
         }
     }
 
@@ -370,7 +370,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         switch (buttonType) {
             case UNLOCK_ALL_LEVELS:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unlock All Levels.");
-                game.setReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
+                game.changeToReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
                 break;
             default:
                 Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unsupported button type:'" + buttonType.name() + "'.");

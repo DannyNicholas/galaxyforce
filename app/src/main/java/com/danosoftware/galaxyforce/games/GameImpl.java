@@ -120,14 +120,14 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void setScreen(ScreenType screenType) {
+    public void changeToScreen(ScreenType screenType) {
 
         changeScreen(
                 screenFactory.newScreen(screenType));
     }
 
     @Override
-    public void setGameScreen(int wave) {
+    public void changeToGameScreen(int wave) {
 
         changeScreen(
                 screenFactory.newGameScreen(wave));
@@ -146,13 +146,13 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void setReturningScreen(ScreenType gameScreen) {
+    public void changeToReturningScreen(ScreenType gameScreen) {
 
         // set returning screen to current screen
         this.returningScreen = this.screen;
 
         // call normal set screen method to change screens
-        setScreen(gameScreen);
+        changeToScreen(gameScreen);
     }
 
     @Override
@@ -169,41 +169,19 @@ public class GameImpl implements Game {
 
     @Override
     public void resume() {
-
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Resume Game");
-
-        // check if screen exists as resume is also called onCreate before
-        // screen exists
-        if (screen != null) {
-            screen.resume();
-        }
-
-        // glView.onResume();
-
-        // what state do we use?
-        // maybe separate pause/resume from other states
-        // model.setState(State.PAUSED);
+        screen.resume();
     }
 
     @Override
     public void pause() {
-
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Pause Game");
-
         screen.pause();
-
-        // glView.onPause();
-
-        // what state do we use?
-        // maybe separate pause/resume from other states
-
-        // model.setState(State.PAUSED);
     }
 
     @Override
     public void dispose() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Dispose Game");
-
         screen.dispose();
     }
 

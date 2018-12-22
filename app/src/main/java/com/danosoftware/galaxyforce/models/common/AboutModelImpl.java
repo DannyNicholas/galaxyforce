@@ -114,7 +114,7 @@ public class AboutModelImpl implements Model, TouchScreenModel {
     @Override
     public void update(float deltaTime) {
         if (modelState == ModelState.GO_BACK) {
-            game.setScreen(ScreenType.MAIN_MENU);
+            game.changeToScreen(ScreenType.MAIN_MENU);
         }
 
         // move stars

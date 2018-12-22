@@ -76,7 +76,7 @@ public class SplashModelImpl implements Model, TouchScreenModel {
 
         // if timer expired or screen pressed go to main menu
         if (getState() == ModelState.EXPIRED) {
-            game.setScreen(ScreenType.MAIN_MENU);
+            game.changeToScreen(ScreenType.MAIN_MENU);
         }
     }
 

@@ -185,7 +185,7 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, ButtonMo
         // if (getState() == ModelState.GO_BACK)
         // {
         // Screen screen = ScreenFactory.newScreen(ScreenType.MAIN_MENU);
-        // Games.getGame().setScreen(screen);
+        // Games.getGame().changeToScreen(screen);
         // return;
         // }
 

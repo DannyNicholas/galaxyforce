@@ -15,20 +15,20 @@ public interface Game {
 
     void update(float deltaTime);
 
-    void setScreen(ScreenType gameScreen);
+    void changeToScreen(ScreenType gameScreen);
 
-    void setGameScreen(int wave);
+    void changeToGameScreen(int wave);
 
     /**
      * Change to a screen that will eventually return back to this screen. A
      * subsequent call to screenReturn() will return back to the the previous
      * screen.
      */
-    void setReturningScreen(ScreenType gameScreen);
+    void changeToReturningScreen(ScreenType gameScreen);
 
     /**
      * Change back to previous screen. That is the screen that we were on when
-     * setReturningScreen() was called.
+     * changeToReturningScreen() was called.
      */
     void screenReturn();
 
