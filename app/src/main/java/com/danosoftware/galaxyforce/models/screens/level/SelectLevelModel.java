@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.level;
+package com.danosoftware.galaxyforce.models.screens.level;
 
 public interface SelectLevelModel {
 

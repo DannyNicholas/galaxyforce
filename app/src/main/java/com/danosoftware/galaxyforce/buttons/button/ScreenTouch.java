@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.buttons.button;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.models.touch_screen.TouchScreenModel;
+import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 /**

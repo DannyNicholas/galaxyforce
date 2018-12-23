@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -62,7 +62,7 @@ public class BaseHelperTest {
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
 
     private final IBasePrimary primaryBase = mock(IBasePrimary.class);
-    private final GameHandler model = mock(GameHandler.class);
+    private final IGameHandler model = mock(IGameHandler.class);
 
     private IBaseHelper baseHelper;
 
@@ -270,7 +270,7 @@ public class BaseHelperTest {
         try {
             Constructor<BaseHelper> constructor = BaseHelper.class.getDeclaredConstructor(
                     IBasePrimary.class,
-                    GameHandler.class,
+                    IGameHandler.class,
                     HelperSide.class,
                     boolean.class,
                     float.class);

@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.controllers.models.swipe;
 
-import com.danosoftware.galaxyforce.models.level.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.screens.level.SelectLevelModel;
 import com.danosoftware.galaxyforce.view.Vector2;
 
 /**

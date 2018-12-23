@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -18,7 +18,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
      */
 
     /* reference to game model */
-    private final GameHandler model;
+    private final IGameHandler model;
 
     /* minimum delay between alien spqwning in seconds */
     private final float minSpawnDelay;
@@ -53,7 +53,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
      * @param spawnDelayRandom - additional maximum random time before spawns
      */
     public SpawnRandomDelay(
-            final GameHandler model,
+            final IGameHandler model,
             final AlienType alienType,
             final List<PowerUpType> powerUpTypes,
             final float minSpawnDelay,

@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
@@ -63,7 +63,7 @@ public class AlienDragonHead extends AbstractAlien {
     /* variable to store time passed since last alien direction change */
     private float timeSinceLastDirectionChange;
 
-    private final GameHandler model;
+    private final IGameHandler model;
 
     /**
      * Create Alien Dragon's Head that has rotated missiles and generates random
@@ -74,7 +74,7 @@ public class AlienDragonHead extends AbstractAlien {
             final int xStart,
             final int yStart,
             final float timeDelayStart,
-            final GameHandler model,
+            final IGameHandler model,
             final List<IAlienFollower> dragonBodies
     ) {
 

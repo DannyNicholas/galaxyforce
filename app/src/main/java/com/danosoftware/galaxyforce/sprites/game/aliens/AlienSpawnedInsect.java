@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
@@ -58,7 +58,7 @@ public class AlienSpawnedInsect extends AbstractAlien {
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
-            final GameHandler model) {
+            final IGameHandler model) {
         super(
                 ANIMATION,
                 xStart,

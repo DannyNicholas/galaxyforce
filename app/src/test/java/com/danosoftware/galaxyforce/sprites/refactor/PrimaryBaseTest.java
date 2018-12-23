@@ -5,7 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -64,7 +64,7 @@ public class PrimaryBaseTest {
     private IBaseHelper leftHelper;
     private IBaseHelper rightHelper;
 
-    private GameHandler model;
+    private IGameHandler model;
 
 
     @Before
@@ -88,7 +88,7 @@ public class PrimaryBaseTest {
             spriteId.updateProperties(mockTexture);
         }
 
-        model = mock(GameHandler.class);
+        model = mock(IGameHandler.class);
         primaryBase = new BasePrimary(model);
         primaryBaseSpy = spy(primaryBase);
 

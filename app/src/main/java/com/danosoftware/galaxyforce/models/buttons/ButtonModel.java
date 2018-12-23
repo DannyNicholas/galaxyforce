@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.button;
+package com.danosoftware.galaxyforce.models.buttons;
 
 public interface ButtonModel {
 

@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.mainmenu;
 
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
-import com.danosoftware.galaxyforce.models.button.ButtonModel;
-import com.danosoftware.galaxyforce.models.button.ButtonType;
+import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
+import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;

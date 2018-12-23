@@ -1,6 +1,6 @@
-package com.danosoftware.galaxyforce.models.options;
+package com.danosoftware.galaxyforce.models.screens.options;
 
-import com.danosoftware.galaxyforce.models.common.Model;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.options.Option;
 
 public interface OptionsModel extends Model {

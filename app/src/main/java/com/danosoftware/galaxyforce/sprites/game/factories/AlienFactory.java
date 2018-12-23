@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
@@ -55,7 +55,7 @@ public class AlienFactory {
             final PowerUpType powerUp,
             final List<Point> path,
             final float delay,
-            final GameHandler model,
+            final IGameHandler model,
             final boolean restartImmediately) {
         List<IAlien> aliens = new ArrayList<>();
 
@@ -133,7 +133,7 @@ public class AlienFactory {
             final int xStart,
             final int yStart,
             final float delay,
-            final GameHandler model,
+            final IGameHandler model,
             final boolean restartImmediately) {
 
         List<IAlien> aliens = new ArrayList<>();
@@ -218,7 +218,7 @@ public class AlienFactory {
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
-            final GameHandler model) {
+            final IGameHandler model) {
         List<IAlien> aliens = new ArrayList<>();
         Sound soundEffect;
 

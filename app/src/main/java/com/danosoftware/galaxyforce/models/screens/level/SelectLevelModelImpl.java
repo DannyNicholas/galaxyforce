@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.level;
+package com.danosoftware.galaxyforce.models.screens.level;
 
 import android.util.Log;
 
@@ -15,8 +15,8 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.games.Game;
-import com.danosoftware.galaxyforce.models.button.ButtonModel;
-import com.danosoftware.galaxyforce.models.button.ButtonType;
+import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
+import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;

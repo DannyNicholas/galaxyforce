@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
-import com.danosoftware.galaxyforce.models.level.SelectLevelModel;
+import com.danosoftware.galaxyforce.models.screens.level.SelectLevelModel;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;

@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
@@ -125,14 +125,14 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private boolean shielded = false;
 
     /* reference to model */
-    private final GameHandler model;
+    private final IGameHandler model;
 
     /* reference to sound player and sounds */
     private final SoundPlayer soundPlayer;
     private final Sound explosionSound;
 
     public BasePrimary(
-            final GameHandler model) {
+            final IGameHandler model) {
 
         super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
         this.state = ACTIVE;

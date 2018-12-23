@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.buttons.sprite_button;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
@@ -19,13 +19,13 @@ public class PauseButton implements SpriteButton {
     private static final int PAUSE_BUTTON_Y = GameConstants.GAME_HEIGHT - 50 - 10;
 
     // reference to button's parent model
-    private final GameHandler model;
+    private final IGameHandler model;
 
     // reference to button sprite
     private final IButtonSprite buttonSprite;
 
     public PauseButton(
-            GameHandler model) {
+            IGameHandler model) {
 
         this.model = model;
 

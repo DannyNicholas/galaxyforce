@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
@@ -43,7 +43,7 @@ public class AlienGobby extends AbstractAlienWithPath {
      * power-ups.
      */
     public AlienGobby(
-            final GameHandler model,
+            final IGameHandler model,
             final PowerUpType powerUp,
             final List<Point> alienPath,
             final float delayStart,

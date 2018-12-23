@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.play.game_handler;
+package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
 import android.util.Log;
 
@@ -8,12 +8,12 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.models.button.ButtonModel;
-import com.danosoftware.galaxyforce.models.button.ButtonType;
-import com.danosoftware.galaxyforce.models.game.GameModel;
-import com.danosoftware.galaxyforce.models.play.PlayModel;
+import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
+import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -22,7 +22,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PausedHandler implements PlayModel, ButtonModel {
+public class GameOverHandler implements IHandler, ButtonModel {
 
     /*
      * ******************************************************
@@ -31,7 +31,7 @@ public class PausedHandler implements PlayModel, ButtonModel {
      */
 
     /* logger tag */
-    private static final String TAG = PausedHandler.class.getSimpleName();
+    private static final String TAG = GameOverHandler.class.getSimpleName();
 
     /*
      * ******************************************************
@@ -43,16 +43,13 @@ public class PausedHandler implements PlayModel, ButtonModel {
     private final Controller controller;
 
     /* reference to pause menu buttons */
-    private List<SpriteTextButton> menuButtons;
+    private final List<SpriteTextButton> menuButtons;
 
     /* Stores list of all text to be returned. */
-    private List<Text> allText;
-
-    /* Stores list of all sprites to be shown as paused. */
-    private List<ISprite> pausedSprites;
+    private final List<Text> allText;
 
     /* Stores list of all sprites to be returned. */
-    private List<ISprite> allSprites;
+    private final List<ISprite> allSprites;
 
     /* reference to current state */
     private ModelState modelState;
@@ -60,8 +57,11 @@ public class PausedHandler implements PlayModel, ButtonModel {
     /* Reference to the game model */
     private final GameModel gameModel;
 
-    /* reference to flashing paused text */
-    private FlashingText flashingPausedText;
+    /* stars sprites */
+    private final List<Star> stars;
+
+    /* reference to flashing game over text */
+    private final FlashingText flashingGameOverText;
 
     /*
      * ******************************************************
@@ -71,16 +71,37 @@ public class PausedHandler implements PlayModel, ButtonModel {
      * ******************************************************
      */
 
-    public PausedHandler(GameModel gameModel, Controller controller, List<ISprite> pausedSprites) {
+    public GameOverHandler(GameModel gameModel, Controller controller, List<Star> stars) {
         this.controller = controller;
         this.gameModel = gameModel;
-        this.pausedSprites = pausedSprites;
-
+        this.stars = stars;
         this.menuButtons = new ArrayList<>();
         this.allText = new ArrayList<>();
         this.allSprites = new ArrayList<>();
+        this.modelState = ModelState.GAME_OVER;
 
-        this.modelState = ModelState.PAUSED;
+        // build menu buttons
+        buildButtons();
+
+        // build list of sprites and text objects
+        buildSpriteList();
+        buildTextList();
+
+        // add flashing game over text
+        Text gameOver = Text.newTextRelativePositionX("GAME OVER", TextPositionX.CENTRE, 100 + (4 * 170));
+        this.flashingGameOverText = new FlashingTextImpl(gameOver, 0.5f, this);
+    }
+
+    private void buildButtons() {
+
+        // remove any existing touch controllers
+        controller.clearTouchControllers();
+
+        // create list of menu buttons
+        menuButtons.clear();
+        addNewMenuButton(3, "PLAY", ButtonType.PLAY);
+        addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
+        addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
     }
 
     /*
@@ -91,22 +112,6 @@ public class PausedHandler implements PlayModel, ButtonModel {
 
     @Override
     public void initialise() {
-        // remove any existing touch controllers
-        controller.clearTouchControllers();
-
-        // create list of menu buttons
-        menuButtons.clear();
-        addNewMenuButton(3, "RESUME", ButtonType.RESUME);
-        addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
-        addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
-
-        // build list of sprites and text objects
-        buildSpriteList();
-        buildTextList();
-
-        // add flashing paused text
-        Text pausedText = Text.newTextRelativePositionX("PAUSED", TextPositionX.CENTRE, 100 + (4 * 170));
-        flashingPausedText = new FlashingTextImpl(pausedText, 0.5f, this);
     }
 
     @Override
@@ -121,11 +126,13 @@ public class PausedHandler implements PlayModel, ButtonModel {
 
     @Override
     public void update(float deltaTime) {
+        switch (modelState) {
 
-        switch (getState()) {
-
-            case PAUSED:
+            case GAME_OVER:
                 // normal state before any buttons are pressed
+                for (Star eachStar : stars) {
+                    eachStar.animate(deltaTime);
+                }
                 break;
 
             case GO_BACK:
@@ -133,27 +140,30 @@ public class PausedHandler implements PlayModel, ButtonModel {
                 gameModel.quit();
                 break;
 
-            case OPTIONS:
-                // set back to paused state so model will be in
-                // paused state when returning from options.
-                // otherwise will keep calling options() method.
-                setState(ModelState.PAUSED);
-
-                gameModel.options();
+            case PLAYING:
+                gameModel.play();
                 break;
 
-            case PLAYING:
-                gameModel.resumeAfterPause();
+            case OPTIONS:
+                // set back to game over state so model will be in
+                // game over state when returning from options.
+                // otherwise will keep calling options() method.
+                this.modelState = ModelState.GAME_OVER;
+
+                gameModel.options();
                 break;
 
             default:
                 Log.e(TAG, "Illegal Model State.");
                 throw new IllegalArgumentException("Illegal Model State.");
-
         }
 
-        // update flashing text
-        flashingPausedText.update(deltaTime);
+        flashingGameOverText.update(deltaTime);
+    }
+
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
     }
 
     @Override
@@ -162,47 +172,32 @@ public class PausedHandler implements PlayModel, ButtonModel {
 
             case MAIN_MENU:
                 Log.i(TAG, "'Main Menu' selected.");
-                setState(ModelState.GO_BACK);
+                this.modelState = ModelState.GO_BACK;
                 break;
-
+            case PLAY:
+                Log.i(TAG, "'Play' selected.");
+                this.modelState = ModelState.PLAYING;
+                break;
             case OPTIONS:
                 Log.i(TAG, "'Options' selected.");
-                setState(ModelState.OPTIONS);
-                break;
-
-            case RESUME:
-                Log.i(TAG, "'Resume' selected.");
-                setState(ModelState.PLAYING);
+                this.modelState = ModelState.OPTIONS;
                 break;
 
             default:
                 Log.e(TAG, "Illegal Button Type.");
                 throw new IllegalArgumentException("Illegal Button Type.");
-
         }
     }
 
     @Override
     public void goBack() {
         Log.i(TAG, "'Back Button' selected.");
-        setState(ModelState.GO_BACK);
+        this.modelState = ModelState.GO_BACK;
     }
 
     @Override
     public void resume() {
         // no action for this model
-
-    }
-
-    @Override
-    public void pause() {
-        // no action for this model
-    }
-
-    @Override
-    public void dispose() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -214,19 +209,16 @@ public class PausedHandler implements PlayModel, ButtonModel {
         }
     }
 
+    @Override
+    public void pause() {
+        // no action for this model
+    }
+
     /*
      * ******************************************************
      * PRIVATE HELPER METHODS
      * ******************************************************
      */
-
-    private void setState(ModelState modelState) {
-        this.modelState = modelState;
-    }
-
-    private ModelState getState() {
-        return modelState;
-    }
 
     private void addNewMenuButton(int row, String label, ButtonType buttonType) {
         MenuButton button = new MenuButton(
@@ -250,14 +242,10 @@ public class PausedHandler implements PlayModel, ButtonModel {
      */
     private void buildSpriteList() {
         allSprites.clear();
-
-        // get sprites from game
-        allSprites.addAll(pausedSprites);
-
+        allSprites.addAll(stars);
         for (SpriteTextButton eachButton : menuButtons) {
             allSprites.add(eachButton.getSprite());
         }
-
     }
 
     /**
@@ -268,12 +256,9 @@ public class PausedHandler implements PlayModel, ButtonModel {
          * adds text for the buttons. no need to add text for flashing text as
          * this is added and removed to the text list by callbacks.
          */
-
         allText.clear();
-
         for (SpriteTextButton eachButton : menuButtons) {
             allText.add(eachButton.getText());
         }
-
     }
 }

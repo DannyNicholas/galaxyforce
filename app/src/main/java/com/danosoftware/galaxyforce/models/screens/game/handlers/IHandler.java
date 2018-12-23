@@ -1,9 +1,9 @@
-package com.danosoftware.galaxyforce.models.play;
+package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
-import com.danosoftware.galaxyforce.models.common.Model;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.text.Text;
 
-public interface PlayModel extends Model {
+public interface IHandler extends Model {
     /**
      * Called by any flashing text implementations when their state changes. The
      * supplied text should be displayed if the flashState is true. Otherwise

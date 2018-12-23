@@ -5,7 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
 import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -91,7 +91,7 @@ public class WaveFactoryTest {
                 any(Integer.class),
                 any(Integer.class),
                 any(Float.class),
-                any(GameHandler.class),
+                any(IGameHandler.class),
                 any(Boolean.class))).thenReturn(mockedAliens);
     }
 
@@ -101,7 +101,7 @@ public class WaveFactoryTest {
 
             logger.info("Creating wave: " + wave);
 
-            GameHandler handler = mock(GameHandler.class);
+            IGameHandler handler = mock(IGameHandler.class);
             WaveFactory waveFactory = new WaveFactory(handler);
             List<SubWave> subWave = waveFactory.createWave(wave);
 

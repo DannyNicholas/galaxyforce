@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.game;
+package com.danosoftware.galaxyforce.models.screens.game;
 
 import android.util.Log;
 
@@ -7,12 +7,12 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.games.Game;
-import com.danosoftware.galaxyforce.models.common.Model;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandlerFrameRateDecorator;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameOverHandler;
-import com.danosoftware.galaxyforce.models.play.game_handler.GamePlayHandler;
-import com.danosoftware.galaxyforce.models.play.game_handler.PausedHandler;
+import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.GameHandlerFrameRateDecorator;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.GameOverHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.GamePlayHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.PausedHandler;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
@@ -86,7 +86,7 @@ public class GameModelImpl implements GameModel {
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
 
         // initial handler - goes straight into game
-        GameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, wave, billingService);
+        IGameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, wave, billingService);
         this.modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
         this.modelState = ModelState.RUNNING;
     }
@@ -146,8 +146,8 @@ public class GameModelImpl implements GameModel {
 
                 // get list of game sprites to show on pause screen
                 List<ISprite> pausedSprites;
-                if (modelHandler instanceof GameHandler) {
-                    GameHandler gameHandler = (GameHandler) modelHandler;
+                if (modelHandler instanceof IGameHandler) {
+                    IGameHandler gameHandler = (IGameHandler) modelHandler;
                     pausedSprites = gameHandler.getPausedSprites();
 
                 } else {
@@ -185,7 +185,7 @@ public class GameModelImpl implements GameModel {
                     this.lastWave = 1;
                 }
 
-                GameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, lastWave, billingService);
+                IGameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, lastWave, billingService);
                 modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
                 modelHandler.initialise();
 
@@ -229,7 +229,7 @@ public class GameModelImpl implements GameModel {
          * if game handler is running. Trying to pause from other handlers (e.g.
          * game over or already paused) could cause unexpected behaviour.
          */
-        if (modelHandler instanceof GameHandler) {
+        if (modelHandler instanceof IGameHandler) {
             Log.i(TAG, "State: 'Paused'.");
 
             // will cause change to pause handler

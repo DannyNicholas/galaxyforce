@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.options;
+package com.danosoftware.galaxyforce.models.screens.options;
 
 import android.util.Log;
 

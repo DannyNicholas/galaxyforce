@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.powerup;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.PowerUpFactory;
 
@@ -13,7 +13,7 @@ public class PowerUpRandom implements PowerUpBehaviour {
      */
 
     /* reference to game model */
-    private final GameHandler model;
+    private final IGameHandler model;
 
     /* will this alien generate a power-up when destroyed */
     private final boolean hasPowerUp;
@@ -28,7 +28,7 @@ public class PowerUpRandom implements PowerUpBehaviour {
      * @param powerUpChance - chance that this alien will generate a power-up when
      *                      destroyed
      */
-    public PowerUpRandom(GameHandler model, double powerUpChance) {
+    public PowerUpRandom(IGameHandler model, double powerUpChance) {
         this.model = model;
 
         // decide whether this alien should generate a power-up when destroyed
@@ -44,7 +44,7 @@ public class PowerUpRandom implements PowerUpBehaviour {
      *                      destroyed
      * @param powerUps      - list of power-ups to choose from
      */
-    public PowerUpRandom(GameHandler model, double powerUpChance, PowerUpType... powerUps) {
+    public PowerUpRandom(IGameHandler model, double powerUpChance, PowerUpType... powerUps) {
         this(model, powerUpChance);
         this.powerUps = powerUps;
     }

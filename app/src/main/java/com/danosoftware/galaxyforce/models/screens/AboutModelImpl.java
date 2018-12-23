@@ -1,4 +1,8 @@
-package com.danosoftware.galaxyforce.models.common;
+package com.danosoftware.galaxyforce.models.screens;
+
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.danosoftware.galaxyforce.buttons.button.Button;
 import com.danosoftware.galaxyforce.buttons.button.ScreenTouch;
@@ -8,8 +12,9 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
 import com.danosoftware.galaxyforce.games.Game;
-import com.danosoftware.galaxyforce.models.touch_screen.TouchScreenModel;
+import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.PackageManagers;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.RotatingSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -20,12 +25,12 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameCompleteModelImpl implements Model, TouchScreenModel {
-
-    /* logger tag */
-    private static final String TAG = "GameCompleteImpl";
+public class AboutModelImpl implements Model, TouchScreenModel {
 
     private final Game game;
+
+    /* logger tag */
+    private static final String TAG = "AboutModelImpl";
 
     // references to stars
     private final List<Star> stars;
@@ -41,7 +46,7 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
     // reference to all text objects in model
     private final List<Text> allText;
 
-    public GameCompleteModelImpl(Game game, Controller controller) {
+    public AboutModelImpl(Game game, Controller controller) {
         this.game = game;
         this.allSprites = new ArrayList<>();
         this.rotatedSprites = new ArrayList<>();
@@ -51,6 +56,9 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
 
         // add model sprites
         addSprites();
+
+        // add version number
+        addVersion();
 
         // add button that covers the entire screen
         Button screenTouch = new ScreenTouch(this);
@@ -72,8 +80,25 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
         }
 
         allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
+    }
 
-        allText.add(Text.newTextRelativePositionX("GAME COMPLETED!", TextPositionX.CENTRE, 175 + (3 * 170)));
+    private void addVersion() {
+
+        // get package manager, name and then use them to get version number
+        PackageManager packageMgr = PackageManagers.getPackageMgr();
+        String packageName = PackageManagers.getPackageName();
+
+        if (packageMgr != null && packageName != null) {
+            try {
+                PackageInfo info = packageMgr.getPackageInfo(packageName, 0);
+                if (info != null) {
+                    allText.add(Text.newTextRelativePositionX("VERSION " + info.versionName, TextPositionX.CENTRE, 175 + (3 * 170)));
+                }
+
+            } catch (NameNotFoundException e) {
+                // no action - but version number won't be displayed
+            }
+        }
     }
 
     @Override
@@ -98,8 +123,8 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
         }
 
         // rotate sprites
-        for (RotatingSprite eachSprite : rotatedSprites) {
-            eachSprite.animate(deltaTime);
+        for (RotatingSprite sprite : rotatedSprites) {
+            sprite.animate(deltaTime);
         }
     }
 

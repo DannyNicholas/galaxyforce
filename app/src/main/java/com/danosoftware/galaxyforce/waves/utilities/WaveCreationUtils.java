@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.waves.utilities;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -35,7 +35,7 @@ public final class WaveCreationUtils {
      */
     public static List<IAlien> createPathAlienSubWave(
             final SubWavePathConfig config,
-            final GameHandler model) {
+            final IGameHandler model) {
 
         List<IAlien> aliens = new ArrayList<>();
 
@@ -81,7 +81,7 @@ public final class WaveCreationUtils {
      */
     public static List<IAlien> createNoPathAlienSubWave(
             final SubWaveNoPathConfig config,
-            final GameHandler model) {
+            final IGameHandler model) {
 
         List<IAlien> aliens = new ArrayList<>();
 
@@ -126,7 +126,7 @@ public final class WaveCreationUtils {
             final PowerUpAllocator powerUpAllocator,
             final List<Point> path,
             final SubWavePathRuleProperties props,
-            final GameHandler model) {
+            final IGameHandler model) {
 
         List<IAlien> aliensOnPath = new ArrayList<>();
 

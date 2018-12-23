@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.bases;
 
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
@@ -28,7 +28,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     private IAlien alien;
 
     /* reference to model */
-    private final GameHandler model;
+    private final IGameHandler model;
 
     /* offset applied to x and y every move */
     private int xDelta;
@@ -40,7 +40,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     /* variable to store time passed since last missile direction change */
     private float timeSinceMissileDirectionChange;
 
-    public BaseMissileGuided(int xStart, int yStart, GameHandler model) {
+    public BaseMissileGuided(int xStart, int yStart, IGameHandler model) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);
         this.model = model;
 

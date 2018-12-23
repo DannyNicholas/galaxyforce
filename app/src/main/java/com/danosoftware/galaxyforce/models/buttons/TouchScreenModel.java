@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.touch_screen;
+package com.danosoftware.galaxyforce.models.buttons;
 
 
 public interface TouchScreenModel {

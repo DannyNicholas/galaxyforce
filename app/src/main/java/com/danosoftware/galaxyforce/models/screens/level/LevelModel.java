@@ -1,6 +1,6 @@
-package com.danosoftware.galaxyforce.models.level;
+package com.danosoftware.galaxyforce.models.screens.level;
 
-import com.danosoftware.galaxyforce.models.common.Model;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 

@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.waves.utilities;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
@@ -28,9 +28,9 @@ import static com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils.cre
  * aliens following a path
  */
 public class WaveFactory {
-    private final GameHandler model;
+    private final IGameHandler model;
 
-    public WaveFactory(GameHandler model) {
+    public WaveFactory(IGameHandler model) {
         this.model = model;
     }
 

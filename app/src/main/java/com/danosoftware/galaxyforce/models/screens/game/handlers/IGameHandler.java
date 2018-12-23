@@ -1,17 +1,16 @@
-package com.danosoftware.galaxyforce.models.play.game_handler;
+package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.models.play.PlayModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.List;
 
-public interface GameHandler extends PlayModel {
+public interface IGameHandler extends IHandler {
 
     /**
      * Returns the current base

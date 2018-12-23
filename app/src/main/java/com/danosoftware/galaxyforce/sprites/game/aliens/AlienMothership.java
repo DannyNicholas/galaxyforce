@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
@@ -42,7 +42,7 @@ public class AlienMothership extends AbstractAlienWithPath {
      * power-ups.
      */
     public AlienMothership(
-            final GameHandler model,
+            final IGameHandler model,
             final PowerUpType powerUpType,
             final List<PowerUpType> spwanPowerUpTypes,
             final List<Point> alienPath,

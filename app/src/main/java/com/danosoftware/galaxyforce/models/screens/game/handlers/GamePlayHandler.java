@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.play.game_handler;
+package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
 import android.util.Log;
 
@@ -21,7 +21,7 @@ import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.game.handlers.GamePlayAssetsManager;
 import com.danosoftware.galaxyforce.game.handlers.IGamePlayAssetsManager;
 import com.danosoftware.galaxyforce.games.Game;
-import com.danosoftware.galaxyforce.models.game.GameModel;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.sound.Sound;
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class GamePlayHandler implements GameHandler {
+public class GamePlayHandler implements IGameHandler {
 
     /*
      * ******************************************************

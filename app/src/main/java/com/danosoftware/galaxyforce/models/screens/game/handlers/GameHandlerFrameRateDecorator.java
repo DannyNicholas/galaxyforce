@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.play.game_handler;
+package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
 import com.danosoftware.galaxyforce.enumerations.TextPositionY;
@@ -19,10 +19,10 @@ import java.util.List;
  * Game Handler decorator that adds frame-rate calculations and display
  * functionality.
  */
-public class GameHandlerFrameRateDecorator implements GameHandler {
+public class GameHandlerFrameRateDecorator implements IGameHandler {
 
     // decorated game handler
-    private final GameHandler gameHandler;
+    private final IGameHandler gameHandler;
 
     // FPS counter
     private final FPSCounter fpsCounter;
@@ -30,7 +30,7 @@ public class GameHandlerFrameRateDecorator implements GameHandler {
     // FPS display text
     private Text tempFps;
 
-    public GameHandlerFrameRateDecorator(GameHandler gameHandler) {
+    public GameHandlerFrameRateDecorator(IGameHandler gameHandler) {
         this.gameHandler = gameHandler;
         this.fpsCounter = new FPSCounter();
         this.tempFps = createFpsText();

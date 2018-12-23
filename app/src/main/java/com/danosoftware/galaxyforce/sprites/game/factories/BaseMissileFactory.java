@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.play.game_handler.GameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sound.SoundEffectBank;
@@ -44,7 +44,7 @@ public class BaseMissileFactory {
     public static BaseMissileBean createBaseMissile(
             IBase base,
             BaseMissileType baseMissileType,
-            GameHandler model) {
+            IGameHandler model) {
         List<IBaseMissile> baseMissiles = new ArrayList<>();
         Sound sound;
 
@@ -85,7 +85,7 @@ public class BaseMissileFactory {
             IBase base,
             BaseMissileType baseMissileType,
             int xOffset,
-            GameHandler model,
+            IGameHandler model,
             float angle) {
 
         final IBaseMissile missile;

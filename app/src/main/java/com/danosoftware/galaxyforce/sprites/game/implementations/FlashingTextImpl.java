@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.implementations;
 
-import com.danosoftware.galaxyforce.models.play.PlayModel;
+import com.danosoftware.galaxyforce.models.screens.game.handlers.IHandler;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.text.Text;
 
@@ -12,7 +12,7 @@ public class FlashingTextImpl implements FlashingText {
     private final float flashDelay;
 
     /* reference to model. */
-    private final PlayModel model;
+    private final IHandler model;
 
     /* time since flash state last changed */
     private float timeSinceflashStateChange = 0f;
@@ -20,7 +20,7 @@ public class FlashingTextImpl implements FlashingText {
     /* current flash state - show text or hide text. */
     private boolean flashState;
 
-    public FlashingTextImpl(Text flashingText, float flashDelay, PlayModel model) {
+    public FlashingTextImpl(Text flashingText, float flashDelay, IHandler model) {
         this.flashingText = flashingText;
         this.flashDelay = flashDelay;
         this.model = model;
