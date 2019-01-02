@@ -3,12 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.bases;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sound.SoundPlayer;
-import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
@@ -79,8 +75,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private final IGameHandler model;
 
     // reference to sound player and sounds
-    private final SoundPlayer soundPlayer;
-    private final Sound explosionSound;
+    private final SoundPlayerService sounds;
 
     // explosion behaviour
     private final ExplodeBehaviour explosion;
@@ -100,6 +95,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     public static void createHelperBase(
             final IBasePrimary primaryBase,
             final IGameHandler model,
+            final SoundPlayerService sounds,
             final HelperSide side,
             final boolean shieldUp,
             final float shieldSyncTime) {
@@ -107,6 +103,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         IBaseHelper helper = new BaseHelper(
                 primaryBase,
                 model,
+                sounds,
                 side,
                 shieldUp,
                 shieldSyncTime
@@ -121,6 +118,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private BaseHelper(
             final IBasePrimary primaryBase,
             final IGameHandler model,
+            final SoundPlayerService sounds,
             final HelperSide side,
             final boolean shieldUp,
             final float shieldSyncTime) {
@@ -131,6 +129,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
                 primaryBase.y()
         );
         this.model = model;
+        this.sounds = sounds;
         this.primaryBase = primaryBase;
         this.state = ACTIVE;
         this.side = side;
@@ -142,11 +141,6 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         } else {
             removeShield();
         }
-
-        // set-up sound effects from sound bank
-        this.soundPlayer = SoundPlayerSingleton.getInstance();
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        this.explosionSound = soundBank.get(SoundEffect.EXPLOSION);
     }
 
     @Override
@@ -215,7 +209,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         this.state = EXPLODING;
         primaryBase.helperExploding(side);
         explosion.startExplosion();
-        soundPlayer.playSound(explosionSound);
+        sounds.play(SoundEffect.EXPLOSION);
     }
 
     @Override

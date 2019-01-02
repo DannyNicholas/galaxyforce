@@ -3,6 +3,7 @@ package com.danosoftware.galaxyforce.sound;
 import android.media.SoundPool;
 
 public class AndroidSound implements Sound {
+
     int soundId;
     SoundPool soundPool;
 

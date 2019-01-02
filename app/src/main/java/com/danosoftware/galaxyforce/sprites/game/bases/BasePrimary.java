@@ -7,12 +7,8 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sound.SoundPlayer;
-import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
@@ -127,12 +123,12 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     /* reference to model */
     private final IGameHandler model;
 
-    /* reference to sound player and sounds */
-    private final SoundPlayer soundPlayer;
-    private final Sound explosionSound;
+    // reference to sound player
+    private final SoundPlayerService sounds;
 
     public BasePrimary(
-            final IGameHandler model) {
+            final IGameHandler model,
+            final SoundPlayerService sounds) {
 
         super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
         this.state = ACTIVE;
@@ -148,11 +144,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         this.model = model;
 
-
         // set-up sound effects from sound bank
-        this.soundPlayer = SoundPlayerSingleton.getInstance();
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        this.explosionSound = soundBank.get(SoundEffect.EXPLOSION);
+        this.sounds = sounds;
 
         // set-up missile behaviours
         this.baseMissileType = DEFAULT_MISSILE_TYPE;
@@ -308,7 +301,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         state = EXPLODING;
 
         // play explosion sound effect
-        soundPlayer.playSound(explosionSound);
+        sounds.play(SoundEffect.EXPLOSION);
 
         // if primary base explodes - all helper bases must also explode.
         for (IBaseHelper aHelperBase : helpers.values()) {
@@ -405,13 +398,12 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      * Created helper base for wanted side.
      * <p>
      * Helper will register itself with the primary base when created.
-     *
-     * @param side
      */
     private void createHelperBase(HelperSide side) {
         BaseHelper.createHelperBase(
                 this,
                 model,
+                sounds,
                 side,
                 shielded,
                 shielded ? shield.getSynchronisation() : 0
@@ -445,11 +437,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
       ***********************
      */
 
-    /**
-     * @param baseMissileType
-     * @param baseMissileDelay
-     * @param timeActive
-     */
     private void setBaseMissileType(BaseMissileType baseMissileType, float baseMissileDelay, float timeActive) {
         this.baseMissileType = baseMissileType;
         this.baseMissileDelay = baseMissileDelay;
@@ -459,23 +446,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         if (baseMissileType != DEFAULT_MISSILE_TYPE) {
             timeSinceBaseLastFired = baseMissileDelay;
         }
-
-        // change the missile type for any helper bases
-//        for (IBaseHelperSprite aHelperBase : helpers) {
-//            aHelperBase.setBaseMissileType(baseMissileType, baseMissileDelay, timeActive);
-//        }
-
     }
-
-
-    /**
-     * return an instance of base at supplied position
-     */
-//    public static SpriteBase newBase(int xStart, int yStart, int width, int height, EnergyBar energyBar, Direction direction,
-//                                     GameHandler model)
-//    {
-//        return new com.danosoftware.galaxyforce.sprites.game.implementations.BaseMain(xStart, yStart, com.danosoftware.galaxyforce.sprites.game.implementations.BaseMain.BASE_SPRITE, width, height, energyBar, direction, model);
-//    }
 
     /*
       ***********************
@@ -510,8 +481,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     /**
      * Returns true if base is ready to fire. measures total time since base
      * last fired compared to a set delay
-     *
-     * @param deltaTime
      */
     private boolean readyToFire(float deltaTime) {
         /*

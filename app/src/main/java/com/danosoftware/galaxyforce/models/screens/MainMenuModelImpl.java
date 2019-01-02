@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.billing.service.BillingObserver;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
@@ -22,168 +23,131 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
+
     /* logger tag */
     private static final String LOCAL_TAG = "MainModelModelImpl";
 
     private final Game game;
 
-    // references to stars
-    private List<Star> stars = null;
+    // sprites
+    private final List<Star> stars;
+    private final ISprite logo;
 
-    // reference to all sprites in model
-    private final List<ISprite> allSprites;
+    // current visible buttons
+    private final List<SpriteTextButton> buttons;
 
-    // reference to all button sprites in model
-    private final List<ISprite> buttons;
-
-    // reference to logo sprite
-    private ISprite logo;
-
-    // reference to all text objects in model
-    List<Text> allText;
-
-    /* reference to controller */
     private final Controller controller;
-
-    // reference to the billing service
     private final IBillingService billingService;
 
     /*
-     * Should the model check the billing service for any changed products? The
-     * model should check the billing service's products initially and then
-     * following any notifications from the billing service.
+     * Should we rebuild the buttons?
+     * Normally triggered by a change in state from a billing thread.
      */
-    private boolean checkBillingProducts;
+    private volatile boolean rebuildButtons;
 
     public MainMenuModelImpl(Game game, Controller controller, IBillingService billingService) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
-
-        this.allSprites = new ArrayList<>();
         this.buttons = new ArrayList<>();
-        this.allText = new ArrayList<>();
-
-        // model must check the billing service's products on next update
-        this.checkBillingProducts = true;
-
-        // register this model with the billing service
-        // billingService.registerProductObserver(this);
-
-        /* set-up initial random position of stars */
-        // stars = Star.setupStars(GameConstants.GAME_WIDTH,
-        // GameConstants.GAME_HEIGHT, SelectScreenSpriteProperty.STAR,
-        // SelectScreenSpriteProperty.STAR_ANIMATIONS);
-        // allSprites.addAll(stars);
-
-        // set-up levels
-        // initialise();
-    }
-
-    @Override
-    public void initialise() {
-        /* set-up initial random position of stars */
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
-
-        /*
-         * position logo half-way between top of screen (960) and top of play
-         * button (674)
-         */
         this.logo = new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE);
 
-        // build screen sprites
-        refreshSprites();
+        // register this model with the billing service
+        billingService.registerProductObserver(this);
 
+        // build on-screen buttons
+        buildButtons();
+        this.rebuildButtons = false;
     }
 
-    /**
-     * Build all sprites required for screen. Normally called when screen is
-     * being set-up or after any changes to upgrade buttons following a billing
-     * state change.
-     */
-    private void refreshSprites() {
-        allSprites.clear();
-        allText.clear();
-
-        allSprites.addAll(stars);
-        allSprites.add(logo);
-
+    private void buildButtons() {
         // clear any current touch controllers prior to adding buttons
         controller.clearTouchControllers();
 
         // add mandatory buttons
         addMandatoryButtons();
 
-        /*
-         * if the full version has NOT been purchased then add the upgrade
-         * button
-         */
-        if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
-            // add upgrade button
-            addUpgradeButton();
-        }
-        /*
-         * if the all levels unlocks have NOT been purchased then add the unlock
-         * button
-         */
-        else if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
-                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
-            // add unlock button
-            addUnlockLevelsButton();
-        }
+        // add optional billing buttons
+        addOptionalBillingButtons();
     }
 
     /**
      * add three permanent menu buttons
      */
     private void addMandatoryButtons() {
-        // add wanted buttons
         addNewMenuButton(3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
         addNewMenuButton(1, "ABOUT", ButtonType.ABOUT);
     }
 
     /**
-     * add upgrade button
+     * add an optional billing button depending on billing state
      */
-    private void addUpgradeButton() {
-        addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
-    }
+    private void addOptionalBillingButtons() {
+        /*
+         * if the full version has NOT been purchased then add the upgrade
+         * button
+         */
+        if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
+            addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
+        }
+        /*
+         * if full version has been purchased but the all-levels unlock has NOT
+         * been purchased then add the unlock button
+         */
+        else if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
+                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
+            addNewMenuButton(0, "UNLOCK ALL", ButtonType.UNLOCK_ALL_LEVELS);
+        }
 
-    /**
-     * add unlock button
-     */
-    private void addUnlockLevelsButton() {
-        addNewMenuButton(0, "UNLOCK ALL", ButtonType.UNLOCK_ALL_LEVELS);
     }
 
     /**
      * add wanted menu button using the supplied row, label and type.
      */
     private void addNewMenuButton(int row, String label, ButtonType buttonType) {
-        MenuButton button = new MenuButton(this, GameConstants.GAME_WIDTH / 2, 100 + (row * 170), label, buttonType,
-                MenuSpriteIdentifier.MAIN_MENU, MenuSpriteIdentifier.MAIN_MENU_PRESSED);
+
+        // create button
+        MenuButton button = new MenuButton(
+                this,
+                GameConstants.GAME_WIDTH / 2,
+                100 + (row * 170),
+                label,
+                buttonType,
+                MenuSpriteIdentifier.MAIN_MENU,
+                MenuSpriteIdentifier.MAIN_MENU_PRESSED);
 
         // add a new menu button to controller's list of touch controllers
         controller.addTouchController(new DetectButtonTouch(button));
 
-        // add new button's sprite to list of sprites
-        buttons.add(button.getSprite());
-
-        allSprites.add(button.getSprite());
-
-        // add new button's text to list of text objects
-        allText.add(button.getText());
+        // add new button to list
+        buttons.add(button);
     }
 
     @Override
     public List<ISprite> getSprites() {
-        return allSprites;
+
+        List<ISprite> sprites = new ArrayList<>();
+        sprites.addAll(stars);
+        sprites.add(logo);
+
+        for (SpriteTextButton button : buttons) {
+            sprites.add(button.getSprite());
+        }
+
+        return sprites;
     }
 
     @Override
     public List<Text> getText() {
-        return allText;
+
+        List<Text> text = new ArrayList<>();
+        for (SpriteTextButton button : buttons) {
+            text.add(button.getText());
+        }
+
+        return text;
     }
 
     @Override
@@ -191,23 +155,17 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         // move stars
         moveStars(deltaTime);
 
-        // do we need to check billing service for product states
-        if (checkBillingProducts) {
-            // firstly set to false so we don't repeatedly check this
-            checkBillingProducts = false;
-
-            /*
-             * refresh screen sprites following the billing state change. the
-             * billing buttons displayed are likely to change.
-             */
-            refreshSprites();
+        // do we need to rebuild menu buttons?
+        if (rebuildButtons) {
+            buildButtons();
+            rebuildButtons = false;
         }
     }
 
     @Override
     public void dispose() {
         // unregister as observer of billing state changes
-        // billingService.unregisterProductObserver(this);
+        billingService.unregisterProductObserver(this);
     }
 
     private void moveStars(float deltaTime) {
@@ -243,9 +201,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
                 // not valid option - do nothing
                 break;
         }
-
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -255,33 +210,24 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
 
     @Override
     public void resume() {
-        /*
-         * register this model with the billing service. do this after a resume
-         * so it re-registers when starting, after pausing or when returning
-         * from the payment screen.
-         */
-        billingService.registerProductObserver(this);
-
-        // force a check of the billing service's products on next update
-        this.checkBillingProducts = true;
+        // no implementation
     }
 
     @Override
     public void pause() {
-        // unregister as observer of billing state changes
-        billingService.unregisterProductObserver(this);
+        // no implementation
     }
 
     @Override
     public void billingProductsStateChange() {
+
         /*
-         * model must check the billing service's products on next update.
+         * model must check the billing service's products on next update and
+         * build the appropriate billing buttons.
          *
-         * don't take any other action at this stage. this method will be called
-         * by a billing thread. to keep implementation simple just take the
-         * necessary action in the next update in the main thread.
+         * this method will be called by a billing thread.
          */
         Log.d(GameConstants.LOG_TAG, LOCAL_TAG + ": Received billing products state change message.");
-        this.checkBillingProducts = true;
+        this.rebuildButtons = true;
     }
 }

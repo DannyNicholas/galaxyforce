@@ -1,12 +1,10 @@
 package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileBlast;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileFast;
@@ -19,14 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseMissileFactory {
-    /* initialise sound effects */
-    private final static Sound SIMPLE_MISSILE_SOUND;
-
-    static {
-        /* create reference to sound effects */
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        SIMPLE_MISSILE_SOUND = soundBank.get(SoundEffect.BASE_FIRE);
-    }
 
     // angle delta between blast missiles directions in radians
     private static final float BLAST_ANGLE_DELTA = (float) (Math.PI / 8);
@@ -46,7 +36,7 @@ public class BaseMissileFactory {
             BaseMissileType baseMissileType,
             IGameHandler model) {
         List<IBaseMissile> baseMissiles = new ArrayList<>();
-        Sound sound;
+        final SoundEffect effect;
 
         switch (baseMissileType) {
             case BLAST:
@@ -54,7 +44,7 @@ public class BaseMissileFactory {
                 for (float angle = 0; angle <= Math.PI; angle += BLAST_ANGLE_DELTA) {
                     baseMissiles.add(createMissile(base, baseMissileType, 0, model, angle));
                 }
-                sound = SIMPLE_MISSILE_SOUND;
+                effect = SoundEffect.BASE_FIRE;
                 break;
 
             case FAST:
@@ -63,7 +53,7 @@ public class BaseMissileFactory {
             case LASER:
                 // create single missile with no x offset
                 baseMissiles.add(createMissile(base, baseMissileType, 0, model, 0));
-                sound = SIMPLE_MISSILE_SOUND;
+                effect = SoundEffect.BASE_FIRE;
                 break;
 
             case PARALLEL:
@@ -71,14 +61,14 @@ public class BaseMissileFactory {
                 // create two missiles with x offsets
                 baseMissiles.add(createMissile(base, baseMissileType, PARALLEL_FIRE_X_OFFSET, model, 0));
                 baseMissiles.add(createMissile(base, baseMissileType, -PARALLEL_FIRE_X_OFFSET, model, 0));
-                sound = SIMPLE_MISSILE_SOUND;
+                effect = SoundEffect.BASE_FIRE;
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported Base Missile Type: '" + baseMissileType.name() + "'.");
+                throw new GalaxyForceException("Unsupported Base Missile Type: '" + baseMissileType.name() + "'.");
         }
 
-        return new BaseMissileBean(baseMissiles, sound);
+        return new BaseMissileBean(baseMissiles, effect);
     }
 
     private static IBaseMissile createMissile(
@@ -125,7 +115,7 @@ public class BaseMissileFactory {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unsupported Base Missile Type: '" + baseMissileType.name() + "'.");
+                throw new GalaxyForceException("Unsupported Base Missile Type: '" + baseMissileType.name() + "'.");
 
         }
 

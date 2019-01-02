@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.game.beans;
 
-import com.danosoftware.galaxyforce.sound.Sound;
+import com.danosoftware.galaxyforce.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class BaseMissileBean {
     private final List<IBaseMissile> missiles;
-    private final Sound soundEffect;
+    private final SoundEffect soundEffect;
 
-    public BaseMissileBean(List<IBaseMissile> missiles, Sound soundEffect) {
+    public BaseMissileBean(List<IBaseMissile> missiles, SoundEffect soundEffect) {
         this.missiles = missiles;
         this.soundEffect = soundEffect;
     }
@@ -21,7 +21,7 @@ public class BaseMissileBean {
         return missiles;
     }
 
-    public Sound getSoundEffect() {
+    public SoundEffect getSoundEffect() {
         return soundEffect;
     }
 }

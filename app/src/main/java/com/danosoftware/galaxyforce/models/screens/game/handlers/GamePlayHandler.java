@@ -24,12 +24,8 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sound.SoundPlayer;
-import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
@@ -102,10 +98,7 @@ public class GamePlayHandler implements IGameHandler {
     private SpriteButton pauseButton;
 
     // sound player that provide sound effects
-    private final SoundPlayer soundPlayer;
-
-    // reference to sound effects
-    private final Sound powerUpCollisionSound;
+    private final SoundPlayerService sounds;
 
     // provides vibration within the game
     private final Vibration vibrator;
@@ -159,13 +152,15 @@ public class GamePlayHandler implements IGameHandler {
             Controller controller,
             List<Star> stars,
             int wave,
-            IBillingService billingService) {
+            IBillingService billingService,
+            SoundPlayerService sounds) {
 
         this.game = game;
         this.model = model;
         this.controller = controller;
         this.wave = wave;
         this.billingService = billingService;
+        this.sounds = sounds;
 
         /*
          * create wave factory and manager to create lists of aliens on each
@@ -175,13 +170,7 @@ public class GamePlayHandler implements IGameHandler {
         WaveManager waveManager = new WaveManagerImpl(waveFactory);
         this.alienManager = new AlienManager(waveManager);
 
-
-        // set-up sound effects
-        this.soundPlayer = SoundPlayerSingleton.getInstance();
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        powerUpCollisionSound = soundBank.get(SoundEffect.POWER_UP_COLLIDE);
-
-        this.assets = new GamePlayAssetsManager(stars, soundPlayer);
+        this.assets = new GamePlayAssetsManager(stars);
 
         // set-up vibration
         this.vibrator = VibrationSingleton.getInstance();
@@ -331,25 +320,25 @@ public class GamePlayHandler implements IGameHandler {
     @Override
     public void spawnAliens(SpawnedAlienBean spawnedAliens) {
         alienManager.spawnAliens(spawnedAliens.getAliens());
-        soundPlayer.playSound(spawnedAliens.getSoundEffect());
+        sounds.play(spawnedAliens.getSoundEffect());
     }
 
     @Override
     public void addPowerUp(PowerUpBean powerUp) {
         assets.addPowerUp(powerUp);
-        soundPlayer.playSound(powerUp.getSoundEffect());
+        sounds.play(powerUp.getSoundEffect());
     }
 
     @Override
     public void fireBaseMissiles(BaseMissileBean missiles) {
         assets.fireBaseMissiles(missiles);
-        soundPlayer.playSound(missiles.getSoundEffect());
+        sounds.play(missiles.getSoundEffect());
     }
 
     @Override
     public void fireAlienMissiles(AlienMissileBean missiles) {
         assets.fireAlienMissiles(missiles);
-        soundPlayer.playSound(missiles.getSoundEffect());
+        sounds.play(missiles.getSoundEffect());
     }
 
     @Override
@@ -538,7 +527,7 @@ public class GamePlayHandler implements IGameHandler {
             for (IPowerUp eachPowerUp : assets.getPowerUps()) {
                 if (checkCollision(eachPowerUp, eachBase)) {
                     eachBase.collectPowerUp(eachPowerUp);
-                    soundPlayer.playSound(powerUpCollisionSound);
+                    sounds.play(SoundEffect.POWER_UP_COLLIDE);
                 }
             }
         }

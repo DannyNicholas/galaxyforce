@@ -57,10 +57,6 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
         controller.addTouchController(new DetectButtonTouch(screenTouch));
     }
 
-    @Override
-    public void initialise() {
-    }
-
     private void addSprites() {
 
         allSprites.addAll(stars);
@@ -105,8 +101,7 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
+        // no action for this model
     }
 
     @Override

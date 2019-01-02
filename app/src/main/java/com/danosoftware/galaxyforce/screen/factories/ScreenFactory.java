@@ -21,6 +21,8 @@ import com.danosoftware.galaxyforce.screen.IScreen;
 import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
@@ -35,21 +37,30 @@ public class ScreenFactory {
     private final GLGraphics glGraphics;
     private final FileIO fileIO;
     private final IBillingService billingService;
+    private final ConfigurationService configurationService;
+    private final SoundPlayerService sounds;
     private final Game game;
     private final Input input;
+    private final String versionName;
 
     public ScreenFactory(
             GLGraphics glGraphics,
             FileIO fileIO,
             IBillingService billingService,
+            ConfigurationService configurationService,
+            SoundPlayerService sounds,
             Game game,
-            Input input) {
+            Input input,
+            String versionName) {
 
         this.glGraphics = glGraphics;
         this.fileIO = fileIO;
         this.billingService = billingService;
+        this.configurationService = configurationService;
+        this.sounds = sounds;
         this.game = game;
         this.input = input;
+        this.versionName = versionName;
         this.batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
         this.camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
     }
@@ -84,7 +95,7 @@ public class ScreenFactory {
 
             case OPTIONS:
                 return new Screen(
-                        new OptionsModelImpl(game, controller),
+                        new OptionsModelImpl(game, controller, configurationService, sounds),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -94,7 +105,7 @@ public class ScreenFactory {
 
             case ABOUT:
                 return new Screen(
-                        new AboutModelImpl(game, controller),
+                        new AboutModelImpl(game, controller, versionName),
                         controller,
                         TextureMap.MENU,
                         glGraphics,

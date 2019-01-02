@@ -106,6 +106,9 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         /* set-up initial random position of stars */
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
 
+        // register this model with the billing service
+        billingService.registerProductObserver(this);
+
         // refresh sprites and controllers
         refreshAssets();
     }
@@ -280,6 +283,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
     @Override
     public void dispose() {
+        // unregister as observer of billing state changes
+        billingService.unregisterProductObserver(this);
     }
 
     @Override
@@ -352,17 +357,12 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
     @Override
     public void resume() {
-        // register this model with the billing service
-        billingService.registerProductObserver(this);
-
-        // force a check of the billing service's products on next update
-        this.checkBillingProducts = true;
+        // no implementation
     }
 
     @Override
     public void pause() {
-        // unregister as observer of billing state changes
-        billingService.unregisterProductObserver(this);
+        // no implementation
     }
 
     @Override

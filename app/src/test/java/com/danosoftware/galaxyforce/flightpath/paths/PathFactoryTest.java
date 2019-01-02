@@ -5,7 +5,6 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;
@@ -32,10 +31,10 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Test that checks all the paths create a list of points representing their paths.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, PathLoader.class, SoundEffectBank.class})
+@PrepareForTest({Log.class, PathLoader.class})
 public class PathFactoryTest {
 
-    final static Logger logger = LoggerFactory.getLogger(PathFactoryTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(PathFactoryTest.class);
 
     @Before
     public void setup() {

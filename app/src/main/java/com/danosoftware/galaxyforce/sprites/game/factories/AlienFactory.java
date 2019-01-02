@@ -4,13 +4,11 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroid;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroidSimple;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienDragonBody;
@@ -37,15 +35,6 @@ public class AlienFactory {
 
     private final static String TAG = "AlienFactory";
 
-    /* initialise sound effects */
-    private final static Sound SPAWNED_ALIEN_SOUND;
-
-    static {
-        /* create reference to sound effects */
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        SPAWNED_ALIEN_SOUND = soundBank.get(SoundEffect.ALIEN_SPAWN);
-    }
-
     /**
      * Creates an alien with a supplied path. Starting position will be based on
      * path.
@@ -57,6 +46,7 @@ public class AlienFactory {
             final float delay,
             final IGameHandler model,
             final boolean restartImmediately) {
+
         List<IAlien> aliens = new ArrayList<>();
 
         /*
@@ -219,21 +209,18 @@ public class AlienFactory {
             final int xStart,
             final int yStart,
             final IGameHandler model) {
+
         List<IAlien> aliens = new ArrayList<>();
-        Sound soundEffect;
 
         switch (alienType) {
             case SPAWNED_INSECT:
                 aliens.add(new AlienSpawnedInsect(powerUpType, xStart, yStart, model));
-                soundEffect = SPAWNED_ALIEN_SOUND;
-                break;
+                return new SpawnedAlienBean(aliens, SoundEffect.ALIEN_SPAWN);
 
             default:
                 String errorMessage = "Error: Unrecognised AlienType: '" + alienType + "'";
                 Log.e(TAG, errorMessage);
-                throw new IllegalStateException(errorMessage);
+                throw new GalaxyForceException(errorMessage);
         }
-
-        return new SpawnedAlienBean(aliens, soundEffect);
     }
 }

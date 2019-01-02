@@ -2,7 +2,6 @@ package com.danosoftware.galaxyforce;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
@@ -17,8 +16,6 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
-import com.danosoftware.galaxyforce.services.PackageManagers;
-import com.danosoftware.galaxyforce.services.WindowManagers;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -73,15 +70,6 @@ public class MainActivity extends Activity {
         this.glGraphics = new GLGraphics(glView);
 
         this.billingService = new BillingServiceImpl(this);
-
-        // set-up window manager service
-        WindowManager windowMgr = (WindowManager) this.getSystemService(Activity.WINDOW_SERVICE);
-        WindowManagers.newWindowMgr(windowMgr);
-
-        // set-up package manager service
-        PackageManager packageMgr = this.getPackageManager();
-        String packageName = this.getPackageName();
-        PackageManagers.newPackageMgr(packageMgr, packageName);
 
         // create instance of game
         game = new GameImpl(this, glGraphics, glView, billingService);

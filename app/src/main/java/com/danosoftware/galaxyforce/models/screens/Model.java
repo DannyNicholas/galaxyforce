@@ -14,7 +14,7 @@ public interface Model {
      * Used to initialise model after model has been instantiated. The model
      * should only be initialised once.
      */
-    void initialise();
+//    void initialise();
 
     List<ISprite> getSprites();
 

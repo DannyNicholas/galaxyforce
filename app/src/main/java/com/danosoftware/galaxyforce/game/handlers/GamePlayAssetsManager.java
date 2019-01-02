@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.game.handlers;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.sound.SoundPlayer;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.EnergyBar;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Life;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -18,9 +17,6 @@ import java.util.List;
 
 public class GamePlayAssetsManager implements IGamePlayAssetsManager {
 
-    // sound player that provide sound effects
-    private final SoundPlayer soundPlayer;
-
     private List<IAlienMissile> aliensMissiles;
     private List<IBaseMissile> baseMissiles;
     private List<IPowerUp> powerUps;
@@ -32,10 +28,8 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     private final EnergyBar energyBar;
 
     public GamePlayAssetsManager(
-            List<Star> stars,
-            SoundPlayer soundPlayer) {
+            List<Star> stars) {
 
-        this.soundPlayer = soundPlayer;
         this.aliensMissiles = new ArrayList<>();
         this.baseMissiles = new ArrayList<>();
         this.powerUps = new ArrayList<>();

@@ -1,6 +1,8 @@
 package com.danosoftware.galaxyforce.games;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
@@ -8,29 +10,28 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
-import com.danosoftware.galaxyforce.interfaces.Audio;
 import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.interfaces.Input;
+import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.screen.IScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
-import com.danosoftware.galaxyforce.services.Configurations;
 import com.danosoftware.galaxyforce.services.IPreferences;
 import com.danosoftware.galaxyforce.services.PreferencesInteger;
 import com.danosoftware.galaxyforce.services.PreferencesString;
 import com.danosoftware.galaxyforce.services.SavedGame;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
-import com.danosoftware.galaxyforce.sound.SoundPlayer;
-import com.danosoftware.galaxyforce.sound.SoundPlayerSingleton;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
+import com.danosoftware.galaxyforce.sound.AndroidAudio;
+import com.danosoftware.galaxyforce.sound.Audio;
+import com.danosoftware.galaxyforce.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.sound.SoundPlayerServiceImpl;
 import com.danosoftware.galaxyforce.vibration.Vibration;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
-import com.danosoftware.galaxyforce.view.AndroidAudio;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.GameFileIO;
 
 /**
- * @author Danny
- * <p>
  * Initialises model, controller and view for game. Handles the main
  * game loop using the controller, model and view.
  */
@@ -50,6 +51,8 @@ public class GameImpl implements Game {
     // factory used to create new screens
     private final ScreenFactory screenFactory;
 
+    private final SoundPlayerService sounds;
+
     public GameImpl(
             Context context,
             GLGraphics glGraphics,
@@ -59,32 +62,25 @@ public class GameImpl implements Game {
         FileIO fileIO = new GameFileIO(context);
         Input input = new GameInput(glView, 1, 1);
         Audio audio = new AndroidAudio(context);
+        String versionName = versionName(context);
+
+        // set-up configuration service that uses shared preferences
+        // for persisting configuration
+        IPreferences<String> configPreferences = new PreferencesString(context);
+        ConfigurationService configurationService = new ConfigurationServiceImpl(configPreferences);
+
+        boolean enableSounds = (configurationService.getSoundOption() == OptionSound.ON);
+        this.sounds = new SoundPlayerServiceImpl(context, enableSounds);
 
         this.screenFactory = new ScreenFactory(
                 glGraphics,
                 fileIO,
                 billingService,
+                configurationService,
+                sounds,
                 this,
-                input);
-
-        /*
-         * initialise sound effect bank singleton. initialise as early as
-         * possible to ensure sound effects are available when needed.
-         */
-        if (!SoundEffectBankSingleton.isInitialised()) {
-            // initialise configuration
-            SoundEffectBankSingleton.initialise(audio);
-        }
-
-        /* initialise configuration singleton */
-        if (!Configurations.isInitialised()) {
-            // set-up reference to shared preference.
-            // used for persisting configuration
-            IPreferences<String> configPreferences = new PreferencesString(context);
-
-            // initialise configuration
-            Configurations.initialise(configPreferences);
-        }
+                input,
+                versionName);
 
         /* initialise vibrator singleton */
         if (!VibrationSingleton.isInitialised()) {
@@ -92,15 +88,9 @@ public class GameImpl implements Game {
             VibrationSingleton.initialise(context);
         }
 
-        Configurations configurations = Configurations.getInstance();
-
         // enable or disable vibrator depending current configuration
         Vibration vibrator = VibrationSingleton.getInstance();
-        vibrator.setVibrationEnabled(configurations.getVibrationOption());
-
-        // enable or disable sound depending current configuration
-        SoundPlayer soundPlayer = SoundPlayerSingleton.getInstance();
-        soundPlayer.setSoundEnabled(configurations.getSoundOption());
+        vibrator.setVibrationEnabled(configurationService.getVibrationOption());
 
         /* initialise saved game singleton */
         if (!SavedGame.isInitialised()) {
@@ -183,6 +173,7 @@ public class GameImpl implements Game {
     public void dispose() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Dispose Game");
         screen.dispose();
+        sounds.dispose();
     }
 
     @Override
@@ -198,5 +189,26 @@ public class GameImpl implements Game {
     @Override
     public boolean handleBackButton() {
         return screen.handleBackButton();
+    }
+
+    /**
+     * Retrieve version name of this package.
+     * Can return null if version name can not be found.
+     */
+    private String versionName(Context context) {
+        PackageManager packageMgr = context.getPackageManager();
+        String packageName = context.getPackageName();
+
+        if (packageMgr != null && packageName != null) {
+            try {
+                PackageInfo info = packageMgr.getPackageInfo(packageName, 0);
+                if (info != null) {
+                    return info.versionName;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

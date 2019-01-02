@@ -5,7 +5,6 @@ import com.danosoftware.galaxyforce.buttons.button.ScreenTouch;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
@@ -21,15 +20,11 @@ public class SplashModelImpl implements Model, TouchScreenModel {
 
     private final Game game;
 
-    private final List<Text> textList;
-
-    // list of sprites
-    private final List<ISprite> allSprites;
-
-    private ModelState modelState = null;
+    private final List<Text> text;
+    private final List<ISprite> sprites;
 
     // how long splash screen has been displayed for so far (in seconds)
-    private float splashScreenTime = 0f;
+    private float splashScreenTime;
 
     // how long splash screen should be displayed for (in seconds)
     private static final float SPLASH_SCREEN_WAIT = 4f;
@@ -37,8 +32,14 @@ public class SplashModelImpl implements Model, TouchScreenModel {
     public SplashModelImpl(Game game, Controller controller) {
 
         this.game = game;
-        this.allSprites = new ArrayList<>();
-        this.textList = new ArrayList<>();
+        this.sprites = new ArrayList<>();
+        this.text = new ArrayList<>();
+        this.splashScreenTime = 0f;
+
+        sprites.add(new SplashSprite(
+                GameConstants.SCREEN_MID_X,
+                GameConstants.SCREEN_MID_Y,
+                SplashSpriteIdentifier.SPLASH_SCREEN));
 
         // add button that covers the entire screen
         Button screenTouch = new ScreenTouch(this);
@@ -46,21 +47,13 @@ public class SplashModelImpl implements Model, TouchScreenModel {
     }
 
     @Override
-    public void initialise() {
-
-        allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, GameConstants.SCREEN_MID_Y, SplashSpriteIdentifier.SPLASH_SCREEN));
-        modelState = ModelState.INITIALISED;
-        splashScreenTime = 0f;
-    }
-
-    @Override
     public List<ISprite> getSprites() {
-        return allSprites;
+        return sprites;
     }
 
     @Override
     public List<Text> getText() {
-        return textList;
+        return text;
     }
 
     @Override
@@ -68,13 +61,8 @@ public class SplashModelImpl implements Model, TouchScreenModel {
         // increment splash screen time count by deltaTime
         splashScreenTime = splashScreenTime + deltaTime;
 
-        // check if splash screen has been shown for required time
+        // if splash screen has been shown for required time, move to main menu
         if (splashScreenTime >= SPLASH_SCREEN_WAIT) {
-            setState(ModelState.EXPIRED);
-        }
-
-        // if timer expired or screen pressed go to main menu
-        if (getState() == ModelState.EXPIRED) {
             game.changeToScreen(ScreenType.MAIN_MENU);
         }
     }
@@ -85,7 +73,8 @@ public class SplashModelImpl implements Model, TouchScreenModel {
 
     @Override
     public void screenTouched() {
-        setState(ModelState.EXPIRED);
+        // if screen pressed, then go to main menu
+        game.changeToScreen(ScreenType.MAIN_MENU);
     }
 
     @Override
@@ -102,13 +91,4 @@ public class SplashModelImpl implements Model, TouchScreenModel {
     public void pause() {
         // no action for this model
     }
-
-    private void setState(ModelState modelState) {
-        this.modelState = modelState;
-    }
-
-    private ModelState getState() {
-        return this.modelState;
-    }
-
 }

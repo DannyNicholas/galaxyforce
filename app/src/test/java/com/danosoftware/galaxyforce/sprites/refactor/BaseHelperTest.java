@@ -5,8 +5,6 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.BaseHelper;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBaseHelper;
@@ -51,7 +49,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, SoundEffectBankSingleton.class, VibrationSingleton.class, Textures.class})
+@PrepareForTest({Log.class, VibrationSingleton.class, Textures.class})
 public class BaseHelperTest {
 
     private static final int INITIAL_X = 100;
@@ -70,10 +68,6 @@ public class BaseHelperTest {
     public void setup() {
         // mock any static android logging
         mockStatic(Log.class);
-
-        SoundEffectBank soundEffectBank = mock(SoundEffectBank.class);
-        mockStatic(SoundEffectBankSingleton.class);
-        when(SoundEffectBankSingleton.getInstance()).thenReturn(soundEffectBank);
 
         VibrationSingleton vibration = mock(VibrationSingleton.class);
         mockStatic(VibrationSingleton.class);

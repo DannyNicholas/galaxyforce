@@ -6,8 +6,6 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
 import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
@@ -44,7 +42,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Also tries to create waves that are not yet supported.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, PathLoader.class, AlienFactory.class, SoundEffectBankSingleton.class, VibrationSingleton.class})
+@PrepareForTest({Log.class, PathLoader.class, AlienFactory.class, VibrationSingleton.class})
 public class WaveFactoryTest {
 
     final static Logger logger = LoggerFactory.getLogger(WaveFactoryTest.class);
@@ -71,10 +69,6 @@ public class WaveFactoryTest {
         // it would have loaded for the supplied path argument.
         mockStatic(PathLoader.class);
         when(PathLoader.loadPaths(any(String.class))).thenAnswer(pathListDTO());
-
-        SoundEffectBank soundEffectBank = mock(SoundEffectBank.class);
-        mockStatic(SoundEffectBankSingleton.class);
-        when(SoundEffectBankSingleton.getInstance()).thenReturn(soundEffectBank);
 
         VibrationSingleton vibration = mock(VibrationSingleton.class);
         mockStatic(VibrationSingleton.class);

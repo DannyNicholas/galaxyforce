@@ -1,9 +1,5 @@
 package com.danosoftware.galaxyforce.models.screens;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-
 import com.danosoftware.galaxyforce.buttons.button.Button;
 import com.danosoftware.galaxyforce.buttons.button.ScreenTouch;
 import com.danosoftware.galaxyforce.constants.GameConstants;
@@ -14,7 +10,6 @@ import com.danosoftware.galaxyforce.enumerations.TextPositionX;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.services.PackageManagers;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.RotatingSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -46,8 +41,15 @@ public class AboutModelImpl implements Model, TouchScreenModel {
     // reference to all text objects in model
     private final List<Text> allText;
 
-    public AboutModelImpl(Game game, Controller controller) {
+    // version name of this package
+    private final String versionName;
+
+    public AboutModelImpl(
+            Game game,
+            Controller controller,
+            String versionName) {
         this.game = game;
+        this.versionName = versionName;
         this.allSprites = new ArrayList<>();
         this.rotatedSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
@@ -65,10 +67,6 @@ public class AboutModelImpl implements Model, TouchScreenModel {
         controller.addTouchController(new DetectButtonTouch(screenTouch));
     }
 
-    @Override
-    public void initialise() {
-    }
-
     private void addSprites() {
 
         allSprites.addAll(stars);
@@ -83,21 +81,9 @@ public class AboutModelImpl implements Model, TouchScreenModel {
     }
 
     private void addVersion() {
-
-        // get package manager, name and then use them to get version number
-        PackageManager packageMgr = PackageManagers.getPackageMgr();
-        String packageName = PackageManagers.getPackageName();
-
-        if (packageMgr != null && packageName != null) {
-            try {
-                PackageInfo info = packageMgr.getPackageInfo(packageName, 0);
-                if (info != null) {
-                    allText.add(Text.newTextRelativePositionX("VERSION " + info.versionName, TextPositionX.CENTRE, 175 + (3 * 170)));
-                }
-
-            } catch (NameNotFoundException e) {
-                // no action - but version number won't be displayed
-            }
+        // add version name if it exists
+        if (versionName != null) {
+            allText.add(Text.newTextRelativePositionX("VERSION " + versionName, TextPositionX.CENTRE, 175 + (3 * 170)));
         }
     }
 
@@ -113,10 +99,6 @@ public class AboutModelImpl implements Model, TouchScreenModel {
 
     @Override
     public void update(float deltaTime) {
-        if (modelState == ModelState.GO_BACK) {
-            game.changeToScreen(ScreenType.MAIN_MENU);
-        }
-
         // move stars
         for (Star eachStar : stars) {
             eachStar.animate(deltaTime);
@@ -126,22 +108,25 @@ public class AboutModelImpl implements Model, TouchScreenModel {
         for (RotatingSprite sprite : rotatedSprites) {
             sprite.animate(deltaTime);
         }
+
+        if (modelState == ModelState.GO_BACK) {
+            game.changeToScreen(ScreenType.MAIN_MENU);
+        }
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
+        // no implementation
     }
 
     @Override
     public void resume() {
-        // no action for this model
+        // no implementation
     }
 
     @Override
     public void pause() {
-        // no action for this model
+        // no implementation
     }
 
     @Override

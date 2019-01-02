@@ -2,24 +2,13 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.sound.Sound;
 import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundEffectBank;
-import com.danosoftware.galaxyforce.sound.SoundEffectBankSingleton;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public class PowerUpFactory {
-    /* initialise sound effects */
-    private final static Sound POWER_UP_SOUND;
-
-    static {
-        /* create reference to sound effects */
-        SoundEffectBank soundBank = SoundEffectBankSingleton.getInstance();
-        POWER_UP_SOUND = soundBank.get(SoundEffect.POWER_UP_SPAWN);
-    }
 
     /**
      * Return any random power-up.
@@ -46,8 +35,8 @@ public class PowerUpFactory {
      * Return a power-up using the supplied power-up type.
      */
     public static PowerUpBean newPowerUp(PowerUpType powerUpType, int x, int y) {
-        ISpriteIdentifier spriteId;
-        Sound sound = POWER_UP_SOUND;
+
+        final ISpriteIdentifier spriteId;
 
         switch (powerUpType) {
             case ENERGY:
@@ -86,6 +75,6 @@ public class PowerUpFactory {
 
         IPowerUp powerUp = new PowerUp(spriteId, x, y, powerUpType);
 
-        return new PowerUpBean(powerUp, sound);
+        return new PowerUpBean(powerUp, SoundEffect.POWER_UP_SPAWN);
     }
 }

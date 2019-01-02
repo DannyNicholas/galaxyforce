@@ -8,7 +8,7 @@ public interface Sound {
     void play(float volume);
 
     /**
-     * Dipose of sound when finished
+     * Dispose of sound when finished
      */
     void dispose();
 }
