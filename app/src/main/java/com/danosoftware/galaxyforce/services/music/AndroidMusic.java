@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sound;
+package com.danosoftware.galaxyforce.services.music;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;

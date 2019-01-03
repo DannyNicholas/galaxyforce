@@ -1,12 +1,11 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.explode;
 
-import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.vibration.VibrateTime;
-import com.danosoftware.galaxyforce.vibration.Vibration;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.view.Animation;
 
 public class ExplodeSimple implements ExplodeBehaviour {
@@ -19,15 +18,17 @@ public class ExplodeSimple implements ExplodeBehaviour {
     // reference to sound player
     private final SoundPlayerService sounds;
 
-    /* reference to vibrator */
-    private final Vibration vibrator;
+    // reference to vibrator
+    private final VibrationService vibrator;
 
     // time since explosion started
     private float explosionTime;
 
-    public ExplodeSimple(SoundPlayerService sounds) {
+    public ExplodeSimple(
+            SoundPlayerService sounds,
+            VibrationService vibrator) {
         this.sounds = sounds;
-        this.vibrator = VibrationSingleton.getInstance();
+        this.vibrator = vibrator;
     }
 
     @Override

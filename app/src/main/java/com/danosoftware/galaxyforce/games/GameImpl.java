@@ -13,6 +13,7 @@ import com.danosoftware.galaxyforce.input.GameInput;
 import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.interfaces.Input;
 import com.danosoftware.galaxyforce.options.OptionSound;
+import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.screen.IScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
@@ -22,12 +23,12 @@ import com.danosoftware.galaxyforce.services.PreferencesString;
 import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
-import com.danosoftware.galaxyforce.sound.AndroidAudio;
-import com.danosoftware.galaxyforce.sound.Audio;
-import com.danosoftware.galaxyforce.sound.SoundPlayerService;
-import com.danosoftware.galaxyforce.sound.SoundPlayerServiceImpl;
-import com.danosoftware.galaxyforce.vibration.Vibration;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
+import com.danosoftware.galaxyforce.services.music.AndroidAudio;
+import com.danosoftware.galaxyforce.services.music.Audio;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerServiceImpl;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationServiceImpl;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.GameFileIO;
 
@@ -72,25 +73,19 @@ public class GameImpl implements Game {
         boolean enableSounds = (configurationService.getSoundOption() == OptionSound.ON);
         this.sounds = new SoundPlayerServiceImpl(context, enableSounds);
 
+        boolean enableVibrator = (configurationService.getVibrationOption() == OptionVibration.ON);
+        VibrationService vibrator = new VibrationServiceImpl(context, enableVibrator);
+
         this.screenFactory = new ScreenFactory(
                 glGraphics,
                 fileIO,
                 billingService,
                 configurationService,
                 sounds,
+                vibrator,
                 this,
                 input,
                 versionName);
-
-        /* initialise vibrator singleton */
-        if (!VibrationSingleton.isInitialised()) {
-            // initialise vibration
-            VibrationSingleton.initialise(context);
-        }
-
-        // enable or disable vibrator depending current configuration
-        Vibration vibrator = VibrationSingleton.getInstance();
-        vibrator.setVibrationEnabled(configurationService.getVibrationOption());
 
         /* initialise saved game singleton */
         if (!SavedGame.isInitialised()) {

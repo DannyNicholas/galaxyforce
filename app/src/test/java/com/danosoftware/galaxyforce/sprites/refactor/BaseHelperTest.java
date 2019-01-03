@@ -20,7 +20,6 @@ import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
 import com.danosoftware.galaxyforce.textures.Textures;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +48,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, VibrationSingleton.class, Textures.class})
+@PrepareForTest({Log.class, Textures.class})
 public class BaseHelperTest {
 
     private static final int INITIAL_X = 100;
@@ -68,10 +67,6 @@ public class BaseHelperTest {
     public void setup() {
         // mock any static android logging
         mockStatic(Log.class);
-
-        VibrationSingleton vibration = mock(VibrationSingleton.class);
-        mockStatic(VibrationSingleton.class);
-        when(VibrationSingleton.getInstance()).thenReturn(vibration);
 
         final TextureDetail mockTextureDetail = new TextureDetail("mock", 0, 0, 0, 0);
         mockStatic(Textures.class);

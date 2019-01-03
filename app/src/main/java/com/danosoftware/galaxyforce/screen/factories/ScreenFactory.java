@@ -22,7 +22,8 @@ import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
-import com.danosoftware.galaxyforce.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
@@ -39,6 +40,7 @@ public class ScreenFactory {
     private final IBillingService billingService;
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
+    private final VibrationService vibrator;
     private final Game game;
     private final Input input;
     private final String versionName;
@@ -49,6 +51,7 @@ public class ScreenFactory {
             IBillingService billingService,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
+            VibrationService vibrator,
             Game game,
             Input input,
             String versionName) {
@@ -58,6 +61,7 @@ public class ScreenFactory {
         this.billingService = billingService;
         this.configurationService = configurationService;
         this.sounds = sounds;
+        this.vibrator = vibrator;
         this.game = game;
         this.input = input;
         this.versionName = versionName;
@@ -95,7 +99,7 @@ public class ScreenFactory {
 
             case OPTIONS:
                 return new Screen(
-                        new OptionsModelImpl(game, controller, configurationService, sounds),
+                        new OptionsModelImpl(game, controller, configurationService, sounds, vibrator),
                         controller,
                         TextureMap.MENU,
                         glGraphics,

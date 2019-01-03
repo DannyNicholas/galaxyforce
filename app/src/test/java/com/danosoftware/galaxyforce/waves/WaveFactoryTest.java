@@ -8,7 +8,6 @@ import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,7 +41,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Also tries to create waves that are not yet supported.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, PathLoader.class, AlienFactory.class, VibrationSingleton.class})
+@PrepareForTest({Log.class, PathLoader.class, AlienFactory.class})
 public class WaveFactoryTest {
 
     final static Logger logger = LoggerFactory.getLogger(WaveFactoryTest.class);
@@ -69,10 +68,6 @@ public class WaveFactoryTest {
         // it would have loaded for the supplied path argument.
         mockStatic(PathLoader.class);
         when(PathLoader.loadPaths(any(String.class))).thenAnswer(pathListDTO());
-
-        VibrationSingleton vibration = mock(VibrationSingleton.class);
-        mockStatic(VibrationSingleton.class);
-        when(VibrationSingleton.getInstance()).thenReturn(vibration);
 
         // creating aliens is complex so mock it for this test
         List<IAlien> mockedAliens = new ArrayList<>();

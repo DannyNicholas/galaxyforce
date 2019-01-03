@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sound;
+package com.danosoftware.galaxyforce.services.sound;
 
 /**
  * Maps sound effect enums to the sound effect file name.

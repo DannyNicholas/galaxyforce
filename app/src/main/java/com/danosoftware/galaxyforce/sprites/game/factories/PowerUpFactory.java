@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;

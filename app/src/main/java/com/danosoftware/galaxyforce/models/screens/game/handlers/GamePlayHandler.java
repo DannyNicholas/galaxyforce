@@ -24,8 +24,8 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.SavedGame;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
@@ -42,8 +42,6 @@ import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
-import com.danosoftware.galaxyforce.vibration.Vibration;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import com.danosoftware.galaxyforce.waves.managers.WaveManagerImpl;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
@@ -99,9 +97,6 @@ public class GamePlayHandler implements IGameHandler {
 
     // sound player that provide sound effects
     private final SoundPlayerService sounds;
-
-    // provides vibration within the game
-    private final Vibration vibrator;
 
     // allows the current base controller method (e.g. drag) to be changed
     private final Controller controller;
@@ -171,9 +166,6 @@ public class GamePlayHandler implements IGameHandler {
         this.alienManager = new AlienManager(waveManager);
 
         this.assets = new GamePlayAssetsManager(stars);
-
-        // set-up vibration
-        this.vibrator = VibrationSingleton.getInstance();
 
         // reset lives
         lives = START_LIVES;
@@ -582,7 +574,7 @@ public class GamePlayHandler implements IGameHandler {
      * add new base - normally called at start of game or after losing a life.
      */
     private void addNewBase() {
-        primaryBase = new BasePrimary(this);
+        primaryBase = new BasePrimary(this, sounds);
 
         // bind controller to the new base
         TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);

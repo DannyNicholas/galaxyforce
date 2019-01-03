@@ -4,7 +4,7 @@ import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileBlast;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileFast;

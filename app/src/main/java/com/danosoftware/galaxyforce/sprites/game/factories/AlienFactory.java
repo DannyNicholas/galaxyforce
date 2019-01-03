@@ -8,7 +8,7 @@ import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroid;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroidSimple;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienDragonBody;

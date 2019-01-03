@@ -1,18 +1,17 @@
-package com.danosoftware.galaxyforce.sound;
+package com.danosoftware.galaxyforce.services.music;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioManager;
-import android.media.SoundPool;
 
 import java.io.IOException;
 
 public class AndroidAudio implements Audio {
 
     AssetManager assets;
-    SoundPool soundPool;
+//    SoundPool soundPool;
 
     public AndroidAudio(Context context) {
 
@@ -24,7 +23,7 @@ public class AndroidAudio implements Audio {
         }
 
         this.assets = context.getAssets();
-        this.soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+//        this.soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
     }
 
     @Override
@@ -35,24 +34,5 @@ public class AndroidAudio implements Audio {
         } catch (IOException e) {
             throw new RuntimeException("Couldn't load music '" + filename + "'");
         }
-    }
-
-    @Override
-    public Sound newSound(SoundEffect soundEffect) {
-        String filename = soundEffect.getFileName();
-
-        try {
-            AssetFileDescriptor assetDescriptor = assets.openFd(filename);
-            int soundId = soundPool.load(assetDescriptor, 0);
-            return new AndroidSound(soundPool, soundId);
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't load sound '" + filename + "'");
-        }
-    }
-
-    @Override
-    public void dispose() {
-        soundPool.release();
-        soundPool = null;
     }
 }

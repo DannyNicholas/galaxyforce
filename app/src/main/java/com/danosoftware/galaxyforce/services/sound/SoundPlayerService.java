@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sound;
+package com.danosoftware.galaxyforce.services.sound;
 
 public interface SoundPlayerService {
 

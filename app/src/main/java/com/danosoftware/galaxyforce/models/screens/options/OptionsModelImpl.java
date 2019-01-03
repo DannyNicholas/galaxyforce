@@ -17,16 +17,15 @@ import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
-import com.danosoftware.galaxyforce.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
-import com.danosoftware.galaxyforce.vibration.VibrateTime;
-import com.danosoftware.galaxyforce.vibration.Vibration;
-import com.danosoftware.galaxyforce.vibration.VibrationSingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +39,7 @@ public class OptionsModelImpl implements OptionsModel {
 
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
+    private final VibrationService vibrator;
 
     // references to stars
     private final List<Star> stars;
@@ -56,10 +56,12 @@ public class OptionsModelImpl implements OptionsModel {
             Game game,
             Controller controller,
             ConfigurationService configurationService,
-            SoundPlayerService sounds) {
+            SoundPlayerService sounds,
+            VibrationService vibrator) {
         this.game = game;
         this.configurationService = configurationService;
         this.sounds = sounds;
+        this.vibrator = vibrator;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
@@ -259,8 +261,7 @@ public class OptionsModelImpl implements OptionsModel {
             configurationService.setVibrationOption(vibrationType);
 
             // update vibration service
-            Vibration vibrator = VibrationSingleton.getInstance();
-            vibrator.setVibrationEnabled(vibrationType);
+            vibrator.setVibrationEnabled(vibrationType == OptionVibration.ON);
 
             // vibrate (if enabled) to prove vibrator is on
             vibrator.vibrate(VibrateTime.MEDIUM);

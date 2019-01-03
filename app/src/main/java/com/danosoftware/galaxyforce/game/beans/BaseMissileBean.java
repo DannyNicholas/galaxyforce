@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.game.beans;
 
-import com.danosoftware.galaxyforce.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 
 import java.util.List;

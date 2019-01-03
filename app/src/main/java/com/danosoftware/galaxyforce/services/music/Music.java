@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sound;
+package com.danosoftware.galaxyforce.services.music;
 
 public interface Music {
     void play();

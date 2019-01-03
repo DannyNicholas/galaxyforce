@@ -1,8 +1,6 @@
-package com.danosoftware.galaxyforce.vibration;
+package com.danosoftware.galaxyforce.services.vibration;
 
-import com.danosoftware.galaxyforce.options.OptionVibration;
-
-public interface Vibration {
+public interface VibrationService {
 
     /**
      * Vibrate for specified time.
@@ -16,6 +14,5 @@ public interface Vibration {
      * <p>
      * Will only have an impact if vibration is supported by device.
      */
-    void setVibrationEnabled(OptionVibration optionVibration);
-
+    void setVibrationEnabled(boolean enableVibration);
 }

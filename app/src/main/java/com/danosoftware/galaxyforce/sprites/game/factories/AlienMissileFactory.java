@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotated;
