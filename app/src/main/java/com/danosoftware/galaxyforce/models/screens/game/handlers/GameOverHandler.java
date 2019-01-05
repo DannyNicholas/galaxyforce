@@ -76,6 +76,7 @@ public class GameOverHandler implements Model, ButtonModel {
         this.modelState = ModelState.GAME_OVER;
 
         // build menu buttons
+        controller.clearTouchControllers();
         addNewMenuButton(3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
         addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);

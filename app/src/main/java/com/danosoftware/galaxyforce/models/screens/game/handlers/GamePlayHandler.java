@@ -108,7 +108,7 @@ public class GamePlayHandler implements Model, IGameHandler {
     private final VibrationService vibrator;
 
     // allows the current base controller method (e.g. drag) to be changed
-//    private final Controller controller;
+    private final Controller controller;
 
     // specific controller to move current base
     private final BaseTouchController baseTouchController;
@@ -157,7 +157,7 @@ public class GamePlayHandler implements Model, IGameHandler {
 
         this.game = game;
         this.model = model;
-//        this.controller = controller;
+        this.controller = controller;
         this.wave = wave;
         this.billingService = billingService;
         this.sounds = sounds;
@@ -184,19 +184,13 @@ public class GamePlayHandler implements Model, IGameHandler {
         this.lives = START_LIVES;
 
         /*
-         * initialise pause and flip buttons
+         * initialise controllers
          */
         this.pauseButton = new PauseButton(this);
-        controller.addTouchController(new DetectButtonTouch(pauseButton));
-
-        /*
-         * initialise base controllers
-         */
         this.baseTouchController = new ControllerDrag();
-        controller.addTouchController(baseTouchController);
 
-        // set-up controllers
-//        initialiseControllers();
+        // add controllers
+        addControllers();
 
         // create new base at default position
         addNewBase();
@@ -316,10 +310,13 @@ public class GamePlayHandler implements Model, IGameHandler {
         Log.i(TAG, "Resume Game.");
 
         /*
-         * re-initialise controllers after game pause as touch controllers will
-         * have been lost and chosen controller type may have changed.
+         * re-initialise controllers after game pause.
+         * Model may have been paused due to changing
+         * to "PAUSED" state.
+         * Controllers are shared by Game Handlers so
+         * may have modified by paused handler.
          */
-//        initialiseControllers();
+        addControllers();
     }
 
     /**
@@ -383,30 +380,24 @@ public class GamePlayHandler implements Model, IGameHandler {
      */
 
     /**
-     * Initialise base controllers and buttons on initialisation or after a game
-     * resume when all touch controllers will have been lost.
+     * Add base controllers and buttons on initialisation or after a game
+     * resume when all touch controllers may have been lost.
      */
-//    private void initialiseControllers() {
-//
-//        // remove any existing touch controllers
-//        controller.clearTouchControllers();
-//
-//        /*
-//         * initialise pause and flip buttons
-//         */
-//        pauseButton = new PauseButton(this);
-//        controller.addTouchController(new DetectButtonTouch(pauseButton));
-//
-//        /*
-//         * initialise base controllers
-//         */
-//        this.baseTouchController = new ControllerDrag();
-//        if (primaryBase != null) {
-//            TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
-//            baseTouchController.setBaseController(baseController);
-//        }
-//        controller.addTouchController(baseTouchController);
-//    }
+    private void addControllers() {
+
+        // remove any existing touch controllers
+        controller.clearTouchControllers();
+
+        /*
+         * add pause button
+         */
+        controller.addTouchController(new DetectButtonTouch(pauseButton));
+
+        /*
+         * add base controllers
+         */
+        controller.addTouchController(baseTouchController);
+    }
 
 
     /**

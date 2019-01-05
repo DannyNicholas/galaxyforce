@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class SoundPlayerServiceImpl implements SoundPlayerService {
+public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnLoadCompleteListener {
 
     private final SoundPool soundPool;
 
@@ -60,6 +60,7 @@ public class SoundPlayerServiceImpl implements SoundPlayerService {
     @Override
     public void dispose() {
         // remove all effects from map and dispose of all sound effects
+        Log.i(GameConstants.LOG_TAG, "Unloading all Sound Effects");
         for (SoundEffect effect : SoundEffect.values()) {
             if (effectsBank.containsKey(effect)) {
                 int soundId = effectsBank.remove(effect);
@@ -72,25 +73,32 @@ public class SoundPlayerServiceImpl implements SoundPlayerService {
 
     /**
      * Load sound effect from file (loaded asynchronously).
-     * Add to effects bank once loaded.
+     * Add to effects bank prior to loading.
+     *
+     * Ideally we should only add effects to bank after loading completes
+     * but this would require additional logic to temporarily
+     * hold sound IDs and enums until loading completes.
+     *
+     * Not worth the additional effort. It's likely all effects will be loaded within seconds.
+     * Attempting to play an unloaded effect just produces a warning (not an exception).
      */
-    public void loadSound(final AssetManager assets, final SoundEffect soundEffect) {
+    private void loadSound(final AssetManager assets, final SoundEffect soundEffect) {
 
         String filename = soundEffect.getFileName();
 
         try {
             AssetFileDescriptor assetDescriptor = assets.openFd(filename);
-            Log.i(GameConstants.LOG_TAG, "Loading Sound Effect: " + soundEffect.name());
-            soundPool.load(assetDescriptor, 0);
-            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                    effectsBank.put(soundEffect, sampleId);
-                    Log.i(GameConstants.LOG_TAG, "Loaded Sound Effect: " + soundEffect.name() + " with ID: " + sampleId);
-                }
-            });
+            soundPool.setOnLoadCompleteListener(this);
+            int sampleId = soundPool.load(assetDescriptor, 0);
+            effectsBank.put(soundEffect, sampleId);
+            Log.i(GameConstants.LOG_TAG, "Loading Sound Effect: " + soundEffect.name() + " with ID: " + sampleId);
         } catch (IOException e) {
             throw new GalaxyForceException("Couldn't load sound '" + filename + "'");
         }
+    }
+
+    @Override
+    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+        Log.i(GameConstants.LOG_TAG, "Loaded Sound Effect ID : " + sampleId);
     }
 }

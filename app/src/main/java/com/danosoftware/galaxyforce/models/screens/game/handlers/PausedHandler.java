@@ -78,6 +78,7 @@ public class PausedHandler implements Model, ButtonModel {
         this.modelState = ModelState.PAUSED;
 
         // create list of menu buttons
+        controller.clearTouchControllers();
         addNewMenuButton(3, "RESUME", ButtonType.RESUME);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
         addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
