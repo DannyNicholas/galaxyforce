@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.services;
+package com.danosoftware.galaxyforce.services.preferences;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,10 +6,10 @@ import android.content.SharedPreferences;
 
 import java.util.Map;
 
-public class PreferencesString implements IPreferences<String> {
+public class PreferencesInteger implements IPreferences<Integer> {
     private final SharedPreferences preferences;
 
-    public PreferencesString(Context context) {
+    public PreferencesInteger(Context context) {
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
             this.preferences = activity.getPreferences(Context.MODE_PRIVATE);
@@ -19,24 +19,19 @@ public class PreferencesString implements IPreferences<String> {
     }
 
     @Override
-    public boolean preferenceExists(String key) {
-        return preferences.contains(key);
-    }
-
-    @Override
-    public String getPreference(String key, String defaultValue) {
+    public Integer getPreference(String key, Integer defaultValue) {
         // get preference from shared preferences persistence.
         // if none exists then use default.
-        return preferences.getString(key, defaultValue);
+        return preferences.getInt(key, defaultValue);
     }
 
     @Override
-    public void storePreference(Map<String, String> keyValueMap) {
+    public void storePreference(Map<String, Integer> keyValueMap) {
         // persist keys and values
         SharedPreferences.Editor editor = preferences.edit();
 
         for (String key : keyValueMap.keySet()) {
-            editor.putString(key, keyValueMap.get(key));
+            editor.putInt(key, keyValueMap.get(key));
         }
 
         editor.commit();

@@ -6,6 +6,7 @@ import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -19,10 +20,13 @@ import java.util.List;
  * Game Handler decorator that adds frame-rate calculations and display
  * functionality.
  */
-public class GameHandlerFrameRateDecorator implements IGameHandler {
+public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
 
     // decorated game handler
     private final IGameHandler gameHandler;
+
+    // decorated model
+    private final Model model;
 
     // FPS counter
     private final FPSCounter fpsCounter;
@@ -30,8 +34,9 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
     // FPS display text
     private Text tempFps;
 
-    public GameHandlerFrameRateDecorator(IGameHandler gameHandler) {
+    public GameHandlerFrameRateDecorator(GamePlayHandler gameHandler) {
         this.gameHandler = gameHandler;
+        this.model = gameHandler;
         this.fpsCounter = new FPSCounter();
         this.tempFps = createFpsText();
     }
@@ -46,7 +51,7 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
     @Override
     public List<Text> getText() {
         List<Text> text = new ArrayList<>();
-        text.addAll(gameHandler.getText());
+        text.addAll(model.getText());
         text.add(tempFps);
 
         return text;
@@ -54,7 +59,7 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
 
     @Override
     public void update(float deltaTime) {
-        gameHandler.update(deltaTime);
+        model.update(deltaTime);
 
         // update fps text
         tempFps = createFpsText();
@@ -66,23 +71,18 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
     }
 
     @Override
-    public void initialise() {
-        gameHandler.initialise();
-    }
-
-    @Override
     public List<ISprite> getSprites() {
-        return gameHandler.getSprites();
+        return model.getSprites();
     }
 
     @Override
     public void dispose() {
-        gameHandler.dispose();
+        model.dispose();
     }
 
     @Override
     public void goBack() {
-        gameHandler.goBack();
+        model.goBack();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
 
     @Override
     public void resume() {
-        gameHandler.resume();
+        model.resume();
     }
 
     @Override
@@ -138,10 +138,5 @@ public class GameHandlerFrameRateDecorator implements IGameHandler {
     @Override
     public void addLife() {
         gameHandler.addLife();
-    }
-
-    @Override
-    public void flashText(Text text, boolean flashState) {
-        gameHandler.flashText(text, flashState);
     }
 }

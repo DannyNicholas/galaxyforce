@@ -10,7 +10,7 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import java.util.List;
 
-public interface IGameHandler extends IHandler {
+public interface IGameHandler {
 
     /**
      * Returns the current base

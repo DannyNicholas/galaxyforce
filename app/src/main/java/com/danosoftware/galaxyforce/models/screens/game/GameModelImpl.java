@@ -14,6 +14,8 @@ import com.danosoftware.galaxyforce.models.screens.game.handlers.GamePlayHandler
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.PausedHandler;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -22,6 +24,8 @@ import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.SHOW_FPS;
 
 /**
  * contains game model. Model includes game objects, fonts, screen size and game
@@ -69,6 +73,13 @@ public class GameModelImpl implements GameModel {
     // reference to the billing service
     private final IBillingService billingService;
 
+    // sound player service
+    private final SoundPlayerService sounds;
+
+    // saved game service
+    private final SavedGame savedGame;
+
+
     /*
      * ******************************************************
      *
@@ -77,17 +88,20 @@ public class GameModelImpl implements GameModel {
      * ******************************************************
      */
 
-    public GameModelImpl(Game game, Controller controller, int wave, IBillingService billingService) {
+    public GameModelImpl(
+            Game game,
+            Controller controller,
+            int wave,
+            IBillingService billingService,
+            SoundPlayerService sounds,
+            SavedGame savedGame) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
-
-        /* set-up initial random position of stars to be passed around handlers */
+        this.sounds = sounds;
+        this.savedGame = savedGame;
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
-
-        // initial handler - goes straight into game
-        IGameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, wave, billingService);
-        this.modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
+        this.modelHandler = createGameModel(wave);
         this.modelState = ModelState.RUNNING;
     }
 
@@ -105,11 +119,6 @@ public class GameModelImpl implements GameModel {
     @Override
     public List<Text> getText() {
         return modelHandler.getText();
-    }
-
-    @Override
-    public void initialise() {
-        modelHandler.initialise();
     }
 
     /**
@@ -134,8 +143,6 @@ public class GameModelImpl implements GameModel {
 
                 // go to options screen - will return back when done
                 game.changeToReturningScreen(ScreenType.OPTIONS);
-
-                // set state back to running so doesn't change screens every time
                 this.modelState = ModelState.RUNNING;
                 break;
 
@@ -156,10 +163,6 @@ public class GameModelImpl implements GameModel {
 
                 // create new pause handler
                 modelHandler = new PausedHandler(this, controller, pausedSprites);
-                modelHandler.initialise();
-
-                // set state back to running so doesn't create new handlers every
-                // time.
                 this.modelState = ModelState.RUNNING;
                 break;
 
@@ -173,8 +176,6 @@ public class GameModelImpl implements GameModel {
                 modelHandler = pausedGameHandler;
                 modelHandler.resume();
                 pausedGameHandler = null;
-
-                // set state back to running so doesn't resume every time.
                 this.modelState = ModelState.RUNNING;
                 break;
 
@@ -184,13 +185,7 @@ public class GameModelImpl implements GameModel {
                 if (!WaveUtilities.isValidWave(lastWave)) {
                     this.lastWave = 1;
                 }
-
-                IGameHandler gameHandler = new GamePlayHandler(game, this, controller, stars, lastWave, billingService);
-                modelHandler = new GameHandlerFrameRateDecorator(gameHandler);
-                modelHandler.initialise();
-
-                // set state back to running so doesn't create new handlers every
-                // time.
+                modelHandler = createGameModel(lastWave);
                 this.modelState = ModelState.RUNNING;
                 break;
 
@@ -198,10 +193,6 @@ public class GameModelImpl implements GameModel {
 
                 // create game over handler
                 modelHandler = new GameOverHandler(this, controller, stars);
-                modelHandler.initialise();
-
-                // set state back to running so doesn't create new handlers every
-                // time.
                 this.modelState = ModelState.RUNNING;
                 break;
 
@@ -217,7 +208,7 @@ public class GameModelImpl implements GameModel {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        // no action
     }
 
     @Override
@@ -297,5 +288,27 @@ public class GameModelImpl implements GameModel {
     @Override
     public void goBack() {
         modelHandler.goBack();
+    }
+
+    /**
+     * Returns a game play handler model.
+     * If we want to show the FPS counter, then return a decorated model to provide this.
+     */
+    private Model createGameModel(int wave) {
+        Model gameHandler = new GamePlayHandler(
+                game,
+                this,
+                controller,
+                stars,
+                wave,
+                billingService,
+                sounds,
+                savedGame);
+
+        if (SHOW_FPS) {
+            return new GameHandlerFrameRateDecorator((GamePlayHandler) gameHandler);
+        }
+
+        return gameHandler;
     }
 }

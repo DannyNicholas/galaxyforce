@@ -76,6 +76,9 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, ButtonMo
         // clear any current touch controllers prior to modifying buttons
         controller.clearTouchControllers();
 
+        messages.clear();
+        buttons.clear();
+
         /*
          * if the unlock all zones has NOT been purchased then add the upgrade
          * button and text
@@ -96,7 +99,6 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, ButtonMo
 
         int maxZones = GameConstants.MAX_WAVES;
 
-        messages.clear();
         messages.add(
                 Text.newTextRelativePositionX(
                         "PLAY ANY ZONE",
@@ -139,7 +141,6 @@ public class UnlockAllZonesModelImpl implements Model, BillingObserver, ButtonMo
 
         int maxZones = GameConstants.MAX_WAVES;
 
-        messages.clear();
         messages.add(
                 Text.newTextRelativePositionX(
                         "CONGRATULATIONS",

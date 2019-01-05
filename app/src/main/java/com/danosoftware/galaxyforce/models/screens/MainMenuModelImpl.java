@@ -65,6 +65,8 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         // clear any current touch controllers prior to adding buttons
         controller.clearTouchControllers();
 
+        buttons.clear();
+
         // add mandatory buttons
         addMandatoryButtons();
 

@@ -8,8 +8,10 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.enumerations.TextPositionX;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
@@ -20,9 +22,10 @@ import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class GameOverHandler implements IHandler, ButtonModel {
+public class GameOverHandler implements Model, ButtonModel {
 
     /*
      * ******************************************************
@@ -31,7 +34,7 @@ public class GameOverHandler implements IHandler, ButtonModel {
      */
 
     /* logger tag */
-    private static final String TAG = GameOverHandler.class.getSimpleName();
+    private static final String TAG = "GameOverHandler";
 
     /*
      * ******************************************************
@@ -44,12 +47,6 @@ public class GameOverHandler implements IHandler, ButtonModel {
 
     /* reference to pause menu buttons */
     private final List<SpriteTextButton> menuButtons;
-
-    /* Stores list of all text to be returned. */
-    private final List<Text> allText;
-
-    /* Stores list of all sprites to be returned. */
-    private final List<ISprite> allSprites;
 
     /* reference to current state */
     private ModelState modelState;
@@ -76,32 +73,21 @@ public class GameOverHandler implements IHandler, ButtonModel {
         this.gameModel = gameModel;
         this.stars = stars;
         this.menuButtons = new ArrayList<>();
-        this.allText = new ArrayList<>();
-        this.allSprites = new ArrayList<>();
         this.modelState = ModelState.GAME_OVER;
 
         // build menu buttons
-        buildButtons();
-
-        // build list of sprites and text objects
-        buildSpriteList();
-        buildTextList();
-
-        // add flashing game over text
-        Text gameOver = Text.newTextRelativePositionX("GAME OVER", TextPositionX.CENTRE, 100 + (4 * 170));
-        this.flashingGameOverText = new FlashingTextImpl(gameOver, 0.5f, this);
-    }
-
-    private void buildButtons() {
-
-        // remove any existing touch controllers
-        controller.clearTouchControllers();
-
-        // create list of menu buttons
-        menuButtons.clear();
         addNewMenuButton(3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
         addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
+
+        // add flashing game over text
+        Text gameOver = Text.newTextRelativePositionX(
+                "GAME OVER",
+                TextPositionX.CENTRE,
+                100 + (4 * 170));
+        this.flashingGameOverText = new FlashingTextImpl(
+                Collections.singletonList(gameOver),
+                0.5f);
     }
 
     /*
@@ -111,17 +97,25 @@ public class GameOverHandler implements IHandler, ButtonModel {
      */
 
     @Override
-    public void initialise() {
-    }
-
-    @Override
     public List<ISprite> getSprites() {
-        return allSprites;
+
+        List<ISprite> sprites = new ArrayList<>();
+        sprites.addAll(stars);
+        for (SpriteTextButton eachButton : menuButtons) {
+            sprites.add(eachButton.getSprite());
+        }
+        return sprites;
     }
 
     @Override
     public List<Text> getText() {
-        return allText;
+
+        List<Text> text = new ArrayList<>();
+        for (SpriteTextButton eachButton : menuButtons) {
+            text.add(eachButton.getText());
+        }
+        text.addAll(flashingGameOverText.text());
+        return text;
     }
 
     @Override
@@ -163,7 +157,7 @@ public class GameOverHandler implements IHandler, ButtonModel {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        // no action
     }
 
     @Override
@@ -184,8 +178,8 @@ public class GameOverHandler implements IHandler, ButtonModel {
                 break;
 
             default:
-                Log.e(TAG, "Illegal Button Type.");
-                throw new IllegalArgumentException("Illegal Button Type.");
+                Log.e(TAG, "Illegal Button Type: " + buttonType.name());
+                throw new GalaxyForceException("Illegal Button Type: " + buttonType.name());
         }
     }
 
@@ -198,15 +192,6 @@ public class GameOverHandler implements IHandler, ButtonModel {
     @Override
     public void resume() {
         // no action for this model
-    }
-
-    @Override
-    public void flashText(Text text, boolean flashState) {
-        if (flashState) {
-            allText.add(text);
-        } else {
-            allText.remove(text);
-        }
     }
 
     @Override
@@ -235,30 +220,5 @@ public class GameOverHandler implements IHandler, ButtonModel {
 
         // add new button to list
         menuButtons.add(button);
-    }
-
-    /**
-     * Build up a list of all sprites to be returned by the model.
-     */
-    private void buildSpriteList() {
-        allSprites.clear();
-        allSprites.addAll(stars);
-        for (SpriteTextButton eachButton : menuButtons) {
-            allSprites.add(eachButton.getSprite());
-        }
-    }
-
-    /**
-     * Build up a list of all text to be returned by the model.
-     */
-    private void buildTextList() {
-        /*
-         * adds text for the buttons. no need to add text for flashing text as
-         * this is added and removed to the text list by callbacks.
-         */
-        allText.clear();
-        for (SpriteTextButton eachButton : menuButtons) {
-            allText.add(eachButton.getText());
-        }
     }
 }

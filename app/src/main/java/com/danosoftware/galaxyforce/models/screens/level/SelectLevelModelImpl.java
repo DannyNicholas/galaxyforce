@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.buttons.sprite_button.NextZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.PreviousZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.SpriteButton;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SelectLevel;
+import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.models.swipe.SelectLevelSwipe;
@@ -18,7 +19,7 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.services.SavedGame;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.SwipeMenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
@@ -52,69 +53,66 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     // current zone
     private int zone;
 
-    // references to stars
-    private final List<Star> stars;
+    // max level unlocked
+    private final int maxLevelUnlocked;
 
-    // reference to all sprites in model
-    private final List<ISprite> allSprites;
-    private final List<ISprite> staticSprites;
+    // on-screen components
+    private final List<Star> stars;
+    private final List<SpriteButton> buttons;
+    private final List<SpriteTextButton> textButtons;
+    private final List<SpriteTextButton> staticTextButtons;
+    private final List<Text> messages;
 
     private ModelState modelState;
 
-    // reference to all text objects in model
-    private final List<Text> allText;
-    private final List<Text> staticText;
-
     /* reference to controller */
     private final Controller controller;
-
-    // reference to saved game singleton
-    private final SavedGame savedGame;
 
     // reference to the billing service
     private final IBillingService billingService;
 
     /*
-     * Should the model check the billing service for any changed products? The
-     * model should check the billing service's products initially and then
-     * following any notifications from the billing service.
+     * Should we rebuild the screen sprites?
+     * Normally triggered by a change in state from a billing thread.
      */
-    private boolean checkBillingProducts;
+    private volatile boolean reBuildAssets;
 
-    public SelectLevelModelImpl(Game game, Controller controller, IBillingService billingService) {
+    public SelectLevelModelImpl(
+            Game game,
+            Controller controller,
+            IBillingService billingService,
+            SavedGame savedGame) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
-
-        // model must check the billing service's products on next update
-        this.checkBillingProducts = true;
-
-        this.allSprites = new ArrayList<>();
-        this.staticSprites = new ArrayList<>();
-        this.allText = new ArrayList<>();
-        this.staticText = new ArrayList<>();
-        this.zoneXPosition = new HashMap<>();
+        this.modelState = ModelState.RUNNING;
+        this.reBuildAssets = false;
+        this.messages = new ArrayList<>();
+        this.buttons = new ArrayList<>();
+        this.textButtons = new ArrayList<>();
+        this.staticTextButtons = new ArrayList<>();
 
         /*
          * calculate zone from highest level reached - must use double to avoid
          * integer division problems.
          */
-        this.savedGame = SavedGame.getInstance();
-        int maxLevelUnlocked = savedGame.getGameLevel();
+        this.maxLevelUnlocked = savedGame.getGameLevel();
         this.zone = (int) Math.ceil((double) maxLevelUnlocked / GameConstants.WAVES_PER_ZONE);
 
         /* set-up initial random position of stars */
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+
+        // create map of zone numbers to zone page x positions
+        this.zoneXPosition = new HashMap<>();
+        for (int zone = 0; zone < GameConstants.MAX_ZONES; zone++) {
+            zoneXPosition.put(zone + 1, (zone + 1) * GameConstants.GAME_WIDTH);
+        }
 
         // register this model with the billing service
         billingService.registerProductObserver(this);
 
         // refresh sprites and controllers
         refreshAssets();
-    }
-
-    @Override
-    public void initialise() {
     }
 
     /**
@@ -131,16 +129,14 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         SelectLevelSwipe swipe = new SelectLevelSwipe(this);
         controller.addTouchController(new SwipeTouch(swipe));
 
-        allSprites.clear();
-        allText.clear();
-        staticSprites.clear();
-        staticText.clear();
-        staticSprites.addAll(stars);
+        buttons.clear();
+        textButtons.clear();
+        staticTextButtons.clear();
+        messages.clear();
 
-        // create a page for each zone. each zone requires the zone, starting
-        // level number and the x position for the page.
+        // create a page for each zone
         for (int zone = 0; zone < GameConstants.MAX_ZONES; zone++) {
-            createZonePage(zone + 1, (zone * GameConstants.WAVES_PER_ZONE) + 1, (zone + 1) * GameConstants.GAME_WIDTH);
+            createZonePage(zone + 1);
         }
 
         this.xPosition = zoneXPosition.get(zone);
@@ -160,26 +156,28 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
     /**
      * Create a page model for a zone.
-     *
-     * @param levelStart - first level number to appear on the page
-     * @param xPosition  - x position of the page.
      */
-    private void createZonePage(int zone, int levelStart, int xPosition) {
-        // add current zone and related x position to map
-        zoneXPosition.put(zone, xPosition);
+    private void createZonePage(int zone) {
+
+        // get page x position for current zone
+        int xPosition = zoneXPosition.get(zone);
+
+        // first level number to appear on the page
+        int levelStart = ((zone - 1) * GameConstants.WAVES_PER_ZONE) + 1;
 
         int column;
         int row;
-
-        int maxLevelUnlocked = savedGame.getGameLevel();
 
         /*
          * if the all levels unlocks have been purchased then make all levels
          * available.
          */
+        final int availableLevel;
         if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
                 && billingService.isPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
-            maxLevelUnlocked = GameConstants.MAX_WAVES;
+            availableLevel = GameConstants.MAX_WAVES;
+        } else {
+            availableLevel = maxLevelUnlocked;
         }
 
         for (int i = 0; i < GameConstants.WAVES_PER_ZONE; i++) {
@@ -189,7 +187,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
             // is level button unlocked?
             SelectLevel.LockStatus lockedStatus;
-            if ((i + levelStart) <= maxLevelUnlocked) {
+            if ((i + levelStart) <= availableLevel) {
                 lockedStatus = SelectLevel.LockStatus.UNLOCKED;
             } else {
                 lockedStatus = SelectLevel.LockStatus.LOCKED;
@@ -200,11 +198,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
                     i + levelStart, lockedStatus);
             controller.addTouchController(new DetectButtonTouch(selectLevel));
 
-            // add new level's sprite to list of sprites
-            allSprites.add(selectLevel.getSprite());
-
-            // add new level's text to list of text objects
-            allText.add(selectLevel.getText());
+            // add new level's button to list
+            textButtons.add(selectLevel);
         }
 
         // add previous zone to list of sprites
@@ -213,8 +208,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
             row = 4;
             SpriteButton prevButton = new PreviousZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
                     MenuSpriteIdentifier.PREVIOUS_LEVEL, MenuSpriteIdentifier.PREVIOUS_LEVEL_PRESSED);
-            allSprites.add(prevButton.getSprite());
             controller.addTouchController(new DetectButtonTouch(prevButton));
+            buttons.add(prevButton);
         }
 
         // add next zone to list of sprites
@@ -223,34 +218,59 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
             row = 4;
             SpriteButton nextButton = new NextZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
                     MenuSpriteIdentifier.NEXT_LEVEL, MenuSpriteIdentifier.NEXT_LEVEL_PRESSED);
-            allSprites.add(nextButton.getSprite());
             controller.addTouchController(new DetectButtonTouch(nextButton));
+            buttons.add(nextButton);
         }
 
         // add zone text
         column = 1;
         row = 4;
-        allText.add(Text.newTextAbsolutePosition("ZONE " + zone, xPosition + 100 + (column * 170), 100 + (row * 170)));
+        messages.add(Text.newTextAbsolutePosition("ZONE " + zone, xPosition + 100 + (column * 170), 100 + (row * 170)));
     }
 
     @Override
     public List<ISprite> getSprites() {
-        return allSprites;
+        List<ISprite> sprites = new ArrayList<>();
+        for (SpriteButton button : buttons) {
+            sprites.add(button.getSprite());
+        }
+        for (SpriteTextButton button : textButtons) {
+            sprites.add(button.getSprite());
+        }
+
+        return sprites;
     }
 
     @Override
     public List<ISprite> getStaticSprites() {
-        return staticSprites;
+        List<ISprite> sprites = new ArrayList<>();
+        sprites.addAll(stars);
+        for (SpriteTextButton button : staticTextButtons) {
+            sprites.add(button.getSprite());
+        }
+
+        return sprites;
     }
 
     @Override
     public List<Text> getStaticText() {
-        return staticText;
+        List<Text> text = new ArrayList<>();
+        for (SpriteTextButton button : staticTextButtons) {
+            text.add(button.getText());
+        }
+
+        return text;
     }
 
     @Override
     public List<Text> getText() {
-        return allText;
+        List<Text> text = new ArrayList<>();
+        for (SpriteTextButton button : textButtons) {
+            text.add(button.getText());
+        }
+        text.addAll(messages);
+
+        return text;
     }
 
     @Override
@@ -268,16 +288,13 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
             eachStar.animate(deltaTime);
         }
 
-        // do we need to check billing service for product states
-        if (checkBillingProducts) {
-            // firstly set to false so we don't repeatedly check this
-            checkBillingProducts = false;
-
-            /*
-             * refresh screen sprites and buttons following the billing state change.
-             * The billing buttons and level buttons displayed may change.
-             */
+        /*
+         * refresh screen sprites. triggered following the billing state change.
+         * may result in text and button changes following a successful purchase.
+         */
+        if (reBuildAssets) {
             refreshAssets();
+            reBuildAssets = false;
         }
     }
 
@@ -393,16 +410,14 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
                 ButtonType.UNLOCK_ALL_LEVELS,
                 MenuSpriteIdentifier.MAIN_MENU,
                 MenuSpriteIdentifier.MAIN_MENU_PRESSED);
+
         controller.addTouchController(new DetectButtonTouch(button));
 
         /*
-         * add new button's sprite to list of sprites. we don't add this button
-         * to all sprites as they will be shifted as user swipes.
+         * add new button to list.
+         * this button will not be shifted as user swipes.
          */
-        staticSprites.add(button.getSprite());
-
-        // add new button's text to list of text objects
-        staticText.add(button.getText());
+        staticTextButtons.add(button);
     }
 
     @Override
@@ -415,6 +430,6 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
          * necessary action in the next update in the main thread.
          */
         Log.d(GameConstants.LOG_TAG, LOCAL_TAG + ": Received billing products state change message.");
-        this.checkBillingProducts = true;
+        this.reBuildAssets = true;
     }
 }

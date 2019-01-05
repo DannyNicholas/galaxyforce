@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.textures.TextureMap;
@@ -41,6 +42,7 @@ public class ScreenFactory {
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
     private final VibrationService vibrator;
+    private final SavedGame savedGame;
     private final Game game;
     private final Input input;
     private final String versionName;
@@ -52,6 +54,7 @@ public class ScreenFactory {
             ConfigurationService configurationService,
             SoundPlayerService sounds,
             VibrationService vibrator,
+            SavedGame savedGame,
             Game game,
             Input input,
             String versionName) {
@@ -62,6 +65,7 @@ public class ScreenFactory {
         this.configurationService = configurationService;
         this.sounds = sounds;
         this.vibrator = vibrator;
+        this.savedGame = savedGame;
         this.game = game;
         this.input = input;
         this.versionName = versionName;
@@ -119,7 +123,7 @@ public class ScreenFactory {
 
             case SELECT_LEVEL:
                 return new SelectLevelScreen(
-                        new SelectLevelModelImpl(game, controller, billingService),
+                        new SelectLevelModelImpl(game, controller, billingService, savedGame),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -169,7 +173,7 @@ public class ScreenFactory {
         Controller controller = new ControllerImpl(input, camera);
 
         return new Screen(
-                new GameModelImpl(game, controller, startingWave, billingService),
+                new GameModelImpl(game, controller, startingWave, billingService, sounds, savedGame),
                 controller,
                 TextureMap.GAME,
                 glGraphics,

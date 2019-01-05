@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.services;
+package com.danosoftware.galaxyforce.services.preferences;
 
 import java.util.Map;
 
@@ -14,9 +14,4 @@ public interface IPreferences<T> {
      * Persist a map of string keys with values of wanted type.
      */
     void storePreference(Map<String, T> keyValueMap);
-
-    /**
-     * Return true if key is contained in preferences.
-     */
-    boolean preferenceExists(String key);
 }

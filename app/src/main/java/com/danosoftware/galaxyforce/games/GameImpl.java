@@ -17,14 +17,15 @@ import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.screen.IScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
-import com.danosoftware.galaxyforce.services.IPreferences;
-import com.danosoftware.galaxyforce.services.PreferencesInteger;
-import com.danosoftware.galaxyforce.services.PreferencesString;
-import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
 import com.danosoftware.galaxyforce.services.music.AndroidAudio;
 import com.danosoftware.galaxyforce.services.music.Audio;
+import com.danosoftware.galaxyforce.services.preferences.IPreferences;
+import com.danosoftware.galaxyforce.services.preferences.PreferencesInteger;
+import com.danosoftware.galaxyforce.services.preferences.PreferencesString;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGameImpl;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerServiceImpl;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -76,6 +77,9 @@ public class GameImpl implements Game {
         boolean enableVibrator = (configurationService.getVibrationOption() == OptionVibration.ON);
         VibrationService vibrator = new VibrationServiceImpl(context, enableVibrator);
 
+        IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
+        SavedGame savedGame = new SavedGameImpl(savedGamePreferences);
+
         this.screenFactory = new ScreenFactory(
                 glGraphics,
                 fileIO,
@@ -83,19 +87,10 @@ public class GameImpl implements Game {
                 configurationService,
                 sounds,
                 vibrator,
+                savedGame,
                 this,
                 input,
                 versionName);
-
-        /* initialise saved game singleton */
-        if (!SavedGame.isInitialised()) {
-            // set-up reference to shared preference.
-            // used for persisting saved games
-            IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
-
-            // initialise configuration
-            SavedGame.initialise(savedGamePreferences);
-        }
     }
 
     @Override

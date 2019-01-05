@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.waves.managers;
 
-import com.danosoftware.galaxyforce.services.SavedGame;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.Wave;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
@@ -29,16 +28,6 @@ public class WaveCreator implements Runnable {
 
     @Override
     public void run() {
-        // persist new wave if this is the highest level reached so far.
-        // since this could involve I/O operation it is best to run this
-        // within this separate thread.
-        SavedGame savedGame = SavedGame.getInstance();
-        int maxLevelUnlocked = savedGame.getGameLevel();
-        if (waveNumber > maxLevelUnlocked) {
-            savedGame.setGameLevel(waveNumber);
-            savedGame.persistSavedGame();
-        }
-
         // create wave - i.e. list of sub-waves
         List<SubWave> subWaves = waveFactory.createWave(waveNumber);
         Wave wave = new Wave(subWaves);

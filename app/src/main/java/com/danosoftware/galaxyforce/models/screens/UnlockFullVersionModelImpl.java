@@ -76,6 +76,9 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         // clear any current touch controllers prior to modifying buttons
         controller.clearTouchControllers();
 
+        messages.clear();
+        buttons.clear();
+
         /*
          * if the full version has NOT been purchased then add the upgrade
          * button and text
@@ -96,7 +99,6 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
         int maxFreeZones = GameConstants.MAX_FREE_ZONE;
 
-        messages.clear();
         messages.add(
                 Text.newTextRelativePositionX(
                         "TO PLAY BEYOND",
@@ -142,7 +144,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     }
 
     private void prepareUpgradeFullVersionSuccess() {
-        messages.clear();
+
         messages.add(
                 Text.newTextRelativePositionX(
                         "CONGRATULATIONS",

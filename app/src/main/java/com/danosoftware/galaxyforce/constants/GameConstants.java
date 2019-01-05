@@ -12,6 +12,9 @@ public class GameConstants {
     /* maximum number of lives possible */
     public final static int MAX_LIVES = 5;
 
+    // should we show the FPS counter
+    public static final boolean SHOW_FPS = true;
+
     /*
      * maximum free zone. users must upgrade to play beyond this zone.
      */

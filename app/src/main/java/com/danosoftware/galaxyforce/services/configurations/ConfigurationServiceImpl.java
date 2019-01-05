@@ -4,7 +4,7 @@ import com.danosoftware.galaxyforce.options.OptionController;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
-import com.danosoftware.galaxyforce.services.IPreferences;
+import com.danosoftware.galaxyforce.services.preferences.IPreferences;
 
 import java.util.HashMap;
 import java.util.Map;

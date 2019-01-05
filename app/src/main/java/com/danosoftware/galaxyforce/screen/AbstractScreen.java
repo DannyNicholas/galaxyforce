@@ -55,9 +55,6 @@ public abstract class AbstractScreen implements IScreen {
     // font used for displaying text sprites
     Font gameFont;
 
-    // has model been initialised
-    private boolean initialised = false;
-
     // TextureState identifies the texture map being used
     private final TextureMap textureMap;
 
@@ -184,15 +181,6 @@ public abstract class AbstractScreen implements IScreen {
                     GameConstants.FONT_GLYPHS_WIDTH,
                     GameConstants.FONT_GLYPHS_HEIGHT,
                     GameConstants.FONT_CHARACTER_MAP);
-        }
-
-        /*
-         * can only initialise after textures have been loaded however must only
-         * initialise once - not after pausing
-         */
-        if (!initialised) {
-            model.initialise();
-            initialised = true;
         }
 
         model.resume();

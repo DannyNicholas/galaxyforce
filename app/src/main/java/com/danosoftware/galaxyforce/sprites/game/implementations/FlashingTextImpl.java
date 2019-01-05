@@ -1,33 +1,30 @@
 package com.danosoftware.galaxyforce.sprites.game.implementations;
 
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IHandler;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.text.Text;
 
-public class FlashingTextImpl implements FlashingText {
-    /* reference to flashing text */
-    private final Text flashingText;
+import java.util.ArrayList;
+import java.util.List;
 
-    /* time delay between flash on/off in seconds */
+public class FlashingTextImpl implements FlashingText {
+
+    // reference to flashing text
+    private final List<Text> flashingText;
+
+    // time delay between flash on/off in seconds
     private final float flashDelay;
 
-    /* reference to model. */
-    private final IHandler model;
+    // time since flash state last changed
+    private float timeSinceflashStateChange;
 
-    /* time since flash state last changed */
-    private float timeSinceflashStateChange = 0f;
+    // current flash state - show text or hide text
+    private boolean showText;
 
-    /* current flash state - show text or hide text. */
-    private boolean flashState;
-
-    public FlashingTextImpl(Text flashingText, float flashDelay, IHandler model) {
+    public FlashingTextImpl(List<Text> flashingText, float flashDelay) {
         this.flashingText = flashingText;
         this.flashDelay = flashDelay;
-        this.model = model;
-        this.flashState = true;
-
-        // turn on flashing text
-        model.flashText(flashingText, flashState);
+        this.timeSinceflashStateChange = 0f;
+        this.showText = true;
     }
 
     @Override
@@ -40,14 +37,21 @@ public class FlashingTextImpl implements FlashingText {
          */
         if (timeSinceflashStateChange > flashDelay) {
             // invert current flash state
-            flashState = (!flashState);
+            showText = (!showText);
 
             // reset time since state change
             timeSinceflashStateChange = 0f;
-
-            // update model
-            model.flashText(flashingText, flashState);
         }
 
+    }
+
+    @Override
+    public List<Text> text() {
+
+        List<Text> text = new ArrayList<>();
+        if (showText) {
+            text.addAll(flashingText);
+        }
+        return text;
     }
 }

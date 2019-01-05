@@ -9,6 +9,8 @@ import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroid;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienAsteroidSimple;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AlienDragonBody;
@@ -34,6 +36,10 @@ import java.util.List;
 public class AlienFactory {
 
     private final static String TAG = "AlienFactory";
+
+    private final IGameHandler model;
+    private final SoundPlayerService sounds;
+    private final VibrationService vibrator;
 
     /**
      * Creates an alien with a supplied path. Starting position will be based on

@@ -21,9 +21,10 @@ import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.game.handlers.GamePlayAssetsManager;
 import com.danosoftware.galaxyforce.game.handlers.IGamePlayAssetsManager;
 import com.danosoftware.galaxyforce.games.Game;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.services.SavedGame;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -47,10 +48,10 @@ import com.danosoftware.galaxyforce.waves.managers.WaveManagerImpl;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Executors;
 
-public class GamePlayHandler implements IGameHandler {
+public class GamePlayHandler implements Model, IGameHandler {
 
     /*
      * ******************************************************
@@ -62,10 +63,13 @@ public class GamePlayHandler implements IGameHandler {
         GET_READY, PLAYING
     }
 
-    private static final String TAG = GamePlayHandler.class.getSimpleName();
+    private static final String TAG = "GamePlayHandler";
 
     // number of lives for new game
     private static final int START_LIVES = 3;
+
+    // how long get ready message appears in seconds
+    private static final float GET_READY_DELAY = 3f;
 
 
     /*
@@ -92,17 +96,16 @@ public class GamePlayHandler implements IGameHandler {
     // main base
     private IBasePrimary primaryBase;
 
-    //TODO make immutable in future?
-    private SpriteButton pauseButton;
+    private final SpriteButton pauseButton;
 
     // sound player that provide sound effects
     private final SoundPlayerService sounds;
 
     // allows the current base controller method (e.g. drag) to be changed
-    private final Controller controller;
+//    private final Controller controller;
 
     // specific controller to move current base
-    private BaseTouchController baseTouchController;
+    private final BaseTouchController baseTouchController;
 
     // used to change the current model state
     private final GameModel model;
@@ -113,25 +116,19 @@ public class GamePlayHandler implements IGameHandler {
     // reference to the billing service
     private final IBillingService billingService;
 
+    // saved game service
+    private final SavedGame savedGame;
+
     /*
      * Instance variables required in GET_READY state
      */
 
-    // flashing text instance
-    private FlashingText flashingText;
-
-    // how long get ready message to appear in seconds
-    private final float GET_READY_DELAY = 3f;
+    // get ready text instances
+    private Text waveText;
+    private FlashingText getReadyFlashingText;
 
     // time since get ready message first appeared
     private float timeSinceGetReady;
-
-    // list of text instances required for get ready message
-    private List<Text> getReadyTexts = new ArrayList<>();
-
-    /*
-     * Instance variables required in NEW_BASE state
-     */
 
     /*
      * ******************************************************
@@ -148,14 +145,20 @@ public class GamePlayHandler implements IGameHandler {
             List<Star> stars,
             int wave,
             IBillingService billingService,
-            SoundPlayerService sounds) {
+            SoundPlayerService sounds,
+            SavedGame savedGame) {
 
         this.game = game;
         this.model = model;
-        this.controller = controller;
+//        this.controller = controller;
         this.wave = wave;
         this.billingService = billingService;
         this.sounds = sounds;
+        this.savedGame = savedGame;
+
+        // no text initially
+        this.waveText = null;
+        this.getReadyFlashingText = null;
 
         /*
          * create wave factory and manager to create lists of aliens on each
@@ -168,10 +171,22 @@ public class GamePlayHandler implements IGameHandler {
         this.assets = new GamePlayAssetsManager(stars);
 
         // reset lives
-        lives = START_LIVES;
+        this.lives = START_LIVES;
+
+        /*
+         * initialise pause and flip buttons
+         */
+        this.pauseButton = new PauseButton(this);
+        controller.addTouchController(new DetectButtonTouch(pauseButton));
+
+        /*
+         * initialise base controllers
+         */
+        this.baseTouchController = new ControllerDrag();
+        controller.addTouchController(baseTouchController);
 
         // set-up controllers
-        initialiseControllers();
+//        initialiseControllers();
 
         // create new base at default position
         addNewBase();
@@ -182,11 +197,6 @@ public class GamePlayHandler implements IGameHandler {
      * PUBLIC INTERFACE METHODS
      * ******************************************************
      */
-
-    // TODO - can we remove this method?
-    @Override
-    public void initialise() {
-    }
 
     @Override
     public List<ISprite> getSprites() {
@@ -223,7 +233,14 @@ public class GamePlayHandler implements IGameHandler {
 
     @Override
     public List<Text> getText() {
-        return getReadyTexts;
+
+        List<Text> text = new ArrayList<>();
+        if (modelState == ModelState.GET_READY) {
+            text.add(waveText);
+            text.addAll(getReadyFlashingText.text());
+        }
+
+        return text;
     }
 
     @Override
@@ -269,7 +286,7 @@ public class GamePlayHandler implements IGameHandler {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        // no action
     }
 
     /**
@@ -292,7 +309,7 @@ public class GamePlayHandler implements IGameHandler {
          * re-initialise controllers after game pause as touch controllers will
          * have been lost and chosen controller type may have changed.
          */
-        initialiseControllers();
+//        initialiseControllers();
     }
 
     /**
@@ -349,15 +366,6 @@ public class GamePlayHandler implements IGameHandler {
         assets.setLives(lives);
     }
 
-    @Override
-    public void flashText(Text text, boolean flashState) {
-        if (flashState) {
-            getReadyTexts.add(text);
-        } else {
-            getReadyTexts.remove(text);
-        }
-    }
-
     /*
      * ******************************************************
      * PRIVATE HELPER METHODS
@@ -368,27 +376,27 @@ public class GamePlayHandler implements IGameHandler {
      * Initialise base controllers and buttons on initialisation or after a game
      * resume when all touch controllers will have been lost.
      */
-    private void initialiseControllers() {
-
-        // remove any existing touch controllers
-        controller.clearTouchControllers();
-
-        /*
-         * initialise pause and flip buttons
-         */
-        pauseButton = new PauseButton(this);
-        controller.addTouchController(new DetectButtonTouch(pauseButton));
-
-        /*
-         * initialise base controllers
-         */
-        this.baseTouchController = new ControllerDrag();
-        if (primaryBase != null) {
-            TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
-            baseTouchController.setBaseController(baseController);
-        }
-        controller.addTouchController(baseTouchController);
-    }
+//    private void initialiseControllers() {
+//
+//        // remove any existing touch controllers
+//        controller.clearTouchControllers();
+//
+//        /*
+//         * initialise pause and flip buttons
+//         */
+//        pauseButton = new PauseButton(this);
+//        controller.addTouchController(new DetectButtonTouch(pauseButton));
+//
+//        /*
+//         * initialise base controllers
+//         */
+//        this.baseTouchController = new ControllerDrag();
+//        if (primaryBase != null) {
+//            TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
+//            baseTouchController.setBaseController(baseController);
+//        }
+//        controller.addTouchController(baseTouchController);
+//    }
 
 
     /**
@@ -412,22 +420,12 @@ public class GamePlayHandler implements IGameHandler {
                  * highest level they have reached. normally this occurs
                  * when the next wave is set-up but if the user does not
                  * upgrade, this set-up will never be called.
-                 *
-                 * since this could involve I/O operation it is best to run
-                 * this within this separate thread.
                  */
                 final int unlockedWave = wave + 1;
-                Executors.newSingleThreadExecutor().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        SavedGame savedGame = SavedGame.getInstance();
-                        int maxLevelUnlocked = savedGame.getGameLevel();
-                        if (unlockedWave > maxLevelUnlocked) {
-                            savedGame.setGameLevel(unlockedWave);
-                            savedGame.persistSavedGame();
-                        }
-                    }
-                });
+                int maxLevelUnlocked = savedGame.getGameLevel();
+                if (unlockedWave > maxLevelUnlocked) {
+                    savedGame.saveGameLevel(unlockedWave);
+                }
 
                 /*
                  * must return at this point to prevent next wave being
@@ -446,8 +444,13 @@ public class GamePlayHandler implements IGameHandler {
             }
             // advance to next level
             else {
-                wave++;
                 Log.i(TAG, "Wave: New Wave");
+                wave++;
+                int maxLevelUnlocked = savedGame.getGameLevel();
+                if (wave > maxLevelUnlocked) {
+                    Log.i(TAG, "New wave unlocked: " + wave);
+                    savedGame.saveGameLevel(wave);
+                }
             }
         }
 
@@ -560,12 +563,16 @@ public class GamePlayHandler implements IGameHandler {
         int yPosition = 100 + (3 * 170);
 
         // add text
-        Text waveText = Text.newTextRelativePositionX("WAVE " + wave, TextPositionX.CENTRE, yPosition + 64);
-        getReadyTexts.add(waveText);
+        this.waveText = Text.newTextRelativePositionX("WAVE " + wave, TextPositionX.CENTRE, yPosition + 64);
 
         // create flashing text - gets added to get ready text by callbacks
-        Text getReadyText = Text.newTextRelativePositionX("GET READY", TextPositionX.CENTRE, yPosition);
-        flashingText = new FlashingTextImpl(getReadyText, 0.5f, this);
+        Text getReadyText = Text.newTextRelativePositionX(
+                "GET READY",
+                TextPositionX.CENTRE,
+                yPosition);
+        this.getReadyFlashingText = new FlashingTextImpl(
+                Collections.singletonList(getReadyText),
+                0.5f);
 
         timeSinceGetReady = 0f;
     }
@@ -593,7 +600,7 @@ public class GamePlayHandler implements IGameHandler {
      * Update "Get Ready" at start of a new level
      */
     private void updateGetReady(float deltaTime) {
-        flashingText.update(deltaTime);
+        getReadyFlashingText.update(deltaTime);
 
         timeSinceGetReady += deltaTime;
 
@@ -602,7 +609,8 @@ public class GamePlayHandler implements IGameHandler {
          * and next wave is ready.
          */
         if (timeSinceGetReady > GET_READY_DELAY && alienManager.isWaveReady()) {
-            getReadyTexts.clear();
+            getReadyFlashingText = null;
+            waveText = null;
             modelState = ModelState.PLAYING;
         }
     }

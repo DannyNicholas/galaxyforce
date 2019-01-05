@@ -1,5 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.game.interfaces;
 
+import com.danosoftware.galaxyforce.text.Text;
+
+import java.util.List;
+
 /**
  * Implementations represent a flashing text instance that can periodically show
  * and hide text.
@@ -7,10 +11,13 @@ package com.danosoftware.galaxyforce.sprites.game.interfaces;
 public interface FlashingText {
 
     /**
-     * Update the state of the flashing text instance. When the state changes,
-     * the flashing text instance should callback the model using the
-     * flashText() method.
+     * Update the state of the flashing text.
      */
     void update(float deltaTime);
 
+    /**
+     * Return the currently visible text.
+     * Can return an empty list if all text is hidden.
+     */
+    List<Text> text();
 }
