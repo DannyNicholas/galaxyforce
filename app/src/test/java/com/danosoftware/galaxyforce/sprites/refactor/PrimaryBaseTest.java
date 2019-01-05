@@ -6,6 +6,8 @@ import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBaseHelper;
@@ -62,6 +64,8 @@ public class PrimaryBaseTest {
     private IBaseHelper rightHelper;
 
     private IGameHandler model;
+    private SoundPlayerService sounds;
+    private VibrationService vibrator;
 
 
     @Before
@@ -78,7 +82,10 @@ public class PrimaryBaseTest {
         }
 
         model = mock(IGameHandler.class);
-        primaryBase = new BasePrimary(model);
+        sounds = mock(SoundPlayerService.class);
+        vibrator = mock(VibrationService.class);
+
+        primaryBase = new BasePrimary(model, sounds, vibrator);
         primaryBaseSpy = spy(primaryBase);
 
         leftHelper = mock(IBaseHelper.class);

@@ -173,7 +173,7 @@ public class ScreenFactory {
         Controller controller = new ControllerImpl(input, camera);
 
         return new Screen(
-                new GameModelImpl(game, controller, startingWave, billingService, sounds, savedGame),
+                new GameModelImpl(game, controller, startingWave, billingService, sounds, vibrator, savedGame),
                 controller,
                 TextureMap.GAME,
                 glGraphics,

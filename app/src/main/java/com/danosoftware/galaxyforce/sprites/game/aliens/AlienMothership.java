@@ -3,11 +3,14 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnRandomDelay;
+import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -42,7 +45,10 @@ public class AlienMothership extends AbstractAlienWithPath {
      * power-ups.
      */
     public AlienMothership(
+            final AlienFactory alienFactory,
             final IGameHandler model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
             final PowerUpType powerUpType,
             final List<PowerUpType> spwanPowerUpTypes,
             final List<Point> alienPath,
@@ -53,13 +59,14 @@ public class AlienMothership extends AbstractAlienWithPath {
                 new FireDisabled(),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnRandomDelay(
+                        alienFactory,
                         model,
                         AlienType.SPAWNED_INSECT,
                         spwanPowerUpTypes,
                         MIN_SPAWN_DELAY,
                         SPAWN_DELAY_RANDOM),
                 new HitDisabled(),
-                new ExplodeSimple(),
+                new ExplodeSimple(sounds, vibrator),
                 alienPath,
                 delayStart,
                 ENERGY,

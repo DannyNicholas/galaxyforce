@@ -2,7 +2,6 @@ package com.danosoftware.galaxyforce.waves.utilities;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
@@ -17,10 +16,9 @@ import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils.createNoPathAlienSubWave;
-import static com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils.createPathAlienSubWave;
 
 /**
  * Creates a wave of aliens based on the provided wave number. Each wave
@@ -28,10 +26,12 @@ import static com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils.cre
  * aliens following a path
  */
 public class WaveFactory {
-    private final IGameHandler model;
 
-    public WaveFactory(IGameHandler model) {
-        this.model = model;
+    private final WaveCreationUtils creationUtils;
+
+    public WaveFactory(
+            WaveCreationUtils creationUtils) {
+        this.creationUtils = creationUtils;
     }
 
     /**
@@ -67,12 +67,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -86,12 +86,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -105,12 +105,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -124,7 +124,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -138,7 +138,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
                                         AlienType.MOTHERSHIP,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -148,7 +148,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
                                         AlienType.MOTHERSHIP,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -162,7 +162,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -176,7 +176,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
                                         AlienType.ASTEROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -200,7 +200,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPACE_INVADER_REVERSE,
                                         AlienType.GOBBY,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -214,7 +214,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.STAGGERED_BOUNCE_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -228,7 +228,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.DRAGON_CHASE,
                                         AlienType.DRAGON,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -242,7 +242,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.FIGURE_OF_EIGHT,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -256,7 +256,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSING_STEP_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -270,7 +270,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSOVER_EXIT_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -284,7 +284,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
                                         AlienType.STORK,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -294,7 +294,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_BELL_CURVE,
                                         AlienType.STORK,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -308,7 +308,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
                                         AlienType.DROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -322,7 +322,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.TEAR_DROP_ATTACK,
                                         AlienType.INSECT,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -336,7 +336,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -350,7 +350,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.DROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -360,7 +360,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_SPIRAL,
                                         AlienType.DROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -374,7 +374,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE_EASY,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -384,7 +384,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -398,7 +398,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.HUNTER_PAIR,
                                         AlienType.HUNTER,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -452,17 +452,17 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
                                         AlienType.STORK,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
                                         AlienType.DROID,
-                                        Arrays.asList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.ENERGY)
                                 )
                         )
                 );
@@ -491,11 +491,11 @@ public class WaveFactory {
             switch (config.getType()) {
                 case PATH:
                     SubWavePathConfig pathConfig = (SubWavePathConfig) config;
-                    aliens.addAll(createPathAlienSubWave(pathConfig, model));
+                    aliens.addAll(creationUtils.createPathAlienSubWave(pathConfig));
                     break;
                 case NO_PATH:
                     SubWaveNoPathConfig noPathConfig = (SubWaveNoPathConfig) config;
-                    aliens.addAll(createNoPathAlienSubWave(noPathConfig, model));
+                    aliens.addAll(creationUtils.createNoPathAlienSubWave(noPathConfig));
                     break;
                 default:
                     throw new GalaxyForceException("Unknown sub-wave config type: " + config.getType().name());
@@ -515,10 +515,7 @@ public class WaveFactory {
 
         // create subwave from list of aliens and set whether wave should repeat
         // until all destroyed
-        SubWave subWave = new SubWave(reversedAlienList, repeatedMode);
-
-        return subWave;
-
+        return new SubWave(reversedAlienList, repeatedMode);
     }
 
     /**

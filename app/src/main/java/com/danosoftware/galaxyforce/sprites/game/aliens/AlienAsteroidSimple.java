@@ -2,6 +2,8 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
@@ -71,7 +73,9 @@ public class AlienAsteroidSimple extends AbstractAlien {
             final int yStart,
             final float timeDelayStart,
             final boolean restartImmediately,
-            final IGameHandler model) {
+            final IGameHandler model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator) {
         // default is that asteroids are initially invisible
         super(
                 ANIMATION,
@@ -82,7 +86,7 @@ public class AlienAsteroidSimple extends AbstractAlien {
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
                 new HitAnimation(HIT_ANIMATION),
-                new ExplodeSimple());
+                new ExplodeSimple(sounds, vibrator));
 
         waiting();
 

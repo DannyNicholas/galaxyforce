@@ -9,6 +9,7 @@ import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
@@ -126,9 +127,13 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     // reference to sound player
     private final SoundPlayerService sounds;
 
+    // reference to vibrator
+    private final VibrationService vibrator;
+
     public BasePrimary(
             final IGameHandler model,
-            final SoundPlayerService sounds) {
+            final SoundPlayerService sounds,
+            final VibrationService vibrator) {
 
         super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
         this.state = ACTIVE;
@@ -139,13 +144,12 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.moveHelper = new MoveBaseHelper(this);
         moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
-        this.explosion = new ExplodeSimple();
+        this.explosion = new ExplodeSimple(sounds, vibrator);
         this.hit = new HitAnimation(new Animation(0.25f, BASE_SPRITE, BASE_FLIP));
 
         this.model = model;
-
-        // set-up sound effects from sound bank
         this.sounds = sounds;
+        this.vibrator = vibrator;
 
         // set-up missile behaviours
         this.baseMissileType = DEFAULT_MISSILE_TYPE;
@@ -404,6 +408,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
                 this,
                 model,
                 sounds,
+                vibrator,
                 side,
                 shielded,
                 shielded ? shield.getSynchronisation() : 0

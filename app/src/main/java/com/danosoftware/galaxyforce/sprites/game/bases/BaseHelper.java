@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
@@ -96,6 +97,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
             final IBasePrimary primaryBase,
             final IGameHandler model,
             final SoundPlayerService sounds,
+            final VibrationService vibrator,
             final HelperSide side,
             final boolean shieldUp,
             final float shieldSyncTime) {
@@ -104,6 +106,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
                 primaryBase,
                 model,
                 sounds,
+                vibrator,
                 side,
                 shieldUp,
                 shieldSyncTime
@@ -119,6 +122,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
             final IBasePrimary primaryBase,
             final IGameHandler model,
             final SoundPlayerService sounds,
+            final VibrationService vibrator,
             final HelperSide side,
             final boolean shieldUp,
             final float shieldSyncTime) {
@@ -134,7 +138,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         this.state = ACTIVE;
         this.side = side;
         this.xOffset = (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE);
-        this.explosion = new ExplodeSimple();
+        this.explosion = new ExplodeSimple(sounds, vibrator);
 
         if (shieldUp) {
             addShield(shieldSyncTime);

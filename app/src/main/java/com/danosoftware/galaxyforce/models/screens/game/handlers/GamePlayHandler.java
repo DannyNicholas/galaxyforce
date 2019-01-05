@@ -27,10 +27,12 @@ import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.BasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -45,6 +47,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import com.danosoftware.galaxyforce.waves.managers.WaveManagerImpl;
+import com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 
 import java.util.ArrayList;
@@ -101,6 +104,9 @@ public class GamePlayHandler implements Model, IGameHandler {
     // sound player that provide sound effects
     private final SoundPlayerService sounds;
 
+    // vibration service
+    private final VibrationService vibrator;
+
     // allows the current base controller method (e.g. drag) to be changed
 //    private final Controller controller;
 
@@ -146,6 +152,7 @@ public class GamePlayHandler implements Model, IGameHandler {
             int wave,
             IBillingService billingService,
             SoundPlayerService sounds,
+            VibrationService vibrator,
             SavedGame savedGame) {
 
         this.game = game;
@@ -154,6 +161,7 @@ public class GamePlayHandler implements Model, IGameHandler {
         this.wave = wave;
         this.billingService = billingService;
         this.sounds = sounds;
+        this.vibrator = vibrator;
         this.savedGame = savedGame;
 
         // no text initially
@@ -164,7 +172,9 @@ public class GamePlayHandler implements Model, IGameHandler {
          * create wave factory and manager to create lists of aliens on each
          * wave
          */
-        WaveFactory waveFactory = new WaveFactory(this);
+        AlienFactory alienFactory = new AlienFactory(this, sounds, vibrator);
+        WaveCreationUtils creationUtils = new WaveCreationUtils(this, alienFactory);
+        WaveFactory waveFactory = new WaveFactory(creationUtils);
         WaveManager waveManager = new WaveManagerImpl(waveFactory);
         this.alienManager = new AlienManager(waveManager);
 
@@ -581,7 +591,7 @@ public class GamePlayHandler implements Model, IGameHandler {
      * add new base - normally called at start of game or after losing a life.
      */
     private void addNewBase() {
-        primaryBase = new BasePrimary(this, sounds);
+        primaryBase = new BasePrimary(this, sounds, vibrator);
 
         // bind controller to the new base
         TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);

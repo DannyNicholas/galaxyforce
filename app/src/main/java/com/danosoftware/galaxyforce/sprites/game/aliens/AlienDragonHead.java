@@ -3,6 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
@@ -75,6 +77,8 @@ public class AlienDragonHead extends AbstractAlien {
             final int yStart,
             final float timeDelayStart,
             final IGameHandler model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
             final List<IAlienFollower> dragonBodies
     ) {
 
@@ -87,7 +91,7 @@ public class AlienDragonHead extends AbstractAlien {
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
                 new HitDisabled(),
-                new ExplodeSimple());
+                new ExplodeSimple(sounds, vibrator));
 
         this.model = model;
         this.dragonBodies = dragonBodies;

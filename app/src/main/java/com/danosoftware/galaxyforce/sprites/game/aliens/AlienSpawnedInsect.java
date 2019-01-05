@@ -3,6 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
@@ -58,7 +60,9 @@ public class AlienSpawnedInsect extends AbstractAlien {
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
-            final IGameHandler model) {
+            final IGameHandler model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator) {
         super(
                 ANIMATION,
                 xStart,
@@ -72,7 +76,7 @@ public class AlienSpawnedInsect extends AbstractAlien {
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
                 new HitDisabled(),
-                new ExplodeSimple());
+                new ExplodeSimple(sounds, vibrator));
 
         /* distance moved since spawned */
         this.distanceYMoved = 0f;

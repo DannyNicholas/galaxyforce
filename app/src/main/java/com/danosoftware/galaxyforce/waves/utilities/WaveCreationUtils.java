@@ -20,9 +20,16 @@ import java.util.List;
 /**
  * Wave creation utilities
  */
-public final class WaveCreationUtils {
+public class WaveCreationUtils {
 
-    private WaveCreationUtils() {
+    private final AlienFactory alienFactory;
+    private final IGameHandler model;
+
+    public WaveCreationUtils(
+            IGameHandler model,
+            AlienFactory alienFactory) {
+        this.model = model;
+        this.alienFactory = alienFactory;
     }
 
     /**
@@ -30,12 +37,10 @@ public final class WaveCreationUtils {
      * the supplied config and model.
      *
      * @param config - contains sub-wave configuration
-     * @param model  - reference to model
      * @return list of aliens
      */
-    public static List<IAlien> createPathAlienSubWave(
-            final SubWavePathConfig config,
-            final IGameHandler model) {
+    public List<IAlien> createPathAlienSubWave(
+            final SubWavePathConfig config) {
 
         List<IAlien> aliens = new ArrayList<>();
 
@@ -64,7 +69,7 @@ public final class WaveCreationUtils {
 
             // create and add a sub-wave of aliens according to provided properties
             aliens.addAll(
-                    createAliens(alienType, powerUpAllocator, path, props, model)
+                    createAliens(alienType, powerUpAllocator, path, props)
             );
         }
 
@@ -76,12 +81,10 @@ public final class WaveCreationUtils {
      * aliens do not follow a normal pre-defined path.
      *
      * @param config - contains sub-wave configuration
-     * @param model  - reference to model
      * @return list of aliens
      */
-    public static List<IAlien> createNoPathAlienSubWave(
-            final SubWaveNoPathConfig config,
-            final IGameHandler model) {
+    public List<IAlien> createNoPathAlienSubWave(
+            final SubWaveNoPathConfig config) {
 
         List<IAlien> aliens = new ArrayList<>();
 
@@ -101,7 +104,7 @@ public final class WaveCreationUtils {
         for (SubWaveRuleProperties props : rules.subWaveProps()) {
 
             for (int i = 0; i < props.getNumberOfAliens(); i++) {
-                aliens.addAll(AlienFactory.createAlien(
+                aliens.addAll(alienFactory.createAlien(
                         alienType,
                         powerUpAllocator.allocate(),
                         props.isxRandom(),
@@ -109,7 +112,6 @@ public final class WaveCreationUtils {
                         props.getxStart(),
                         props.getyStart(),
                         (i * props.getDelayBetweenAliens()) + props.getDelayOffet(),
-                        model,
                         props.isRestartImmediately()));
             }
         }
@@ -121,23 +123,21 @@ public final class WaveCreationUtils {
      * adds a wanted number of aliens with a path. each alien is spaced by
      * the delay seconds specified.
      */
-    private static List<IAlien> createAliens(
+    private List<IAlien> createAliens(
             final AlienType alienType,
             final PowerUpAllocator powerUpAllocator,
             final List<Point> path,
-            final SubWavePathRuleProperties props,
-            final IGameHandler model) {
+            final SubWavePathRuleProperties props) {
 
         List<IAlien> aliensOnPath = new ArrayList<>();
 
         for (int i = 0; i < props.getNumberOfAliens(); i++) {
             aliensOnPath.addAll(
-                    AlienFactory.createAlien(
+                    alienFactory.createAlien(
                             alienType,
                             powerUpAllocator.allocate(),
                             path,
                             (i * props.getDelayBetweenAliens()) + props.getDelayOffet(),
-                            model,
                             props.isRestartImmediately()
                     ));
         }

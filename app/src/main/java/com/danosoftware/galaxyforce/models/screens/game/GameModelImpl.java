@@ -16,6 +16,7 @@ import com.danosoftware.galaxyforce.models.screens.game.handlers.PausedHandler;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
@@ -76,6 +77,9 @@ public class GameModelImpl implements GameModel {
     // sound player service
     private final SoundPlayerService sounds;
 
+    // vibration service
+    private final VibrationService vibrator;
+
     // saved game service
     private final SavedGame savedGame;
 
@@ -94,11 +98,13 @@ public class GameModelImpl implements GameModel {
             int wave,
             IBillingService billingService,
             SoundPlayerService sounds,
+            VibrationService vibrator,
             SavedGame savedGame) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
         this.sounds = sounds;
+        this.vibrator = vibrator;
         this.savedGame = savedGame;
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
         this.modelHandler = createGameModel(wave);
@@ -303,6 +309,7 @@ public class GameModelImpl implements GameModel {
                 wave,
                 billingService,
                 sounds,
+                vibrator,
                 savedGame);
 
         if (SHOW_FPS) {
