@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.input;
 
 import java.util.List;
 

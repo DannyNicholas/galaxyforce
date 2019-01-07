@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.interfaces.FileIO;
+import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
 import java.io.IOException;

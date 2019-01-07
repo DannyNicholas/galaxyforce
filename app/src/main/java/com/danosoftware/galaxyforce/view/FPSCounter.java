@@ -1,19 +1,9 @@
 package com.danosoftware.galaxyforce.view;
 
-import android.util.Log;
-
 public class FPSCounter {
-    long startTime = System.nanoTime();
-    int frames = 0;
-    int previousFrames = 0;
-
-    public void logFrame() {
-        Log.d("FPSCounter", "fps: " + getValue());
-    }
-
-    public String getCounter() {
-        return "" + getValue();
-    }
+    private long startTime = System.nanoTime();
+    private int frames = 0;
+    private int previousFrames = 0;
 
     public int getValue() {
         int fpsValue = previousFrames;

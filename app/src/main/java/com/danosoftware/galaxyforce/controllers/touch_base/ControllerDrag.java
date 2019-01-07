@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.controllers.touch_base;
 
 import com.danosoftware.galaxyforce.controllers.models.base_touch.TouchBaseControllerModel;
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Vector2;
 
 public class ControllerDrag implements BaseTouchController {

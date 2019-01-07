@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.textures;
 import android.util.Log;
 import android.util.Xml;
 
-import com.danosoftware.galaxyforce.interfaces.FileIO;
+import com.danosoftware.galaxyforce.services.file.FileIO;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

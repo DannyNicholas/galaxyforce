@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.game.handlers;
+package com.danosoftware.galaxyforce.models.assets;
 
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;

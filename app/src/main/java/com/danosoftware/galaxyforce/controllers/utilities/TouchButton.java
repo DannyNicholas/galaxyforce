@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.controllers.utilities;
 
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Vector2;
 
 /**

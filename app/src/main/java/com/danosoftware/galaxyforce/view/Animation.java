@@ -6,9 +6,9 @@ public class Animation {
     public static final int ANIMATION_LOOPING = 0;
     public static final int ANIMATION_NONLOOPING = 1;
 
-    final ISpriteIdentifier[] keyFrames;
-    final float frameDuration;
-    boolean animationComplete;
+    private final ISpriteIdentifier[] keyFrames;
+    private final float frameDuration;
+    private boolean animationComplete;
 
     public Animation(float frameDuration, ISpriteIdentifier... keyFrames) {
         this.frameDuration = frameDuration;

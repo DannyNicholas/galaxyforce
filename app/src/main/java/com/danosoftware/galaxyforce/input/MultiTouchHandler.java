@@ -4,8 +4,8 @@ import android.annotation.TargetApi;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 import com.danosoftware.galaxyforce.input.Pool.PoolObjectFactory;
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
 
 import java.util.ArrayList;
 import java.util.List;

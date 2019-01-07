@@ -2,8 +2,6 @@ package com.danosoftware.galaxyforce.input;
 
 import android.view.View;
 
-import com.danosoftware.galaxyforce.interfaces.Input;
-
 import java.util.List;
 
 public class GameInput implements Input {

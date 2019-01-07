@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.controllers.common;
 
 import com.danosoftware.galaxyforce.controllers.touch.TouchController;
-import com.danosoftware.galaxyforce.interfaces.Input;
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
+import com.danosoftware.galaxyforce.input.Input;
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.Vector2;
 

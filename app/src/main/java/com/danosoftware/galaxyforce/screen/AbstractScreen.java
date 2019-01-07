@@ -4,17 +4,17 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
-import com.danosoftware.galaxyforce.interfaces.FileIO;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+import com.danosoftware.galaxyforce.text.Font;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.textures.Textures;
 import com.danosoftware.galaxyforce.view.Camera2D;
-import com.danosoftware.galaxyforce.view.Font;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
 

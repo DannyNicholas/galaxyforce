@@ -3,8 +3,6 @@ package com.danosoftware.galaxyforce.text;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.enumerations.TextPositionY;
 
 import java.util.regex.Pattern;
 

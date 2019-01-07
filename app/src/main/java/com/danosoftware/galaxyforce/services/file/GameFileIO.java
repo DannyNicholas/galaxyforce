@@ -1,9 +1,7 @@
-package com.danosoftware.galaxyforce.view;
+package com.danosoftware.galaxyforce.services.file;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-
-import com.danosoftware.galaxyforce.interfaces.FileIO;
 
 import java.io.IOException;
 import java.io.InputStream;

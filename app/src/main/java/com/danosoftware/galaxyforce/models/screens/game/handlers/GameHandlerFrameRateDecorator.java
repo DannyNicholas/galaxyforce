@@ -1,7 +1,5 @@
 package com.danosoftware.galaxyforce.models.screens.game.handlers;
 
-import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.enumerations.TextPositionY;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
@@ -11,6 +9,8 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
+import com.danosoftware.galaxyforce.text.TextPositionX;
+import com.danosoftware.galaxyforce.text.TextPositionY;
 import com.danosoftware.galaxyforce.view.FPSCounter;
 
 import java.util.ArrayList;

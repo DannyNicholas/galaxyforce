@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.interfaces;
+package com.danosoftware.galaxyforce.services.file;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.input;
 
 import android.view.View.OnTouchListener;
 
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 
 import java.util.List;
 

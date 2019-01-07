@@ -10,8 +10,7 @@ import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
-import com.danosoftware.galaxyforce.interfaces.FileIO;
-import com.danosoftware.galaxyforce.interfaces.Input;
+import com.danosoftware.galaxyforce.input.Input;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.screen.IScreen;
@@ -19,6 +18,8 @@ import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
+import com.danosoftware.galaxyforce.services.file.FileIO;
+import com.danosoftware.galaxyforce.services.file.GameFileIO;
 import com.danosoftware.galaxyforce.services.music.AndroidAudio;
 import com.danosoftware.galaxyforce.services.music.Audio;
 import com.danosoftware.galaxyforce.services.preferences.IPreferences;
@@ -31,7 +32,6 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerServiceImpl;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationServiceImpl;
 import com.danosoftware.galaxyforce.view.GLGraphics;
-import com.danosoftware.galaxyforce.view.GameFileIO;
 
 /**
  * Initialises model, controller and view for game. Handles the main

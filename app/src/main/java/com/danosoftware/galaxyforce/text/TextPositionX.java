@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.enumerations;
+package com.danosoftware.galaxyforce.text;
 
 public enum TextPositionX {
     LEFT, CENTRE, RIGHT

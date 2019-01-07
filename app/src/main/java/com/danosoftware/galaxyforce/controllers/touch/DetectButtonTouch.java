@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.controllers.touch;
 
 import com.danosoftware.galaxyforce.buttons.button.Button;
 import com.danosoftware.galaxyforce.controllers.utilities.TouchButton;
-import com.danosoftware.galaxyforce.interfaces.Input.TouchEvent;
+import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
 import com.danosoftware.galaxyforce.view.Vector2;
 

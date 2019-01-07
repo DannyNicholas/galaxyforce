@@ -1,10 +1,9 @@
-package com.danosoftware.galaxyforce.view;
+package com.danosoftware.galaxyforce.text;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
-import com.danosoftware.galaxyforce.enumerations.TextPositionX;
-import com.danosoftware.galaxyforce.enumerations.TextPositionY;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
+import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
 public class Font {
 
