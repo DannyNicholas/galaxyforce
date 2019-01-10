@@ -47,12 +47,6 @@ public class GameImpl implements Game {
     // reference to current screen
     private IScreen screen;
 
-    // reference to screen to return to.
-    // used in cases where we temporarily go to one
-    // screen but expect to return to where we came from.
-    // e.g. returning from an options screen back to the main game
-//    private IScreen returningScreen;
-
     // often a screen will temporarily change to another screen (e.g OPTIONS)
     // and will then return back to where it came from when finished.
     // the screens to return back to are held in a stack.
