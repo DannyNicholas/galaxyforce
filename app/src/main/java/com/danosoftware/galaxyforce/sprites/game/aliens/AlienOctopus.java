@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
@@ -44,7 +44,7 @@ public class AlienOctopus extends AbstractAlienWithPath {
      * power-ups.
      */
     public AlienOctopus(
-            final IGameHandler model,
+            final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,
             final PowerUpType powerUp,

@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -122,7 +122,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private boolean shielded = false;
 
     /* reference to model */
-    private final IGameHandler model;
+    private final GameModel model;
 
     // reference to sound player
     private final SoundPlayerService sounds;
@@ -131,7 +131,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private final VibrationService vibrator;
 
     public BasePrimary(
-            final IGameHandler model,
+            final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator) {
 

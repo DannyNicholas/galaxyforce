@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
 
@@ -20,7 +20,7 @@ public class FireRandomDelay implements FireBehaviour {
     private float timeSinceLastFired;
 
     /* reference to game model */
-    private final IGameHandler model;
+    private final GameModel model;
 
     /* minimum delay between alien firing missiles in seconds */
     private final float minMissileDelay;
@@ -40,7 +40,7 @@ public class FireRandomDelay implements FireBehaviour {
      * @param minMissileDelay   - minimum delay between missile fires
      * @param missleDelayRandom - additional maximum random time before missile fires
      */
-    public FireRandomDelay(IGameHandler model, AlienMissileType missileType, float minMissileDelay, float missleDelayRandom) {
+    public FireRandomDelay(GameModel model, AlienMissileType missileType, float minMissileDelay, float missleDelayRandom) {
         this.model = model;
         this.missileType = missileType;
         this.minMissileDelay = minMissileDelay;

@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.bases;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -73,7 +73,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private final IBasePrimary primaryBase;
 
     // reference to game model
-    private final IGameHandler model;
+    private final GameModel model;
 
     // reference to sound player and sounds
     private final SoundPlayerService sounds;
@@ -95,7 +95,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
      */
     public static void createHelperBase(
             final IBasePrimary primaryBase,
-            final IGameHandler model,
+            final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,
             final HelperSide side,
@@ -120,7 +120,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
      */
     private BaseHelper(
             final IBasePrimary primaryBase,
-            final IGameHandler model,
+            final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,
             final HelperSide side,

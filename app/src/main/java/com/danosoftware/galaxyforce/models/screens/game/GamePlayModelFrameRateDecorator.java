@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.screens.game.handlers;
+package com.danosoftware.galaxyforce.models.screens.game;
 
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
@@ -20,10 +20,10 @@ import java.util.List;
  * Game Handler decorator that adds frame-rate calculations and display
  * functionality.
  */
-public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
+public class GamePlayModelFrameRateDecorator implements Model, GameModel {
 
-    // decorated game handler
-    private final IGameHandler gameHandler;
+    // decorated game model
+    private final GameModel gameModel;
 
     // decorated model
     private final Model model;
@@ -34,8 +34,8 @@ public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
     // FPS display text
     private Text tempFps;
 
-    public GameHandlerFrameRateDecorator(GamePlayHandler gameHandler) {
-        this.gameHandler = gameHandler;
+    public GamePlayModelFrameRateDecorator(GamePlayModelImpl gameHandler) {
+        this.gameModel = gameHandler;
         this.model = gameHandler;
         this.fpsCounter = new FPSCounter();
         this.tempFps = createFpsText();
@@ -67,7 +67,7 @@ public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
 
     @Override
     public IBasePrimary getBase() {
-        return gameHandler.getBase();
+        return gameModel.getBase();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
 
     @Override
     public void pause() {
-        gameHandler.pause();
+        gameModel.pause();
     }
 
     @Override
@@ -96,47 +96,42 @@ public class GameHandlerFrameRateDecorator implements Model, IGameHandler {
     }
 
     @Override
-    public List<ISprite> getPausedSprites() {
-        return gameHandler.getPausedSprites();
-    }
-
-    @Override
     public void addPowerUp(PowerUpBean powerUp) {
-        gameHandler.addPowerUp(powerUp);
+        gameModel.addPowerUp(powerUp);
     }
 
     @Override
     public void fireBaseMissiles(BaseMissileBean missiles) {
-        gameHandler.fireBaseMissiles(missiles);
+        gameModel.fireBaseMissiles(missiles);
     }
 
     @Override
     public void fireAlienMissiles(AlienMissileBean missiles) {
-        gameHandler.fireAlienMissiles(missiles);
+        gameModel.fireAlienMissiles(missiles);
     }
 
     @Override
     public IAlien chooseActiveAlien() {
-        return gameHandler.chooseActiveAlien();
+        return gameModel.chooseActiveAlien();
     }
 
     @Override
     public void spawnAliens(SpawnedAlienBean aliens) {
-        gameHandler.spawnAliens(aliens);
+        gameModel.spawnAliens(aliens);
     }
 
     @Override
     public int getLives() {
-        return gameHandler.getLives();
+        return gameModel.getLives();
     }
 
     @Override
     public void energyUpdate(int energy) {
-        gameHandler.energyUpdate(energy);
+        gameModel.energyUpdate(energy);
     }
 
     @Override
     public void addLife() {
-        gameHandler.addLife();
+        gameModel.addLife();
     }
 }

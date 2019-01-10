@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.powerup;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.PowerUpFactory;
 
@@ -13,7 +13,7 @@ public class PowerUpSingle implements PowerUpBehaviour {
      */
 
     /* reference to game model */
-    private final IGameHandler model;
+    private final GameModel model;
 
     /* power-up type */
     private final PowerUpType powerUp;
@@ -22,7 +22,7 @@ public class PowerUpSingle implements PowerUpBehaviour {
      * Behaviour that will create the supplied power-up when
      * alien is destroyed.
      */
-    public PowerUpSingle(IGameHandler model, PowerUpType powerUp) {
+    public PowerUpSingle(GameModel model, PowerUpType powerUp) {
         this.model = model;
         this.powerUp = powerUp;
     }

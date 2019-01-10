@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.screens.game.handlers;
+package com.danosoftware.galaxyforce.models.screens.game;
 
 import android.util.Log;
 
@@ -21,7 +21,6 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.assets.GamePlayAssetsManager;
 import com.danosoftware.galaxyforce.models.assets.IGamePlayAssetsManager;
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
@@ -54,7 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GamePlayHandler implements Model, IGameHandler {
+public class GamePlayModelImpl implements Model, GameModel {
 
     /*
      * ******************************************************
@@ -63,10 +62,10 @@ public class GamePlayHandler implements Model, IGameHandler {
      */
 
     private enum ModelState {
-        GET_READY, PLAYING
+        GET_READY, PLAYING, PAUSE, GAME_OVER;
     }
 
-    private static final String TAG = "GamePlayHandler";
+    private static final String TAG = "GamePlayModelImpl";
 
     // number of lives for new game
     private static final int START_LIVES = 3;
@@ -81,11 +80,13 @@ public class GamePlayHandler implements Model, IGameHandler {
      * ******************************************************
      */
 
-
     private final Game game;
 
-    // current model state
+    // model states
     private ModelState modelState;
+
+    // previous model state - only used to return to previous state after pausing
+    private ModelState previousModelState = null;
 
     // handles aliens and waves
     private final IAlienManager alienManager;
@@ -107,14 +108,8 @@ public class GamePlayHandler implements Model, IGameHandler {
     // vibration service
     private final VibrationService vibrator;
 
-    // allows the current base controller method (e.g. drag) to be changed
-    private final Controller controller;
-
     // specific controller to move current base
     private final BaseTouchController baseTouchController;
-
-    // used to change the current model state
-    private final GameModel model;
 
     // manages other game assets such as missiles and power-ups
     private final IGamePlayAssetsManager assets;
@@ -144,9 +139,8 @@ public class GamePlayHandler implements Model, IGameHandler {
      * ******************************************************
      */
 
-    public GamePlayHandler(
+    public GamePlayModelImpl(
             Game game,
-            GameModel model,
             Controller controller,
             List<Star> stars,
             int wave,
@@ -154,10 +148,7 @@ public class GamePlayHandler implements Model, IGameHandler {
             SoundPlayerService sounds,
             VibrationService vibrator,
             SavedGame savedGame) {
-
         this.game = game;
-        this.model = model;
-        this.controller = controller;
         this.wave = wave;
         this.billingService = billingService;
         this.sounds = sounds;
@@ -169,8 +160,7 @@ public class GamePlayHandler implements Model, IGameHandler {
         this.getReadyFlashingText = null;
 
         /*
-         * create wave factory and manager to create lists of aliens on each
-         * wave
+         * create alien manager used to co-ordinate aliens waves.
          */
         AlienFactory alienFactory = new AlienFactory(this, sounds, vibrator);
         WaveCreationUtils creationUtils = new WaveCreationUtils(this, alienFactory);
@@ -178,22 +168,31 @@ public class GamePlayHandler implements Model, IGameHandler {
         WaveManager waveManager = new WaveManagerImpl(waveFactory);
         this.alienManager = new AlienManager(waveManager);
 
+        /*
+         * create asset manager to co-ordinate in-game assets
+         */
         this.assets = new GamePlayAssetsManager(stars);
 
         // reset lives
         this.lives = START_LIVES;
 
         /*
-         * initialise controllers
+         * add pause button
          */
         this.pauseButton = new PauseButton(this);
-        this.baseTouchController = new ControllerDrag();
+        controller.addTouchController(new DetectButtonTouch(pauseButton));
 
-        // add controllers
-        addControllers();
+        /*
+         * add base controller
+         */
+        this.baseTouchController = new ControllerDrag();
+        controller.addTouchController(baseTouchController);
 
         // create new base at default position
         addNewBase();
+
+        // initialise first wave
+        setupLevel();
     }
 
     /*
@@ -219,8 +218,7 @@ public class GamePlayHandler implements Model, IGameHandler {
         return gameSprites;
     }
 
-    @Override
-    public List<ISprite> getPausedSprites() {
+    private List<ISprite> getPausedSprites() {
         List<ISprite> pausedSprites = new ArrayList<>();
         pausedSprites.addAll(assets.getStars());
         pausedSprites.addAll(alienManager.allAliens());
@@ -252,21 +250,22 @@ public class GamePlayHandler implements Model, IGameHandler {
         switch (modelState) {
 
             case PLAYING:
-
                 primaryBase.animate(deltaTime);
-
-                // check if level is finished and set-up next level.
-                checkLevelFinished();
-
+                updatePlayingState();
                 break;
 
             case GET_READY:
-
                 primaryBase.animate(deltaTime);
-
-                // flash get ready message
                 updateGetReady(deltaTime);
+                break;
 
+            case PAUSE:
+                game.changeToGamePausedScreen(getPausedSprites());
+                this.modelState = previousModelState;
+                break;
+
+            case GAME_OVER:
+                game.changeToGameOverScreen(wave);
                 break;
 
             default:
@@ -294,12 +293,19 @@ public class GamePlayHandler implements Model, IGameHandler {
     }
 
     /**
-     * triggered by pressing pause button. pass pause request back to model.
+     * pause game.
      */
     @Override
     public void pause() {
-        Log.i(TAG, "'Pause Button' selected. Pause.");
-        model.pause();
+        Log.i(TAG, "Pause Game.");
+
+        // set previous model state so we can return to this state after pausing.
+        // make sure we've not already paused as this will keep us eternally paused.
+        // pause() can also be called by the screen service on screen changes.
+        if (modelState != ModelState.PAUSE) {
+            this.previousModelState = this.modelState;
+        }
+        this.modelState = ModelState.PAUSE;
     }
 
     /**
@@ -308,24 +314,15 @@ public class GamePlayHandler implements Model, IGameHandler {
     @Override
     public void resume() {
         Log.i(TAG, "Resume Game.");
-
-        /*
-         * re-initialise controllers after game pause.
-         * Model may have been paused due to changing
-         * to "PAUSED" state.
-         * Controllers are shared by Game Handlers so
-         * may have modified by paused handler.
-         */
-        addControllers();
     }
 
     /**
-     * triggered by pressing back button. pass pause request back to model.
+     * pause game when back button pressed.
      */
     @Override
     public void goBack() {
-        Log.i(TAG, "'Back Button' selected. Pause.");
-        model.pause();
+        Log.i(TAG, "'Back Button' selected.");
+        pause();
     }
 
     @Override
@@ -380,34 +377,13 @@ public class GamePlayHandler implements Model, IGameHandler {
      */
 
     /**
-     * Add base controllers and buttons on initialisation or after a game
-     * resume when all touch controllers may have been lost.
-     */
-    private void addControllers() {
-
-        // remove any existing touch controllers
-        controller.clearTouchControllers();
-
-        /*
-         * add pause button
-         */
-        controller.addTouchController(new DetectButtonTouch(pauseButton));
-
-        /*
-         * add base controllers
-         */
-        controller.addTouchController(baseTouchController);
-    }
-
-
-    /**
      * Checks if the level has finished. if so set-up next level.
      * <p>
      * if base was destroyed then add a new base. if the base and last alien
      * were destroyed, the new base method will manage setting up the next
      * level.
      */
-    private void checkLevelFinished() {
+    private void updatePlayingState() {
         if (alienManager.isWaveComplete()) {
 
             // check user is allowed to play next wave
@@ -471,13 +447,6 @@ public class GamePlayHandler implements Model, IGameHandler {
              * special case: if the base and last alien was destroyed at the
              * same time, then the new base state will handle the setting up of
              * the next level after it leaves the new base state.
-             */
-            setupLevel();
-        } else if (alienManager.isWaveIdle()) {
-            /*
-             * only occurs after wave manager construction before any waves have been set-up.
-             * used to set-up the first wave after adding the base without triggering all
-             * the unwanted wave complete events.
              */
             setupLevel();
         }
@@ -584,7 +553,7 @@ public class GamePlayHandler implements Model, IGameHandler {
     private void addNewBase() {
         primaryBase = new BasePrimary(this, sounds, vibrator);
 
-        // bind controller to the new base
+        // bind base controller to the new base
         TouchBaseControllerModel baseController = new BaseDragModel(primaryBase);
         baseTouchController.setBaseController(baseController);
 
@@ -598,7 +567,8 @@ public class GamePlayHandler implements Model, IGameHandler {
     }
 
     /**
-     * Update "Get Ready" at start of a new level
+     * Update "Get Ready" flashing text until wave is ready.
+     * Used at start of a new wave.
      */
     private void updateGetReady(float deltaTime) {
         getReadyFlashingText.update(deltaTime);
@@ -628,7 +598,7 @@ public class GamePlayHandler implements Model, IGameHandler {
         }
         /* if no lives left then game over */
         else {
-            model.gameOver(wave);
+            this.modelState = ModelState.GAME_OVER;
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
@@ -54,7 +54,7 @@ public class AlienHunter extends AbstractAlien {
     /* variable to store time passed since last alien direction change */
     private float timeSinceLastDirectionChange;
 
-    private final IGameHandler model;
+    private final GameModel model;
 
     /**
      * Create Alien Hunter.
@@ -64,7 +64,7 @@ public class AlienHunter extends AbstractAlien {
             final int xStart,
             final int yStart,
             final float timeDelayStart,
-            final IGameHandler model,
+            final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator) {
 

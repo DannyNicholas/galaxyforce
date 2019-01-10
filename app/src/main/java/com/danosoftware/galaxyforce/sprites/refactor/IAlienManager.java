@@ -19,12 +19,6 @@ public interface IAlienManager {
     boolean isWaveComplete();
 
     /**
-     * Are we in the idle state?
-     * Should only occur once before any waves have been set-up.
-     */
-    boolean isWaveIdle();
-
-    /**
      * Return a randomly selected active alien.
      * Can return null if no aliens are active.
      */

@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.waves.utilities;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -23,10 +23,10 @@ import java.util.List;
 public class WaveCreationUtils {
 
     private final AlienFactory alienFactory;
-    private final IGameHandler model;
+    private final GameModel model;
 
     public WaveCreationUtils(
-            IGameHandler model,
+            GameModel model,
             AlienFactory alienFactory) {
         this.model = model;
         this.alienFactory = alienFactory;

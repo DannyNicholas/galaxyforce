@@ -139,11 +139,6 @@ public class AlienManager implements IAlienManager {
     }
 
     @Override
-    public boolean isWaveIdle() {
-        return (subWaveState == IDLE);
-    }
-
-    @Override
     public IAlien chooseActiveAlien() {
 
         // refresh active alien list
@@ -205,11 +200,11 @@ public class AlienManager implements IAlienManager {
           if no aliens left then decide what action to take.
          */
         if (subWaveState == DESTROYED || subWaveState == END_OF_PASS) {
-            /**
+            /*
              * Have we reached the end of a sub-wave that repeats?
              */
             if (repeatedSubWave && subWaveState == END_OF_PASS) {
-                /**
+                /*
                  * if there are finished aliens that were not destroyed and
                  * the current sub-wave should be repeated (until all aliens are
                  * destroyed) then reset the aliens and repeat the sub-wave.
@@ -218,7 +213,7 @@ public class AlienManager implements IAlienManager {
 
                 Float minDelay = null;
                 for (IAlien anAlien : aliens) {
-                    /**
+                    /*
                      * if aliens have a path then we want to restart
                      * them immediately and not have to wait for their initial delay
                      * to expire. find the lowest time delay and reduce all
@@ -237,7 +232,7 @@ public class AlienManager implements IAlienManager {
                     }
                 }
 
-                /**
+                /*
                  * reduce offset of all repeated aliens with path by minimum
                  * offset. causes first alien to start immediately.
                  */
@@ -248,7 +243,7 @@ public class AlienManager implements IAlienManager {
                 this.subWaveState = PLAYING;
                 Log.i(TAG, "Wave: Reset SubWave");
             }
-            /**
+            /*
              * if there is another sub-wave, get it and assign new list to
              * aliens.
              */
@@ -256,7 +251,7 @@ public class AlienManager implements IAlienManager {
                 createAlienSubWave(waveManager.next());
                 Log.i(TAG, "Wave: Next SubWave");
             }
-            /**
+            /*
              * otherwise wave is finished. there are no more sub-waves.
              * we can advance to next wave.
              */

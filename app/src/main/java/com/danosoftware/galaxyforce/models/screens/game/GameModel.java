@@ -1,33 +1,65 @@
 package com.danosoftware.galaxyforce.models.screens.game;
 
-import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
+import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
+import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 
-public interface GameModel extends Model {
-
-    /**
-     * Start a new game.
-     */
-    void play();
-
-    /**
-     * Ends a game. Supplies the wave we were on when game ended.
-     */
-    void gameOver(int wave);
+public interface GameModel {
 
     /**
-     * Display game options.
+     * Returns the current base
      */
-    void options();
+    IBasePrimary getBase();
 
     /**
-     * Quit game.
+     * Pause the current game model.
      */
-    void quit();
+    void pause();
 
     /**
-     * Resume game. This is not the same as the model resume method that gets
-     * called by the parent screen. This is a game resume method that must only
-     * get called after a game pause.
+     * Add a new power up sprite to the game. Usually triggered when an alien is
+     * destroyed.
      */
-    void resumeAfterPause();
+    void addPowerUp(PowerUpBean powerUp);
+
+    /**
+     * Fire base missiles. Add new missiles being fired by bases.
+     */
+    void fireBaseMissiles(BaseMissileBean missiles);
+
+    /**
+     * Fire alien missiles. Add new missiles being fired by aliens.
+     */
+    void fireAlienMissiles(AlienMissileBean missiles);
+
+    /**
+     * Return an actively selected active alien.
+     */
+    IAlien chooseActiveAlien();
+
+    /**
+     * Spawns new aliens, which are added to the game.
+     * <p>
+     * e.g. a mothership that creates new aliens
+     */
+    void spawnAliens(SpawnedAlienBean aliens);
+
+    /**
+     * Return number of lives remaining
+     */
+    int getLives();
+
+    /**
+     * Update following a base's energy change.
+     * Typically used to update the energy bar assets.
+     */
+    void energyUpdate(int energy);
+
+    /**
+     * Add an extra base life to the game.
+     */
+    void addLife();
 }

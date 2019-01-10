@@ -1,6 +1,9 @@
 package com.danosoftware.galaxyforce.games;
 
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+
+import java.util.List;
 
 public interface Game {
     void start();
@@ -18,6 +21,10 @@ public interface Game {
     void changeToScreen(ScreenType gameScreen);
 
     void changeToGameScreen(int wave);
+
+    void changeToGamePausedScreen(List<ISprite> pausedSprites);
+
+    void changeToGameOverScreen(int previousWave);
 
     /**
      * Change to a screen that will eventually return back to this screen. A

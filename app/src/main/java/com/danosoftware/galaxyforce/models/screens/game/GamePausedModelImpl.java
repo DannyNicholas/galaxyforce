@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.screens.game.handlers;
+package com.danosoftware.galaxyforce.models.screens.game;
 
 import android.util.Log;
 
@@ -6,12 +6,12 @@ import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.models.screens.game.GameModel;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PausedHandler implements Model, ButtonModel {
+public class GamePausedModelImpl implements Model, ButtonModel {
 
     /*
      * ******************************************************
@@ -33,7 +33,13 @@ public class PausedHandler implements Model, ButtonModel {
      */
 
     /* logger tag */
-    private static final String TAG = "PausedHandler";
+    private static final String TAG = "GamePausedModelImpl";
+
+    private enum PausedState {
+        RUNNING, RESUME, OPTIONS, EXIT
+    }
+
+    ;
 
     /*
      * ******************************************************
@@ -41,8 +47,7 @@ public class PausedHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    /* reference to controller */
-    private final Controller controller;
+    private final Game game;
 
     /* reference to pause menu buttons */
     private final List<SpriteTextButton> menuButtons;
@@ -51,10 +56,7 @@ public class PausedHandler implements Model, ButtonModel {
     private final List<ISprite> pausedSprites;
 
     /* reference to current state */
-    private ModelState modelState;
-
-    /* Reference to the game model */
-    private final GameModel gameModel;
+    private PausedState modelState;
 
     /* reference to flashing paused text */
     private final FlashingText flashingPausedText;
@@ -67,21 +69,19 @@ public class PausedHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    public PausedHandler(
-            GameModel gameModel,
+    public GamePausedModelImpl(
+            Game game,
             Controller controller,
             List<ISprite> pausedSprites) {
-        this.controller = controller;
-        this.gameModel = gameModel;
+        this.game = game;
         this.pausedSprites = pausedSprites;
         this.menuButtons = new ArrayList<>();
-        this.modelState = ModelState.PAUSED;
+        this.modelState = PausedState.RUNNING;
 
         // create list of menu buttons
-        controller.clearTouchControllers();
-        addNewMenuButton(3, "RESUME", ButtonType.RESUME);
-        addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
-        addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
+        addNewMenuButton(controller, 3, "RESUME", ButtonType.RESUME);
+        addNewMenuButton(controller, 2, "OPTIONS", ButtonType.OPTIONS);
+        addNewMenuButton(controller, 1, "EXIT", ButtonType.EXIT);
 
         // add flashing paused text
         Text pausedText = Text.newTextRelativePositionX(
@@ -125,26 +125,25 @@ public class PausedHandler implements Model, ButtonModel {
 
         switch (modelState) {
 
-            case PAUSED:
-                // normal state before any buttons are pressed
+            case RUNNING:
+                // normal state if no buttons are pressed
+                flashingPausedText.update(deltaTime);
                 break;
 
-            case GO_BACK:
-                // if back button pressed then quit
-                gameModel.quit();
+            case EXIT:
+                // on exit, return to select level screen
+                game.changeToScreen(ScreenType.SELECT_LEVEL);
                 break;
 
             case OPTIONS:
-                // set back to paused state so model will be in
-                // paused state when returning from options.
-                // otherwise will keep calling options() method.
-                this.modelState = ModelState.PAUSED;
-
-                gameModel.options();
+                // go to options screen - will return back here when done
+                game.changeToReturningScreen(ScreenType.OPTIONS);
+                this.modelState = PausedState.RUNNING;
                 break;
 
-            case PLAYING:
-                gameModel.resumeAfterPause();
+            case RESUME:
+                // on resume - return back to game screen
+                game.screenReturn();
                 break;
 
             default:
@@ -152,30 +151,23 @@ public class PausedHandler implements Model, ButtonModel {
                 throw new IllegalArgumentException("Illegal Model State.");
 
         }
-
-        // update flashing text
-        flashingPausedText.update(deltaTime);
     }
 
     @Override
     public void processButton(ButtonType buttonType) {
         switch (buttonType) {
-
-            case MAIN_MENU:
-                Log.i(TAG, "'Main Menu' selected.");
-                this.modelState = ModelState.GO_BACK;
+            case EXIT:
+                Log.i(TAG, "'Exit' selected.");
+                this.modelState = PausedState.EXIT;
                 break;
-
             case OPTIONS:
                 Log.i(TAG, "'Options' selected.");
-                this.modelState = ModelState.OPTIONS;
+                this.modelState = PausedState.OPTIONS;
                 break;
-
             case RESUME:
                 Log.i(TAG, "'Resume' selected.");
-                this.modelState = ModelState.PLAYING;
+                this.modelState = PausedState.RESUME;
                 break;
-
             default:
                 Log.e(TAG, "Illegal Button Type: " + buttonType.name());
                 throw new GalaxyForceException("Illegal Button Type: " + buttonType.name());
@@ -185,7 +177,7 @@ public class PausedHandler implements Model, ButtonModel {
     @Override
     public void goBack() {
         Log.i(TAG, "'Back Button' selected.");
-        this.modelState = ModelState.GO_BACK;
+        this.modelState = PausedState.EXIT;
     }
 
     @Override
@@ -202,7 +194,6 @@ public class PausedHandler implements Model, ButtonModel {
     @Override
     public void dispose() {
         // no action
-
     }
 
     /*
@@ -211,7 +202,7 @@ public class PausedHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    private void addNewMenuButton(int row, String label, ButtonType buttonType) {
+    private void addNewMenuButton(Controller controller, int row, String label, ButtonType buttonType) {
         MenuButton button = new MenuButton(
                 this,
                 GameConstants.GAME_WIDTH / 2,

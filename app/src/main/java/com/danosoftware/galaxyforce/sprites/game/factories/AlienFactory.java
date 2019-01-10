@@ -7,7 +7,7 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -37,12 +37,12 @@ public class AlienFactory {
 
     private final static String TAG = "AlienFactory";
 
-    private final IGameHandler model;
+    private final GameModel model;
     private final SoundPlayerService sounds;
     private final VibrationService vibrator;
 
     public AlienFactory(
-            IGameHandler model,
+            GameModel model,
             SoundPlayerService sounds,
             VibrationService vibrator) {
         this.model = model;

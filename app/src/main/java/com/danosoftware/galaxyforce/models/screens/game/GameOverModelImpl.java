@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.models.screens.game.handlers;
+package com.danosoftware.galaxyforce.models.screens.game;
 
 import android.util.Log;
 
@@ -6,12 +6,12 @@ import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
-import com.danosoftware.galaxyforce.enumerations.ModelState;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
+import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.models.screens.game.GameModel;
+import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
 import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
@@ -20,12 +20,13 @@ import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
+import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameOverHandler implements Model, ButtonModel {
+public class GameOverModelImpl implements Model, ButtonModel {
 
     /*
      * ******************************************************
@@ -34,7 +35,13 @@ public class GameOverHandler implements Model, ButtonModel {
      */
 
     /* logger tag */
-    private static final String TAG = "GameOverHandler";
+    private static final String TAG = "GameOverModelImpl";
+
+    private enum GameOverState {
+        RUNNING, NEW_GAME, OPTIONS, EXIT
+    }
+
+    ;
 
     /*
      * ******************************************************
@@ -42,23 +49,21 @@ public class GameOverHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    /* reference to controller */
-    private final Controller controller;
+    private final Game game;
 
     /* reference to pause menu buttons */
     private final List<SpriteTextButton> menuButtons;
 
     /* reference to current state */
-    private ModelState modelState;
-
-    /* Reference to the game model */
-    private final GameModel gameModel;
+    private GameOverState modelState;
 
     /* stars sprites */
     private final List<Star> stars;
 
     /* reference to flashing game over text */
     private final FlashingText flashingGameOverText;
+
+    private final int lastWave;
 
     /*
      * ******************************************************
@@ -68,18 +73,17 @@ public class GameOverHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    public GameOverHandler(GameModel gameModel, Controller controller, List<Star> stars) {
-        this.controller = controller;
-        this.gameModel = gameModel;
+    public GameOverModelImpl(Game game, Controller controller, List<Star> stars, int lastWave) {
+        this.game = game;
         this.stars = stars;
+        this.lastWave = lastWave;
         this.menuButtons = new ArrayList<>();
-        this.modelState = ModelState.GAME_OVER;
+        this.modelState = GameOverState.RUNNING;
 
         // build menu buttons
-        controller.clearTouchControllers();
-        addNewMenuButton(3, "PLAY", ButtonType.PLAY);
-        addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
-        addNewMenuButton(1, "EXIT", ButtonType.MAIN_MENU);
+        addNewMenuButton(controller, 3, "PLAY", ButtonType.PLAY);
+        addNewMenuButton(controller, 2, "OPTIONS", ButtonType.OPTIONS);
+        addNewMenuButton(controller, 1, "EXIT", ButtonType.MAIN_MENU);
 
         // add flashing game over text
         Text gameOver = Text.newTextRelativePositionX(
@@ -123,34 +127,38 @@ public class GameOverHandler implements Model, ButtonModel {
     public void update(float deltaTime) {
         switch (modelState) {
 
-            case GAME_OVER:
+            case RUNNING:
                 // normal state before any buttons are pressed
                 for (Star eachStar : stars) {
                     eachStar.animate(deltaTime);
                 }
                 break;
 
-            case GO_BACK:
-                // if back button pressed then quit
-                gameModel.quit();
+            case EXIT:
+                // exit game. go to select level screen
+                game.changeToScreen(ScreenType.SELECT_LEVEL);
                 break;
 
-            case PLAYING:
-                gameModel.play();
+            case NEW_GAME:
+                // after game over, restart on last level reached (if valid)
+                final int nextWave;
+                if (!WaveUtilities.isValidWave(lastWave)) {
+                    nextWave = 1;
+                } else {
+                    nextWave = lastWave;
+                }
+                game.changeToGameScreen(nextWave);
                 break;
 
             case OPTIONS:
-                // set back to game over state so model will be in
-                // game over state when returning from options.
-                // otherwise will keep calling options() method.
-                this.modelState = ModelState.GAME_OVER;
-
-                gameModel.options();
+                // go to options screen - will return back when done
+                game.changeToReturningScreen(ScreenType.OPTIONS);
+                this.modelState = GameOverState.RUNNING;
                 break;
 
             default:
-                Log.e(TAG, "Illegal Model State.");
-                throw new IllegalArgumentException("Illegal Model State.");
+                Log.e(TAG, "Illegal Model State: " + modelState.name());
+                throw new GalaxyForceException("Illegal Model State: " + modelState.name());
         }
 
         flashingGameOverText.update(deltaTime);
@@ -167,15 +175,15 @@ public class GameOverHandler implements Model, ButtonModel {
 
             case MAIN_MENU:
                 Log.i(TAG, "'Main Menu' selected.");
-                this.modelState = ModelState.GO_BACK;
+                this.modelState = GameOverState.EXIT;
                 break;
             case PLAY:
                 Log.i(TAG, "'Play' selected.");
-                this.modelState = ModelState.PLAYING;
+                this.modelState = GameOverState.NEW_GAME;
                 break;
             case OPTIONS:
                 Log.i(TAG, "'Options' selected.");
-                this.modelState = ModelState.OPTIONS;
+                this.modelState = GameOverState.OPTIONS;
                 break;
 
             default:
@@ -187,7 +195,7 @@ public class GameOverHandler implements Model, ButtonModel {
     @Override
     public void goBack() {
         Log.i(TAG, "'Back Button' selected.");
-        this.modelState = ModelState.GO_BACK;
+        this.modelState = GameOverState.EXIT;
     }
 
     @Override
@@ -206,7 +214,7 @@ public class GameOverHandler implements Model, ButtonModel {
      * ******************************************************
      */
 
-    private void addNewMenuButton(int row, String label, ButtonType buttonType) {
+    private void addNewMenuButton(Controller controller, int row, String label, ButtonType buttonType) {
         MenuButton button = new MenuButton(
                 this,
                 GameConstants.GAME_WIDTH / 2,

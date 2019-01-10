@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.models.screens.game.handlers.IGameHandler;
+import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -61,7 +61,7 @@ public class BaseHelperTest {
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
 
     private final IBasePrimary primaryBase = mock(IBasePrimary.class);
-    private final IGameHandler model = mock(IGameHandler.class);
+    private final GameModel model = mock(GameModel.class);
     private final SoundPlayerService sounds = mock(SoundPlayerService.class);
     private final VibrationService vibrator = mock(VibrationService.class);
 
@@ -263,7 +263,7 @@ public class BaseHelperTest {
         try {
             Constructor<BaseHelper> constructor = BaseHelper.class.getDeclaredConstructor(
                     IBasePrimary.class,
-                    IGameHandler.class,
+                    GameModel.class,
                     SoundPlayerService.class,
                     VibrationService.class,
                     HelperSide.class,

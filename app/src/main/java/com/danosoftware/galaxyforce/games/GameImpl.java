@@ -31,7 +31,10 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerServiceImpl;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationServiceImpl;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.view.GLGraphics;
+
+import java.util.List;
 
 /**
  * Initialises model, controller and view for game. Handles the main
@@ -101,16 +104,29 @@ public class GameImpl implements Game {
 
     @Override
     public void changeToScreen(ScreenType screenType) {
-
         changeScreen(
                 screenFactory.newScreen(screenType));
     }
 
     @Override
     public void changeToGameScreen(int wave) {
-
         changeScreen(
                 screenFactory.newGameScreen(wave));
+    }
+
+    @Override
+    public void changeToGamePausedScreen(List<ISprite> pausedSprites) {
+        // set returning screen to return to after pausing
+        this.returningScreen = this.screen;
+
+        changeScreen(
+                screenFactory.newPausedGameScreen(pausedSprites));
+    }
+
+    @Override
+    public void changeToGameOverScreen(int previousWave) {
+        changeScreen(
+                screenFactory.newGameOverScreen(previousWave));
     }
 
     private void changeScreen(IScreen newScreen) {

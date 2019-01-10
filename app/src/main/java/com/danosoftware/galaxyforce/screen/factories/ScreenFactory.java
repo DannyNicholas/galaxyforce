@@ -9,10 +9,14 @@ import com.danosoftware.galaxyforce.input.Input;
 import com.danosoftware.galaxyforce.models.screens.AboutModelImpl;
 import com.danosoftware.galaxyforce.models.screens.GameCompleteModelImpl;
 import com.danosoftware.galaxyforce.models.screens.MainMenuModelImpl;
+import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.SplashModelImpl;
 import com.danosoftware.galaxyforce.models.screens.UnlockAllZonesModelImpl;
 import com.danosoftware.galaxyforce.models.screens.UnlockFullVersionModelImpl;
-import com.danosoftware.galaxyforce.models.screens.game.GameModelImpl;
+import com.danosoftware.galaxyforce.models.screens.game.GameOverModelImpl;
+import com.danosoftware.galaxyforce.models.screens.game.GamePausedModelImpl;
+import com.danosoftware.galaxyforce.models.screens.game.GamePlayModelFrameRateDecorator;
+import com.danosoftware.galaxyforce.models.screens.game.GamePlayModelImpl;
 import com.danosoftware.galaxyforce.models.screens.level.SelectLevelModelImpl;
 import com.danosoftware.galaxyforce.models.screens.options.OptionsModelImpl;
 import com.danosoftware.galaxyforce.screen.ExitingScreen;
@@ -25,10 +29,17 @@ import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
+import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
+
+import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.SHOW_FPS;
 
 public class ScreenFactory {
 
@@ -46,6 +57,7 @@ public class ScreenFactory {
     private final Game game;
     private final Input input;
     private final String versionName;
+    private final List<Star> stars;
 
     public ScreenFactory(
             GLGraphics glGraphics,
@@ -71,6 +83,7 @@ public class ScreenFactory {
         this.versionName = versionName;
         this.batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
         this.camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
     }
 
     public IScreen newScreen(ScreenType screenType) {
@@ -167,13 +180,10 @@ public class ScreenFactory {
     }
 
     public IScreen newGameScreen(int startingWave) {
-
-        // each screen needs it's own instance of a controller
-        // to handle specific user interactions.
         Controller controller = new ControllerImpl(input, camera);
-
+        Model gameModel = createGameModel(controller, startingWave);
         return new Screen(
-                new GameModelImpl(game, controller, startingWave, billingService, sounds, vibrator, savedGame),
+                gameModel,
                 controller,
                 TextureMap.GAME,
                 glGraphics,
@@ -181,4 +191,51 @@ public class ScreenFactory {
                 camera,
                 batcher);
     }
+
+    /**
+     * Returns a normal game model or a Frames-per-Second decorated version.
+     */
+    private Model createGameModel(Controller controller, int startingWave) {
+        Model gameModel = new GamePlayModelImpl(
+                game,
+                controller,
+                stars,
+                startingWave,
+                billingService,
+                sounds,
+                vibrator,
+                savedGame);
+
+        if (SHOW_FPS) {
+            return new GamePlayModelFrameRateDecorator((GamePlayModelImpl) gameModel);
+        }
+
+        return gameModel;
+    }
+
+    public IScreen newPausedGameScreen(List<ISprite> pausedSprites) {
+        Controller controller = new ControllerImpl(input, camera);
+        return new Screen(
+                new GamePausedModelImpl(game, controller, pausedSprites),
+                controller,
+                TextureMap.GAME,
+                glGraphics,
+                fileIO,
+                camera,
+                batcher);
+    }
+
+    public IScreen newGameOverScreen(int previousWave) {
+        Controller controller = new ControllerImpl(input, camera);
+        return new Screen(
+                new GameOverModelImpl(game, controller, stars, previousWave),
+                controller,
+                TextureMap.GAME,
+                glGraphics,
+                fileIO,
+                camera,
+                batcher);
+    }
+
+
 }
