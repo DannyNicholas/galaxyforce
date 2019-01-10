@@ -83,7 +83,7 @@ public class GameOverModelImpl implements Model, ButtonModel {
         // build menu buttons
         addNewMenuButton(controller, 3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(controller, 2, "OPTIONS", ButtonType.OPTIONS);
-        addNewMenuButton(controller, 1, "EXIT", ButtonType.MAIN_MENU);
+        addNewMenuButton(controller, 1, "EXIT", ButtonType.EXIT);
 
         // add flashing game over text
         Text gameOver = Text.newTextRelativePositionX(
@@ -173,7 +173,7 @@ public class GameOverModelImpl implements Model, ButtonModel {
     public void processButton(ButtonType buttonType) {
         switch (buttonType) {
 
-            case MAIN_MENU:
+            case EXIT:
                 Log.i(TAG, "'Main Menu' selected.");
                 this.modelState = GameOverState.EXIT;
                 break;

@@ -6,5 +6,5 @@ package com.danosoftware.galaxyforce.models.buttons;
  */
 public enum ButtonType {
 
-    PLAY, OPTIONS, ABOUT, RESUME, UPGRADE, UNLOCK_ALL_LEVELS, TWITTER, FACEBOOK, WEBSITE, MAIN_MENU, EXIT
+    PLAY, OPTIONS, ABOUT, RESUME, UPGRADE, UNLOCK_ALL_LEVELS, EXIT
 }
