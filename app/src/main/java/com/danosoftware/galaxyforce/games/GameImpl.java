@@ -20,8 +20,6 @@ import com.danosoftware.galaxyforce.services.configurations.ConfigurationService
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
 import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.services.file.GameFileIO;
-import com.danosoftware.galaxyforce.services.music.AndroidAudio;
-import com.danosoftware.galaxyforce.services.music.Audio;
 import com.danosoftware.galaxyforce.services.preferences.IPreferences;
 import com.danosoftware.galaxyforce.services.preferences.PreferencesInteger;
 import com.danosoftware.galaxyforce.services.preferences.PreferencesString;
@@ -34,6 +32,8 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationServiceImpl;
 import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -51,7 +51,12 @@ public class GameImpl implements Game {
     // used in cases where we temporarily go to one
     // screen but expect to return to where we came from.
     // e.g. returning from an options screen back to the main game
-    private IScreen returningScreen;
+//    private IScreen returningScreen;
+
+    // often a screen will temporarily change to another screen (e.g OPTIONS)
+    // and will then return back to where it came from when finished.
+    // the screens to return back to are held in a stack.
+    private final Deque<IScreen> returningScreens;
 
     // factory used to create new screens
     private final ScreenFactory screenFactory;
@@ -64,9 +69,10 @@ public class GameImpl implements Game {
             GLSurfaceView glView,
             IBillingService billingService) {
 
+        this.returningScreens = new ArrayDeque<>();
+
         FileIO fileIO = new GameFileIO(context);
         Input input = new GameInput(glView, 1, 1);
-        Audio audio = new AndroidAudio(context);
         String versionName = versionName(context);
 
         // set-up configuration service that uses shared preferences
@@ -104,63 +110,42 @@ public class GameImpl implements Game {
 
     @Override
     public void changeToScreen(ScreenType screenType) {
-        changeScreen(
+        switchScreenWithoutReturn(
+                screenFactory.newScreen(screenType));
+    }
+
+    @Override
+    public void changeToReturningScreen(ScreenType screenType) {
+        switchScreenWithReturn(
                 screenFactory.newScreen(screenType));
     }
 
     @Override
     public void changeToGameScreen(int wave) {
-        changeScreen(
+        switchScreenWithoutReturn(
                 screenFactory.newGameScreen(wave));
     }
 
     @Override
     public void changeToGamePausedScreen(List<ISprite> pausedSprites) {
-        // set returning screen to return to after pausing
-        this.returningScreen = this.screen;
-
-        changeScreen(
+        switchScreenWithReturn(
                 screenFactory.newPausedGameScreen(pausedSprites));
     }
 
     @Override
     public void changeToGameOverScreen(int previousWave) {
-        changeScreen(
+        switchScreenWithoutReturn(
                 screenFactory.newGameOverScreen(previousWave));
-    }
-
-    private void changeScreen(IScreen newScreen) {
-
-        // pause and dispose current screen
-        this.screen.pause();
-        this.screen.dispose();
-
-        // resume and update new screen
-        this.screen = newScreen;
-        this.screen.resume();
-        this.screen.update(0);
-    }
-
-    @Override
-    public void changeToReturningScreen(ScreenType gameScreen) {
-
-        // set returning screen to current screen
-        this.returningScreen = this.screen;
-
-        // call normal set screen method to change screens
-        changeToScreen(gameScreen);
     }
 
     @Override
     public void screenReturn() {
-        if (returningScreen == null)
-            throw new GalaxyForceException("Returning Screen must not be null");
+        if (returningScreens.isEmpty()) {
+            throw new GalaxyForceException("Returning Screen stack is empty. No Screen to return to.");
+        }
 
-        // return back to previous screens
-        changeScreen(returningScreen);
-
-        // clear returning screen
-        this.returningScreen = null;
+        // switch back to previous screen on top of the stack
+        switchScreen(returningScreens.pop());
     }
 
     @Override
@@ -195,6 +180,43 @@ public class GameImpl implements Game {
     @Override
     public boolean handleBackButton() {
         return screen.handleBackButton();
+    }
+
+    /**
+     * Discard the current screen and switch to a new screen.
+     */
+    private void switchScreen(IScreen newScreen) {
+
+        // pause and dispose current screen
+        this.screen.pause();
+        this.screen.dispose();
+
+        // resume and update new screen
+        this.screen = newScreen;
+        this.screen.resume();
+        this.screen.update(0);
+    }
+
+    /**
+     * Change to a new screen that will not return to the current screen.
+     */
+    private void switchScreenWithoutReturn(IScreen newScreen) {
+
+        // we should also discard any previously stacked returning screens
+        returningScreens.clear();
+
+        switchScreen(newScreen);
+    }
+
+    /**
+     * Change to a new screen that may return back to the current screen.
+     */
+    private void switchScreenWithReturn(IScreen newScreen) {
+
+        // push current screen onto the returning screens stack
+        returningScreens.push(this.screen);
+
+        switchScreen(newScreen);
     }
 
     /**

@@ -62,7 +62,7 @@ public class GamePlayModelImpl implements Model, GameModel {
      */
 
     private enum ModelState {
-        GET_READY, PLAYING, PAUSE, GAME_OVER;
+        GET_READY, PLAYING, PAUSE, GAME_OVER
     }
 
     private static final String TAG = "GamePlayModelImpl";
@@ -300,7 +300,7 @@ public class GamePlayModelImpl implements Model, GameModel {
         Log.i(TAG, "Pause Game.");
 
         // set previous model state so we can return to this state after pausing.
-        // make sure we've not already paused as this will keep us eternally paused.
+        // make sure we're not already paused as this will keep us eternally paused.
         // pause() can also be called by the screen service on screen changes.
         if (modelState != ModelState.PAUSE) {
             this.previousModelState = this.modelState;
@@ -389,7 +389,6 @@ public class GamePlayModelImpl implements Model, GameModel {
             // check user is allowed to play next wave
             if (wave >= GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
                 Log.i(TAG, "Exceeded maximum free zone. Must upgrade.");
-                pause();
                 game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
 
                 /*
@@ -415,7 +414,6 @@ public class GamePlayModelImpl implements Model, GameModel {
             // check if all waves have been completed
             else if (wave >= GameConstants.MAX_WAVES) {
                 Log.i(TAG, "Game completed.");
-                pause();
                 game.changeToScreen(ScreenType.GAME_COMPLETE);
                 return;
             }
