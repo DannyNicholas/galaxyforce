@@ -12,7 +12,7 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
     // once cached, bounds are valid until sprite moves or changes size
     private boolean boundsCached;
 
-    public AbstractCollidingSprite(
+    AbstractCollidingSprite(
             final ISpriteIdentifier spriteId,
             final int x,
             final int y,
@@ -21,7 +21,7 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
         this.boundsCached = false;
     }
 
-    public AbstractCollidingSprite(
+    protected AbstractCollidingSprite(
             final ISpriteIdentifier spriteId,
             final int x,
             final int y) {

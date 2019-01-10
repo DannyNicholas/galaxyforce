@@ -44,7 +44,7 @@ public class Flag extends AbstractSprite {
         flagMap.put(1, Flag.FLAG_1);
     }
 
-    public Flag(ISpriteIdentifier spriteId, int x, int y) {
+    private Flag(ISpriteIdentifier spriteId, int x, int y) {
         super(spriteId, x, y);
     }
 

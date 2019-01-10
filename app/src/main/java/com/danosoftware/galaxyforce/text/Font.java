@@ -61,7 +61,7 @@ public class Font {
         }
     }
 
-    public void drawText(SpriteBatcher batcher, String text, float x, float y) {
+    private void drawText(SpriteBatcher batcher, String text, float x, float y) {
         int len = text.length();
         for (int i = 0; i < len; i++) {
 

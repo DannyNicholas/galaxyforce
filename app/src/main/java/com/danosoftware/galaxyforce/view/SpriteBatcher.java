@@ -6,10 +6,10 @@ import com.danosoftware.galaxyforce.textures.TextureRegion;
 import javax.microedition.khronos.opengles.GL10;
 
 public class SpriteBatcher {
-    final float[] verticesBuffer;
-    int bufferIndex;
-    final Vertices vertices;
-    int numSprites;
+    private final float[] verticesBuffer;
+    private int bufferIndex;
+    private final Vertices vertices;
+    private int numSprites;
 
     public SpriteBatcher(GLGraphics glGraphics, int maxSprites) {
         this.verticesBuffer = new float[maxSprites * 4 * 4];

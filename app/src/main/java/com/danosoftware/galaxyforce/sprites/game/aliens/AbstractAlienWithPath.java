@@ -37,7 +37,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
     /* should the alien restart it's path immediately when it reaches the end */
     private final boolean restartImmediately;
 
-    public AbstractAlienWithPath(
+    protected AbstractAlienWithPath(
             Animation animation,
             FireBehaviour fireBehaviour,
             PowerUpBehaviour powerUpBehaviour,
@@ -144,7 +144,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
         return (state == FINISHED_PASS);
     }
 
-    protected void endOfPass() {
+    private void endOfPass() {
         state = FINISHED_PASS;
     }
 

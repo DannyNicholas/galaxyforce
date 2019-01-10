@@ -17,7 +17,7 @@ public final class PointMathematics {
      * Convert from point DTO (used for JSON deserialization)
      * to point object used across app
      */
-    public static Point convertPoint(PointDTO pointData) {
+    private static Point convertPoint(PointDTO pointData) {
         return new Point(pointData.getX(), pointData.getY());
     }
 

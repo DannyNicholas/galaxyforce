@@ -28,7 +28,7 @@ public class OptionButton implements SpriteTextButton {
     private final ToggleButtonGroup toggleButtonGroup;
 
     // option type associated with button
-    final Option optionType;
+    private final Option optionType;
 
     public OptionButton(
             int xPos,

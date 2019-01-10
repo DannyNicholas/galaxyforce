@@ -9,7 +9,7 @@ public abstract class AbstractSprite implements ISprite {
     protected int x, y;
 
     // sprite's angle rotation
-    protected int rotation;
+    int rotation;
 
     // sprite's width and height.
     // this is obtained from the sprite's properties
@@ -23,7 +23,7 @@ public abstract class AbstractSprite implements ISprite {
     // sprite properties
     private ISpriteIdentifier spriteId;
 
-    public AbstractSprite(
+    AbstractSprite(
             ISpriteIdentifier spriteId,
             int x,
             int y,
@@ -35,7 +35,7 @@ public abstract class AbstractSprite implements ISprite {
         this.dimensionsCached = false;
     }
 
-    public AbstractSprite(
+    protected AbstractSprite(
             ISpriteIdentifier spriteId,
             int x,
             int y) {

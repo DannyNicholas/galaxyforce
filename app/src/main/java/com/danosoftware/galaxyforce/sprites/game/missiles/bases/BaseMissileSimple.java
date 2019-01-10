@@ -8,10 +8,10 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenTo
 public class BaseMissileSimple extends AbstractBaseMissile {
 
     /* missile sprite */
-    public static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
+    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
 
     /* distance missile can move per second */
-    public static final int BASE_MISSILE_MOVE_PIXELS = 7 * 60;
+    private static final int BASE_MISSILE_MOVE_PIXELS = 7 * 60;
 
     /* how much energy will be lost by alien when this missile hits it */
     private static final int HIT_ENERGY = 1;

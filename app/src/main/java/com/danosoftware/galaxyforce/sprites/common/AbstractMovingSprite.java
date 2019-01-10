@@ -4,7 +4,7 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public abstract class AbstractMovingSprite extends AbstractSprite implements IMovingSprite {
 
-    public AbstractMovingSprite(
+    AbstractMovingSprite(
             ISpriteIdentifier spriteId,
             int x,
             int y,
@@ -13,7 +13,7 @@ public abstract class AbstractMovingSprite extends AbstractSprite implements IMo
         super(spriteId, x, y, rotation);
     }
 
-    public AbstractMovingSprite(
+    protected AbstractMovingSprite(
             ISpriteIdentifier spriteId,
             int x,
             int y) {

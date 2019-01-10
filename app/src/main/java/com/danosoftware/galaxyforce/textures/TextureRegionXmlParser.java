@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureRegionXmlParser {
+class TextureRegionXmlParser {
     // We don't use namespaces
     private static final String ns = null;
 
@@ -33,7 +33,7 @@ public class TextureRegionXmlParser {
         return listOfTextureRegions;
     }
 
-    public List<TextureDetail> parse(InputStream in) throws XmlPullParserException, IOException {
+    private List<TextureDetail> parse(InputStream in) throws XmlPullParserException, IOException {
         try {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);

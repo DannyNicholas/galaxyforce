@@ -7,7 +7,7 @@ public abstract class SubWaveConfig {
 
     private final Type type;
 
-    protected SubWaveConfig(Type type) {
+    SubWaveConfig(Type type) {
         this.type = type;
     }
 

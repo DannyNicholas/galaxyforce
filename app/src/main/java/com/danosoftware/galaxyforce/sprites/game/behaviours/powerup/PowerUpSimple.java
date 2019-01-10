@@ -21,7 +21,7 @@ public class PowerUpSimple implements PowerUpBehaviour {
     /**
      * Behaviour that will create a random power-up when alien is destroyed.
      */
-    public PowerUpSimple(GameModel model) {
+    private PowerUpSimple(GameModel model) {
         this.model = model;
     }
 

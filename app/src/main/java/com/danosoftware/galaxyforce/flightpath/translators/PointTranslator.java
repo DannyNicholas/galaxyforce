@@ -5,7 +5,7 @@ import com.danosoftware.galaxyforce.flightpath.paths.Point;
 /**
  * Point translators convert supplied points
  */
-public interface PointTranslator {
+interface PointTranslator {
 
     /**
      * Return a converted version of the supplied point

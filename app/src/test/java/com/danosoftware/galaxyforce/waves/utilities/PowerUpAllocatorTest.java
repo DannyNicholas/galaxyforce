@@ -32,7 +32,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 @PrepareForTest(Log.class)
 public class PowerUpAllocatorTest {
 
-    final static Logger logger = LoggerFactory.getLogger(PowerUpAllocatorTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(PowerUpAllocatorTest.class);
 
     private PowerUpAllocator powerUpAllocator;
 

@@ -18,7 +18,7 @@ import java.util.ListIterator;
 public class Reversed<T> implements Iterable<T> {
     private final List<T> original;
 
-    public Reversed(List<T> original) {
+    private Reversed(List<T> original) {
         this.original = original;
     }
 

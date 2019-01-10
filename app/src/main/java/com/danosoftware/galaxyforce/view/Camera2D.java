@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.view;
 import javax.microedition.khronos.opengles.GL10;
 
 public class Camera2D {
-    public final Vector2 position;
+    private final Vector2 position;
     private final float zoom;
     private final float frustumWidth;
     private final float frustumHeight;

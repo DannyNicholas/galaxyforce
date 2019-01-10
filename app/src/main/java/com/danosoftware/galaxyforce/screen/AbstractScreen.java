@@ -35,16 +35,16 @@ public abstract class AbstractScreen implements IScreen {
      * Some models/controllers require views to be created before they can be
      * constructed.
      */
-    protected final Model model;
-    protected final Controller controller;
+    final Model model;
+    private final Controller controller;
 
     // reference to openGL graphics
-    protected final GLGraphics glGraphics;
+    final GLGraphics glGraphics;
 
     private final FileIO fileIO;
 
     // reference to graphics texture map - set on resume
-    protected Texture texture;
+    Texture texture;
 
     // sprite batcher used for displaying sprites
     final SpriteBatcher batcher;
@@ -58,7 +58,7 @@ public abstract class AbstractScreen implements IScreen {
     // TextureState identifies the texture map being used
     private final TextureMap textureMap;
 
-    public AbstractScreen(
+    AbstractScreen(
             Model model,
             Controller controller,
             TextureMap textureMap,

@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.input.Input.TouchEvent;
 
 import java.util.List;
 
-public interface TouchHandler extends OnTouchListener {
+interface TouchHandler extends OnTouchListener {
     boolean isTouchDown(int pointer);
 
     int getTouchX(int pointer);

@@ -28,7 +28,7 @@ public class PowerUpRandom implements PowerUpBehaviour {
      * @param powerUpChance - chance that this alien will generate a power-up when
      *                      destroyed
      */
-    public PowerUpRandom(GameModel model, double powerUpChance) {
+    private PowerUpRandom(GameModel model, double powerUpChance) {
         this.model = model;
 
         // decide whether this alien should generate a power-up when destroyed

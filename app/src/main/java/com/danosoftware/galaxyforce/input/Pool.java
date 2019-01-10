@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.input;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pool<T> {
+class Pool<T> {
 
     public interface PoolObjectFactory<T> {
         T createObject();

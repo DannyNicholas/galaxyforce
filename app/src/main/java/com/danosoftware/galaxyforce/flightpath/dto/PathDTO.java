@@ -28,7 +28,7 @@ public abstract class PathDTO {
 
     private final PathType pathType;
 
-    public PathDTO(final PathType pathType) {
+    PathDTO(final PathType pathType) {
         this.pathType = pathType;
     }
 

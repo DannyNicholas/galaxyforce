@@ -14,15 +14,15 @@ import java.util.List;
 public class MultiTouchHandler implements TouchHandler {
     private static final int MAX_TOUCHPOINTS = 10;
 
-    final boolean[] isTouched = new boolean[MAX_TOUCHPOINTS];
-    final int[] touchX = new int[MAX_TOUCHPOINTS];
-    final int[] touchY = new int[MAX_TOUCHPOINTS];
-    final int[] id = new int[MAX_TOUCHPOINTS];
-    final Pool<TouchEvent> touchEventPool;
-    final List<TouchEvent> touchEvents = new ArrayList<>();
-    final List<TouchEvent> touchEventsBuffer = new ArrayList<>();
-    final float scaleX;
-    final float scaleY;
+    private final boolean[] isTouched = new boolean[MAX_TOUCHPOINTS];
+    private final int[] touchX = new int[MAX_TOUCHPOINTS];
+    private final int[] touchY = new int[MAX_TOUCHPOINTS];
+    private final int[] id = new int[MAX_TOUCHPOINTS];
+    private final Pool<TouchEvent> touchEventPool;
+    private final List<TouchEvent> touchEvents = new ArrayList<>();
+    private final List<TouchEvent> touchEventsBuffer = new ArrayList<>();
+    private final float scaleX;
+    private final float scaleY;
 
     public MultiTouchHandler(View view, float scaleX, float scaleY) {
         PoolObjectFactory<TouchEvent> factory = new PoolObjectFactory<TouchEvent>() {

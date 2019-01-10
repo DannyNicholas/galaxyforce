@@ -23,8 +23,8 @@ package com.danosoftware.galaxyforce.billing;
  * by calling {@link #isSuccess()} and {@link #isFailure()}.
  */
 public class IabResult {
-    final int mResponse;
-    final String mMessage;
+    private final int mResponse;
+    private final String mMessage;
 
     public IabResult(int response, String message) {
         mResponse = response;

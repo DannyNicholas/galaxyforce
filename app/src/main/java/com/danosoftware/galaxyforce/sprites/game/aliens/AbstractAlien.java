@@ -48,9 +48,9 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     private int energy;
 
     /* has alien been destroyed */
-    protected AlienState state;
+    AlienState state;
 
-    public AbstractAlien(
+    protected AbstractAlien(
             Animation animation,
             int x,
             int y,

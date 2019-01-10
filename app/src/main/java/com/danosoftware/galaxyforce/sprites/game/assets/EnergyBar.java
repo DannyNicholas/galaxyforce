@@ -56,7 +56,7 @@ public class EnergyBar {
     /**
      * Reset the energy levels to maximum.
      */
-    public void resetEnergy() {
+    private void resetEnergy() {
         updateEnergy(BASE_MAX_ENERGY_LEVEL);
     }
 

@@ -40,7 +40,7 @@ public class AlienSpawnedInsect extends AbstractAlien {
 
 
     /* distance alien can move in pixels each second */
-    public static final int ALIEN_MOVE_PIXELS = 2 * 60;
+    private static final int ALIEN_MOVE_PIXELS = 2 * 60;
 
     /*
      * ******************************************************

@@ -24,7 +24,7 @@ import static org.junit.Assert.assertThat;
  */
 public class PathDTOTest {
 
-    final static Logger logger = LoggerFactory.getLogger(PathDTOTest.class);
+    private final static Logger logger = LoggerFactory.getLogger(PathDTOTest.class);
 
     @Test
     public void shouldLoadBezierPaths() throws IOException {

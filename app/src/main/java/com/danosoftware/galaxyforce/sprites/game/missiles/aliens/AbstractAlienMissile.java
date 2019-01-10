@@ -10,7 +10,7 @@ public abstract class AbstractAlienMissile extends AbstractCollidingSprite imple
 
     private boolean isDestroyed;
 
-    public AbstractAlienMissile(
+    AbstractAlienMissile(
             ISpriteIdentifier spriteId,
             int x,
             int y,

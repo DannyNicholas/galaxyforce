@@ -12,7 +12,7 @@ public abstract class AbstractBaseMissile extends AbstractCollidingSprite implem
 
     private boolean isDestroyed;
 
-    public AbstractBaseMissile(
+    AbstractBaseMissile(
             ISpriteIdentifier spriteId,
             int x,
             int y,

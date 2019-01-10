@@ -17,7 +17,7 @@ public class Life extends AbstractSprite {
     private static final int LIVES_START_X = (LIVES_WIDTH / 2);
     private static final int LIVES_START_Y = (LIVES_HEIGHT / 2) + 10;
 
-    public Life(int x, int y, ISpriteIdentifier spriteId) {
+    private Life(int x, int y, ISpriteIdentifier spriteId) {
         super(spriteId, x, y);
     }
 

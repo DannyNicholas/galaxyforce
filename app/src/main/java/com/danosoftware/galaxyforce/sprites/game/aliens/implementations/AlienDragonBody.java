@@ -30,10 +30,10 @@ public class AlienDragonBody extends AbstractAlien implements IAlienFollower {
     private static final float MISSILE_DELAY_RANDOM = 2f;
 
     /* distance alien can move each cycle in pixels each second */
-    public static final int ALIEN_MOVE_PIXELS = 5 * 60;
+    private static final int ALIEN_MOVE_PIXELS = 5 * 60;
 
     /* minimum distance between dragon alien bodies */
-    public static final int MIN_DISTANCE_SQUARED = 25 * 25;
+    private static final int MIN_DISTANCE_SQUARED = 25 * 25;
 
     /* energy of this sprite */
     private static final int ENERGY = 1;

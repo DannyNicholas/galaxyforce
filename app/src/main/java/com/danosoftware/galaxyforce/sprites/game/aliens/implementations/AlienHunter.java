@@ -27,13 +27,13 @@ public class AlienHunter extends AbstractAlien {
     private static final int ENERGY = 10;
 
     /* distance alien can move each cycle in pixels each second */
-    public static final int ALIEN_MOVE_PIXELS = 5 * 60;
+    private static final int ALIEN_MOVE_PIXELS = 5 * 60;
 
     /* time delay between alien direction changes */
-    public static final float ALIEN_DIRECTION_CHANGE_DELAY = 0.1f;
+    private static final float ALIEN_DIRECTION_CHANGE_DELAY = 0.1f;
 
     /* maximum alien change direction in radians */
-    public static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
+    private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
     // alien animation
     private static final Animation ANIMATION = new Animation(

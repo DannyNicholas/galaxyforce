@@ -10,7 +10,7 @@ import java.util.List;
  * Class is run in a new tread and creates a new wave allowing the main thread
  * to continue servicing the UI.
  */
-public class WaveCreator implements Runnable {
+class WaveCreator implements Runnable {
     // wave number of wave to be created
     private final int waveNumber;
 

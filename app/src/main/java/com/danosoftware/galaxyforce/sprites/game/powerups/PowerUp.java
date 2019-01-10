@@ -9,7 +9,7 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBo
 public class PowerUp extends AbstractCollidingSprite implements IPowerUp {
 
     // distance power-up can move per second
-    public static final int POWER_UP_MOVE_PIXELS = 2 * 60;
+    private static final int POWER_UP_MOVE_PIXELS = 2 * 60;
 
     // power up type
     private final PowerUpType powerUpType;

@@ -7,14 +7,14 @@ import java.nio.ShortBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class Vertices {
-    final GLGraphics glGraphics;
-    final boolean hasColor;
-    final boolean hasTexCoords;
-    final int vertexSize;
-    final IntBuffer vertices;
-    final int[] tmpBuffer;
-    final ShortBuffer indices;
+class Vertices {
+    private final GLGraphics glGraphics;
+    private final boolean hasColor;
+    private final boolean hasTexCoords;
+    private final int vertexSize;
+    private final IntBuffer vertices;
+    private final int[] tmpBuffer;
+    private final ShortBuffer indices;
 
     public Vertices(GLGraphics glGraphics, int maxVertices, int maxIndices, boolean hasColor, boolean hasTexCoords) {
         this.glGraphics = glGraphics;
