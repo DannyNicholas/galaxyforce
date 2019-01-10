@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class AndroidAudio implements Audio {
 
-    AssetManager assets;
+    private final AssetManager assets;
 //    SoundPool soundPool;
 
     public AndroidAudio(Context context) {

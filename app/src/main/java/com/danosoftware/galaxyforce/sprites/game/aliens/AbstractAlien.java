@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens;
 
+import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
@@ -7,7 +8,6 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
-import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.ACTIVE;

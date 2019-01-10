@@ -11,13 +11,13 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
+import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.sprites.game.implementations.FlashingTextImpl;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.FlashingText;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
+import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
@@ -40,8 +40,6 @@ public class GameOverModelImpl implements Model, ButtonModel {
     private enum GameOverState {
         RUNNING, NEW_GAME, OPTIONS, EXIT
     }
-
-    ;
 
     /*
      * ******************************************************

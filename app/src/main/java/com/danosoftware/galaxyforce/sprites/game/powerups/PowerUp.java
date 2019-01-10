@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.game.powerups;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 

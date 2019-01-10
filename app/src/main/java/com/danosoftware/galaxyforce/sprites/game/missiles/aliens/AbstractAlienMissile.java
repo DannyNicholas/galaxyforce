@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.aliens;
 
+import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
 
 public abstract class AbstractAlienMissile extends AbstractCollidingSprite implements IAlienMissile {
 

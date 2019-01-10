@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.utilities;
 
+import com.danosoftware.galaxyforce.sprites.common.AbstractSprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
-import com.danosoftware.galaxyforce.sprites.refactor.AbstractSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 
 import org.junit.Before;
 import org.junit.Test;

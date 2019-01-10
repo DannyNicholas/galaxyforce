@@ -15,7 +15,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 public class HitAnimation implements HitBehaviour {
 
     // max time to display hit
-    private static float HIT_TIME_SECONDS = 0.5f;
+    private static final float HIT_TIME_SECONDS = 0.5f;
 
     // hit animation
     private final Animation hitAnimation;

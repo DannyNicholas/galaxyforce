@@ -21,7 +21,7 @@ package com.danosoftware.galaxyforce.billing;
  * that caused this exception to be thrown, call {@link #getResult()}.
  */
 public class IabException extends Exception {
-    IabResult mResult;
+    final IabResult mResult;
 
     public IabException(IabResult r) {
         this(r, null);

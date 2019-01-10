@@ -11,9 +11,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 public class ExplodeSimple implements ExplodeBehaviour {
 
     // explosion animation
-    // NOTE: not static. each instance needs it's own animation
-    private final Animation animation = new Animation(0.15f, GameSpriteIdentifier.EXPLODE_01,
-            GameSpriteIdentifier.EXPLODE_02, GameSpriteIdentifier.EXPLODE_03);
+    private final Animation animation;
 
     // reference to sound player
     private final SoundPlayerService sounds;
@@ -27,6 +25,11 @@ public class ExplodeSimple implements ExplodeBehaviour {
     public ExplodeSimple(
             SoundPlayerService sounds,
             VibrationService vibrator) {
+        this.animation = new Animation(
+                0.15f,
+                GameSpriteIdentifier.EXPLODE_01,
+                GameSpriteIdentifier.EXPLODE_02,
+                GameSpriteIdentifier.EXPLODE_03);
         this.sounds = sounds;
         this.vibrator = vibrator;
     }
@@ -34,7 +37,6 @@ public class ExplodeSimple implements ExplodeBehaviour {
     @Override
     public void startExplosion() {
         explosionTime = 0f;
-
         sounds.play(SoundEffect.EXPLOSION);
         vibrator.vibrate(VibrateTime.TINY);
     }

@@ -22,11 +22,11 @@ public class Textures {
     }
 
     // static map to hold list of known Textures
-    private static Map<TextureMap, Texture> textureMap = new HashMap<TextureMap, Texture>();
+    private static final Map<TextureMap, Texture> textureMap = new HashMap<>();
 
     // static map to hold sprite names and equivalent Texture Details for last
     // requested texture
-    private static Map<String, TextureDetail> textureDetailMap = new HashMap<String, TextureDetail>();
+    private static final Map<String, TextureDetail> textureDetailMap = new HashMap<>();
 
     // return TextureDetail for the supplied sprite name
     public static TextureDetail getTextureDetail(String name) {

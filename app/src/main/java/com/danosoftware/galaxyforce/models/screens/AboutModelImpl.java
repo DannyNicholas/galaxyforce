@@ -8,11 +8,11 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.RotatingSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
+import com.danosoftware.galaxyforce.sprites.common.RotatingSprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
+import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
 

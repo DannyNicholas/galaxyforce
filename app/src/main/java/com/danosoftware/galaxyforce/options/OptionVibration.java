@@ -4,7 +4,7 @@ public enum OptionVibration implements Option {
 
     ON("ON"), OFF("OFF");
 
-    private String text;
+    private final String text;
 
     OptionVibration(String text) {
         this.text = text;

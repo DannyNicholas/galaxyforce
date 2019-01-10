@@ -46,7 +46,7 @@ public class TextureRegionXmlParser {
     }
 
     private List<TextureDetail> readTextureFile(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List<TextureDetail> entries = new ArrayList<TextureDetail>();
+        List<TextureDetail> entries = new ArrayList<>();
 
         parser.require(XmlPullParser.START_TAG, ns, "TextureAtlas");
         while (parser.next() != XmlPullParser.END_TAG) {

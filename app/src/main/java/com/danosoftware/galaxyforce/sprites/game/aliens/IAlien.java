@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens;
 
+import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
-import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
 
 public interface IAlien extends ICollidingSprite {
 

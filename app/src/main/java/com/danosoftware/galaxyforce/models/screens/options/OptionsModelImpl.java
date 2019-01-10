@@ -20,10 +20,10 @@ import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.interfaces.Star;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
+import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
 
@@ -126,7 +126,7 @@ public class OptionsModelImpl implements OptionsModel {
         allText.add(Text.newTextRelativePositionX(
                 "MUSIC",
                 TextPositionX.CENTRE,
-                175 + (1 * 170)));
+                175 + (170)));
 
         ToggleButtonGroup musicToggleGroup = new ToggleOption(
                 this,
@@ -149,7 +149,7 @@ public class OptionsModelImpl implements OptionsModel {
         allText.add(Text.newTextRelativePositionX(
                 "VIBRATION",
                 TextPositionX.CENTRE,
-                175 + (0 * 170)));
+                175));
 
         ToggleButtonGroup vibrationToggleGroup = new ToggleOption(
                 this,

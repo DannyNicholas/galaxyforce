@@ -35,6 +35,7 @@ public class BaseMissileFactory {
             IBase base,
             BaseMissileType baseMissileType,
             GameModel model) {
+
         List<IBaseMissile> baseMissiles = new ArrayList<>();
         final SoundEffect effect;
 

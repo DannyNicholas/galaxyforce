@@ -84,8 +84,8 @@ public class GameConstants {
 
     // fixed points that keep alien-flight paths on screens
     public static final int SCREEN_TOP_EDGE = GameConstants.GAME_HEIGHT - (MAX_SPRITE_WIDTH / 2);
-    public static final int SCREEN_BOTTOM_EDGE = 0 + (MAX_SPRITE_HEIGHT / 2);
-    public static final int SCREEN_LEFT_EDGE = 0 + (MAX_SPRITE_WIDTH / 2);
+    public static final int SCREEN_BOTTOM_EDGE = (MAX_SPRITE_HEIGHT / 2);
+    public static final int SCREEN_LEFT_EDGE = (MAX_SPRITE_WIDTH / 2);
     public static final int SCREEN_RIGHT_EDGE = GameConstants.GAME_WIDTH - (MAX_SPRITE_HEIGHT / 2);
 
 }

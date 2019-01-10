@@ -1,10 +1,10 @@
 package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
 import com.danosoftware.galaxyforce.models.screens.level.SelectLevelModel;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
@@ -19,10 +19,10 @@ public class SelectLevel implements SpriteTextButton {
     }
 
     // possible button sprites
-    private static ISpriteIdentifier levelButton = MenuSpriteIdentifier.LEVEL_FRAME;
-    private static ISpriteIdentifier levelButtonPressed = MenuSpriteIdentifier.LEVEL_FRAME_PRESSED;
-    private static ISpriteIdentifier lockedButton = MenuSpriteIdentifier.LEVEL_FRAME_LOCKED;
-    private static ISpriteIdentifier lockedButtonPressed = MenuSpriteIdentifier.LEVEL_FRAME_LOCKED_PRESSED;
+    private static final ISpriteIdentifier levelButton = MenuSpriteIdentifier.LEVEL_FRAME;
+    private static final ISpriteIdentifier levelButtonPressed = MenuSpriteIdentifier.LEVEL_FRAME_PRESSED;
+    private static final ISpriteIdentifier lockedButton = MenuSpriteIdentifier.LEVEL_FRAME_LOCKED;
+    private static final ISpriteIdentifier lockedButtonPressed = MenuSpriteIdentifier.LEVEL_FRAME_LOCKED_PRESSED;
 
     // reference to Text representing level number
     private final Text text;

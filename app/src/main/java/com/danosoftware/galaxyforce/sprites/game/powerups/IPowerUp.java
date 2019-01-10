@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.powerups;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.sprites.refactor.ICollidingSprite;
+import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 
 public interface IPowerUp extends ICollidingSprite {
 

@@ -17,8 +17,8 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     private static final int HIT_ENERGY = 2;
 
     /* offset applied to x and y every move */
-    private int xDelta;
-    private int yDelta;
+    private final int xDelta;
+    private final int yDelta;
 
     public BaseMissileBlast(int xStart, int yStart, float angle) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);

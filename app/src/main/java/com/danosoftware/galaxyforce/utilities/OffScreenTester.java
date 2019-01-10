@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.utilities;
 
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;

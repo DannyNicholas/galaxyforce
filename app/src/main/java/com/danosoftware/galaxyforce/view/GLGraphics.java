@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView;
 import javax.microedition.khronos.opengles.GL10;
 
 public class GLGraphics {
-    private GLSurfaceView glView;
+    private final GLSurfaceView glView;
     private GL10 gl = null;
 
     public GLGraphics(GLSurfaceView glView) {

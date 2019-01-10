@@ -10,6 +10,8 @@ import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
+import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
@@ -22,11 +24,7 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.AbstractCollidingSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.BaseShield;
-import com.danosoftware.galaxyforce.sprites.refactor.IBaseShield;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
-import com.danosoftware.galaxyforce.sprites.refactor.MoveBaseHelper;
+import com.danosoftware.galaxyforce.utilities.MoveBaseHelper;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
@@ -465,7 +463,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private void fireBaseMissile(float deltaTime) {
         // if base is ready to fire - fire!!
         if (readyToFire(deltaTime)) {
-            List<BaseMissileBean> missiles = new ArrayList<BaseMissileBean>();
+            List<BaseMissileBean> missiles = new ArrayList<>();
 
             // primary base fires
             missiles.add(fire());

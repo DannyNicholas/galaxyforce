@@ -46,11 +46,6 @@ public final class BezierMathematics {
     /**
      * calculate current point on bezier curve based control points and on parameter t
      *
-     * @param start
-     * @param startControl
-     * @param finish
-     * @param finishControl
-     * @param t
      * @return current point on bezier curve
      */
     private static Point calculateBezierPoint(final Point start,

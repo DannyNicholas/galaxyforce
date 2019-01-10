@@ -2,9 +2,9 @@ package com.danosoftware.galaxyforce.buttons.sprite_text_button;
 
 import com.danosoftware.galaxyforce.buttons.toggle_group.ToggleButtonGroup;
 import com.danosoftware.galaxyforce.options.Option;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
@@ -28,7 +28,7 @@ public class OptionButton implements SpriteTextButton {
     private final ToggleButtonGroup toggleButtonGroup;
 
     // option type associated with button
-    Option optionType;
+    final Option optionType;
 
     public OptionButton(
             int xPos,

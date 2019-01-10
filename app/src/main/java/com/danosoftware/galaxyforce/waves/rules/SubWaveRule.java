@@ -79,7 +79,7 @@ public enum SubWaveRule {
 
 
     // list of properties for a sub-wave
-    private List<SubWaveRuleProperties> waveList;
+    private final List<SubWaveRuleProperties> waveList;
 
     SubWaveRule(SubWaveRuleProperties... waveArray) {
         this.waveList = Arrays.asList(waveArray);

@@ -10,7 +10,7 @@ import com.danosoftware.galaxyforce.view.Vector2;
 public class SelectLevelSwipe implements Swipe {
 
     // reference to parent model
-    private SelectLevelModel model;
+    private final SelectLevelModel model;
 
     // reference to swipe start point
     private Vector2 startTouchPoint;

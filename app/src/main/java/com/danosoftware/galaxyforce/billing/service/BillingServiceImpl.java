@@ -103,7 +103,7 @@ public class BillingServiceImpl implements IBillingService {
     private BillingState state;
 
     // reference to activity context
-    private Activity activity;
+    private final Activity activity;
 
     /*
      * map of product keys and current state. need to be concurrent map as will
@@ -123,7 +123,7 @@ public class BillingServiceImpl implements IBillingService {
      * so may need to be synchronised. A set ensures the same observer can't
      * accidentally register twice.
      */
-    private Set<BillingObserver> observers;
+    private final Set<BillingObserver> observers;
 
     // private constructor
     public BillingServiceImpl(Activity activity) {
@@ -140,13 +140,13 @@ public class BillingServiceImpl implements IBillingService {
         mHelper.enableDebugLogging(true);
 
         // set-up map of product Ids and states
-        this.products = new ConcurrentHashMap<String, ProductState>();
+        this.products = new ConcurrentHashMap<>();
 
         // set-up map of product Ids and prices
-        this.prices = new ConcurrentHashMap<String, String>();
+        this.prices = new ConcurrentHashMap<>();
 
         // set-up set of observers listening for product state changes
-        this.observers = new HashSet<BillingObserver>();
+        this.observers = new HashSet<>();
 
         // setup billing service
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
@@ -220,7 +220,7 @@ public class BillingServiceImpl implements IBillingService {
          * is complete.
          */
         if (state == BillingState.READY) {
-            List<String> additionalSkuList = new ArrayList<String>();
+            List<String> additionalSkuList = new ArrayList<>();
             additionalSkuList.add(GameConstants.FULL_GAME_PRODUCT_ID);
             additionalSkuList.add(GameConstants.ALL_LEVELS_PRODUCT_ID);
 
@@ -314,9 +314,6 @@ public class BillingServiceImpl implements IBillingService {
     /**
      * Reverses the supplied string. Used to help hide the real in-app billing
      * public key.
-     *
-     * @param original
-     * @return
      */
     private String reverse(String original) {
         return new StringBuilder(original).reverse().toString();
@@ -499,7 +496,6 @@ public class BillingServiceImpl implements IBillingService {
                 // this could occur after an attempt to try and purchase a
                 // product you already own.
                 Log.d(GameConstants.LOG_TAG, BILLING_TAG + ": Error purchasing: " + result);
-                return;
             } else if (purchase.getSku().equals(productId)) {
                 /*
                  * there is no need to refresh product states here. onResume()

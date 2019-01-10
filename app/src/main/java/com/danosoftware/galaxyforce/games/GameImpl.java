@@ -29,7 +29,7 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerServiceImpl;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationServiceImpl;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
 import java.util.ArrayDeque;

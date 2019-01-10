@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.games;
 
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 
 import java.util.List;
 

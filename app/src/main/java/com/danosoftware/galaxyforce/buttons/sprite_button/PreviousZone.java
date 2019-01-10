@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.buttons.sprite_button;
 
 import com.danosoftware.galaxyforce.models.screens.level.SelectLevelModel;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 /**

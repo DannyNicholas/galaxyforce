@@ -35,8 +35,8 @@ public class FireRandomDelay implements FireBehaviour {
     private final AlienMissileType missileType;
 
     /**
-     * @param model
-     * @param missileType
+     * @param model             - game model
+     * @param missileType       - missile type
      * @param minMissileDelay   - minimum delay between missile fires
      * @param missleDelayRandom - additional maximum random time before missile fires
      */

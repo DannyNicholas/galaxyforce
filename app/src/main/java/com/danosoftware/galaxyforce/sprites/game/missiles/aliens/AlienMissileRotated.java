@@ -29,8 +29,8 @@ public class AlienMissileRotated extends AbstractAlienMissile {
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_ALIEN;
 
     // offset applied to x and y every move
-    private int xDelta;
-    private int yDelta;
+    private final int xDelta;
+    private final int yDelta;
 
     public AlienMissileRotated(int xStart, int yStart, IBasePrimary base) {
         super(SPRITE, xStart, yStart, HIT_ENERGY);

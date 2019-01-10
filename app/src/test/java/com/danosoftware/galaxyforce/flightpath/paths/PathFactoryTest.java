@@ -85,7 +85,6 @@ public class PathFactoryTest {
     private PathListDTO loadPathDTO(Path path) throws IOException {
         File file = pathAsset(path.getPathFile());
         ObjectMapper mapper = new ObjectMapper();
-        PathListDTO pathData = mapper.readValue(file, PathListDTO.class);
-        return pathData;
+        return mapper.readValue(file, PathListDTO.class);
     }
 }

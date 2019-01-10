@@ -4,9 +4,9 @@ import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.level.LevelModel;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
@@ -64,13 +64,11 @@ public class SwipeMenuButton implements SpriteTextButton {
          * the swipe offset. We don't want to create a new button as we'll lose
          * the existing button's state.
          */
-        Rectangle swipedBounds = new Rectangle(
+        return new Rectangle(
                 swipeOffset + buttonSprite.x() - buttonSprite.width() / 2,
                 buttonSprite.y() - buttonSprite.height() / 2,
                 buttonSprite.width(),
                 buttonSprite.height());
-
-        return swipedBounds;
     }
 
     @Override

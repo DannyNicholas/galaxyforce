@@ -3,9 +3,9 @@ package com.danosoftware.galaxyforce.sprites.mainmenu;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
@@ -28,7 +28,7 @@ public class MenuButton implements SpriteTextButton {
     private final ISpriteIdentifier spriteButtonDown;
 
     // this button's type
-    ButtonType buttonType;
+    private final ButtonType buttonType;
 
     public MenuButton(
             ButtonModel model,

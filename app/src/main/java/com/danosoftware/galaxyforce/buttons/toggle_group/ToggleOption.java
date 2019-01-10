@@ -25,7 +25,7 @@ public class ToggleOption implements ToggleButtonGroup {
     public ToggleOption(OptionsModel model, Option currentOption) {
         this.model = model;
         this.currentOption = currentOption;
-        this.options = new ArrayList<Button>();
+        this.options = new ArrayList<>();
     }
 
     // allows buttons to be added to option group.

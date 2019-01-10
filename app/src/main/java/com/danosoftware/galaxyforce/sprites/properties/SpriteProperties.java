@@ -3,6 +3,7 @@ package com.danosoftware.galaxyforce.sprites.properties;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
@@ -32,7 +33,7 @@ public class SpriteProperties implements ISpriteProperties {
         if (textureDetails == null) {
             String errorMessage = TAG + ": Error: No texture details have been returned for name: '" + name + "'.";
             Log.e(GameConstants.LOG_TAG, errorMessage);
-            throw new IllegalArgumentException(errorMessage);
+            throw new GalaxyForceException(errorMessage);
         }
 
         // populate details

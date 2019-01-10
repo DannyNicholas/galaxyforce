@@ -4,7 +4,7 @@ public enum OptionController implements Option {
 
     JOYSTICK("JOY"), ACCELEROMETER("TILT"), DRAG("DRAG");
 
-    private String text;
+    private final String text;
 
     OptionController(String text) {
         this.text = text;

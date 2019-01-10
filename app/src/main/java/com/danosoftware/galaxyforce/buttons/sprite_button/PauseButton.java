@@ -2,8 +2,8 @@ package com.danosoftware.galaxyforce.buttons.sprite_button;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
-import com.danosoftware.galaxyforce.sprites.refactor.ButtonSprite;
-import com.danosoftware.galaxyforce.sprites.refactor.IButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.ButtonSprite;
+import com.danosoftware.galaxyforce.sprites.buttons.IButtonSprite;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.PAUSE_BUTTON_DOWN;

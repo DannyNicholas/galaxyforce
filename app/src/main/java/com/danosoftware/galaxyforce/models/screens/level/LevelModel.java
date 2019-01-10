@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.models.screens.level;
 
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.sprites.refactor.ISprite;
+import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
 import java.util.List;

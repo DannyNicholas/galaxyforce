@@ -7,8 +7,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 import java.io.IOException;
 
 public class AndroidMusic implements Music, OnCompletionListener {
-    MediaPlayer mediaPlayer;
-    boolean isPrepared;
+    private final MediaPlayer mediaPlayer;
+    private boolean isPrepared;
 
     public AndroidMusic(AssetFileDescriptor assetDescriptor) {
         mediaPlayer = new MediaPlayer();

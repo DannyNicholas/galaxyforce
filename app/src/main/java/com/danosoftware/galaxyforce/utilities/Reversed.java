@@ -5,6 +5,8 @@ package com.danosoftware.galaxyforce.utilities;
  * and open the template in the editor.
  */
 
+import android.support.annotation.NonNull;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,6 +22,7 @@ public class Reversed<T> implements Iterable<T> {
         this.original = original;
     }
 
+    @NonNull
     public Iterator<T> iterator() {
         final ListIterator<T> i = original.listIterator(original.size());
 
@@ -39,7 +42,7 @@ public class Reversed<T> implements Iterable<T> {
     }
 
     public static <T> Reversed<T> reversed(List<T> original) {
-        return new Reversed<T>(original);
+        return new Reversed<>(original);
     }
 
 }
