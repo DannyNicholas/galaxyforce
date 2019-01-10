@@ -17,7 +17,6 @@ See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
     -->
 
     <application
-        android:name="com.danosoftware.galaxyforce.MainApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Translucent.NoTitleBar">
@@ -29,7 +28,7 @@ See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.screen.factories;
 
+import android.content.res.AssetManager;
+
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -54,6 +56,7 @@ public class ScreenFactory {
     private final SoundPlayerService sounds;
     private final VibrationService vibrator;
     private final SavedGame savedGame;
+    private final AssetManager assets;
     private final Game game;
     private final Input input;
     private final String versionName;
@@ -67,6 +70,7 @@ public class ScreenFactory {
             SoundPlayerService sounds,
             VibrationService vibrator,
             SavedGame savedGame,
+            AssetManager assets,
             Game game,
             Input input,
             String versionName) {
@@ -78,6 +82,7 @@ public class ScreenFactory {
         this.sounds = sounds;
         this.vibrator = vibrator;
         this.savedGame = savedGame;
+        this.assets = assets;
         this.game = game;
         this.input = input;
         this.versionName = versionName;
@@ -204,7 +209,8 @@ public class ScreenFactory {
                 billingService,
                 sounds,
                 vibrator,
-                savedGame);
+                savedGame,
+                assets);
 
         if (SHOW_FPS) {
             return new GamePlayModelFrameRateDecorator((GamePlayModelImpl) gameModel);

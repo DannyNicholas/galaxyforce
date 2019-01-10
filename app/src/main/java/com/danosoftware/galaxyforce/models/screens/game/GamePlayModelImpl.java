@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.models.screens.game;
 
+import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
@@ -13,6 +14,8 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.controllers.touch_base.BaseTouchController;
 import com.danosoftware.galaxyforce.controllers.touch_base.ControllerDrag;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
+import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
+import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
 import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
 import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
 import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
@@ -147,7 +150,8 @@ public class GamePlayModelImpl implements Model, GameModel {
             IBillingService billingService,
             SoundPlayerService sounds,
             VibrationService vibrator,
-            SavedGame savedGame) {
+            SavedGame savedGame,
+            AssetManager assets) {
         this.game = game;
         this.wave = wave;
         this.billingService = billingService;
@@ -162,11 +166,7 @@ public class GamePlayModelImpl implements Model, GameModel {
         /*
          * create alien manager used to co-ordinate aliens waves.
          */
-        AlienFactory alienFactory = new AlienFactory(this, sounds, vibrator);
-        WaveCreationUtils creationUtils = new WaveCreationUtils(this, alienFactory);
-        WaveFactory waveFactory = new WaveFactory(creationUtils);
-        WaveManager waveManager = new WaveManagerImpl(waveFactory);
-        this.alienManager = new AlienManager(waveManager);
+        this.alienManager = createAlienManager(sounds, vibrator, assets, this);
 
         /*
          * create asset manager to co-ordinate in-game assets
@@ -598,5 +598,23 @@ public class GamePlayModelImpl implements Model, GameModel {
         else {
             this.modelState = ModelState.GAME_OVER;
         }
+    }
+
+    /*
+     * create alien manager used to co-ordinate aliens waves.
+     */
+    private IAlienManager createAlienManager(
+            SoundPlayerService sounds,
+            VibrationService vibrator,
+            AssetManager assets,
+            GameModel model) {
+        PathLoader pathLoader = new PathLoader(assets);
+        PathFactory pathFactory = new PathFactory(pathLoader);
+        AlienFactory alienFactory = new AlienFactory(model, sounds, vibrator);
+        WaveCreationUtils creationUtils = new WaveCreationUtils(model, alienFactory, pathFactory);
+        WaveFactory waveFactory = new WaveFactory(creationUtils);
+        WaveManager waveManager = new WaveManagerImpl(waveFactory);
+
+        return new AlienManager(waveManager);
     }
 }

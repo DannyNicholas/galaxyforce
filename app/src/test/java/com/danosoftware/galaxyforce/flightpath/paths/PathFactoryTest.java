@@ -24,6 +24,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
@@ -31,7 +32,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * Test that checks all the paths create a list of points representing their paths.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, PathLoader.class})
+@PrepareForTest({Log.class})
 public class PathFactoryTest {
 
     private final static Logger logger = LoggerFactory.getLogger(PathFactoryTest.class);
@@ -57,10 +58,11 @@ public class PathFactoryTest {
             // Instead we mock the PathLoader static method and give it the path data
             // it would have loaded for the current path.
             PathListDTO pathListDTO = loadPathDTO(path);
-            mockStatic(PathLoader.class);
-            when(PathLoader.loadPaths(any(String.class))).thenReturn(pathListDTO);
+            PathLoader loader = mock(PathLoader.class);
+            when(loader.loadPaths(any(String.class))).thenReturn(pathListDTO);
 
-            List<Point> points = PathFactory.createPath(path, emptyTranslators);
+            PathFactory pathFactory = new PathFactory(loader);
+            List<Point> points = pathFactory.createPath(path, emptyTranslators);
             checkPoints(points);
         }
         logger.info("All paths created.");

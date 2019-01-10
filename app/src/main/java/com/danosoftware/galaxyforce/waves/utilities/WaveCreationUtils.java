@@ -23,13 +23,16 @@ import java.util.List;
 public class WaveCreationUtils {
 
     private final AlienFactory alienFactory;
+    private final PathFactory pathFactory;
     private final GameModel model;
 
     public WaveCreationUtils(
             GameModel model,
-            AlienFactory alienFactory) {
+            AlienFactory alienFactory,
+            PathFactory pathFactory) {
         this.model = model;
         this.alienFactory = alienFactory;
+        this.pathFactory = pathFactory;
     }
 
     /**
@@ -62,7 +65,7 @@ public class WaveCreationUtils {
         for (SubWavePathRuleProperties props : rules.subWaveProps()) {
 
             // create path points (that alien will follow) for sub-wave
-            List<Point> path = PathFactory.createPath(
+            List<Point> path = pathFactory.createPath(
                     props.getPath(),
                     props.getTranslators()
             );

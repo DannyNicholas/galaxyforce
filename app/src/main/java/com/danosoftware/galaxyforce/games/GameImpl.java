@@ -91,6 +91,7 @@ public class GameImpl implements Game {
                 sounds,
                 vibrator,
                 savedGame,
+                context.getAssets(),
                 this,
                 input,
                 versionName);

@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.flightpath.utilities;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.MainApplication;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.dto.PathListDTO;
@@ -19,16 +18,17 @@ public class PathLoader {
 
     private static final String ACTIVITY_TAG = "Path Loader";
 
-    private PathLoader() {
+    private final AssetManager assets;
+
+    public PathLoader(AssetManager assets) {
+        this.assets = assets;
     }
 
     /**
      * Load path data JSON file and return as a list of Path DTOs
      */
-    public static PathListDTO loadPaths(String jsonFile) {
+    public PathListDTO loadPaths(String jsonFile) {
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Loading JSON Path");
-        AssetManager assets = MainApplication.getAppContext().getAssets();
-
         try {
             InputStream is = assets.open("paths/" + jsonFile);
             ObjectMapper mapper = new ObjectMapper();
