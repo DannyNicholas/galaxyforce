@@ -57,6 +57,8 @@ public class GameImpl implements Game {
 
     private final SoundPlayerService sounds;
 
+//    private final BillingManager billingManager;
+
     public GameImpl(
             Context context,
             GLGraphics glGraphics,
@@ -82,6 +84,13 @@ public class GameImpl implements Game {
 
         IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
         SavedGame savedGame = new SavedGameImpl(savedGamePreferences);
+
+        // Create and initialize BillingManager which talks to BillingLibrary
+//        this.billingManager = billingManager;
+
+//        BillingManager.BillingUpdatesListener mViewController = new BillingHandler(this);
+//        mBillingManager = new BillingManager(context, mViewController);
+
 
         this.screenFactory = new ScreenFactory(
                 glGraphics,

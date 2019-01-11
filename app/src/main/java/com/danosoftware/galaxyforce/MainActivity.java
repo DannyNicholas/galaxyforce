@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.billingclient.api.BillingClient;
 import com.danosoftware.galaxyforce.billing.service.BillingServiceImpl;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingManager;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
@@ -48,6 +50,8 @@ public class MainActivity extends Activity {
     /* Billing Service for In-App Billing Requests */
     private IBillingService billingService;
 
+    private BillingManager mBillingManager;
+
     /* runs when application initially starts */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +75,19 @@ public class MainActivity extends Activity {
 
         this.billingService = new BillingServiceImpl(this);
 
+        // Create and initialize BillingManager which talks to BillingLibrary
+        com.danosoftware.galaxyforce.billing.service.new_service.BillingService billingService2 = new com.danosoftware.galaxyforce.billing.service.new_service.BillingServiceImpl();
+
+
+//        BillingManager.BillingUpdatesListener mViewController = new BillingHandler(this);
+        BillingManager.BillingUpdatesListener billingListener = (BillingManager.BillingUpdatesListener) billingService2;
+        this.mBillingManager = new BillingManager(this, billingListener);
+
         // create instance of game
         game = new GameImpl(this, glGraphics, glView, billingService);
     }
 
-    /* runs after onCreate or resuming after being paused */
+    /* runs after onCreate or resuming after being in background */
     @Override
     protected void onResume() {
 
@@ -91,6 +103,15 @@ public class MainActivity extends Activity {
          */
         if (billingService != null) {
             billingService.refreshProductStates();
+        }
+
+        // Note: We query purchases in onResume() to handle purchases completed while the activity
+        // is inactive. For example, this can happen if the activity is destroyed during the
+        // purchase flow. This ensures that when the activity is resumed it reflects the user's
+        // current purchases.
+        if (mBillingManager != null
+                && mBillingManager.getBillingClientResponseCode() == BillingClient.BillingResponse.OK) {
+            mBillingManager.queryPurchases();
         }
     }
 
@@ -129,6 +150,11 @@ public class MainActivity extends Activity {
 
         // destroy billing service on activity destroy to avoid degrading device
         billingService.destroy();
+
+        Log.i(ACTIVITY_TAG, "Destroying Billing Manager.");
+        if (mBillingManager != null) {
+            mBillingManager.destroy();
+        }
     }
 
     /**

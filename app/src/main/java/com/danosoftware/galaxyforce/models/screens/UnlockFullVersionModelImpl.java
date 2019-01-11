@@ -2,8 +2,11 @@ package com.danosoftware.galaxyforce.models.screens;
 
 import android.util.Log;
 
+import com.android.billingclient.api.SkuDetails;
 import com.danosoftware.galaxyforce.billing.service.BillingObserver;
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.SkuDetailsListener;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -63,6 +66,20 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
         // register this model with the billing service
         billingService.registerProductObserver(this);
+
+        // query upgrade price by requesting the full-game purchase SKU details asyncronously.
+        // supply a listener to be invoked when SKU details are available.
+        BillingService bs = null;
+        bs.queryFullGameSkuDetailsAsync(
+                new SkuDetailsListener() {
+                    @Override
+                    public void onSkuDetailsRetrieved(SkuDetails details) {
+                        Log.i(LOCAL_TAG, "Adding sku: " + details);
+                        Log.i(LOCAL_TAG, details.getPrice());
+                        Log.i(LOCAL_TAG, details.getPriceCurrencyCode());
+                    }
+                });
+
     }
 
     /**
