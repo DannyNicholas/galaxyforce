@@ -1,8 +1,5 @@
 package com.danosoftware.galaxyforce.models.assets;
 
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.assets.EnergyBar;
 import com.danosoftware.galaxyforce.sprites.game.assets.Flag;
@@ -85,17 +82,17 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     }
 
     @Override
-    public void addPowerUp(PowerUpBean powerUp) {
+    public void addPowerUp(PowerUpsDto powerUp) {
         powerUps.add(powerUp.getPowerUp());
     }
 
     @Override
-    public void fireBaseMissiles(BaseMissileBean missiles) {
+    public void fireBaseMissiles(BaseMissilesDto missiles) {
         baseMissiles.addAll(missiles.getMissiles());
     }
 
     @Override
-    public void fireAlienMissiles(AlienMissileBean missiles) {
+    public void fireAlienMissiles(AlienMissilesDto missiles) {
         aliensMissiles.addAll(missiles.getMissiles());
     }
 

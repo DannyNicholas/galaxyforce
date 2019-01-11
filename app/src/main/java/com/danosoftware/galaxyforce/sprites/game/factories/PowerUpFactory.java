@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
+import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
@@ -13,7 +13,7 @@ public class PowerUpFactory {
     /**
      * Return any random power-up.
      */
-    public static PowerUpBean generateRandomPowerUp(int x, int y) {
+    public static PowerUpsDto generateRandomPowerUp(int x, int y) {
         // create array of possible power-ups
         PowerUpType[] powerUps = PowerUpType.values();
 
@@ -24,7 +24,7 @@ public class PowerUpFactory {
     /**
      * Return a random power-up from the supplied array of power-up types.
      */
-    public static PowerUpBean generateRandomPowerUp(int x, int y, PowerUpType... powerUps) {
+    public static PowerUpsDto generateRandomPowerUp(int x, int y, PowerUpType... powerUps) {
         // select a random powerup type and generate the power-up
         int index = (int) (Math.random() * powerUps.length);
 
@@ -34,7 +34,7 @@ public class PowerUpFactory {
     /**
      * Return a power-up using the supplied power-up type.
      */
-    public static PowerUpBean newPowerUp(PowerUpType powerUpType, int x, int y) {
+    public static PowerUpsDto newPowerUp(PowerUpType powerUpType, int x, int y) {
 
         final ISpriteIdentifier spriteId;
 
@@ -75,6 +75,6 @@ public class PowerUpFactory {
 
         IPowerUp powerUp = new PowerUp(spriteId, x, y, powerUpType);
 
-        return new PowerUpBean(powerUp, SoundEffect.POWER_UP_SPAWN);
+        return new PowerUpsDto(powerUp, SoundEffect.POWER_UP_SPAWN);
     }
 }

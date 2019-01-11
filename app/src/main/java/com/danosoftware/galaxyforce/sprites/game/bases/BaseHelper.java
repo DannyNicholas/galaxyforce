@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.bases;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -157,7 +157,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     }
 
     @Override
-    public BaseMissileBean fire(BaseMissileType baseMissileType) {
+    public BaseMissilesDto fire(BaseMissileType baseMissileType) {
         return BaseMissileFactory.createBaseMissile(this, baseMissileType, model);
     }
 

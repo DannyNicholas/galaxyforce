@@ -1,8 +1,5 @@
 package com.danosoftware.galaxyforce.models.assets;
 
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.assets.Flag;
 import com.danosoftware.galaxyforce.sprites.game.assets.Life;
@@ -24,11 +21,11 @@ public interface IGamePlayAssetsManager {
 
     void setLives(int lives);
 
-    void addPowerUp(PowerUpBean powerUp);
+    void addPowerUp(PowerUpsDto powerUp);
 
-    void fireBaseMissiles(BaseMissileBean missiles);
+    void fireBaseMissiles(BaseMissilesDto missiles);
 
-    void fireAlienMissiles(AlienMissileBean missiles);
+    void fireAlienMissiles(AlienMissilesDto missiles);
 
     List<IAlienMissile> getAliensMissiles();
 

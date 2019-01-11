@@ -16,15 +16,15 @@ import com.danosoftware.galaxyforce.controllers.touch_base.ControllerDrag;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
 import com.danosoftware.galaxyforce.flightpath.utilities.PathLoader;
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.aliens.AlienManager;
 import com.danosoftware.galaxyforce.models.aliens.IAlienManager;
+import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.assets.GamePlayAssetsManager;
 import com.danosoftware.galaxyforce.models.assets.IGamePlayAssetsManager;
+import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
+import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
@@ -331,25 +331,25 @@ public class GamePlayModelImpl implements Model, GameModel {
     }
 
     @Override
-    public void spawnAliens(SpawnedAlienBean spawnedAliens) {
+    public void spawnAliens(SpawnedAliensDto spawnedAliens) {
         alienManager.spawnAliens(spawnedAliens.getAliens());
         sounds.play(spawnedAliens.getSoundEffect());
     }
 
     @Override
-    public void addPowerUp(PowerUpBean powerUp) {
+    public void addPowerUp(PowerUpsDto powerUp) {
         assets.addPowerUp(powerUp);
         sounds.play(powerUp.getSoundEffect());
     }
 
     @Override
-    public void fireBaseMissiles(BaseMissileBean missiles) {
+    public void fireBaseMissiles(BaseMissilesDto missiles) {
         assets.fireBaseMissiles(missiles);
         sounds.play(missiles.getSoundEffect());
     }
 
     @Override
-    public void fireAlienMissiles(AlienMissileBean missiles) {
+    public void fireAlienMissiles(AlienMissilesDto missiles) {
         assets.fireAlienMissiles(missiles);
         sounds.play(missiles.getSoundEffect());
     }

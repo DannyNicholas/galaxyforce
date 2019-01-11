@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
@@ -31,7 +31,7 @@ public class BaseMissileFactory {
      * Return a list of missiles based on the type. Missile initial position
      * will be based on the base's position.
      */
-    public static BaseMissileBean createBaseMissile(
+    public static BaseMissilesDto createBaseMissile(
             IBase base,
             BaseMissileType baseMissileType,
             GameModel model) {
@@ -69,7 +69,7 @@ public class BaseMissileFactory {
                 throw new GalaxyForceException("Unsupported Base Missile Type: '" + baseMissileType.name() + "'.");
         }
 
-        return new BaseMissileBean(baseMissiles, effect);
+        return new BaseMissilesDto(baseMissiles, effect);
     }
 
     private static IBaseMissile createMissile(

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -215,14 +215,14 @@ public class PrimaryBaseTest {
     @Test
     public void baseShouldFireMissile() {
         primaryBase.animate(1f);
-        verify(model, atLeastOnce()).fireBaseMissiles(any(BaseMissileBean.class));
+        verify(model, atLeastOnce()).fireBaseMissiles(any(BaseMissilesDto.class));
     }
 
     @Test
     public void baseShouldNotFireMissileWhenDestroyed() {
         primaryBase.destroy();
         primaryBase.animate(1f);
-        verify(model, times(0)).fireBaseMissiles(any(BaseMissileBean.class));
+        verify(model, times(0)).fireBaseMissiles(any(BaseMissilesDto.class));
     }
 
     @Test

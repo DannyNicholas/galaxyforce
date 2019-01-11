@@ -5,7 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -463,7 +463,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private void fireBaseMissile(float deltaTime) {
         // if base is ready to fire - fire!!
         if (readyToFire(deltaTime)) {
-            List<BaseMissileBean> missiles = new ArrayList<>();
+            List<BaseMissilesDto> missiles = new ArrayList<>();
 
             // primary base fires
             missiles.add(fire());
@@ -475,7 +475,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             }
 
             // send missiles to model
-            for (BaseMissileBean aMissile : missiles) {
+            for (BaseMissilesDto aMissile : missiles) {
                 model.fireBaseMissiles(aMissile);
             }
         }
@@ -517,7 +517,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      *
      * @return current base missile
      */
-    private BaseMissileBean fire() {
+    private BaseMissilesDto fire() {
         // reset timer since base last fired
         timeSinceBaseLastFired = 0f;
 

@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
@@ -98,7 +98,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
         delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * Math.random());
 
         // create and send new alien bean
-        SpawnedAlienBean aliens = alienFactory.createSpawnedAlien(alienType, powerUpAllocator.allocate(), alien.x(), alien.y() - alien.height());
+        SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(alienType, powerUpAllocator.allocate(), alien.x(), alien.y() - alien.height());
 
         model.spawnAliens(aliens);
     }

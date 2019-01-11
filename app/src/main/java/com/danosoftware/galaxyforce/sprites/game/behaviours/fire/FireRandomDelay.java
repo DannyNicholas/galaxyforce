@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
+import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
@@ -74,7 +74,7 @@ public class FireRandomDelay implements FireBehaviour {
         /* reset time delay until alien can fire */
         delayUntilNextFire = minMissileDelay + (missleDelayRandom * Math.random());
 
-        AlienMissileBean missiles = AlienMissileFactory.createAlienMissile(model.getBase(), alien, missileType);
+        AlienMissilesDto missiles = AlienMissileFactory.createAlienMissile(model.getBase(), alien, missileType);
         model.fireAlienMissiles(missiles);
     }
 }

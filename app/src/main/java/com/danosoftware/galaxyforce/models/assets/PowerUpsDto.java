@@ -1,16 +1,16 @@
-package com.danosoftware.galaxyforce.game.beans;
+package com.danosoftware.galaxyforce.models.assets;
 
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 
 /**
- * Power-up bean holding the power-up and sound effects.
+ * Power-up DTO holding the power-up and sound effects.
  */
-public class PowerUpBean {
+public class PowerUpsDto {
     private final IPowerUp powerUp;
     private final SoundEffect soundEffect;
 
-    public PowerUpBean(IPowerUp powerUp, SoundEffect soundEffect) {
+    public PowerUpsDto(IPowerUp powerUp, SoundEffect soundEffect) {
         this.powerUp = powerUp;
         this.soundEffect = soundEffect;
     }

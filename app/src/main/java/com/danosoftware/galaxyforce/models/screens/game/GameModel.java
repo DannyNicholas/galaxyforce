@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.models.screens.game;
 
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
+import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
+import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 
@@ -23,17 +23,17 @@ public interface GameModel {
      * Add a new power up sprite to the game. Usually triggered when an alien is
      * destroyed.
      */
-    void addPowerUp(PowerUpBean powerUp);
+    void addPowerUp(PowerUpsDto powerUp);
 
     /**
      * Fire base missiles. Add new missiles being fired by bases.
      */
-    void fireBaseMissiles(BaseMissileBean missiles);
+    void fireBaseMissiles(BaseMissilesDto missiles);
 
     /**
      * Fire alien missiles. Add new missiles being fired by aliens.
      */
-    void fireAlienMissiles(AlienMissileBean missiles);
+    void fireAlienMissiles(AlienMissilesDto missiles);
 
     /**
      * Return an actively selected active alien.
@@ -45,7 +45,7 @@ public interface GameModel {
      * <p>
      * e.g. a mothership that creates new aliens
      */
-    void spawnAliens(SpawnedAlienBean aliens);
+    void spawnAliens(SpawnedAliensDto aliens);
 
     /**
      * Return number of lives remaining

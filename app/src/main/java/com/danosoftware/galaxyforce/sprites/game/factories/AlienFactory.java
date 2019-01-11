@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -202,7 +202,7 @@ public class AlienFactory {
      * <p>
      * Returns spawned alien bean containing alien and sound effect.
      */
-    public SpawnedAlienBean createSpawnedAlien(
+    public SpawnedAliensDto createSpawnedAlien(
             final AlienType alienType,
             final PowerUpType powerUpType,
             final int xStart,
@@ -213,7 +213,7 @@ public class AlienFactory {
         switch (alienType) {
             case SPAWNED_INSECT:
                 aliens.add(new AlienSpawnedInsect(powerUpType, xStart, yStart, model, sounds, vibrator));
-                return new SpawnedAlienBean(aliens, SoundEffect.ALIEN_SPAWN);
+                return new SpawnedAliensDto(aliens, SoundEffect.ALIEN_SPAWN);
 
             default:
                 String errorMessage = "Error: Unrecognised AlienType: '" + alienType + "'";

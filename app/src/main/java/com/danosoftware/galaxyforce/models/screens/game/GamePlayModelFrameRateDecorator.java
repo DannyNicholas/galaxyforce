@@ -1,9 +1,9 @@
 package com.danosoftware.galaxyforce.models.screens.game;
 
-import com.danosoftware.galaxyforce.game.beans.AlienMissileBean;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
-import com.danosoftware.galaxyforce.game.beans.PowerUpBean;
-import com.danosoftware.galaxyforce.game.beans.SpawnedAlienBean;
+import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
+import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
+import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -96,17 +96,17 @@ public class GamePlayModelFrameRateDecorator implements Model, GameModel {
     }
 
     @Override
-    public void addPowerUp(PowerUpBean powerUp) {
+    public void addPowerUp(PowerUpsDto powerUp) {
         gameModel.addPowerUp(powerUp);
     }
 
     @Override
-    public void fireBaseMissiles(BaseMissileBean missiles) {
+    public void fireBaseMissiles(BaseMissilesDto missiles) {
         gameModel.fireBaseMissiles(missiles);
     }
 
     @Override
-    public void fireAlienMissiles(AlienMissileBean missiles) {
+    public void fireAlienMissiles(AlienMissilesDto missiles) {
         gameModel.fireAlienMissiles(missiles);
     }
 
@@ -116,7 +116,7 @@ public class GamePlayModelFrameRateDecorator implements Model, GameModel {
     }
 
     @Override
-    public void spawnAliens(SpawnedAlienBean aliens) {
+    public void spawnAliens(SpawnedAliensDto aliens) {
         gameModel.spawnAliens(aliens);
     }
 

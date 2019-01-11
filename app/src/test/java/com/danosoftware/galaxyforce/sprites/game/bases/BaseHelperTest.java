@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.bases;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.game.beans.BaseMissileBean;
+import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -216,7 +216,7 @@ public class BaseHelperTest {
     @Test()
     public void shouldFireMissile() {
         baseHelper = shieldedHelper(LEFT);
-        BaseMissileBean missile = baseHelper.fire(SIMPLE);
+        BaseMissilesDto missile = baseHelper.fire(SIMPLE);
         assertThat(missile.getMissiles().size() > 0, is(true));
         for (IBaseMissile aMissile : missile.getMissiles()) {
             assertThat(aMissile instanceof BaseMissileSimple, is(true));

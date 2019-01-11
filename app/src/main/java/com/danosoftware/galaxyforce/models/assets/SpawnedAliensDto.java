@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.game.beans;
+package com.danosoftware.galaxyforce.models.assets;
 
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -6,13 +6,13 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import java.util.List;
 
 /**
- * Spawned aliens bean holding the aliens and spawning sound effect.
+ * Spawned aliens DTO holding the aliens and spawning sound effect.
  */
-public class SpawnedAlienBean {
+public class SpawnedAliensDto {
     private final List<IAlien> aliens;
     private final SoundEffect soundEffect;
 
-    public SpawnedAlienBean(List<IAlien> aliens, SoundEffect soundEffect) {
+    public SpawnedAliensDto(List<IAlien> aliens, SoundEffect soundEffect) {
         this.aliens = aliens;
         this.soundEffect = soundEffect;
     }
