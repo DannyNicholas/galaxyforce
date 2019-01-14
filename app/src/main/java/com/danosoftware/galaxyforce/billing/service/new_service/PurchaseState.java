@@ -1,5 +1,5 @@
 package com.danosoftware.galaxyforce.billing.service.new_service;
 
 public enum PurchaseState {
-    PURCHASED, NOT_PURCHASED, NOT_READY, BILLING_FAILURE;
+    PURCHASED, NOT_PURCHASED, NOT_READY;
 }

@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
         this.mBillingManager = new BillingManager(this, billingListener);
 
         // create instance of game
-        game = new GameImpl(this, glGraphics, glView, billingService);
+        game = new GameImpl(this, glGraphics, glView, billingService, billingService2);
     }
 
     /* runs after onCreate or resuming after being in background */

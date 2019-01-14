@@ -8,7 +8,9 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.danosoftware.galaxyforce.billing.service.new_service.BillingManager.BILLING_MANAGER_NOT_INITIALIZED;
 
@@ -20,9 +22,15 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
     private volatile PurchaseState fullGamePurchaseState;
     private volatile BillingManager billingManager;
 
+    /*
+     * set of observers to be notified following any purchase state changes.
+     */
+    private final Set<BillingObserver> observers;
+
     public BillingServiceImpl() {
         this.purchasesReady = false;
         this.fullGamePurchaseState = PurchaseState.NOT_READY;
+        this.observers = new HashSet<>();
     }
 
     /**
@@ -63,6 +71,17 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
                 PurchaseState.PURCHASED :
                 PurchaseState.NOT_PURCHASED;
         this.purchasesReady = true;
+
+        /*
+         * notify models of purchase state updates. this is called in a
+         * billing thread so must be synchronized to avoid new observers
+         * being added/removed by the main thread at same time.
+         */
+        synchronized (this) {
+            for (BillingObserver observer : observers) {
+                observer.onFullGamePurchaseStateChange(fullGamePurchaseState);
+            }
+        }
     }
 
     /**
@@ -139,6 +158,32 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
             Log.i(TAG, "Requesting purchase of: '" + details.getSku() + "'");
             billingManager.initiatePurchaseFlow(details);
         }
+    }
+
+    /*
+     * Register an observer for any purchase state refreshes. Normally called
+     * when a observer is constructed.
+     *
+     * Synchronized to avoid adding observer in main thread while notifying
+     * observers in billing thread.
+     */
+    @Override
+    public synchronized void registerPurchasesObserver(BillingObserver billingObserver) {
+        Log.d(TAG, "Register Billing Observer '" + billingObserver + "'.");
+        observers.add(billingObserver);
+    }
+
+    /*
+     * Unregister an observer for any purchase state refreshes. Normally called
+     * when a observer is disposed.
+     *
+     * Synchronized to avoid removing observer in main thread while notifying
+     * observers in billing thread.
+     */
+    @Override
+    public synchronized void unregisterPurchasesObserver(BillingObserver billingObserver) {
+        Log.d(TAG, "Unregister Billing Observer '" + billingObserver + "'.");
+        observers.remove(billingObserver);
     }
 
     /**

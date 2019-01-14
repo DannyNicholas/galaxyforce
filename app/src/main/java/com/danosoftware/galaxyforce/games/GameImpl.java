@@ -7,6 +7,7 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
@@ -63,7 +64,8 @@ public class GameImpl implements Game {
             Context context,
             GLGraphics glGraphics,
             GLSurfaceView glView,
-            IBillingService billingService) {
+            IBillingService billingService,
+            BillingService billingService2) {
 
         this.returningScreens = new ArrayDeque<>();
 
@@ -96,6 +98,7 @@ public class GameImpl implements Game {
                 glGraphics,
                 fileIO,
                 billingService,
+                billingService2,
                 configurationService,
                 sounds,
                 vibrator,

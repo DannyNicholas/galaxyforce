@@ -3,6 +3,7 @@ package com.danosoftware.galaxyforce.screen.factories;
 import android.content.res.AssetManager;
 
 import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.common.ControllerImpl;
@@ -52,6 +53,7 @@ public class ScreenFactory {
     private final GLGraphics glGraphics;
     private final FileIO fileIO;
     private final IBillingService billingService;
+    private final BillingService billingService2;
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
     private final VibrationService vibrator;
@@ -66,6 +68,7 @@ public class ScreenFactory {
             GLGraphics glGraphics,
             FileIO fileIO,
             IBillingService billingService,
+            BillingService billingService2,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
             VibrationService vibrator,
@@ -78,6 +81,7 @@ public class ScreenFactory {
         this.glGraphics = glGraphics;
         this.fileIO = fileIO;
         this.billingService = billingService;
+        this.billingService2 = billingService2;
         this.configurationService = configurationService;
         this.sounds = sounds;
         this.vibrator = vibrator;
@@ -151,7 +155,7 @@ public class ScreenFactory {
 
             case UPGRADE_FULL_VERSION:
                 return new Screen(
-                        new UnlockFullVersionModelImpl(game, controller, billingService),
+                        new UnlockFullVersionModelImpl(game, controller, billingService2),
                         controller,
                         TextureMap.MENU,
                         glGraphics,

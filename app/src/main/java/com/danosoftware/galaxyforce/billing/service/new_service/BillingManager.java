@@ -16,12 +16,10 @@
 package com.danosoftware.galaxyforce.billing.service.new_service;
 
 import android.app.Activity;
-import android.content.Context;
 import android.util.Log;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClient.BillingResponse;
-import com.android.billingclient.api.BillingClient.FeatureType;
 import com.android.billingclient.api.BillingClient.SkuType;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -83,9 +81,7 @@ public class BillingManager implements PurchasesUpdatedListener {
      */
     public interface BillingUpdatesListener {
         void onBillingClientSetupFinished(BillingManager billingManager);
-
         void onConsumeFinished(String token, @BillingResponse int result);
-
         void onPurchasesUpdated(List<Purchase> purchases);
     }
 
@@ -138,32 +134,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     }
 
     /**
-     * Start a purchase flow
-     */
-    public void initiatePurchaseFlow(final String skuId, final @SkuType String billingType) {
-        initiatePurchaseFlow(skuId, null, billingType);
-    }
-
-    /**
-     * Start a purchase or subscription replace flow
-     */
-    public void initiatePurchaseFlow(final String skuId, final ArrayList<String> oldSkus,
-                                     final @SkuType String billingType) {
-        Runnable purchaseFlowRequest = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Launching in-app purchase flow. Replace old SKU? " + (oldSkus != null));
-                BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-                        .setSku(skuId).setType(billingType).setOldSkus(oldSkus).build();
-                mBillingClient.launchBillingFlow(mActivity, purchaseParams);
-            }
-        };
-
-        executeServiceRequest(purchaseFlowRequest);
-    }
-
-    /**
-     * Start a purchase or subscription replace flow
+     * Start a purchase
      */
     public void initiatePurchaseFlow(final SkuDetails skuDetails) {
         Runnable purchaseFlowRequest = new Runnable() {
@@ -178,10 +149,6 @@ public class BillingManager implements PurchasesUpdatedListener {
         };
 
         executeServiceRequest(purchaseFlowRequest);
-    }
-
-    public Context getContext() {
-        return mActivity;
     }
 
     /**
@@ -300,21 +267,6 @@ public class BillingManager implements PurchasesUpdatedListener {
     }
 
     /**
-     * Checks if subscriptions are supported for current client
-     * <p>Note: This method does not automatically retry for RESULT_SERVICE_DISCONNECTED.
-     * It is only used in unit tests and after queryPurchases execution, which already has
-     * a retry-mechanism implemented.
-     * </p>
-     */
-    public boolean areSubscriptionsSupported() {
-        int responseCode = mBillingClient.isFeatureSupported(FeatureType.SUBSCRIPTIONS);
-        if (responseCode != BillingResponse.OK) {
-            Log.w(TAG, "areSubscriptionsSupported() got an error response: " + responseCode);
-        }
-        return responseCode == BillingResponse.OK;
-    }
-
-    /**
      * Query purchases across various use cases and deliver the result in a formalized way through
      * a listener
      */
@@ -326,24 +278,8 @@ public class BillingManager implements PurchasesUpdatedListener {
                 PurchasesResult purchasesResult = mBillingClient.queryPurchases(SkuType.INAPP);
                 Log.i(TAG, "Querying purchases elapsed time: " + (System.currentTimeMillis() - time)
                         + "ms");
-                // If there are subscriptions supported, we add subscription rows as well
-                if (areSubscriptionsSupported()) {
-                    PurchasesResult subscriptionResult
-                            = mBillingClient.queryPurchases(SkuType.SUBS);
-                    Log.i(TAG, "Querying purchases and subscriptions elapsed time: "
-                            + (System.currentTimeMillis() - time) + "ms");
-                    Log.i(TAG, "Querying subscriptions result code: "
-                            + subscriptionResult.getResponseCode()
-                            + " res: " + subscriptionResult.getPurchasesList().size());
-
-                    if (subscriptionResult.getResponseCode() == BillingResponse.OK) {
-                        purchasesResult.getPurchasesList().addAll(
-                                subscriptionResult.getPurchasesList());
-                    } else {
-                        Log.e(TAG, "Got an error response trying to query subscription purchases");
-                    }
-                } else if (purchasesResult.getResponseCode() == BillingResponse.OK) {
-                    Log.i(TAG, "Skipped subscription purchases query since they are not supported");
+                if (purchasesResult.getResponseCode() == BillingResponse.OK) {
+                    Log.i(TAG, "queryPurchases() was successful");
                 } else {
                     Log.w(TAG, "queryPurchases() got an error response code: "
                             + purchasesResult.getResponseCode());
@@ -394,13 +330,6 @@ public class BillingManager implements PurchasesUpdatedListener {
      * </p>
      */
     private boolean verifyValidSignature(String signedData, String signature) {
-        // Some sanity checks to see if the developer (that's you!) really followed the
-        // instructions to run this sample (don't put these checks on your app!)
-        if (BASE_64_ENCODED_PUBLIC_KEY.contains("CONSTRUCT_YOUR")) {
-            throw new RuntimeException("Please update your app's public key at: "
-                    + "BASE_64_ENCODED_PUBLIC_KEY");
-        }
-
         try {
             return Security.verifyPurchase(BASE_64_ENCODED_PUBLIC_KEY, signedData, signature);
         } catch (IOException e) {
