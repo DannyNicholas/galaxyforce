@@ -14,7 +14,6 @@ import com.danosoftware.galaxyforce.models.screens.GameCompleteModelImpl;
 import com.danosoftware.galaxyforce.models.screens.MainMenuModelImpl;
 import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.SplashModelImpl;
-import com.danosoftware.galaxyforce.models.screens.UnlockAllZonesModelImpl;
 import com.danosoftware.galaxyforce.models.screens.UnlockFullVersionModelImpl;
 import com.danosoftware.galaxyforce.models.screens.game.GameOverModelImpl;
 import com.danosoftware.galaxyforce.models.screens.game.GamePausedModelImpl;
@@ -145,7 +144,7 @@ public class ScreenFactory {
 
             case SELECT_LEVEL:
                 return new SelectLevelScreen(
-                        new SelectLevelModelImpl(game, controller, billingService, savedGame),
+                        new SelectLevelModelImpl(game, controller, billingService2, savedGame),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -156,16 +155,6 @@ public class ScreenFactory {
             case UPGRADE_FULL_VERSION:
                 return new Screen(
                         new UnlockFullVersionModelImpl(game, controller, billingService2),
-                        controller,
-                        TextureMap.MENU,
-                        glGraphics,
-                        fileIO,
-                        camera,
-                        batcher);
-
-            case UPGRADE_ALL_ZONES:
-                return new Screen(
-                        new UnlockAllZonesModelImpl(game, controller, billingService),
                         controller,
                         TextureMap.MENU,
                         glGraphics,

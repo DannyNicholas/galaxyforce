@@ -2,8 +2,9 @@ package com.danosoftware.galaxyforce.models.screens.level;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.billing.service.BillingObserver;
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingObserver;
+import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
+import com.danosoftware.galaxyforce.billing.service.new_service.PurchaseState;
 import com.danosoftware.galaxyforce.buttons.sprite_button.NextZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.PreviousZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.SpriteButton;
@@ -15,14 +16,11 @@ import com.danosoftware.galaxyforce.controllers.models.swipe.SelectLevelSwipe;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
 import com.danosoftware.galaxyforce.games.Game;
-import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
-import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.ModelState;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
-import com.danosoftware.galaxyforce.sprites.mainmenu.SwipeMenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
 
@@ -31,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, ButtonModel, BillingObserver {
+public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, BillingObserver {
 
     /* logger tag */
     private static final String LOCAL_TAG = "SelectLevelModelImpl";
@@ -53,8 +51,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     // current zone
     private int zone;
 
-    // max level unlocked
-    private final int maxLevelUnlocked;
+    // max wave unlocked
+    private final int maxWaveUnlocked;
 
     // on-screen components
     private final List<Star> stars;
@@ -69,7 +67,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     private final Controller controller;
 
     // reference to the billing service
-    private final IBillingService billingService;
+    private final BillingService billingService;
 
     /*
      * Should we rebuild the screen sprites?
@@ -80,7 +78,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
     public SelectLevelModelImpl(
             Game game,
             Controller controller,
-            IBillingService billingService,
+            BillingService billingService,
             SavedGame savedGame) {
         this.game = game;
         this.controller = controller;
@@ -93,11 +91,11 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         this.staticTextButtons = new ArrayList<>();
 
         /*
-         * calculate zone from highest level reached - must use double to avoid
+         * calculate zone from highest wave reached - must use double to avoid
          * integer division problems.
          */
-        this.maxLevelUnlocked = savedGame.getGameLevel();
-        this.zone = (int) Math.ceil((double) maxLevelUnlocked / GameConstants.WAVES_PER_ZONE);
+        this.maxWaveUnlocked = savedGame.getGameLevel();
+        this.zone = (int) Math.ceil((double) maxWaveUnlocked / GameConstants.WAVES_PER_ZONE);
 
         /* set-up initial random position of stars */
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
@@ -109,7 +107,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         }
 
         // register this model with the billing service
-        billingService.registerProductObserver(this);
+        billingService.registerPurchasesObserver(this);
 
         // refresh sprites and controllers
         refreshAssets();
@@ -134,98 +132,112 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         staticTextButtons.clear();
         messages.clear();
 
+        /*
+         * Calculate the maximum wave to show unlocked.
+         *
+         * If the full game is purchased or not purchased, show the highest wave reached.
+         * The billing logic will force the user to upgrade if they attempt to play
+         * beyond a free wave and have not purchased.
+         *
+         * However, if the billing state is not ready, only show the highest wave reached
+         * up to (but not beyond) the max free waves. Without knowing the purchase state
+         * we are unable to handle any attempts to play beyond the free waves.
+         *
+         * This state will be fixed following any purchase updates that force the screen to
+         * refresh.
+         */
+        final int maxWaveToShowUnlocked;
+        if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_READY) {
+            maxWaveToShowUnlocked = Math.min(maxWaveUnlocked, GameConstants.MAX_FREE_WAVE);
+        } else {
+            maxWaveToShowUnlocked = maxWaveUnlocked;
+        }
+
         // create a page for each zone
         for (int zone = 0; zone < GameConstants.MAX_ZONES; zone++) {
-            createZonePage(zone + 1);
+            createZonePage(
+                    zone + 1,
+                    maxWaveToShowUnlocked);
         }
 
         this.xPosition = zoneXPosition.get(zone);
         this.xTarget = zoneXPosition.get(zone);
         this.xOffset = 0;
-
-        /*
-         * if the all levels unlocks have NOT been purchased then add the unlock
-         * button
-         */
-        if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
-                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
-            // add unlock button
-            addUnlockLevelsButton();
-        }
     }
 
     /**
      * Create a page model for a zone.
      */
-    private void createZonePage(int zone) {
+    private void createZonePage(int zone, int maxWaveToShowUnlocked) {
 
         // get page x position for current zone
         int xPosition = zoneXPosition.get(zone);
 
-        // first level number to appear on the page
-        int levelStart = ((zone - 1) * GameConstants.WAVES_PER_ZONE) + 1;
-
-        int column;
-        int row;
-
-        /*
-         * if the all levels unlocks have been purchased then make all levels
-         * available.
-         */
-        final int availableLevel;
-        if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
-                && billingService.isPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
-            availableLevel = GameConstants.MAX_WAVES;
-        } else {
-            availableLevel = maxLevelUnlocked;
-        }
+        // first wave number to appear on the zone page
+        int waveStart = ((zone - 1) * GameConstants.WAVES_PER_ZONE) + 1;
 
         for (int i = 0; i < GameConstants.WAVES_PER_ZONE; i++) {
             // calculate row and column of next button
-            column = i % 3;
-            row = 3 - (i / 3);
+            int column = i % 3;
+            int row = 3 - (i / 3);
 
-            // is level button unlocked?
             SelectLevel.LockStatus lockedStatus;
-            if ((i + levelStart) <= availableLevel) {
+            if ((i + waveStart) <= maxWaveToShowUnlocked) {
                 lockedStatus = SelectLevel.LockStatus.UNLOCKED;
             } else {
                 lockedStatus = SelectLevel.LockStatus.LOCKED;
             }
 
-            // create a new select level button for current row and column
-            SelectLevel selectLevel = new SelectLevel(this, xPosition + 100 + (column * 170), 100 + (row * 170),
-                    i + levelStart, lockedStatus);
-            controller.addTouchController(new DetectButtonTouch(selectLevel));
+            // create a new select wave button for current row and column
+            SelectLevel selectWave = new SelectLevel(
+                    this,
+                    xPosition + 100 + (column * 170),
+                    100 + (row * 170),
+                    i + waveStart,
+                    lockedStatus);
+            controller.addTouchController(new DetectButtonTouch(selectWave));
 
-            // add new level's button to list
-            textButtons.add(selectLevel);
+            // add new wave's button to list
+            textButtons.add(selectWave);
         }
 
         // add previous zone to list of sprites
         if (zone > 1) {
-            column = 0;
-            row = 4;
-            SpriteButton prevButton = new PreviousZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
-                    MenuSpriteIdentifier.PREVIOUS_LEVEL, MenuSpriteIdentifier.PREVIOUS_LEVEL_PRESSED);
+            int column = 0;
+            int row = 4;
+            SpriteButton prevButton = new PreviousZone(
+                    this,
+                    xPosition + 100 + (column * 170),
+                    100 + (row * 170),
+                    zone,
+                    MenuSpriteIdentifier.PREVIOUS_LEVEL,
+                    MenuSpriteIdentifier.PREVIOUS_LEVEL_PRESSED);
             controller.addTouchController(new DetectButtonTouch(prevButton));
             buttons.add(prevButton);
         }
 
         // add next zone to list of sprites
         if (zone < GameConstants.MAX_ZONES) {
-            column = 2;
-            row = 4;
-            SpriteButton nextButton = new NextZone(this, xPosition + 100 + (column * 170), 100 + (row * 170), zone,
-                    MenuSpriteIdentifier.NEXT_LEVEL, MenuSpriteIdentifier.NEXT_LEVEL_PRESSED);
+            int column = 2;
+            int row = 4;
+            SpriteButton nextButton = new NextZone(
+                    this,
+                    xPosition + 100 + (column * 170),
+                    100 + (row * 170),
+                    zone,
+                    MenuSpriteIdentifier.NEXT_LEVEL,
+                    MenuSpriteIdentifier.NEXT_LEVEL_PRESSED);
             controller.addTouchController(new DetectButtonTouch(nextButton));
             buttons.add(nextButton);
         }
 
         // add zone text
-        column = 1;
-        row = 4;
-        messages.add(Text.newTextAbsolutePosition("ZONE " + zone, xPosition + 100 + (column * 170), 100 + (row * 170)));
+        int column = 1;
+        int row = 4;
+        messages.add(Text.newTextAbsolutePosition(
+                "ZONE " + zone,
+                xPosition + 100 + (column * 170),
+                100 + (row * 170)));
     }
 
     @Override
@@ -279,7 +291,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
             game.changeToScreen(ScreenType.MAIN_MENU);
         }
 
-        // calculate screen level scroll speed based on distance from target.
+        // calculate screen scroll speed based on distance from target.
         float speed = (xTarget - xPosition) * 10;
         xPosition = xPosition + (speed * deltaTime);
 
@@ -300,17 +312,17 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
 
     @Override
     public void dispose() {
-        // unregister as observer of billing state changes
-        billingService.unregisterProductObserver(this);
+        billingService.unregisterPurchasesObserver(this);
     }
 
     @Override
     public void setLevel(int level) {
-        if (level > GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
-            Log.i(LOCAL_TAG, "Exceeded maximum free zone. Must upgrade.");
+        if (level > GameConstants.MAX_FREE_WAVE
+                && billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED) {
+            Log.i(LOCAL_TAG, "Exceeded maximum free wave. Must upgrade.");
             game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
         } else {
-            Log.i(LOCAL_TAG, "Selected Level: " + level);
+            Log.i(LOCAL_TAG, "Selected wave: " + level);
             game.changeToGameScreen(level);
         }
     }
@@ -382,54 +394,19 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Butto
         // no implementation
     }
 
-    @Override
-    public void processButton(ButtonType buttonType) {
-        switch (buttonType) {
-            case UNLOCK_ALL_LEVELS:
-                Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unlock All Levels.");
-                game.changeToReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
-                break;
-            default:
-                Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Unsupported button type:'" + buttonType.name() + "'.");
-                break;
-        }
-    }
-
     /**
-     * add unlock button
+     * model must rebuild sprites based on state of the billing service's
+     * products on next update.
+     * <p>
+     * this method will be called by a billing thread after a purchase update.
+     * This is triggered by a purchase or when the application starts
+     * or resumes from the background.
+     *
+     * @param state - latest state of full game purchase product
      */
-    private void addUnlockLevelsButton() {
-        int rowY = 100 + (int) (4.7f * 170);
-
-        SwipeMenuButton button = new SwipeMenuButton(
-                this,
-                this,
-                GameConstants.GAME_WIDTH / 2,
-                rowY,
-                "UNLOCK ALL",
-                ButtonType.UNLOCK_ALL_LEVELS,
-                MenuSpriteIdentifier.MAIN_MENU,
-                MenuSpriteIdentifier.MAIN_MENU_PRESSED);
-
-        controller.addTouchController(new DetectButtonTouch(button));
-
-        /*
-         * add new button to list.
-         * this button will not be shifted as user swipes.
-         */
-        staticTextButtons.add(button);
-    }
-
     @Override
-    public void billingProductsStateChange() {
-        /*
-         * model must check the billing service's products on next update.
-         *
-         * don't take any other action at this stage. this method will be called
-         * by a billing thread. to keep implementation simple just take the
-         * necessary action in the next update in the main thread.
-         */
-        Log.d(GameConstants.LOG_TAG, LOCAL_TAG + ": Received billing products state change message.");
+    public void onFullGamePurchaseStateChange(PurchaseState state) {
+        Log.d(GameConstants.LOG_TAG, "Received full game purchase update: " + state.name());
         this.reBuildAssets = true;
     }
 }

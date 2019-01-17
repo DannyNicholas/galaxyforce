@@ -9,17 +9,16 @@ public class GameConstants {
     public final static int WAVES_PER_ZONE = 12;
     public final static int MAX_WAVES = MAX_ZONES * WAVES_PER_ZONE;
 
+    /*
+     * maximum free wave. users must upgrade to play beyond this wave.
+     */
+    public final static int MAX_FREE_WAVE = 5;
+
     /* maximum number of lives possible */
     public final static int MAX_LIVES = 5;
 
     // should we show the FPS counter
     public static final boolean SHOW_FPS = true;
-
-    /*
-     * maximum free zone. users must upgrade to play beyond this zone.
-     */
-    // public final static int MAX_FREE_ZONE = 12;
-    public final static int MAX_FREE_ZONE = 100;
 
     public final static Integer BASE_MAX_ENERGY_LEVEL = 8;
 

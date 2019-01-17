@@ -106,11 +106,19 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         else if (billingService.getFullGamePurchaseState() == PurchaseState.PURCHASED) {
             prepareUpgradeFullVersionSuccess();
         }
+        /*
+         * Purchases not ready.
+         * This state should rarely/never occur. if so, should hopefully only be a
+         * temporary state until purchases are returned asynchronously.
+         */
+        else if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_READY) {
+            prepareUnknownPurchaseState();
+        }
     }
 
     private void prepareUpgradeFullVersion(boolean showButtons) {
 
-        int maxFreeZones = GameConstants.MAX_FREE_ZONE;
+        int maxFreeZones = GameConstants.MAX_FREE_WAVE;
 
         messages.add(
                 Text.newTextRelativePositionX(
@@ -153,6 +161,45 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         }
     }
 
+    private void prepareUnknownPurchaseState() {
+
+        int maxFreeZones = GameConstants.MAX_FREE_WAVE;
+
+        messages.add(
+                Text.newTextRelativePositionX(
+                        "TO PLAY BEYOND",
+                        TextPositionX.CENTRE,
+                        600 + 50));
+        messages.add(
+                Text.newTextRelativePositionX(
+                        maxFreeZones + " FREE ZONES",
+                        TextPositionX.CENTRE,
+                        600));
+        messages.add(
+                Text.newTextRelativePositionX(
+                        "UPGRADE TO",
+                        TextPositionX.CENTRE,
+                        450 + 50));
+        messages.add(
+                Text.newTextRelativePositionX(
+                        "FULL VERSION",
+                        TextPositionX.CENTRE,
+                        450));
+
+        messages.add(
+                Text.newTextRelativePositionX(
+                        "SORRY! UPGRADE",
+                        TextPositionX.CENTRE,
+                        300 + 50));
+        messages.add(
+                Text.newTextRelativePositionX(
+                        "NOT AVAILABLE",
+                        TextPositionX.CENTRE,
+                        300));
+
+        addNewMenuButton(0, "BACK", ButtonType.EXIT);
+    }
+
     private void prepareUpgradeFullVersionSuccess() {
 
         messages.add(
@@ -170,6 +217,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                         "UNLOCKED",
                         TextPositionX.CENTRE,
                         450));
+
+        addNewMenuButton(0, "BACK", ButtonType.EXIT);
     }
 
     /**
@@ -265,7 +314,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     public void processButton(ButtonType buttonType) {
         switch (buttonType) {
             case UPGRADE:
-                Log.d(GameConstants.LOG_TAG, LOCAL_TAG + ": Start Upgrade Purchase.");
+                Log.d(GameConstants.LOG_TAG, "Start Upgrade Purchase.");
 
                 /*
                  * remove purchase button to avoid user trying to click it again
@@ -276,6 +325,11 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                 // purchase product
                 billingService.purchaseFullGame(skuDetails);
 
+                break;
+
+            case EXIT:
+                Log.d(GameConstants.LOG_TAG, "Exit Upgrade Purchase.");
+                goBack();
                 break;
             default:
                 Log.e(LOCAL_TAG, "Unsupported button: '" + buttonType + "'.");

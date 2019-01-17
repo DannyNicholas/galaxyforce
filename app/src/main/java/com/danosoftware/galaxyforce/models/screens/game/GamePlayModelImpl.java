@@ -387,7 +387,7 @@ public class GamePlayModelImpl implements Model, GameModel {
         if (alienManager.isWaveComplete()) {
 
             // check user is allowed to play next wave
-            if (wave >= GameConstants.MAX_FREE_ZONE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
+            if (wave >= GameConstants.MAX_FREE_WAVE && billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
                 Log.i(TAG, "Exceeded maximum free zone. Must upgrade.");
                 game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
 

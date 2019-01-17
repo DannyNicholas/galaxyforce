@@ -94,15 +94,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
             addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
         }
-        /*
-         * if full version has been purchased but the all-levels unlock has NOT
-         * been purchased then add the unlock button
-         */
-        else if (billingService.isPurchased(GameConstants.FULL_GAME_PRODUCT_ID)
-                && billingService.isNotPurchased(GameConstants.ALL_LEVELS_PRODUCT_ID)) {
-            addNewMenuButton(0, "UNLOCK ALL", ButtonType.UNLOCK_ALL_LEVELS);
-        }
-
     }
 
     /**
@@ -194,10 +185,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
             case UPGRADE:
                 Log.i(LOCAL_TAG, "Upgrade.");
                 game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
-                break;
-            case UNLOCK_ALL_LEVELS:
-                Log.i(LOCAL_TAG, "Unlock All Levels.");
-                game.changeToReturningScreen(ScreenType.UPGRADE_ALL_ZONES);
                 break;
             default:
                 // not valid option - do nothing
