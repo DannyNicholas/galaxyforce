@@ -2,9 +2,9 @@ package com.danosoftware.galaxyforce.models.screens.level;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingObserver;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
-import com.danosoftware.galaxyforce.billing.service.new_service.PurchaseState;
+import com.danosoftware.galaxyforce.billing.BillingObserver;
+import com.danosoftware.galaxyforce.billing.BillingService;
+import com.danosoftware.galaxyforce.billing.PurchaseState;
 import com.danosoftware.galaxyforce.buttons.sprite_button.NextZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.PreviousZone;
 import com.danosoftware.galaxyforce.buttons.sprite_button.SpriteButton;
@@ -143,7 +143,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
          * up to (but not beyond) the max free waves. Without knowing the purchase state
          * we are unable to handle any attempts to play beyond the free waves.
          *
-         * This state will be fixed following any purchase updates that force the screen to
+         * This state will be modified following any purchase updates that force the screen to
          * refresh.
          */
         final int maxWaveToShowUnlocked;

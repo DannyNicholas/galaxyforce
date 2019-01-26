@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.billing.service.new_service;
+package com.danosoftware.galaxyforce.billing;
 
 import com.danosoftware.galaxyforce.BuildConfig;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.danosoftware.galaxyforce.billing.service.new_service;
+package com.danosoftware.galaxyforce.billing;
 
 import android.app.Activity;
 import android.util.Log;
@@ -37,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.danosoftware.galaxyforce.billing.service.new_service.KeyUtilities.getPublicKey;
+import static com.danosoftware.galaxyforce.billing.KeyUtilities.getPublicKey;
 
 /**
  * Handles all the interactions with Play Store (via Billing library), maintains connection to

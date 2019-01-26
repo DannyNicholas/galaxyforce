@@ -3,10 +3,10 @@ package com.danosoftware.galaxyforce.models.screens;
 import android.util.Log;
 
 import com.android.billingclient.api.SkuDetails;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingObserver;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
-import com.danosoftware.galaxyforce.billing.service.new_service.PurchaseState;
-import com.danosoftware.galaxyforce.billing.service.new_service.SkuDetailsListener;
+import com.danosoftware.galaxyforce.billing.BillingObserver;
+import com.danosoftware.galaxyforce.billing.BillingService;
+import com.danosoftware.galaxyforce.billing.PurchaseState;
+import com.danosoftware.galaxyforce.billing.SkuDetailsListener;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -14,6 +14,8 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
+import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
@@ -23,6 +25,8 @@ import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class UnlockFullVersionModelImpl implements Model, BillingObserver, ButtonModel, SkuDetailsListener {
@@ -36,6 +40,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
     // messages to display on the screen
     private final List<Text> messages;
+    private FlashingText flashingText;
 
     private ModelState modelState;
     private final Controller controller;
@@ -64,16 +69,13 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         this.modelState = ModelState.RUNNING;
         this.buttons = new ArrayList<>();
         this.messages = new ArrayList<>();
+        this.flashingText = null;
         this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
         this.logo = new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE);
         this.reBuildSprites = false;
 
         // register this model with the billing service
         billingService.registerPurchasesObserver(this);
-
-        // query upgrade price by requesting the full-game purchase SKU details asyncronously.
-        // onSkuDetailsRetrieved() will be invoked when SKU details are available.
-        billingService.queryFullGameSkuDetailsAsync(this);
 
         // update the screen with text and add any buttons
         reBuildSprites(true);
@@ -91,6 +93,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
         messages.clear();
         buttons.clear();
+        flashingText = null;
 
         /*
          * if the full version has NOT been purchased then add the upgrade
@@ -158,6 +161,13 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                 // add upgrade button
                 addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
             }
+        } else {
+            this.flashingText = new FlashingTextImpl(
+                    Collections.singletonList(Text.newTextRelativePositionX(
+                            "PLEASE WAIT...",
+                            TextPositionX.CENTRE,
+                            200)),
+                    0.5f);
         }
     }
 
@@ -186,16 +196,17 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                         TextPositionX.CENTRE,
                         450));
 
-        messages.add(
-                Text.newTextRelativePositionX(
-                        "SORRY! UPGRADE",
-                        TextPositionX.CENTRE,
-                        300 + 50));
-        messages.add(
-                Text.newTextRelativePositionX(
-                        "NOT AVAILABLE",
-                        TextPositionX.CENTRE,
-                        300));
+        this.flashingText = new FlashingTextImpl(
+                Arrays.asList(
+                        Text.newTextRelativePositionX(
+                                "SORRY! UPGRADE",
+                                TextPositionX.CENTRE,
+                                300 + 50),
+                        Text.newTextRelativePositionX(
+                                "NOT AVAILABLE",
+                                TextPositionX.CENTRE,
+                                300)),
+                0.5f);
 
         addNewMenuButton(0, "BACK", ButtonType.EXIT);
     }
@@ -265,12 +276,19 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
             text.add(button.getText());
         }
         text.addAll(messages);
+        if (flashingText != null) {
+            text.addAll(flashingText.text());
+        }
 
         return text;
     }
 
     @Override
     public void update(float deltaTime) {
+
+        if (flashingText != null) {
+            flashingText.update(deltaTime);
+        }
 
         // return to previous screen
         if (modelState == ModelState.GO_BACK) {
@@ -302,7 +320,9 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
     @Override
     public void resume() {
-        // no action for this model
+        // query upgrade price by requesting the full-game purchase SKU details asyncronously.
+        // onSkuDetailsRetrieved() will be invoked when SKU details are available.
+        billingService.queryFullGameSkuDetailsAsync(this);
     }
 
     @Override

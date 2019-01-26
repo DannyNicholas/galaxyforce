@@ -2,8 +2,9 @@ package com.danosoftware.galaxyforce.models.screens;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.billing.service.BillingObserver;
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
+import com.danosoftware.galaxyforce.billing.BillingObserver;
+import com.danosoftware.galaxyforce.billing.BillingService;
+import com.danosoftware.galaxyforce.billing.PurchaseState;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -37,7 +38,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     private final List<SpriteTextButton> buttons;
 
     private final Controller controller;
-    private final IBillingService billingService;
+    private final BillingService billingService;
 
     /*
      * Should we rebuild the buttons?
@@ -45,7 +46,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
      */
     private volatile boolean rebuildButtons;
 
-    public MainMenuModelImpl(Game game, Controller controller, IBillingService billingService) {
+    public MainMenuModelImpl(Game game, Controller controller, BillingService billingService) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
@@ -54,7 +55,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         this.logo = new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE);
 
         // register this model with the billing service
-        billingService.registerProductObserver(this);
+        billingService.registerPurchasesObserver(this);
 
         // build on-screen buttons
         buildButtons();
@@ -91,7 +92,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
          * if the full version has NOT been purchased then add the upgrade
          * button
          */
-        if (billingService.isNotPurchased(GameConstants.FULL_GAME_PRODUCT_ID)) {
+        if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED) {
             addNewMenuButton(0, "UPGRADE", ButtonType.UPGRADE);
         }
     }
@@ -157,8 +158,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
 
     @Override
     public void dispose() {
-        // unregister as observer of billing state changes
-        billingService.unregisterProductObserver(this);
+        billingService.unregisterPurchasesObserver(this);
     }
 
     private void moveStars(float deltaTime) {
@@ -194,7 +194,8 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
 
     @Override
     public void goBack() {
-        // No action. Main menu does not change back button behaviour.
+        // No action. Main menu does not change back button behaviour
+        // and allows application exit.
     }
 
     @Override
@@ -207,16 +208,19 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
         // no implementation
     }
 
+    /**
+     * model must rebuild sprites based on state of the billing service's
+     * products on next update.
+     * <p>
+     * this method will be called by a billing thread after a purchase update.
+     * This is triggered by a purchase or when the application starts
+     * or resumes from the background.
+     *
+     * @param state - latest state of full game purchase product
+     */
     @Override
-    public void billingProductsStateChange() {
-
-        /*
-         * model must check the billing service's products on next update and
-         * build the appropriate billing buttons.
-         *
-         * this method will be called by a billing thread.
-         */
-        Log.d(GameConstants.LOG_TAG, LOCAL_TAG + ": Received billing products state change message.");
+    public void onFullGamePurchaseStateChange(PurchaseState state) {
+        Log.d(GameConstants.LOG_TAG, "Received full game purchase update: " + state.name());
         this.rebuildButtons = true;
     }
 }

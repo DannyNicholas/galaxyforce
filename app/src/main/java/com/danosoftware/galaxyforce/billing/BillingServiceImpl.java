@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.billing.service.new_service;
+package com.danosoftware.galaxyforce.billing;
 
 import android.util.Log;
 
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.danosoftware.galaxyforce.billing.service.new_service.BillingManager.BILLING_MANAGER_NOT_INITIALIZED;
+import static com.danosoftware.galaxyforce.billing.BillingManager.BILLING_MANAGER_NOT_INITIALIZED;
 
 public class BillingServiceImpl implements BillingService, BillingManager.BillingUpdatesListener {
 

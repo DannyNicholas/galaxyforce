@@ -2,8 +2,7 @@ package com.danosoftware.galaxyforce.screen.factories;
 
 import android.content.res.AssetManager;
 
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
+import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.common.ControllerImpl;
@@ -51,8 +50,7 @@ public class ScreenFactory {
     private final Camera2D camera;
     private final GLGraphics glGraphics;
     private final FileIO fileIO;
-    private final IBillingService billingService;
-    private final BillingService billingService2;
+    private final BillingService billingService;
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
     private final VibrationService vibrator;
@@ -66,8 +64,7 @@ public class ScreenFactory {
     public ScreenFactory(
             GLGraphics glGraphics,
             FileIO fileIO,
-            IBillingService billingService,
-            BillingService billingService2,
+            BillingService billingService,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
             VibrationService vibrator,
@@ -80,7 +77,6 @@ public class ScreenFactory {
         this.glGraphics = glGraphics;
         this.fileIO = fileIO;
         this.billingService = billingService;
-        this.billingService2 = billingService2;
         this.configurationService = configurationService;
         this.sounds = sounds;
         this.vibrator = vibrator;
@@ -144,7 +140,7 @@ public class ScreenFactory {
 
             case SELECT_LEVEL:
                 return new SelectLevelScreen(
-                        new SelectLevelModelImpl(game, controller, billingService2, savedGame),
+                        new SelectLevelModelImpl(game, controller, billingService, savedGame),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -154,7 +150,7 @@ public class ScreenFactory {
 
             case UPGRADE_FULL_VERSION:
                 return new Screen(
-                        new UnlockFullVersionModelImpl(game, controller, billingService2),
+                        new UnlockFullVersionModelImpl(game, controller, billingService),
                         controller,
                         TextureMap.MENU,
                         glGraphics,

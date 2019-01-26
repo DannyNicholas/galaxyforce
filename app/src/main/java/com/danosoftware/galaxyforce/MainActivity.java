@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
@@ -12,9 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.billingclient.api.BillingClient;
-import com.danosoftware.galaxyforce.billing.service.BillingServiceImpl;
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingManager;
+import com.danosoftware.galaxyforce.billing.BillingManager;
+import com.danosoftware.galaxyforce.billing.BillingService;
+import com.danosoftware.galaxyforce.billing.BillingServiceImpl;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
@@ -47,9 +46,7 @@ public class MainActivity extends Activity {
     /* GL Surface View reference */
     private GLSurfaceView glView;
 
-    /* Billing Service for In-App Billing Requests */
-    private IBillingService billingService;
-
+    /* Billing Manager for In-App Billing Requests */
     private BillingManager mBillingManager;
 
     /* runs when application initially starts */
@@ -73,18 +70,13 @@ public class MainActivity extends Activity {
         setContentView(glView);
         this.glGraphics = new GLGraphics(glView);
 
-        this.billingService = new BillingServiceImpl(this);
-
-        // Create and initialize BillingManager which talks to BillingLibrary
-        com.danosoftware.galaxyforce.billing.service.new_service.BillingService billingService2 = new com.danosoftware.galaxyforce.billing.service.new_service.BillingServiceImpl();
-
-
-//        BillingManager.BillingUpdatesListener mViewController = new BillingHandler(this);
-        BillingManager.BillingUpdatesListener billingListener = (BillingManager.BillingUpdatesListener) billingService2;
+        // Create and initialize billing
+        BillingService billingService = new BillingServiceImpl();
+        BillingManager.BillingUpdatesListener billingListener = (BillingManager.BillingUpdatesListener) billingService;
         this.mBillingManager = new BillingManager(this, billingListener);
 
         // create instance of game
-        game = new GameImpl(this, glGraphics, glView, billingService, billingService2);
+        game = new GameImpl(this, glGraphics, glView, billingService);
     }
 
     /* runs after onCreate or resuming after being in background */
@@ -94,16 +86,6 @@ public class MainActivity extends Activity {
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Resume Application");
         super.onResume();
         glView.onResume();
-
-        /*
-         * refresh billing service product states. will initialise product
-         * states on start-up and refresh states on application resume. onresume
-         * also called after product purchases and so will refresh any product
-         * state changes.
-         */
-        if (billingService != null) {
-            billingService.refreshProductStates();
-        }
 
         // Note: We query purchases in onResume() to handle purchases completed while the activity
         // is inactive. For example, this can happen if the activity is destroyed during the
@@ -124,7 +106,6 @@ public class MainActivity extends Activity {
             if (isFinishing()) {
                 Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Finish Application");
                 state = ActivityState.FINISHED;
-
             } else {
                 state = ActivityState.PAUSED;
             }
@@ -148,32 +129,9 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        // destroy billing service on activity destroy to avoid degrading device
-        billingService.destroy();
-
         Log.i(ACTIVITY_TAG, "Destroying Billing Manager.");
         if (mBillingManager != null) {
             mBillingManager.destroy();
-        }
-    }
-
-    /**
-     * Handles the results of any results sent back to the activity.
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(GameConstants.LOG_TAG, ACTIVITY_TAG + ": onActivityResult(" + requestCode + "," + resultCode + "," + data + ").");
-
-        // Pass on the activity result to the billing service for handling
-        boolean processed = false;
-        if (billingService != null && requestCode == GameConstants.BILLING_REQUEST) {
-            processed = billingService.processActivityResult(requestCode, resultCode, data);
-        }
-
-        // uses superclass methods if not handled
-        if (!processed) {
-            Log.d(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Pass activity result to superclass.");
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

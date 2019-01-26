@@ -6,8 +6,7 @@ import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.billing.service.IBillingService;
-import com.danosoftware.galaxyforce.billing.service.new_service.BillingService;
+import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
@@ -64,8 +63,7 @@ public class GameImpl implements Game {
             Context context,
             GLGraphics glGraphics,
             GLSurfaceView glView,
-            IBillingService billingService,
-            BillingService billingService2) {
+            BillingService billingService) {
 
         this.returningScreens = new ArrayDeque<>();
 
@@ -87,18 +85,10 @@ public class GameImpl implements Game {
         IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
         SavedGame savedGame = new SavedGameImpl(savedGamePreferences);
 
-        // Create and initialize BillingManager which talks to BillingLibrary
-//        this.billingManager = billingManager;
-
-//        BillingManager.BillingUpdatesListener mViewController = new BillingHandler(this);
-//        mBillingManager = new BillingManager(context, mViewController);
-
-
         this.screenFactory = new ScreenFactory(
                 glGraphics,
                 fileIO,
                 billingService,
-                billingService2,
                 configurationService,
                 sounds,
                 vibrator,
