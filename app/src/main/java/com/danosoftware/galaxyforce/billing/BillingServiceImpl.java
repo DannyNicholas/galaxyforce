@@ -79,6 +79,7 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
          */
         synchronized (this) {
             for (BillingObserver observer : observers) {
+                Log.i(TAG, "Sending Purchase State Change to " + observer);
                 observer.onFullGamePurchaseStateChange(fullGamePurchaseState);
             }
         }
