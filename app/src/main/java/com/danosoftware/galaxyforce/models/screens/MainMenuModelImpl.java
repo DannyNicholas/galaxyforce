@@ -26,7 +26,7 @@ import java.util.List;
 public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
 
     /* logger tag */
-    private static final String LOCAL_TAG = "MainModelModelImpl";
+    private static final String LOCAL_TAG = "MainMenuModelImpl";
 
     private final Game game;
 

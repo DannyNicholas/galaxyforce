@@ -167,7 +167,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                             "PLEASE WAIT...",
                             TextPositionX.CENTRE,
                             200)),
-                    0.5f);
+                    0.5f,
+                    false);
         }
     }
 
@@ -206,7 +207,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
                                 "NOT AVAILABLE",
                                 TextPositionX.CENTRE,
                                 300)),
-                0.5f);
+                0.5f,
+                false);
 
         addNewMenuButton(0, "BACK", ButtonType.EXIT);
     }

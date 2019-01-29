@@ -117,10 +117,11 @@ public class SelectLevelScreen extends AbstractScreen {
     }
 
     @Override
-    public void dispose() {
-        super.dispose();
+    public void pause() {
+        super.pause();
 
         // reset camera position
+        // other screens rely on default camera position
         camera.resetPosition();
     }
 }

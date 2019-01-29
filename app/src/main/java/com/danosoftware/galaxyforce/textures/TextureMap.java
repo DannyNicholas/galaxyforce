@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.textures;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.SplashSpriteIdentifier;
 
 public enum TextureMap {
 
@@ -15,7 +14,8 @@ public enum TextureMap {
 
     MENU("menus.png", "menus.xml", MenuSpriteIdentifier.values(), MenuSpriteIdentifier.FONT_MAP),
 
-    SPLASH("splash.png", "splash.xml", SplashSpriteIdentifier.values(), null);
+    //    SPLASH("splash.png", "splash.xml", SplashSpriteIdentifier.values(), null);
+    SPLASH("menus.png", "menus.xml", MenuSpriteIdentifier.values(), MenuSpriteIdentifier.FONT_MAP);
 
     // variables storing current texture and xml details
     private final String textureImage;

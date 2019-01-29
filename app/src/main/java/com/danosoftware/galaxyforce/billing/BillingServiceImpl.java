@@ -46,6 +46,10 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
      * The re-query process will be initiated on construction of the Billing
      * Manager and as part of resuming the application (to handle purchase changes
      * while the application was in the background).
+     *
+     * This game will never consume any purchases but if consumption is needed, use:
+     * billingManager.consumeAsync(purchase.getPurchaseToken());
+     * ... after successful purchase.
      */
     @Override
     public void onPurchasesUpdated(List<Purchase> purchases) {
@@ -56,10 +60,6 @@ public class BillingServiceImpl implements BillingService, BillingManager.Billin
                 case BillingConstants.SKU_FULL_GAME:
                     Log.i(TAG, "Full Game Purchased: '" + purchase.getSku() + "'");
                     fullGamePurchased = true;
-
-                    // FIXME - temporary consume for testing - remove from final app
-                    billingManager.consumeAsync(purchase.getPurchaseToken());
-
                     break;
                 default:
                     String errorMsg = "Unknown Purchased SKU: '" + purchase.getSku() + "'";

@@ -19,11 +19,16 @@ public class FlashingTextImpl implements FlashingText {
     // current flash state - show text or hide text
     private boolean showText;
 
+    // default constructor with initial flashing text shown
     public FlashingTextImpl(List<Text> flashingText, float flashDelay) {
+        this(flashingText, flashDelay, true);
+    }
+
+    public FlashingTextImpl(List<Text> flashingText, float flashDelay, boolean showText) {
         this.flashingText = flashingText;
         this.flashDelay = flashDelay;
         this.timeSinceflashStateChange = 0f;
-        this.showText = true;
+        this.showText = showText;
     }
 
     @Override
