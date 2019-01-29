@@ -23,13 +23,6 @@ public class GameConstants {
     public final static Integer BASE_MAX_ENERGY_LEVEL = 8;
 
 
-    // request code sent with billing requests
-    public final static int BILLING_REQUEST = 10001;
-
-    /* billing product IDs */
-    public static final String FULL_GAME_PRODUCT_ID = "galaxy_force_full_game_unlock";
-    public static final String ALL_LEVELS_PRODUCT_ID = "galaxy_force_all_levels_unlock";
-
     // font glyphs per row - i.e. characters in a row within texture map
     public final static int FONT_GLYPHS_PER_ROW = 8;
 
