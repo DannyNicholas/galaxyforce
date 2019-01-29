@@ -57,8 +57,6 @@ public class GameImpl implements Game {
 
     private final SoundPlayerService sounds;
 
-//    private final BillingManager billingManager;
-
     public GameImpl(
             Context context,
             GLGraphics glGraphics,
@@ -216,7 +214,8 @@ public class GameImpl implements Game {
      */
     private void switchScreenWithReturn(IScreen newScreen) {
 
-        // pause current screen
+        // pause current screen.
+        // we do not dispose screen and we expect to return to it later
         this.screen.pause();
 
         // push current screen onto the returning screens stack
