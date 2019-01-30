@@ -81,7 +81,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     private void addMandatoryButtons() {
         addNewMenuButton(3, "PLAY", ButtonType.PLAY);
         addNewMenuButton(2, "OPTIONS", ButtonType.OPTIONS);
-        addNewMenuButton(1, "ABOUT", ButtonType.ABOUT);
     }
 
     /**
@@ -170,10 +169,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     @Override
     public void processButton(ButtonType buttonType) {
         switch (buttonType) {
-            case ABOUT:
-                Log.i(LOCAL_TAG, "About.");
-                game.changeToScreen(ScreenType.ABOUT);
-                break;
             case OPTIONS:
                 Log.i(LOCAL_TAG, "Options.");
                 game.changeToReturningScreen(ScreenType.OPTIONS);

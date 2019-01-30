@@ -19,9 +19,9 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
     OPTION_UNSELECTED("GreyButton180px.png"), OPTION_SELECTED("GoldButton180pxPressed.png"),
 
-    FACEBOOK("FaceBookOriginalButton128px.png"), FACEBOOK_PRESSED("FaceBookOriginalButton128pxPressed.png"),
+//    FACEBOOK("FaceBookOriginalButton128px.png"), FACEBOOK_PRESSED("FaceBookOriginalButton128pxPressed.png"),
 
-    TWITTER("TwitterOriginalButton128px.png"), TWITTER_PRESSED("TwitterButtonOriginal128pxPressed.png"),
+//    TWITTER("TwitterOriginalButton128px.png"), TWITTER_PRESSED("TwitterButtonOriginal128pxPressed.png"),
 
     STAR("Star.png"), STAR_BLACK("StarBLACK.png"), STAR_RED("StarRED.png"), STAR_BLUE("StarBLUE.png"), STAR_SPARKLE("StarSPARKLE.png"),
 

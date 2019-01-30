@@ -8,7 +8,6 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.common.ControllerImpl;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.input.Input;
-import com.danosoftware.galaxyforce.models.screens.AboutModelImpl;
 import com.danosoftware.galaxyforce.models.screens.GameCompleteModelImpl;
 import com.danosoftware.galaxyforce.models.screens.MainMenuModelImpl;
 import com.danosoftware.galaxyforce.models.screens.Model;
@@ -121,16 +120,6 @@ public class ScreenFactory {
             case OPTIONS:
                 return new Screen(
                         new OptionsModelImpl(game, controller, configurationService, sounds, vibrator),
-                        controller,
-                        TextureMap.MENU,
-                        glGraphics,
-                        fileIO,
-                        camera,
-                        batcher);
-
-            case ABOUT:
-                return new Screen(
-                        new AboutModelImpl(game, controller, versionName),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
