@@ -11,7 +11,6 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.screens.ModelState;
 import com.danosoftware.galaxyforce.options.Option;
-import com.danosoftware.galaxyforce.options.OptionController;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
@@ -72,33 +71,6 @@ public class OptionsModelImpl implements OptionsModel {
 
         allSprites.addAll(stars);
         allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
-
-        allText.add(Text.newTextRelativePositionX("MOVEMENT", TextPositionX.CENTRE, 175 + (3 * 170)));
-
-        ToggleButtonGroup controllerToggleGroup = new ToggleOption(
-                this,
-                configurationService.getControllerType());
-        addOptionsButton(
-                controller,
-                3,
-                0,
-                OptionController.DRAG,
-                controllerToggleGroup,
-                0);
-        addOptionsButton(
-                controller,
-                3,
-                1,
-                OptionController.JOYSTICK,
-                controllerToggleGroup,
-                0);
-        addOptionsButton(
-                controller,
-                3,
-                2,
-                OptionController.ACCELEROMETER,
-                controllerToggleGroup,
-                0);
 
         allText.add(Text.newTextRelativePositionX(
                 "SOUND EFFECTS",
@@ -230,12 +202,6 @@ public class OptionsModelImpl implements OptionsModel {
 
     @Override
     public void optionSelected(Option optionSelected) {
-
-        if (optionSelected instanceof OptionController) {
-            OptionController controllerType = (OptionController) optionSelected;
-            Log.d(TAG, "Controller Option Selected: " + controllerType.getText());
-            configurationService.newControllerType(controllerType);
-        }
 
         if (optionSelected instanceof OptionSound) {
             OptionSound soundType = (OptionSound) optionSelected;

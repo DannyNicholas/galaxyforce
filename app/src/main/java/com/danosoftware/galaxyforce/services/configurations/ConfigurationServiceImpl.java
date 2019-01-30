@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.services.configurations;
 
-import com.danosoftware.galaxyforce.options.OptionController;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
@@ -13,13 +12,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 
     // keys for shared preference persistence
-    private final static String CONTROLLER_KEY = "controller.option";
     private final static String SOUND_KEY = "sound.option";
     private final static String MUSIC_KEY = "music.option";
     private final static String VIBRATION_KEY = "vibration.option";
 
     // default values if configuration option not already persisted
-    private final static String DEFAULT_CONTROLLER_OPTION = OptionController.DRAG.name();
     private final static String DEFAULT_SOUND_OPTION = OptionSound.ON.name();
     private final static String DEFAULT_MUSIC_OPTION = OptionMusic.ON.name();
     private final static String DEFAULT_VIBRATION_OPTION = OptionVibration.ON.name();
@@ -28,7 +25,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private final IPreferences<String> preferences;
 
     // chosen configurations
-    private OptionController controllerType;
     private OptionSound soundOption;
     private OptionMusic musicOption;
     private OptionVibration vibrationOption;
@@ -36,10 +32,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     // private constructor
     public ConfigurationServiceImpl(IPreferences<String> preferences) {
         this.preferences = preferences;
-
-        // retrieve chosen controller type
-        String controllerString = preferences.getPreference(CONTROLLER_KEY, DEFAULT_CONTROLLER_OPTION);
-        this.controllerType = OptionController.valueOf(controllerString);
 
         // retrieve chosen sound option
         String soundString = preferences.getPreference(SOUND_KEY, DEFAULT_SOUND_OPTION);
@@ -52,20 +44,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         // retrieve chosen vibration option
         String vibrationString = preferences.getPreference(VIBRATION_KEY, DEFAULT_VIBRATION_OPTION);
         this.vibrationOption = OptionVibration.valueOf(vibrationString);
-    }
-
-    /*
-     * CONTROLLER OPTION
-     */
-
-    @Override
-    public OptionController getControllerType() {
-        return controllerType;
-    }
-
-    @Override
-    public void newControllerType(OptionController controllerType) {
-        this.controllerType = controllerType;
     }
 
     /*
@@ -118,7 +96,6 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public void persistConfigurations() {
         Map<String, String> keyValueMap = new HashMap<>();
-        keyValueMap.put(CONTROLLER_KEY, controllerType.name());
         keyValueMap.put(SOUND_KEY, soundOption.name());
         keyValueMap.put(MUSIC_KEY, musicOption.name());
         keyValueMap.put(VIBRATION_KEY, vibrationOption.name());
