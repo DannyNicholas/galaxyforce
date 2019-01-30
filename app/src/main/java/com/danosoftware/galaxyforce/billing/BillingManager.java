@@ -186,6 +186,7 @@ public class BillingManager implements PurchasesUpdatedListener {
         executeServiceRequest(queryRequest);
     }
 
+    @SuppressWarnings("unused")
     public void consumeAsync(final String purchaseToken) {
         // If we've already scheduled to consume this token - no action is needed (this could happen
         // if you received the token when querying purchases inside onReceive() and later from

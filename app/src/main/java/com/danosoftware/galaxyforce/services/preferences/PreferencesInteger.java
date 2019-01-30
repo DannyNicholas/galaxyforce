@@ -34,6 +34,6 @@ public class PreferencesInteger implements IPreferences<Integer> {
             editor.putInt(key, keyValueMap.get(key));
         }
 
-        editor.commit();
+        editor.apply();
     }
 }

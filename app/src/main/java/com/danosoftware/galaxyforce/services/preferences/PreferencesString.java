@@ -41,6 +41,6 @@ public class PreferencesString implements IPreferences<String> {
             editor.putString(key, keyValueMap.get(key));
         }
 
-        editor.commit();
+        editor.apply();
     }
 }
