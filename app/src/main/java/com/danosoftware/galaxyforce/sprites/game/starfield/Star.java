@@ -16,11 +16,14 @@ public class Star extends AbstractMovingSprite {
     // speed of star
     private final float speed;
 
+    // star's initial Y position
+    private final int initialY;
+
+    // star's initial animation cycle timing offset
+    private final float initialAnimationStateTime;
+
     // star's animation loop
     private final Animation animation;
-
-    // state time used for how far we are through animation cycles
-    private float animationStateTime;
 
     Star(
             int x,
@@ -38,24 +41,29 @@ public class Star extends AbstractMovingSprite {
 
         this.height = height;
         this.animation = animation;
-        this.animationStateTime = animationStateTime;
+        this.initialAnimationStateTime = animationStateTime;
         this.speed = speed;
+        this.initialY = y;
     }
 
     @Override
     public void animate(float deltaTime) {
 
-        // calculate new star position based
-        int starY = y() - (int) (speed * deltaTime);
+        // normally deltaTime holds the time since the last update.
+        // for Stars, deltaTime represents total time since star was first created.
+        // calculate new star position based on initial position and total time.
+        int starY = initialY - (int) ((speed * deltaTime) % height);
 
         // if star has reached the bottom of screen then re-position on the other side.
         if (starY < 0) {
-            starY = height + (starY % height);
+            starY = height + starY;
         }
         this.move(x(), starY);
 
         // update animation frame
-        animationStateTime += deltaTime;
-        this.changeType(animation.getKeyFrame(animationStateTime, Animation.ANIMATION_LOOPING));
+        this.changeType(
+                animation.getKeyFrame(
+                        initialAnimationStateTime + deltaTime,
+                        Animation.ANIMATION_LOOPING));
     }
 }

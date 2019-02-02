@@ -45,14 +45,15 @@ public class StarField {
     }
 
     public void animate(float deltaTime) {
-        // move stars
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
 
-        // increase elapsed time
+        // increase total elapsed time since starfield created.
         // needed to allow template to create future stars in the same state
         starFieldTemplate.increaseTimeElapsed(deltaTime);
+
+        // move stars
+        for (Star eachStar : stars) {
+            eachStar.animate(starFieldTemplate.getTimeElapsed());
+        }
     }
 
     public List<Star> getSprites() {

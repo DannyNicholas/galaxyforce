@@ -82,7 +82,7 @@ public class StarFieldTemplate {
      * set random speed between STAR_MOVE_PIXELS_MIN and STAR_MOVE_PIXELS_MAX
      */
     private float getSpeedRandom() {
-        return ((int) (((STAR_MOVE_PIXELS_MAX + 1 - STAR_MOVE_PIXELS_MIN) * Math.random()) + STAR_MOVE_PIXELS_MIN));
+        return ((int) (((STAR_MOVE_PIXELS_MAX + 1 - STAR_MOVE_PIXELS_MIN) * Math.random()) + STAR_MOVE_PIXELS_MIN)) * 2;
     }
 
     /**
