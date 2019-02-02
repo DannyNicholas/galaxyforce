@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.starfield;
 
 /**
  * Represents the different possible star speeds.
- * Each enum holds the numeric pixelsPerSecond (pixels moved per millisecond).
+ * Each enum holds the numeric pixelsPerSecond (pixels moved per second).
  */
 public enum StarSpeed {
 
