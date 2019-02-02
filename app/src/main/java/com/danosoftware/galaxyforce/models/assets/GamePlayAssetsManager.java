@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     private List<IAlienMissile> aliensMissiles;
     private List<IBaseMissile> baseMissiles;
     private List<IPowerUp> powerUps;
-    private final List<Star> stars;
+    private final StarField starField;
     private List<Flag> flags;
     private List<Life> lives;
 
@@ -25,12 +26,12 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     private final EnergyBar energyBar;
 
     public GamePlayAssetsManager(
-            List<Star> stars) {
+            StarField starField) {
 
         this.aliensMissiles = new ArrayList<>();
         this.baseMissiles = new ArrayList<>();
         this.powerUps = new ArrayList<>();
-        this.stars = stars;
+        this.starField = starField;
         this.flags = new ArrayList<>();
         this.lives = new ArrayList<>();
         this.energyBar = new EnergyBar();
@@ -66,9 +67,7 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
         }
         powerUps = nonDestroyedPowerUps;
 
-        for (Star star : stars) {
-            star.animate(deltaTime);
-        }
+        starField.animate(deltaTime);
     }
 
     @Override
@@ -113,7 +112,7 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
 
     @Override
     public List<Star> getStars() {
-        return stars;
+        return starField.getSprites();
     }
 
     @Override

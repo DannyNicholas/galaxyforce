@@ -30,8 +30,7 @@ import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
@@ -58,7 +57,7 @@ public class ScreenFactory {
     private final Game game;
     private final Input input;
     private final String versionName;
-    private final List<Star> stars;
+    private final StarFieldTemplate starFieldTemplate;
 
     public ScreenFactory(
             GLGraphics glGraphics,
@@ -86,7 +85,7 @@ public class ScreenFactory {
         this.versionName = versionName;
         this.batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
         this.camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, GameSpriteIdentifier.STAR_ANIMATIONS);
+        this.starFieldTemplate = new StarFieldTemplate(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
     }
 
     public IScreen newScreen(ScreenType screenType) {
@@ -109,7 +108,7 @@ public class ScreenFactory {
 
             case MAIN_MENU:
                 return new ExitingScreen(
-                        new MainMenuModelImpl(game, controller, billingService),
+                        new MainMenuModelImpl(game, controller, billingService, starFieldTemplate),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -119,7 +118,7 @@ public class ScreenFactory {
 
             case OPTIONS:
                 return new Screen(
-                        new OptionsModelImpl(game, controller, configurationService, sounds, vibrator),
+                        new OptionsModelImpl(game, controller, configurationService, sounds, vibrator, starFieldTemplate),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -129,7 +128,7 @@ public class ScreenFactory {
 
             case SELECT_LEVEL:
                 return new SelectLevelScreen(
-                        new SelectLevelModelImpl(game, controller, billingService, savedGame),
+                        new SelectLevelModelImpl(game, controller, billingService, savedGame, starFieldTemplate),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -139,7 +138,7 @@ public class ScreenFactory {
 
             case UPGRADE_FULL_VERSION:
                 return new Screen(
-                        new UnlockFullVersionModelImpl(game, controller, billingService),
+                        new UnlockFullVersionModelImpl(game, controller, billingService, starFieldTemplate),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -149,7 +148,7 @@ public class ScreenFactory {
 
             case GAME_COMPLETE:
                 return new Screen(
-                        new GameCompleteModelImpl(game, controller),
+                        new GameCompleteModelImpl(game, controller, starFieldTemplate),
                         controller,
                         TextureMap.MENU,
                         glGraphics,
@@ -182,13 +181,13 @@ public class ScreenFactory {
         Model gameModel = new GamePlayModelImpl(
                 game,
                 controller,
-                stars,
                 startingWave,
                 billingService,
                 sounds,
                 vibrator,
                 savedGame,
-                assets);
+                assets,
+                starFieldTemplate);
 
         if (SHOW_FPS) {
             return new GamePlayModelFrameRateDecorator((GamePlayModelImpl) gameModel);
@@ -212,7 +211,7 @@ public class ScreenFactory {
     public IScreen newGameOverScreen(int previousWave) {
         Controller controller = new ControllerImpl(input, camera);
         return new Screen(
-                new GameOverModelImpl(game, controller, stars, previousWave),
+                new GameOverModelImpl(game, controller, previousWave, starFieldTemplate),
                 controller,
                 TextureMap.GAME,
                 glGraphics,

@@ -15,7 +15,9 @@ import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
@@ -56,7 +58,7 @@ public class GameOverModelImpl implements Model, ButtonModel {
     private GameOverState modelState;
 
     /* stars sprites */
-    private final List<Star> stars;
+    private final StarField starField;
 
     /* reference to flashing game over text */
     private final FlashingText flashingGameOverText;
@@ -71,9 +73,13 @@ public class GameOverModelImpl implements Model, ButtonModel {
      * ******************************************************
      */
 
-    public GameOverModelImpl(Game game, Controller controller, List<Star> stars, int lastWave) {
+    public GameOverModelImpl(
+            Game game,
+            Controller controller,
+            int lastWave,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
-        this.stars = stars;
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.GAME);
         this.lastWave = lastWave;
         this.menuButtons = new ArrayList<>();
         this.modelState = GameOverState.RUNNING;
@@ -103,7 +109,7 @@ public class GameOverModelImpl implements Model, ButtonModel {
     public List<ISprite> getSprites() {
 
         List<ISprite> sprites = new ArrayList<>();
-        sprites.addAll(stars);
+        sprites.addAll(starField.getSprites());
         for (SpriteTextButton eachButton : menuButtons) {
             sprites.add(eachButton.getSprite());
         }
@@ -127,9 +133,7 @@ public class GameOverModelImpl implements Model, ButtonModel {
 
             case RUNNING:
                 // normal state before any buttons are pressed
-                for (Star eachStar : stars) {
-                    eachStar.animate(deltaTime);
-                }
+                starField.animate(deltaTime);
                 break;
 
             case EXIT:

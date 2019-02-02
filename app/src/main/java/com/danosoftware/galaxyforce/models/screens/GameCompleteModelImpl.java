@@ -11,7 +11,9 @@ import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.common.RotatingSprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
@@ -27,7 +29,7 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
     private final Game game;
 
     // references to stars
-    private final List<Star> stars;
+    private final StarField starField;
 
     // reference to all sprites in model
     private final List<ISprite> allSprites;
@@ -40,12 +42,15 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
     // reference to all text objects in model
     private final List<Text> allText;
 
-    public GameCompleteModelImpl(Game game, Controller controller) {
+    public GameCompleteModelImpl(
+            Game game,
+            Controller controller,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.allSprites = new ArrayList<>();
         this.rotatedSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
         this.modelState = ModelState.RUNNING;
 
         // add model sprites
@@ -58,7 +63,7 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
 
     private void addSprites() {
 
-        allSprites.addAll(stars);
+        allSprites.addAll(starField.getSprites());
 
         for (int column = 0; column < 3; column++) {
             RotatingSprite base = new RotatingSprite(100 + (column * 170), 580, MenuSpriteIdentifier.BASE);
@@ -88,9 +93,7 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
         }
 
         // move stars
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
+        starField.animate(deltaTime);
 
         // rotate sprites
         for (RotatingSprite eachSprite : rotatedSprites) {

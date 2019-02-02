@@ -23,7 +23,9 @@ import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
@@ -44,7 +46,7 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
     private final VibrationService vibrator;
 
     // references to stars
-    private final List<Star> stars;
+    private final StarField starField;
 
     // reference to all sprites in model
     private final List<ISprite> allSprites;
@@ -59,20 +61,21 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
             Controller controller,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
-            VibrationService vibrator) {
+            VibrationService vibrator,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.configurationService = configurationService;
         this.sounds = sounds;
         this.vibrator = vibrator;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
         buildAssets(controller);
     }
 
     private void buildAssets(Controller controller) {
 
-        allSprites.addAll(stars);
+        allSprites.addAll(starField.getSprites());
         allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
 
         allText.add(Text.newTextRelativePositionX(
@@ -165,9 +168,7 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
         }
 
         // move stars
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
+        starField.animate(deltaTime);
     }
 
     @Override

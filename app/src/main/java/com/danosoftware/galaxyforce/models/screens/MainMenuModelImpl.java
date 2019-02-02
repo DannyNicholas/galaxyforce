@@ -15,7 +15,9 @@ import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
@@ -31,7 +33,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     private final Game game;
 
     // sprites
-    private final List<Star> stars;
+    private final StarField starField;
     private final ISprite logo;
 
     // current visible buttons
@@ -46,12 +48,16 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
      */
     private volatile boolean rebuildButtons;
 
-    public MainMenuModelImpl(Game game, Controller controller, BillingService billingService) {
+    public MainMenuModelImpl(
+            Game game,
+            Controller controller,
+            BillingService billingService,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
         this.buttons = new ArrayList<>();
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
         this.logo = new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE);
 
         // register this model with the billing service
@@ -122,7 +128,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     public List<ISprite> getSprites() {
 
         List<ISprite> sprites = new ArrayList<>();
-        sprites.addAll(stars);
+        sprites.addAll(starField.getSprites());
         sprites.add(logo);
 
         for (SpriteTextButton button : buttons) {
@@ -146,7 +152,7 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     @Override
     public void update(float deltaTime) {
         // move stars
-        moveStars(deltaTime);
+        starField.animate(deltaTime);
 
         // do we need to rebuild menu buttons?
         if (rebuildButtons) {
@@ -158,12 +164,6 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     @Override
     public void dispose() {
         billingService.unregisterPurchasesObserver(this);
-    }
-
-    private void moveStars(float deltaTime) {
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
     }
 
     @Override

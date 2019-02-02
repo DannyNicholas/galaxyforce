@@ -20,7 +20,9 @@ import com.danosoftware.galaxyforce.models.screens.ModelState;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
 
@@ -55,7 +57,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
     private final int maxWaveUnlocked;
 
     // on-screen components
-    private final List<Star> stars;
+    private final StarField starField;
     private final List<SpriteButton> buttons;
     private final List<SpriteTextButton> textButtons;
     private final List<SpriteTextButton> staticTextButtons;
@@ -79,7 +81,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
             Game game,
             Controller controller,
             BillingService billingService,
-            SavedGame savedGame) {
+            SavedGame savedGame,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.controller = controller;
         this.billingService = billingService;
@@ -97,8 +100,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
         this.maxWaveUnlocked = savedGame.getGameLevel();
         this.zone = (int) Math.ceil((double) maxWaveUnlocked / GameConstants.WAVES_PER_ZONE);
 
-        /* set-up initial random position of stars */
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        /* set-up star-field */
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
 
         // create map of zone numbers to zone page x positions
         this.zoneXPosition = new HashMap<>();
@@ -256,7 +259,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
     @Override
     public List<ISprite> getStaticSprites() {
         List<ISprite> sprites = new ArrayList<>();
-        sprites.addAll(stars);
+        sprites.addAll(starField.getSprites());
         for (SpriteTextButton button : staticTextButtons) {
             sprites.add(button.getSprite());
         }
@@ -296,9 +299,7 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
         xPosition = xPosition + (speed * deltaTime);
 
         // move stars
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
+        starField.animate(deltaTime);
 
         /*
          * refresh screen sprites. triggered following the billing state change.

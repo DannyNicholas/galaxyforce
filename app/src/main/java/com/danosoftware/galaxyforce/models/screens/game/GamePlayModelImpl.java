@@ -44,7 +44,9 @@ import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
@@ -146,13 +148,13 @@ public class GamePlayModelImpl implements Model, GameModel {
     public GamePlayModelImpl(
             Game game,
             Controller controller,
-            List<Star> stars,
             int wave,
             BillingService billingService,
             SoundPlayerService sounds,
             VibrationService vibrator,
             SavedGame savedGame,
-            AssetManager assets) {
+            AssetManager assets,
+            StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.wave = wave;
         this.billingService = billingService;
@@ -172,7 +174,8 @@ public class GamePlayModelImpl implements Model, GameModel {
         /*
          * create asset manager to co-ordinate in-game assets
          */
-        this.assets = new GamePlayAssetsManager(stars);
+        StarField starField = new StarField(starFieldTemplate, StarAnimationType.GAME);
+        this.assets = new GamePlayAssetsManager(starField);
 
         // reset lives
         this.lives = START_LIVES;

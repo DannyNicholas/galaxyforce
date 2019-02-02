@@ -18,7 +18,9 @@ import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
-import com.danosoftware.galaxyforce.sprites.game.starfield.Star;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.mainmenu.MenuButton;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
@@ -35,7 +37,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     private static final String LOCAL_TAG = "UnlockFullVersionModel";
 
     private final Game game;
-    private final List<Star> stars;
+    private final StarField starField;
     private final ISprite logo;
 
     // messages to display on the screen
@@ -61,7 +63,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     public UnlockFullVersionModelImpl(
             Game game,
             Controller controller,
-            BillingService billingService) {
+            BillingService billingService,
+            StarFieldTemplate starFieldTemplate) {
 
         this.game = game;
         this.controller = controller;
@@ -70,7 +73,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         this.buttons = new ArrayList<>();
         this.messages = new ArrayList<>();
         this.flashingText = null;
-        this.stars = Star.setupStars(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT, MenuSpriteIdentifier.STAR_ANIMATIONS);
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
         this.logo = new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE);
         this.reBuildSprites = false;
 
@@ -260,7 +263,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     public List<ISprite> getSprites() {
 
         List<ISprite> sprites = new ArrayList<>();
-        sprites.addAll(stars);
+        sprites.addAll(starField.getSprites());
         sprites.add(logo);
 
         for (SpriteTextButton button : buttons) {
@@ -300,9 +303,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         }
 
         // move stars
-        for (Star eachStar : stars) {
-            eachStar.animate(deltaTime);
-        }
+        starField.animate(deltaTime);
 
         /*
          * refresh screen sprites. triggered following the billing state change.
