@@ -46,12 +46,18 @@ public class Star extends AbstractMovingSprite {
         this.initialY = y;
     }
 
+    /**
+     * Update the position and animation for star.
+     *
+     * @param deltaTime - total time since initial star-field was first created
+     */
     @Override
     public void animate(float deltaTime) {
 
         // normally deltaTime holds the time since the last update.
-        // for Stars, deltaTime represents total time since star was first created.
-        // calculate new star position based on initial position and total time.
+        // for Stars, deltaTime represents total time since the initial star-field
+        // was first created.
+        // calculate new star position based on initial position and deltaTime.
         int starY = initialY - (int) ((speed * deltaTime) % height);
 
         // if star has reached the bottom of screen then re-position on the other side.
