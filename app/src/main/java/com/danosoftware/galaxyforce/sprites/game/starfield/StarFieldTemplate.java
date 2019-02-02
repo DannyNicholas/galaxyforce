@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.starfield;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Represents a template for a starfield, from which a new starfield can be created.
@@ -14,9 +15,8 @@ import java.util.List;
  */
 public class StarFieldTemplate {
 
-    /* max and min speed of stars - how many pixels star moves in 1 second */
-    private static final int STAR_MOVE_PIXELS_MIN = 60;
-    private static final int STAR_MOVE_PIXELS_MAX = 60 * 3;
+    // random generator
+    private static final Random RANDOM = new Random();
 
     /* number of stars to show */
     private static final int MAX_STARS = 250;
@@ -31,10 +31,38 @@ public class StarFieldTemplate {
     // height of playing area
     private final int height;
 
+    /**
+     * Default constructor with random starfield properties
+     */
     public StarFieldTemplate(int width, int height) {
         this.height = height;
         this.starTemplates = setupStars(width, height);
         this.timeElapsed = 0f;
+    }
+
+    /**
+     * Constructor with predictable initial starfield properties.
+     * Normally only used for testing.
+     */
+    public StarFieldTemplate(
+            int height,
+            int x,
+            int y,
+            int animationIndex,
+            int animationStateTime,
+            StarSpeed starSpeed) {
+        this.height = height;
+        this.timeElapsed = 0f;
+
+        this.starTemplates = new ArrayList<>();
+        for (int i = 0; i < MAX_STARS; i++) {
+            starTemplates.add(new StarTemplate(
+                    x,
+                    y,
+                    animationIndex,
+                    animationStateTime,
+                    starSpeed));
+        }
     }
 
     List<StarTemplate> getStarTemplates() {
@@ -65,7 +93,7 @@ public class StarFieldTemplate {
 
             int animationIndex = getRandomAnimationIndex();
             float animationStateTime = getRandomAnimationStartTime();
-            float speed = getSpeedRandom();
+            StarSpeed speed = getSpeedRandom();
 
             stars.add(new StarTemplate(
                     x,
@@ -79,10 +107,12 @@ public class StarFieldTemplate {
     }
 
     /**
-     * set random speed between STAR_MOVE_PIXELS_MIN and STAR_MOVE_PIXELS_MAX
+     * return a random star speed
      */
-    private float getSpeedRandom() {
-        return ((int) (((STAR_MOVE_PIXELS_MAX + 1 - STAR_MOVE_PIXELS_MIN) * Math.random()) + STAR_MOVE_PIXELS_MIN)) * 2;
+    private StarSpeed getSpeedRandom() {
+        StarSpeed[] possibleSpeeds = StarSpeed.values();
+        int speedIndex = RANDOM.nextInt(possibleSpeeds.length);
+        return possibleSpeeds[speedIndex];
     }
 
     /**
@@ -90,7 +120,7 @@ public class StarFieldTemplate {
      * when star is created, this will select the appropriate star animation
      */
     private int getRandomAnimationIndex() {
-        return (int) (StarAnimationType.ANIMATION_TYPES * Math.random());
+        return RANDOM.nextInt(StarAnimationType.ANIMATION_TYPES);
     }
 
     /**
@@ -98,6 +128,6 @@ public class StarFieldTemplate {
      * makes animation look more natural.
      */
     private float getRandomAnimationStartTime() {
-        return (float) (1f * Math.random());
+        return (1.5f * RANDOM.nextFloat());
     }
 }

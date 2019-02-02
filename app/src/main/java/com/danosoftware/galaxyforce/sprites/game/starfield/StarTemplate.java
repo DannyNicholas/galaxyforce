@@ -9,7 +9,7 @@ package com.danosoftware.galaxyforce.sprites.game.starfield;
  * sprite identifiers. To the player, the stars look identical and animation
  * seamless when screens are changed.
  */
-public class StarTemplate {
+class StarTemplate {
 
     // star's initial x,y position
     private final int initialX;
@@ -22,14 +22,14 @@ public class StarTemplate {
     private final float animationStateTime;
 
     // speed of star
-    private final float speed;
+    private final StarSpeed speed;
 
-    public StarTemplate(
+    StarTemplate(
             int initialX,
             int initialY,
             int animationIndex,
             float animationStateTime,
-            float speed) {
+            StarSpeed speed) {
         this.initialX = initialX;
         this.initialY = initialY;
         this.animationIndex = animationIndex;
@@ -37,23 +37,23 @@ public class StarTemplate {
         this.speed = speed;
     }
 
-    public int getInitialX() {
+    int getInitialX() {
         return initialX;
     }
 
-    public int getInitialY() {
+    int getInitialY() {
         return initialY;
     }
 
-    public int getAnimationIndex() {
+    int getAnimationIndex() {
         return animationIndex;
     }
 
-    public float getAnimationStateTime() {
+    float getAnimationStateTime() {
         return animationStateTime;
     }
 
-    public float getSpeed() {
+    StarSpeed getSpeed() {
         return speed;
     }
 }
