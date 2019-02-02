@@ -58,6 +58,12 @@ public class StarFieldTest {
         assertThat(firstStar2.y(), equalTo(firstStar.y()));
     }
 
+    /**
+     * Test position of star after different delta-times.
+     * NOTE: for stars, the delta-time is the delta since
+     * the star-field was initialised, not the time since
+     * the last update.
+     */
     @Test
     public void animationShouldMoveStar() {
 
@@ -71,22 +77,22 @@ public class StarFieldTest {
         assertThat(star.x(), equalTo(0));
         assertThat(star.y(), equalTo(500));
 
-        // after another 5 seconds, star should be back at 0.
+        // after 10 seconds, star should be back at 0.
         // height should be 1000 wraps back to 0.
-        star.animate(5f);
+        star.animate(10f);
         assertThat(star.x(), equalTo(0));
         assertThat(star.y(), equalTo(0));
 
-        // after another 5 seconds, star should be at 500 (100 speed x 5 seconds)
-        star.animate(5f);
+        // after 15 seconds, star should be at 500 (100 speed x 5 seconds)
+        star.animate(15f);
         assertThat(star.x(), equalTo(0));
         assertThat(star.y(), equalTo(500));
 
-        // after another 500 seconds, star should be back at 500
+        // after 515 seconds, star should be back at 500
         // at chosen speed of 100 and height of 1000,
-        // any deltaTime which is a multiple of 10 should move star
-        // by 1000 and hence back to same position
-        star.animate(500f);
+        // any deltaTime which is a multiple of 5 should move star
+        // half-way up screen
+        star.animate(515f);
         assertThat(star.x(), equalTo(0));
         assertThat(star.y(), equalTo(500));
     }
