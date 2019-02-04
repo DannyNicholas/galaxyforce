@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
 import com.danosoftware.galaxyforce.input.Input;
+import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.screen.IScreen;
@@ -20,6 +21,9 @@ import com.danosoftware.galaxyforce.services.configurations.ConfigurationService
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
 import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.services.file.GameFileIO;
+import com.danosoftware.galaxyforce.services.music.Music;
+import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
+import com.danosoftware.galaxyforce.services.music.MusicPlayerServiceImpl;
 import com.danosoftware.galaxyforce.services.preferences.IPreferences;
 import com.danosoftware.galaxyforce.services.preferences.PreferencesInteger;
 import com.danosoftware.galaxyforce.services.preferences.PreferencesString;
@@ -56,6 +60,7 @@ public class GameImpl implements Game {
     private final ScreenFactory screenFactory;
 
     private final SoundPlayerService sounds;
+    private final MusicPlayerService music;
 
     public GameImpl(
             Context context,
@@ -80,6 +85,11 @@ public class GameImpl implements Game {
         boolean enableVibrator = (configurationService.getVibrationOption() == OptionVibration.ON);
         VibrationService vibrator = new VibrationServiceImpl(context, enableVibrator);
 
+        boolean enableMusic = (configurationService.getMusicOption() == OptionMusic.ON);
+        this.music = new MusicPlayerServiceImpl(context, enableMusic);
+        this.music.load(Music.MAIN_TITLE);
+        this.music.play();
+
         IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
         SavedGame savedGame = new SavedGameImpl(savedGamePreferences);
 
@@ -89,6 +99,7 @@ public class GameImpl implements Game {
                 billingService,
                 configurationService,
                 sounds,
+                music,
                 vibrator,
                 savedGame,
                 context.getAssets(),
@@ -151,12 +162,14 @@ public class GameImpl implements Game {
     public void resume() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Resume Game");
         screen.resume();
+        music.play();
     }
 
     @Override
     public void pause() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Pause Game");
         screen.pause();
+        music.pause();
     }
 
     @Override
@@ -164,6 +177,7 @@ public class GameImpl implements Game {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Dispose Game");
         screen.dispose();
         sounds.dispose();
+        music.dispose();
     }
 
     @Override

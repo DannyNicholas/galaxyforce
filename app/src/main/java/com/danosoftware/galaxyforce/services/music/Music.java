@@ -1,21 +1,16 @@
 package com.danosoftware.galaxyforce.services.music;
 
-public interface Music {
-    void play();
+public enum Music {
 
-    void stop();
+    MAIN_TITLE("music.mp3");
 
-    void pause();
+    private final String fileName;
 
-    void setLooping(boolean looping);
+    Music(String fileName) {
+        this.fileName = fileName;
+    }
 
-    void setVolume(float volume);
-
-    boolean isPlaying();
-
-    boolean isStopped();
-
-    boolean isLooping();
-
-    void dispose();
+    public String getFileName() {
+        return fileName;
+    }
 }

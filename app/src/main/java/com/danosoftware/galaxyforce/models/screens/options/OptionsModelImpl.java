@@ -17,6 +17,7 @@ import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
@@ -43,6 +44,7 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
 
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
+    private final MusicPlayerService music;
     private final VibrationService vibrator;
 
     // references to stars
@@ -61,11 +63,13 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
             Controller controller,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
+            MusicPlayerService music,
             VibrationService vibrator,
             StarFieldTemplate starFieldTemplate) {
         this.game = game;
         this.configurationService = configurationService;
         this.sounds = sounds;
+        this.music = music;
         this.vibrator = vibrator;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
@@ -252,6 +256,17 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
             OptionMusic musicType = (OptionMusic) optionSelected;
             Log.d(TAG, "Music Option Selected: " + musicType.getText());
             configurationService.setMusicOption(musicType);
+
+            // update music service
+            boolean musicEnabled = (musicType == OptionMusic.ON);
+            music.setMusicEnabled(musicEnabled);
+
+            // play music
+            if (musicEnabled) {
+                music.play();
+            } else {
+                music.pause();
+            }
         }
 
         if (optionSelected instanceof OptionVibration) {
