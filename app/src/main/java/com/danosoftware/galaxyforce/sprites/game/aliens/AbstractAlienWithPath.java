@@ -99,9 +99,10 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
                 }
             } else {
                 // set alien new position
+                Point position = alienPath.get(index);
                 move(
-                        alienPath.get(index).getX(),
-                        alienPath.get(index).getY()
+                        position.getX(),
+                        position.getY()
                 );
             }
         } else if (isWaiting()) {
@@ -133,9 +134,10 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
          * reset back at start position - will be made visible and active before
          * recalculating it's position.
          */
+        Point position = alienPath.get(0);
         move(
-                alienPath.get(0).getX(),
-                alienPath.get(0).getY()
+                position.getX(),
+                position.getY()
         );
     }
 

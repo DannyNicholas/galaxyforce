@@ -11,7 +11,7 @@ public class AlienMissileSimple extends AbstractAlienMissile {
     private static final int HIT_ENERGY = 2;
 
     // distance missile can move each cycle in pixels each second
-    private static final int ALIEN_MISSILE_MOVE_PIXELS = 5 * 60;
+    private static final int ALIEN_MISSILE_MOVE_PIXELS = -5 * 60;
 
     // Sprite id
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_ALIEN;
@@ -23,8 +23,8 @@ public class AlienMissileSimple extends AbstractAlienMissile {
 
     @Override
     public void animate(float deltaTime) {
-        int newY = y() - (int) (ALIEN_MISSILE_MOVE_PIXELS * deltaTime);
-        move(x(), newY);
+
+        moveYByDelta((int) (ALIEN_MISSILE_MOVE_PIXELS * deltaTime));
 
         // if missile is now off screen then destroy it
         if (offScreenBottom(this)) {

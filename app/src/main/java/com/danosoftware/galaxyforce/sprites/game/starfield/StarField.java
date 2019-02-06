@@ -88,7 +88,7 @@ public class StarField {
                 }
 
                 Star star = starTuple.getStar();
-                star.move(star.x(), starY);
+                star.moveY(starY);
 
                 // update animation frame
                 star.animate(starFieldTemplate.getTimeElapsed());

@@ -22,9 +22,7 @@ public class BaseMissileFast extends AbstractBaseMissile {
 
     @Override
     public void animate(float deltaTime) {
-        move(
-                x(),
-                y() + (int) (BASE_MISSILE_MOVE_PIXELS * deltaTime));
+        moveYByDelta((int) (BASE_MISSILE_MOVE_PIXELS * deltaTime));
 
         // if missile is now off screen then destroy it
         if (offScreenTop(this)) {

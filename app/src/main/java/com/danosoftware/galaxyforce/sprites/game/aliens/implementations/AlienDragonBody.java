@@ -109,11 +109,11 @@ public class AlienDragonBody extends AbstractAlien implements IAlienFollower {
             // calculate new position based on reduced speed
             int reducedXDelta = (int) (xDelta * throttleRatio);
             int reducedYDelta = (int) (yDelta * throttleRatio);
-            int recalculatedX = x() + (int) (reducedXDelta * deltaTime);
-            int recalculatedY = y() + (int) (reducedYDelta * deltaTime);
 
             // move alien
-            move(recalculatedX, recalculatedY);
+            moveByDelta(
+                    (int) (reducedXDelta * deltaTime),
+                    (int) (reducedYDelta * deltaTime));
         }
     }
 }

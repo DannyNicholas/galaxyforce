@@ -94,9 +94,7 @@ public class AlienSpawnedInsect extends AbstractAlien {
         if (isActive()) {
             distanceYMoved += ALIEN_MOVE_PIXELS * deltaTime;
 
-            move(
-                    x(),
-                    originalYPosition - (int) distanceYMoved);
+            moveY(originalYPosition - (int) distanceYMoved);
         }
 
         /*

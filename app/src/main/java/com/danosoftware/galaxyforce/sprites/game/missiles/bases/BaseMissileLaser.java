@@ -62,10 +62,8 @@ public class BaseMissileLaser extends AbstractBaseMissile {
 
     @Override
     public void animate(float deltaTime) {
-        // move missile until off the screen and then destroy it
-        move(
-                x(),
-                y() + (int) (BASE_MISSILE_MOVE_PIXELS * deltaTime));
+        // move missile until off-screen and then destroy it
+        moveYByDelta((int) (BASE_MISSILE_MOVE_PIXELS * deltaTime));
 
         // missile can only be destroyed when off screen
         // use superclass destroy() since our destroy()

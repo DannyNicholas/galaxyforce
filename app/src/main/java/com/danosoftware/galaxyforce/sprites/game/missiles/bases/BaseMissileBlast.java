@@ -35,9 +35,9 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     @Override
     public void animate(float deltaTime) {
         // move missile by calculated deltas
-        move(
-                x() + (int) (xDelta * deltaTime),
-                y() + (int) (yDelta * deltaTime));
+        moveByDelta(
+                (int) (xDelta * deltaTime),
+                (int) (yDelta * deltaTime));
 
         // if missile is now off screen then destroy it
         if (offScreenAnySide(this)) {

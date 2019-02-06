@@ -113,16 +113,13 @@ public class AlienAsteroid extends AbstractAlien {
 
             // move
             distanceYMoved += speed * deltaTime;
-            move(
-                    x(),
-                    (originalYPosition - (int) distanceYMoved)
-            );
+            moveY(originalYPosition - (int) distanceYMoved);
 
             // if asteroid is now off screen then decide whether to destory
             // it or reset
             if (offScreenBottom(this)) {
                 if (restartImmediately) {
-                    move(x(), originalYPosition);
+                    moveY(originalYPosition);
                     distanceYMoved = 0f;
                 } else {
                     destroy();

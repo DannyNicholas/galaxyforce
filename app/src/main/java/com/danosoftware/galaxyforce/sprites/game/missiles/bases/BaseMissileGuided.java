@@ -80,9 +80,9 @@ public class BaseMissileGuided extends AbstractBaseMissile {
         }
 
         // move missile by calculated deltas
-        move(
-                x() + (int) (xDelta * deltaTime),
-                y() + (int) (yDelta * deltaTime));
+        moveByDelta(
+                (int) (xDelta * deltaTime),
+                (int) (yDelta * deltaTime));
 
         // if missile is now off screen then destroy it
         if (offScreenAnySide(this)) {

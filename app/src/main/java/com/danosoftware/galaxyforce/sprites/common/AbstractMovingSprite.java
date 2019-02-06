@@ -27,6 +27,22 @@ public abstract class AbstractMovingSprite extends AbstractSprite implements IMo
         this.y = y;
     }
 
+    @Override
+    public void moveY(int y) {
+        this.y = y;
+    }
+
+    @Override
+    public void moveByDelta(int xDelta, int yDelta) {
+        this.x += xDelta;
+        this.y += yDelta;
+    }
+
+    @Override
+    public void moveYByDelta(int yDelta) {
+        this.y += yDelta;
+    }
+
     protected void rotate(int rotation) {
         this.rotation = rotation;
     }

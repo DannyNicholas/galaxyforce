@@ -136,9 +136,9 @@ public class AlienDragonHead extends AbstractAlien {
             int yDelta = (int) (ALIEN_MOVE_PIXELS * (float) Math.sin(this.angle));
 
             // move alien by calculated deltas
-            move(
-                    x() + (int) (xDelta * deltaTime),
-                    y() + (int) (yDelta * deltaTime)
+            moveByDelta(
+                    (int) (xDelta * deltaTime),
+                    (int) (yDelta * deltaTime)
             );
 
             // update position of the dragon bodies so each are following the one before
