@@ -43,6 +43,24 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
     }
 
     @Override
+    public void moveY(int y) {
+        super.moveY(y);
+        this.boundsCached = false;
+    }
+
+    @Override
+    public void moveByDelta(int xDelta, int yDelta) {
+        super.moveByDelta(xDelta, yDelta);
+        this.boundsCached = false;
+    }
+
+    @Override
+    public void moveYByDelta(int yDelta) {
+        super.moveYByDelta(yDelta);
+        this.boundsCached = false;
+    }
+
+    @Override
     public void changeType(ISpriteIdentifier newSpriteId) {
         if (this.spriteId() != newSpriteId) {
             this.boundsCached = false;
