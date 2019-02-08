@@ -50,7 +50,7 @@ public class PowerUpAllocatorTest {
     public void shouldAllocateOnePowerUpPerAlien() {
 
         // create one alien per power-up
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.ENERGY, PowerUpType.ENERGY, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
         int numberOfAliens = powerUpTypes.size();
         powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
 
@@ -64,7 +64,7 @@ public class PowerUpAllocatorTest {
     public void shouldAllocateAllPowerUpsAcrossManyAliens() {
 
         // create twice as many aliens as power-ups
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.ENERGY, PowerUpType.ENERGY, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
         int numberOfAliens = powerUpTypes.size() * 2;
         powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
 
@@ -93,7 +93,7 @@ public class PowerUpAllocatorTest {
     public void shouldThrowExceptionWhenMorePowerUpsThanAliens() {
 
         // should fail when trying to allocate 5 power-ups across 4 aliens
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.ENERGY, PowerUpType.ENERGY, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
         new PowerUpAllocator(powerUpTypes, 4, 3);
     }
 
@@ -104,7 +104,7 @@ public class PowerUpAllocatorTest {
     public void shouldReturnNullWhenAllocateCalledTooManyTimes() {
 
         // create one alien per power-up
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.ENERGY, PowerUpType.ENERGY, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
         int numberOfAliens = powerUpTypes.size();
         powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
 

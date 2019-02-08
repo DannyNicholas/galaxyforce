@@ -67,12 +67,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.HELPER_BASES)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
                 );
@@ -86,12 +86,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_BLAST)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_FAST)
                                 )
                         )
                 );
@@ -105,12 +105,12 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
                 );
@@ -124,7 +124,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
                 );
@@ -138,7 +138,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
                                         AlienType.MOTHERSHIP,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                                 )
                         )
                 );
@@ -148,7 +148,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
                                         AlienType.MOTHERSHIP,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
                 );
@@ -162,7 +162,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                                 )
                         )
                 );
@@ -176,7 +176,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
                                         AlienType.ASTEROID,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
                 );
@@ -200,7 +200,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPACE_INVADER_REVERSE,
                                         AlienType.GOBBY,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
                 );
@@ -214,7 +214,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.STAGGERED_BOUNCE_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
                 );
@@ -228,7 +228,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.DRAGON_CHASE,
                                         AlienType.DRAGON,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
                 );
@@ -242,7 +242,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.FIGURE_OF_EIGHT,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
                 );
@@ -256,7 +256,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSING_STEP_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_BLAST)
                                 )
                         )
                 );
@@ -270,7 +270,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSOVER_EXIT_ATTACK,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.HELPER_BASES)
                                 )
                         )
                 );
@@ -284,7 +284,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
                                         AlienType.STORK,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
                 );
@@ -294,7 +294,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_BELL_CURVE,
                                         AlienType.STORK,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
                 );
@@ -308,7 +308,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
                                         AlienType.DROID,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
                 );
@@ -322,7 +322,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.TEAR_DROP_ATTACK,
                                         AlienType.INSECT,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.HELPER_BASES)
                                 )
                         )
                 );
@@ -336,7 +336,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
                 );
@@ -350,7 +350,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.DROID,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
                 );
@@ -360,7 +360,7 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_SPIRAL,
                                         AlienType.DROID,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
                 );
@@ -374,7 +374,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE_EASY,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
                 );
@@ -384,7 +384,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
                 );
@@ -398,7 +398,7 @@ public class WaveFactory {
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.HUNTER_PAIR,
                                         AlienType.HUNTER,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
                 );
@@ -452,17 +452,17 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
                                         AlienType.STORK,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.HELPER_BASES)
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
                                         AlienType.ASTEROID_SIMPLE,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
                                         AlienType.DROID,
-                                        Collections.singletonList(PowerUpType.ENERGY)
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
                 );

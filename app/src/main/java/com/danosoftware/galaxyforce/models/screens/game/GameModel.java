@@ -53,12 +53,6 @@ public interface GameModel {
     int getLives();
 
     /**
-     * Update following a base's energy change.
-     * Typically used to update the energy bar assets.
-     */
-    void energyUpdate(int energy);
-
-    /**
      * Add an extra base life to the game.
      */
     void addLife();

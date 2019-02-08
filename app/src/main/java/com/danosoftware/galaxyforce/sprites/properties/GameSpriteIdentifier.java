@@ -51,7 +51,9 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     /* Power Up Sprites - TODO Laser needs it's own sprite */
 
-    POWERUP_BATTERY("pwrUpBattery34px.png"), POWERUP_LIFE("pwrUpLife34px.png"),
+//    POWERUP_BATTERY("pwrUpBattery34px.png"),
+
+    POWERUP_LIFE("pwrUpLife34px.png"),
     POWERUP_MISSILE_FAST("pwrUpFast34px.png"), POWERUP_MISSILE_BLAST("pwrUpBlast34px.png"),
     POWERUP_MISSILE_GUIDED("pwrUpDirectional34px.png"), POWERUP_MISSILE_PARALLEL("pwrUpParallel34px.png"),
     POWERUP_MISSILE_SPRAY("pwrUpSpray34px.png"), POWERUP_MISSILE_LASER("pwrUpLaser34px.png"),

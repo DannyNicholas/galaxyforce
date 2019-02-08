@@ -126,11 +126,6 @@ public class GamePlayModelFrameRateDecorator implements Model, GameModel {
     }
 
     @Override
-    public void energyUpdate(int energy) {
-        gameModel.energyUpdate(energy);
-    }
-
-    @Override
     public void addLife() {
         gameModel.addLife();
     }

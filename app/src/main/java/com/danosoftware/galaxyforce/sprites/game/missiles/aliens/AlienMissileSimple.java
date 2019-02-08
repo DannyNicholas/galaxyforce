@@ -7,9 +7,6 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBo
 
 public class AlienMissileSimple extends AbstractAlienMissile {
 
-    // how much energy will be lost by base when this missile hits it
-    private static final int HIT_ENERGY = 2;
-
     // distance missile can move each cycle in pixels each second
     private static final int ALIEN_MISSILE_MOVE_PIXELS = -5 * 60;
 
@@ -18,7 +15,7 @@ public class AlienMissileSimple extends AbstractAlienMissile {
 
 
     public AlienMissileSimple(int xStart, int yStart) {
-        super(SPRITE, xStart, yStart, HIT_ENERGY);
+        super(SPRITE, xStart, yStart);
     }
 
     @Override

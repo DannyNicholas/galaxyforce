@@ -207,10 +207,10 @@ public class BaseHelperTest {
 
     @Test()
     public void shouldCallPrimaryBasePowerUp() {
-        IPowerUp energyPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_BATTERY, 0, 0, PowerUpType.ENERGY);
+        IPowerUp parallelMissilePowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_MISSILE_PARALLEL, 0, 0, PowerUpType.MISSILE_PARALLEL);
         baseHelper = shieldedHelper(LEFT);
-        baseHelper.collectPowerUp(energyPowerUp);
-        verify(primaryBase, times(1)).collectPowerUp(energyPowerUp);
+        baseHelper.collectPowerUp(parallelMissilePowerUp);
+        verify(primaryBase, times(1)).collectPowerUp(parallelMissilePowerUp);
     }
 
     @Test()

@@ -5,25 +5,15 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public abstract class AbstractAlienMissile extends AbstractCollidingSprite implements IAlienMissile {
 
-    // how much energy will be lost by base when this missile hits it
-    private final int hitEnergy;
-
     private boolean isDestroyed;
 
     AbstractAlienMissile(
             ISpriteIdentifier spriteId,
             int x,
-            int y,
-            int hitEnergy) {
+            int y) {
 
         super(spriteId, x, y);
-        this.hitEnergy = hitEnergy;
         this.isDestroyed = false;
-    }
-
-    @Override
-    public int energyDamage() {
-        return hitEnergy;
     }
 
     @Override

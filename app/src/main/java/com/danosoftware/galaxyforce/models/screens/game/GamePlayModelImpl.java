@@ -217,7 +217,6 @@ public class GamePlayModelImpl implements Model, GameModel {
         gameSprites.add(pauseButton.getSprite());
         gameSprites.addAll(assets.getFlags());
         gameSprites.addAll(assets.getLives());
-        gameSprites.addAll(assets.getEnergyBar());
 
         return gameSprites;
     }
@@ -232,7 +231,6 @@ public class GamePlayModelImpl implements Model, GameModel {
         pausedSprites.addAll(assets.getPowerUps());
         pausedSprites.addAll(assets.getFlags());
         pausedSprites.addAll(assets.getLives());
-        pausedSprites.addAll(assets.getEnergyBar());
 
         return pausedSprites;
     }
@@ -361,11 +359,6 @@ public class GamePlayModelImpl implements Model, GameModel {
     @Override
     public int getLives() {
         return lives;
-    }
-
-    @Override
-    public void energyUpdate(int energy) {
-        assets.updateEnergyBar(energy);
     }
 
     @Override

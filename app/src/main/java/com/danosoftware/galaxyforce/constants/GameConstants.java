@@ -20,9 +20,6 @@ public class GameConstants {
     // should we show the FPS counter
     public static final boolean SHOW_FPS = true;
 
-    public final static Integer BASE_MAX_ENERGY_LEVEL = 8;
-
-
     // font glyphs per row - i.e. characters in a row within texture map
     public final static int FONT_GLYPHS_PER_ROW = 8;
 

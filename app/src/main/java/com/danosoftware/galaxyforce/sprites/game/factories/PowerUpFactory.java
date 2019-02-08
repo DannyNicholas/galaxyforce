@@ -39,9 +39,6 @@ public class PowerUpFactory {
         final ISpriteIdentifier spriteId;
 
         switch (powerUpType) {
-            case ENERGY:
-                spriteId = GameSpriteIdentifier.POWERUP_BATTERY;
-                break;
             case HELPER_BASES:
                 spriteId = GameSpriteIdentifier.POWERUP_HELPER_BASES;
                 break;

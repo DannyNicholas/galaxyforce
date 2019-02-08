@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.models.assets;
 
-import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.assets.Flag;
 import com.danosoftware.galaxyforce.sprites.game.assets.Life;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
@@ -38,15 +37,4 @@ public interface IGamePlayAssetsManager {
     List<Flag> getFlags();
 
     List<Life> getLives();
-
-    /**
-     * Update base's energy bar assets.
-     * Typically used to update the energy levels after gaining or losing power.
-     */
-    void updateEnergyBar(int energy);
-
-    /**
-     * Get base's energy bar assets.
-     */
-    List<ISprite> getEnergyBar();
 }

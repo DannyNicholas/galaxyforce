@@ -152,11 +152,10 @@ public class PrimaryBaseTest {
     }
 
     @Test()
-    public void baseShouldBeDestroyedWhenHitByPowerfulMissile() throws NoSuchFieldException, IllegalAccessException {
+    public void baseShouldBeDestroyedWhenHitByMissile() throws NoSuchFieldException, IllegalAccessException {
         removeShield(primaryBase);
         IBasePrimary baseSpy = spy(primaryBase);
         IAlienMissile missile = mock(IAlienMissile.class);
-        when(missile.energyDamage()).thenReturn(100);
         baseSpy.onHitBy(missile);
         verify(baseSpy, times(1)).destroy();
     }
@@ -166,33 +165,8 @@ public class PrimaryBaseTest {
         IPowerUp shieldPowerUp = new PowerUp(GameSpriteIdentifier.POWERUP_SHIELD, 0, 0, PowerUpType.SHIELD);
         primaryBaseSpy.collectPowerUp(shieldPowerUp);
         IAlienMissile missile = mock(IAlienMissile.class);
-        when(missile.energyDamage()).thenReturn(100);
         primaryBaseSpy.onHitBy(missile);
         verify(primaryBaseSpy, times(0)).destroy();
-    }
-
-    @Test()
-    public void baseShouldRemainActiveWhenHitByWeakMissile() throws NoSuchFieldException, IllegalAccessException {
-        removeShield(primaryBase);
-        IBasePrimary baseSpy = spy(primaryBase);
-        IAlienMissile missile = mock(IAlienMissile.class);
-        when(missile.energyDamage()).thenReturn(1);
-        baseSpy.onHitBy(missile);
-        verify(baseSpy, times(0)).destroy();
-    }
-
-    @Test()
-    public void baseShouldBeDestroyedAfterEightHits() throws NoSuchFieldException, IllegalAccessException {
-        removeShield(primaryBase);
-        IBasePrimary baseSpy = spy(primaryBase);
-        IAlienMissile missile = mock(IAlienMissile.class);
-        when(missile.energyDamage()).thenReturn(1);
-        for (int i = 0; i < 7; i++) {
-            baseSpy.onHitBy(missile);
-            verify(baseSpy, times(0)).destroy();
-        }
-        baseSpy.onHitBy(missile);
-        verify(baseSpy, times(1)).destroy();
     }
 
     @Test()

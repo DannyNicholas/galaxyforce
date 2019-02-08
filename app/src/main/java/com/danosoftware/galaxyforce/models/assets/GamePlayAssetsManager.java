@@ -1,7 +1,5 @@
 package com.danosoftware.galaxyforce.models.assets;
 
-import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.assets.EnergyBar;
 import com.danosoftware.galaxyforce.sprites.game.assets.Flag;
 import com.danosoftware.galaxyforce.sprites.game.assets.Life;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
@@ -22,9 +20,6 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     private List<Flag> flags;
     private List<Life> lives;
 
-    // base's energy bar
-    private final EnergyBar energyBar;
-
     public GamePlayAssetsManager(
             StarField starField) {
 
@@ -34,7 +29,6 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
         this.starField = starField;
         this.flags = new ArrayList<>();
         this.lives = new ArrayList<>();
-        this.energyBar = new EnergyBar();
     }
 
     @Override
@@ -123,15 +117,5 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     @Override
     public List<Life> getLives() {
         return lives;
-    }
-
-    @Override
-    public void updateEnergyBar(int energy) {
-        energyBar.updateEnergy(energy);
-    }
-
-    @Override
-    public List<ISprite> getEnergyBar() {
-        return energyBar.getEnergyBar();
     }
 }

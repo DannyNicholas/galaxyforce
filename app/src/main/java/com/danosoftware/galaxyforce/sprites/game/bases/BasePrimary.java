@@ -17,8 +17,6 @@ import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
@@ -32,7 +30,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.danosoftware.galaxyforce.constants.GameConstants.BASE_MAX_ENERGY_LEVEL;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_BOTTOM;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
@@ -41,7 +38,6 @@ import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EX
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
-import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_FLIP;
 
 public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary {
 
@@ -57,9 +53,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     // explosion behaviour
     private final ExplodeBehaviour explosion;
-
-    // hit behaviour
-    private final HitBehaviour hit;
 
     // all sprites
     // cached as an optimisation to improve performance
@@ -93,9 +86,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     // default base missile sprite
     private static final BaseMissileType DEFAULT_MISSILE_TYPE = BaseMissileType.SIMPLE;
-
-    // energy of this base
-    private int energy;
 
     /* variable to store time passed since base last fired */
     private float timeSinceBaseLastFired;
@@ -143,7 +133,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
         this.explosion = new ExplodeSimple(sounds, vibrator);
-        this.hit = new HitAnimation(new Animation(0.25f, BASE_SPRITE, BASE_FLIP));
 
         this.model = model;
         this.sounds = sounds;
@@ -157,10 +146,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         // new base starts as shielded to avoid being immediately destroyed
         addShield(2f, 0f);
-
-        // reset energy bar to maximum. new energy level returned.
-        this.energy = BASE_MAX_ENERGY_LEVEL;
-        model.energyUpdate(energy);
     }
 
     /**
@@ -233,11 +218,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
                     removeShield();
                 }
             }
-
-            // if hit then continue hit animation
-            if (hit.isHit()) {
-                changeType(hit.getHit(deltaTime));
-            }
         }
 
         // if exploding then animate or set destroyed once finished
@@ -284,14 +264,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         // can only be hit if not shielded
         if (!shielded) {
-            energy -= missile.energyDamage();
-            model.energyUpdate(energy);
-
-            if (energy <= 0) {
-                destroy();
-            } else {
-                hit.startHit(0f);
-            }
+            destroy();
         }
         missile.destroy();
     }
@@ -325,12 +298,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         Log.i(TAG, "Power-Up: '" + powerUpType.name() + "'.");
 
         switch (powerUpType) {
-            // add energy to base
-            case ENERGY:
-                energy += 2;
-                model.energyUpdate(energy);
-                break;
-
             // add extra life
             case LIFE:
                 model.addLife();

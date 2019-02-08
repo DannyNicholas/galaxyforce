@@ -84,7 +84,7 @@ public class AlienFactory {
                         sounds,
                         vibrator,
                         powerUp,
-                        Arrays.asList(PowerUpType.ENERGY, PowerUpType.MISSILE_FAST, PowerUpType.MISSILE_PARALLEL),
+                        Arrays.asList(PowerUpType.MISSILE_GUIDED, PowerUpType.MISSILE_FAST, PowerUpType.MISSILE_PARALLEL),
                         alienPath,
                         delay,
                         restartImmediately));
