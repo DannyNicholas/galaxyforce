@@ -62,9 +62,6 @@ public class PrimaryBaseTest {
     private IBaseHelper rightHelper;
 
     private GameModel model;
-    private SoundPlayerService sounds;
-    private VibrationService vibrator;
-
 
     @Before
     public void setUp() {
@@ -80,8 +77,8 @@ public class PrimaryBaseTest {
         }
 
         model = mock(GameModel.class);
-        sounds = mock(SoundPlayerService.class);
-        vibrator = mock(VibrationService.class);
+        SoundPlayerService sounds = mock(SoundPlayerService.class);
+        VibrationService vibrator = mock(VibrationService.class);
 
         primaryBase = new BasePrimary(model, sounds, vibrator);
         primaryBaseSpy = spy(primaryBase);

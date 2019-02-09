@@ -18,9 +18,6 @@ public class WaveManagerImpl implements WaveManager {
     // executor service for threads to create waves
     private final ExecutorService pool;
 
-    // list of sub-waves in current wave
-    private List<SubWave> subWaves;
-
     // iterator for sub-waves
     private Iterator<SubWave> iterator;
 
@@ -53,7 +50,7 @@ public class WaveManagerImpl implements WaveManager {
      */
     @Override
     public synchronized void setWaveReady(Wave wave) {
-        this.subWaves = wave.getSubWaves();
+        List<SubWave> subWaves = wave.getSubWaves();
         this.iterator = subWaves.iterator();
         this.state = WaveManagerState.WAVE_READY;
     }
