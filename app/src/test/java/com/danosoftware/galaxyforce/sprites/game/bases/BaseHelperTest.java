@@ -53,7 +53,8 @@ public class BaseHelperTest {
 
     private static final int INITIAL_X = 100;
     private static final int INITIAL_Y = 200;
-    private static final int EXPECTED_OFFSET = 64;
+    private static final int EXPECTED_HELPER_X_OFFSET = 64;
+    private static final int EXPECTED_HELPER_Y_OFFSET = 5;
     private static final boolean SHIELD_UP = true;
     private static final boolean SHIELD_DOWN = false;
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
@@ -95,31 +96,31 @@ public class BaseHelperTest {
     @Test()
     public void shouldConstructLeftBaseInExpectedPosition() {
         baseHelper = unShieldedHelper(LEFT);
-        assertThat(baseHelper.x(), is(INITIAL_X - EXPECTED_OFFSET));
-        assertThat(baseHelper.y(), is(INITIAL_Y));
+        assertThat(baseHelper.x(), is(INITIAL_X - EXPECTED_HELPER_X_OFFSET));
+        assertThat(baseHelper.y(), is(INITIAL_Y + EXPECTED_HELPER_Y_OFFSET));
     }
 
     @Test()
     public void shouldConstructRightBaseInExpectedPosition() {
         baseHelper = unShieldedHelper(RIGHT);
-        assertThat(baseHelper.x(), is(INITIAL_X + EXPECTED_OFFSET));
-        assertThat(baseHelper.y(), is(INITIAL_Y));
+        assertThat(baseHelper.x(), is(INITIAL_X + EXPECTED_HELPER_X_OFFSET));
+        assertThat(baseHelper.y(), is(INITIAL_Y + EXPECTED_HELPER_Y_OFFSET));
     }
 
     @Test()
     public void shouldMoveLeftBase() {
         baseHelper = unShieldedHelper(LEFT);
         baseHelper.move(300, 400);
-        assertThat(baseHelper.x(), is(300 - EXPECTED_OFFSET));
-        assertThat(baseHelper.y(), is(400));
+        assertThat(baseHelper.x(), is(300 - EXPECTED_HELPER_X_OFFSET));
+        assertThat(baseHelper.y(), is(400 + EXPECTED_HELPER_Y_OFFSET));
     }
 
     @Test()
     public void shouldMoveRightBase() {
         baseHelper = unShieldedHelper(RIGHT);
         baseHelper.move(300, 400);
-        assertThat(baseHelper.x(), is(300 + EXPECTED_OFFSET));
-        assertThat(baseHelper.y(), is(400));
+        assertThat(baseHelper.x(), is(300 + EXPECTED_HELPER_X_OFFSET));
+        assertThat(baseHelper.y(), is(400 + EXPECTED_HELPER_Y_OFFSET));
     }
 
     @Test()
@@ -129,8 +130,8 @@ public class BaseHelperTest {
         baseHelper.move(300, 400);
 
         // confirm helper has not moved
-        assertThat(baseHelper.x(), is(INITIAL_X + EXPECTED_OFFSET));
-        assertThat(baseHelper.y(), is(INITIAL_Y));
+        assertThat(baseHelper.x(), is(INITIAL_X + EXPECTED_HELPER_X_OFFSET));
+        assertThat(baseHelper.y(), is(INITIAL_Y + EXPECTED_HELPER_Y_OFFSET));
     }
 
     @Test()
