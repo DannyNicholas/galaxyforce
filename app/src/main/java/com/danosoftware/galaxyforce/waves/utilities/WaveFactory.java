@@ -124,7 +124,9 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
+                                        Arrays.asList(
+                                                PowerUpType.MISSILE_PARALLEL,
+                                                PowerUpType.HELPER_BASES)
                                 )
                         )
                 );

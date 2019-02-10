@@ -52,8 +52,11 @@ import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifi
  */
 public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
 
-    // helper's x position (in pixels) from primary base
+    // helper's x position offset (in pixels) from primary base
     private static final int X_OFFSET_FROM_PRIMARY_BASE = 64;
+
+    // helper's y position offset (in pixels) from primary base
+    private static final int Y_OFFSET_FROM_PRIMARY_BASE = 5;
 
     // helper base x offset from primary base's position
     private final int xOffset;
@@ -128,7 +131,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
                 HELPER,
                 primaryBase.x() +
                         (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE),
-                primaryBase.y()
+                primaryBase.y() + Y_OFFSET_FROM_PRIMARY_BASE
         );
         this.model = model;
         this.sounds = sounds;
@@ -158,6 +161,16 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
 
     @Override
     public BaseMissilesDto fire(BaseMissileType baseMissileType) {
+
+        // helper bases should not fire parallel missiles.
+        // instead, use an equivalent single missile.
+        if (baseMissileType == BaseMissileType.PARALLEL) {
+            return BaseMissileFactory.createBaseMissile(this, BaseMissileType.SIMPLE, model);
+        }
+        if (baseMissileType == BaseMissileType.SPRAY) {
+            return BaseMissileFactory.createBaseMissile(this, BaseMissileType.GUIDED, model);
+        }
+
         return BaseMissileFactory.createBaseMissile(this, baseMissileType, model);
     }
 
@@ -230,10 +243,10 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     @Override
     public void move(int x, int y) {
         if (state == ACTIVE) {
-            super.move(x + xOffset, y);
+            super.move(x + xOffset, y + Y_OFFSET_FROM_PRIMARY_BASE);
             // if base has a shield, move it with base
             if (shielded) {
-                shield.move(x + xOffset, y);
+                shield.move(x + xOffset, y + Y_OFFSET_FROM_PRIMARY_BASE);
             }
         }
     }
