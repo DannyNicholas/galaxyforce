@@ -28,7 +28,7 @@ public class AlienMissileFactory {
          * and direction
          */
         int x = alien.x();
-        int y = alien.y() + (alien.height() / 2);
+        int y = alien.y() - (alien.height() / 2);
 
         /*
          * Create new missiles

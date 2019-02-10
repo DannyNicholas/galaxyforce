@@ -15,7 +15,7 @@ public class AlienMissileSimple extends AbstractAlienMissile {
 
 
     public AlienMissileSimple(int xStart, int yStart) {
-        super(SPRITE, xStart, yStart);
+        super(SPRITE, xStart, yStart - (SPRITE.getProperties().getHeight() / 2));
     }
 
     @Override

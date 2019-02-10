@@ -30,7 +30,7 @@ public class AlienMissileRotated extends AbstractAlienMissile {
     private final int yDelta;
 
     public AlienMissileRotated(int xStart, int yStart, IBasePrimary base) {
-        super(SPRITE, xStart, yStart);
+        super(SPRITE, xStart, yStart - (SPRITE.getProperties().getHeight() / 2));
 
         // calculate angle from missile position to base
         final float angle;
