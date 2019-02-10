@@ -77,7 +77,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     // helper class to handle base movement and animation
     private final MoveBaseHelper moveHelper;
 
-
     /* delay between firing missiles in seconds */
     private static final float DEFAULT_BASE_MISSILE_DELAY = 0.5f;
 
@@ -104,7 +103,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      * indicates no change is needed.
      */
     private float timeUntilShieldRemoved = 0f;
-
 
     /* does base have shield */
     private boolean shielded = false;
@@ -200,19 +198,15 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             // move and animate base
             moveHelper.moveBase(deltaTime);
 
-            if (shielded) {
-                shield.move(x(), y());
-            }
-
             // move helper bases using built in offset from this primary base
             for (IBaseHelper helper : helpers.values()) {
                 helper.move(x(), y());
             }
-        }
 
-        if (state == ACTIVE) {
-            // if shielded then check when shield should be removed
             if (shielded) {
+                shield.move(x(), y());
+
+                // check when shield should be removed
                 timeUntilShieldRemoved -= deltaTime;
                 if (timeUntilShieldRemoved <= 0) {
                     removeShield();
@@ -229,6 +223,11 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             } else {
                 changeType(explosion.getExplosion(deltaTime));
             }
+        }
+
+        // animate helper bases
+        for (IBaseHelper helper : helpers.values()) {
+            helper.animate(deltaTime);
         }
 
         // check to see if base (and any helpers) should fire their missiles
@@ -463,18 +462,13 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             // if base missile time now expired, change back to default missile
             if (timeUntilDefaultMissile <= 0) {
                 setBaseMissileType(DEFAULT_MISSILE_TYPE, DEFAULT_BASE_MISSILE_DELAY, 0f);
-
-                // baseMissileType = DEFAULT_MISSILE_TYPE;
-                // baseMissileDelay = DEFAULT_BASE_MISSILE_DELAY;
-                // timeUntilDefaultMissile = 0f;
             }
         }
 
         // increment timer referencing time since base last fired
         timeSinceBaseLastFired = timeSinceBaseLastFired + deltaTime;
 
-        // if missile timer has exceeded delay time and base is active - ready
-        // to fire!!
+        // if missile timer has exceeded delay time and base is active - ready to fire!!
         return (timeSinceBaseLastFired > baseMissileDelay && state == ACTIVE);
     }
 
