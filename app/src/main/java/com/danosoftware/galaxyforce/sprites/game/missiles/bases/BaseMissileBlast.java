@@ -11,7 +11,7 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
 
     /* distance missile can move in pixels each second */
-    private static final int BASE_MISSILE_MOVE_PIXELS = 7 * 60;
+    private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* how much energy will be lost by alien when this missile hits it */
     private static final int HIT_ENERGY = 2;

@@ -13,7 +13,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
 
     /* distance missile can move in pixels each second */
-    private static final int BASE_MISSILE_MOVE_PIXELS = 7 * 60;
+    private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* time delay between missile direction changes */
     private static final float MISSILE_DIRECTION_CHANGE_DELAY = 0.1f;
