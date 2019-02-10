@@ -470,10 +470,10 @@ public class GamePlayModelImpl implements Model, GameModel {
              * used for missile implementations that do not destroy
              * themselves on initial collision (e.g. laser).
              *
-             * lastly, each missile can only destroy a single alien.
-             * we also check to see if missile has been destroyed, which will
-             * happen if it has already hit another alien checked in this collision
-             * detection cycle.
+             * lastly, each missile could already be destroyed if it has hit another alien
+             * in the current collision detection loop. So, we also check for this.
+             * Failure to do this, could result in a single base missile destroying
+             * multiple closely located aliens.
              */
             for (IBaseMissile eachBaseMissile : assets.getBaseMissiles()) {
                 if (checkCollision(eachAlien, eachBaseMissile)
