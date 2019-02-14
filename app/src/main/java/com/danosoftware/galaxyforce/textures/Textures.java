@@ -2,13 +2,8 @@ package com.danosoftware.galaxyforce.textures;
 
 import android.util.Log;
 
-import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,25 +11,26 @@ import java.util.Map;
 public class Textures {
     private static final String TAG = "Textures";
 
-    // private constructor
-    private Textures() {
+    private final TextureRegionXmlParser xmlParser;
 
+    public Textures(TextureRegionXmlParser xmlParser) {
+        this.xmlParser = xmlParser;
     }
 
     // static map to hold list of known Textures
-    private static final Map<TextureMap, Texture> textureMap = new HashMap<>();
+    private final Map<TextureMap, Texture> textureMap = new HashMap<>();
 
     // static map to hold sprite names and equivalent Texture Details for last
     // requested texture
-    private static final Map<String, TextureDetail> textureDetailMap = new HashMap<>();
+    private final Map<String, TextureDetail> textureDetailMap = new HashMap<>();
 
     // return TextureDetail for the supplied sprite name
-    public static TextureDetail getTextureDetail(String name) {
+    public TextureDetail getTextureDetail(String name) {
         return textureDetailMap.get(name);
     }
 
     // static factory to create instances
-    public static Texture newTexture(GLGraphics glGraphics, FileIO fileIO, TextureMap textureState) {
+    public Texture newTexture(GLGraphics glGraphics, TextureMap textureState) {
         if (textureState == null) {
             throw new IllegalArgumentException("Supplied TextureState object can not be null.");
         }
@@ -46,7 +42,7 @@ public class Textures {
         textureDetailMap.clear();
 
         // populate texture map
-        storeTextureDetails(fileIO, textureXml);
+        storeTextureDetails(textureXml);
 
         Texture newTexture;
 
@@ -71,19 +67,11 @@ public class Textures {
 
     // get textures from texture file
     // store textures into texture details map
-    private static void storeTextureDetails(FileIO fileIO, String textureXml) {
-        TextureRegionXmlParser textureParser = new TextureRegionXmlParser();
-
-        try {
-            List<TextureDetail> listOfTextureRegions = textureParser.readTextures(fileIO, textureXml);
+    private void storeTextureDetails(String textureXml) {
+        List<TextureDetail> listOfTextureRegions = xmlParser.loadTextures(textureXml);
             for (TextureDetail texture : listOfTextureRegions) {
                 // store texture details into map
                 textureDetailMap.put(texture.name, texture);
             }
-        } catch (XmlPullParserException | IOException e) {
-            String errorMsg = "Error reading texture region xml file: '" + textureXml + "'";
-            Log.e(TAG, errorMsg);
-            throw new GalaxyForceException(errorMsg);
-        }
     }
 }

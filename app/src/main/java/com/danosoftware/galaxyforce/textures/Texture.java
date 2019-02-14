@@ -1,10 +1,12 @@
 package com.danosoftware.galaxyforce.textures;
 
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.GLUtils;
 import android.util.Log;
 
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 
@@ -17,6 +19,7 @@ public class Texture {
     private final GLGraphics glGraphics;
     private final FileIO fileIO;
     private final String fileName;
+    private final AssetManager assets;
 
     private int textureId;
     private int minFilter;
@@ -26,10 +29,11 @@ public class Texture {
 
     private static final String TAG = "Texture";
 
-    public Texture(GLGraphics glGraphics, FileIO fileIO, String fileName) {
+    public Texture(GLGraphics glGraphics, FileIO fileIO, String fileName, AssetManager assets) {
         this.glGraphics = glGraphics;
         this.fileIO = fileIO;
         this.fileName = fileName;
+        this.assets = assets;
         load();
     }
 
@@ -39,9 +43,10 @@ public class Texture {
         gl.glGenTextures(1, textureIds, 0);
         textureId = textureIds[0];
 
-        InputStream in = null;
+//        InputStream in = null;
         try {
-            in = fileIO.readAsset(fileName);
+//            in = fileIO.readAsset(fileName);
+            InputStream in = assets.open("textures/" + fileName);
             Bitmap bitmap = BitmapFactory.decodeStream(in);
             this.width = bitmap.getWidth();
             this.height = bitmap.getHeight();
@@ -49,15 +54,17 @@ public class Texture {
             GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
             setFilters(GL10.GL_NEAREST, GL10.GL_NEAREST);
             gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
+            in.close();
         } catch (IOException e) {
-            throw new RuntimeException("Couldn't load texture '" + fileName + "'", e);
-        } finally {
-            if (in != null)
-                try {
-                    in.close();
-                } catch (IOException e) {
-                }
+            throw new GalaxyForceException("Couldn't load texture '" + fileName + "'", e);
         }
+// finally {
+//            if (in != null)
+//                try {
+//                    in.close();
+//                } catch (IOException e) {
+//                }
+//        }
 
         Log.d(TAG, "Loaded texture. Id: " + textureId + ". Filename: " + fileName + ".");
     }

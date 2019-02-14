@@ -1,9 +1,11 @@
 package com.danosoftware.galaxyforce.textures;
 
+import android.content.res.AssetManager;
 import android.util.Log;
 import android.util.Xml;
 
-import com.danosoftware.galaxyforce.services.file.FileIO;
+import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -14,49 +16,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 class TextureRegionXmlParser {
+
+
+    private static final String ACTIVITY_TAG = "Path Loader";
+
+    private static final String TEXTURE_ATLAS_XML_TAG = "TextureAtlas";
+    private static final String SPRITE_XML_TAG = "sprite";
+
     // We don't use namespaces
-    private static final String ns = null;
+    private static final String NS = null;
 
-    public List<TextureDetail> readTextures(FileIO fileIO, String fileName) throws XmlPullParserException, IOException {
-        TextureRegionXmlParser parser = new TextureRegionXmlParser();
-        List<TextureDetail> listOfTextureRegions;
+    private final AssetManager assets;
 
-        InputStream in;
-
-        in = fileIO.readAsset(fileName);
-        listOfTextureRegions = parser.parse(in);
-
-        if (in != null) {
-            in.close();
-        }
-
-        return listOfTextureRegions;
+    public TextureRegionXmlParser(AssetManager assets) {
+        this.assets = assets;
     }
 
-    private List<TextureDetail> parse(InputStream in) throws XmlPullParserException, IOException {
+    /**
+     * Load texture XML data file and return as a list of Texture Details
+     */
+    public List<TextureDetail> loadTextures(String xmlFile) {
+        Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Loading texture file: " + xmlFile);
         try {
+            InputStream is = assets.open("textures/" + xmlFile);
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(in, null);
+            parser.setInput(is, null);
             parser.nextTag();
-            return readTextureFile(parser);
-        } finally {
-            in.close();
+            List<TextureDetail> textures = readTextureFile(parser);
+            is.close();
+            return textures;
+        } catch (XmlPullParserException | IOException e) {
+            throw new GalaxyForceException("Error while loading texture file: " + xmlFile, e);
         }
     }
 
     private List<TextureDetail> readTextureFile(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<TextureDetail> entries = new ArrayList<>();
 
-        parser.require(XmlPullParser.START_TAG, ns, "TextureAtlas");
+        parser.require(XmlPullParser.START_TAG, NS, TEXTURE_ATLAS_XML_TAG);
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) {
                 continue;
             }
             String name = parser.getName();
 
-            // Starts by looking for the sub texture tag
-            if (name.equals("SubTexture")) {
+            // Starts by looking for the sprite tag
+            if (name.equals(SPRITE_XML_TAG)) {
                 entries.add(readTextureRegion(parser));
             } else {
                 skip(parser);
@@ -82,22 +88,22 @@ class TextureRegionXmlParser {
         }
     }
 
-    // Parses the contents of SubTexture. Extracts attributes it encounters.
+    // Parses the contents of sprite. Extracts attributes it encounters.
     private TextureDetail readTextureRegion(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(XmlPullParser.START_TAG, ns, "SubTexture");
+        parser.require(XmlPullParser.START_TAG, NS, SPRITE_XML_TAG);
 
-        String textureName = parser.getAttributeValue(null, "name");
-        String textureX = parser.getAttributeValue(null, "x");
-        String textureY = parser.getAttributeValue(null, "y");
-        String textureWidth = parser.getAttributeValue(null, "width");
-        String textureHeight = parser.getAttributeValue(null, "height");
+        final String textureName = parser.getAttributeValue(null, "n");
+        final String textureX = parser.getAttributeValue(null, "x");
+        final String textureY = parser.getAttributeValue(null, "y");
+        final String textureWidth = parser.getAttributeValue(null, "w");
+        final String textureHeight = parser.getAttributeValue(null, "h");
 
         Log.d("xml Reader", "Texture region found. Name : '" + textureName + "'.");
 
         // move to next tag
         parser.nextTag();
 
-        parser.require(XmlPullParser.END_TAG, ns, "SubTexture");
+        parser.require(XmlPullParser.END_TAG, NS, SPRITE_XML_TAG);
 
         return new TextureDetail(textureName, textureX, textureY, textureWidth, textureHeight);
     }
