@@ -61,8 +61,12 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
         sprites.add(new SplashSprite(
                 GameConstants.SCREEN_MID_X,
                 GameConstants.SCREEN_MID_Y,
+                MenuSpriteIdentifier.PLUTO));
+
+        sprites.add(new SplashSprite(
+                GameConstants.SCREEN_MID_X,
+                GameConstants.SCREEN_MID_Y,
                 MenuSpriteIdentifier.GALAXY_FORCE));
-//                SplashSpriteIdentifier.SPLASH_SCREEN));
 
         buildTextMessages();
 

@@ -23,6 +23,8 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
     //TODO - remove from game complete screen
     BASE("BlueButton360px"),
 
+    PLUTO("pluto"),
+
     FONT_MAP("GalaxyForceFont_30x38");
 
 
