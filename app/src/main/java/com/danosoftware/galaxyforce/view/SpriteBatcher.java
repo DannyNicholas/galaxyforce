@@ -21,12 +21,12 @@ public class SpriteBatcher {
         int len = indices.length;
         short j = 0;
         for (int i = 0; i < len; i += 6, j += 4) {
-            indices[i] = (short) (j);
+            indices[i] = j;
             indices[i + 1] = (short) (j + 1);
             indices[i + 2] = (short) (j + 2);
             indices[i + 3] = (short) (j + 2);
             indices[i + 4] = (short) (j + 3);
-            indices[i + 5] = (short) (j);
+            indices[i + 5] = j;
         }
         vertices.setIndices(indices, 0, indices.length);
     }
@@ -42,8 +42,6 @@ public class SpriteBatcher {
         vertices.bind();
         vertices.draw(GL10.GL_TRIANGLES, 0, numSprites * 6);
         vertices.unbind();
-
-        // Log.d(TAG, "Sprites in batch: " + numSprites);
     }
 
     public void drawSprite(float x, float y, float width, float height, TextureRegion region) {
@@ -56,23 +54,23 @@ public class SpriteBatcher {
 
         verticesBuffer[bufferIndex++] = x1;
         verticesBuffer[bufferIndex++] = y1;
-        verticesBuffer[bufferIndex++] = region.u1;
-        verticesBuffer[bufferIndex++] = region.v2;
+        verticesBuffer[bufferIndex++] = region.getU1();
+        verticesBuffer[bufferIndex++] = region.getV2();
 
         verticesBuffer[bufferIndex++] = x2;
         verticesBuffer[bufferIndex++] = y1;
-        verticesBuffer[bufferIndex++] = region.u2;
-        verticesBuffer[bufferIndex++] = region.v2;
+        verticesBuffer[bufferIndex++] = region.getU2();
+        verticesBuffer[bufferIndex++] = region.getV2();
 
         verticesBuffer[bufferIndex++] = x2;
         verticesBuffer[bufferIndex++] = y2;
-        verticesBuffer[bufferIndex++] = region.u2;
-        verticesBuffer[bufferIndex++] = region.v1;
+        verticesBuffer[bufferIndex++] = region.getU2();
+        verticesBuffer[bufferIndex++] = region.getV1();
 
         verticesBuffer[bufferIndex++] = x1;
         verticesBuffer[bufferIndex++] = y2;
-        verticesBuffer[bufferIndex++] = region.u1;
-        verticesBuffer[bufferIndex++] = region.v1;
+        verticesBuffer[bufferIndex++] = region.getU1();
+        verticesBuffer[bufferIndex++] = region.getV1();
 
         numSprites++;
     }
@@ -105,23 +103,23 @@ public class SpriteBatcher {
 
         verticesBuffer[bufferIndex++] = x1;
         verticesBuffer[bufferIndex++] = y1;
-        verticesBuffer[bufferIndex++] = region.u1;
-        verticesBuffer[bufferIndex++] = region.v2;
+        verticesBuffer[bufferIndex++] = region.getU1();
+        verticesBuffer[bufferIndex++] = region.getV2();
 
         verticesBuffer[bufferIndex++] = x2;
         verticesBuffer[bufferIndex++] = y2;
-        verticesBuffer[bufferIndex++] = region.u2;
-        verticesBuffer[bufferIndex++] = region.v2;
+        verticesBuffer[bufferIndex++] = region.getU2();
+        verticesBuffer[bufferIndex++] = region.getV2();
 
         verticesBuffer[bufferIndex++] = x3;
         verticesBuffer[bufferIndex++] = y3;
-        verticesBuffer[bufferIndex++] = region.u2;
-        verticesBuffer[bufferIndex++] = region.v1;
+        verticesBuffer[bufferIndex++] = region.getU2();
+        verticesBuffer[bufferIndex++] = region.getV1();
 
         verticesBuffer[bufferIndex++] = x4;
         verticesBuffer[bufferIndex++] = y4;
-        verticesBuffer[bufferIndex++] = region.u1;
-        verticesBuffer[bufferIndex++] = region.v1;
+        verticesBuffer[bufferIndex++] = region.getU1();
+        verticesBuffer[bufferIndex++] = region.getV1();
 
         numSprites++;
     }

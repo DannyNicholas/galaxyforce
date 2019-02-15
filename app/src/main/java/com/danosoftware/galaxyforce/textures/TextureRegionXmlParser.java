@@ -15,7 +15,14 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-class TextureRegionXmlParser {
+
+/**
+ * Responsible for loading xml texture property files and returning
+ * a list of texture properties as TextureDetails.
+ * <p>
+ * One TextureDetail property object describes one texture region (or sprite).
+ */
+public class TextureRegionXmlParser {
 
 
     private static final String ACTIVITY_TAG = "Path Loader";
@@ -35,7 +42,7 @@ class TextureRegionXmlParser {
     /**
      * Load texture XML data file and return as a list of Texture Details
      */
-    public List<TextureDetail> loadTextures(String xmlFile) {
+    List<TextureDetail> loadTextures(String xmlFile) {
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Loading texture file: " + xmlFile);
         try {
             InputStream is = assets.open("textures/" + xmlFile);

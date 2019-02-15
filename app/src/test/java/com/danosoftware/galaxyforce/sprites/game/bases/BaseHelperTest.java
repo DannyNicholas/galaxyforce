@@ -19,7 +19,7 @@ import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
-import com.danosoftware.galaxyforce.textures.Textures;
+import com.danosoftware.galaxyforce.textures.TextureService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, Textures.class})
+@PrepareForTest({Log.class, TextureService.class})
 public class BaseHelperTest {
 
     private static final int INITIAL_X = 100;
@@ -71,11 +71,9 @@ public class BaseHelperTest {
         // mock any static android logging
         mockStatic(Log.class);
 
-        final TextureDetail mockTextureDetail = new TextureDetail("mock", 0, 0, 0, 0);
-        mockStatic(Textures.class);
-        when(Textures.getTextureDetail(any(String.class))).thenReturn(mockTextureDetail);
-
+        final TextureDetail mockTextureDetail = new TextureDetail("mock", "0", "0", "0", "0");
         Texture mockTexture = mock(Texture.class);
+        when(mockTexture.getTextureDetail(any(String.class))).thenReturn(mockTextureDetail);
         for (GameSpriteIdentifier spriteId : GameSpriteIdentifier.values()) {
             spriteId.updateProperties(mockTexture);
         }

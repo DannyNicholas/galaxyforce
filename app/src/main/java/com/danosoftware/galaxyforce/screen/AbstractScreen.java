@@ -13,7 +13,7 @@ import com.danosoftware.galaxyforce.text.Font;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureMap;
-import com.danosoftware.galaxyforce.textures.Textures;
+import com.danosoftware.galaxyforce.textures.TextureService;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
@@ -24,6 +24,15 @@ public abstract class AbstractScreen implements IScreen {
 
     /* logger tag */
     private static final String LOCAL_TAG = "Screen";
+
+    // font glyphs per row - i.e. characters in a row within texture map
+    private final static int FONT_GLYPHS_PER_ROW = 8;
+
+    // font glyphs width - i.e. width of individual character
+    private final static int FONT_GLYPHS_WIDTH = 30;
+
+    // font glyphs height - i.e. height of individual character
+    private final static int FONT_GLYPHS_HEIGHT = 38;
 
     /**
      * Reference to model and controller. Each screen will have different
@@ -40,6 +49,8 @@ public abstract class AbstractScreen implements IScreen {
 
     // reference to openGL graphics
     final GLGraphics glGraphics;
+
+    private final TextureService textureService;
 
     private final FileIO fileIO;
 
@@ -61,12 +72,14 @@ public abstract class AbstractScreen implements IScreen {
     AbstractScreen(
             Model model,
             Controller controller,
+            TextureService textureService,
             TextureMap textureMap,
             GLGraphics glGraphics,
             FileIO fileIO,
             Camera2D camera,
             SpriteBatcher batcher) {
 
+        this.textureService = textureService;
         this.textureMap = textureMap;
         this.glGraphics = glGraphics;
         this.fileIO = fileIO;
@@ -157,7 +170,7 @@ public abstract class AbstractScreen implements IScreen {
          * re-loaded. re-loading must happen each time screen is resumed as
          * textures can be disposed by OpenGL when the game is paused.
          */
-        this.texture = Textures.newTexture(glGraphics, fileIO, textureMap);
+        this.texture = textureService.getOrCreateTexture(textureMap);
 
         /*
          * create each sprite's individual properties (e.g. width, height) from
@@ -171,17 +184,14 @@ public abstract class AbstractScreen implements IScreen {
 
         // set-up fonts - can be null if sprite map has no fonts
         ISpriteIdentifier fontId = textureMap.getFontIdentifier();
-
-        if (fontId != null) {
-            this.gameFont = new Font(
-                    texture,
-                    fontId.getProperties().getxPos(),
-                    fontId.getProperties().getyPos(),
-                    GameConstants.FONT_GLYPHS_PER_ROW,
-                    GameConstants.FONT_GLYPHS_WIDTH,
-                    GameConstants.FONT_GLYPHS_HEIGHT,
-                    GameConstants.FONT_CHARACTER_MAP);
-        }
+        this.gameFont = new Font(
+                texture,
+                fontId.getProperties().getxPos(),
+                fontId.getProperties().getyPos(),
+                FONT_GLYPHS_PER_ROW,
+                FONT_GLYPHS_WIDTH,
+                FONT_GLYPHS_HEIGHT,
+                GameConstants.FONT_CHARACTER_MAP);
 
         model.resume();
     }

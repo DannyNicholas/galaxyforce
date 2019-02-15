@@ -4,29 +4,26 @@ import com.danosoftware.galaxyforce.textures.Texture;
 
 public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
-    GALAXY_FORCE("GalaxyForceLogo.png"),
+    GALAXY_FORCE("PlutoPanicLogo"),
 
-    MAIN_MENU("BlueButton360px.png"), MAIN_MENU_PRESSED("BlueButton360pxPressed.png"),
+    MAIN_MENU("BlueButton360px"), MAIN_MENU_PRESSED("BlueButton360pxPressed"),
 
-    LEVEL_FRAME("GreenButton128px.png"), LEVEL_FRAME_PRESSED("GreenButton128pxPressed.png"),
+    LEVEL_FRAME("GreenButton128px"), LEVEL_FRAME_PRESSED("GreenButton128pxPressed"),
 
-    LEVEL_FRAME_LOCKED("LockedButton128px.png"), LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed.png"),
+    LEVEL_FRAME_LOCKED("LockedButton128px"), LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed"),
 
-    NEXT_LEVEL("NextLevels.png"), NEXT_LEVEL_PRESSED("NextLevelsPressed.png"),
+    NEXT_LEVEL("GreenRightArrow128px"), NEXT_LEVEL_PRESSED("GreenRightArrowPressed128px"),
 
-    PREVIOUS_LEVEL("PreviousLevels.png"), PREVIOUS_LEVEL_PRESSED("PreviousLevelsPressed.png"),
+    PREVIOUS_LEVEL("GreenLeftArrow128px"), PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed128px"),
 
-    OPTION_UNSELECTED("GreyButton180px.png"), OPTION_SELECTED("GoldButton180pxPressed.png"),
+    OPTION_UNSELECTED("GreyButton180px"), OPTION_SELECTED("GoldButton180pxPressed"),
 
-//    FACEBOOK("FaceBookOriginalButton128px.png"), FACEBOOK_PRESSED("FaceBookOriginalButton128pxPressed.png"),
+    STAR("Star"), STAR_BLACK("StarBLACK"), STAR_RED("StarRED"), STAR_BLUE("StarBLUE"), STAR_SPARKLE("StarSPARKLE"),
 
-//    TWITTER("TwitterOriginalButton128px.png"), TWITTER_PRESSED("TwitterButtonOriginal128pxPressed.png"),
+    //TODO - remove from game complete screen
+    BASE("BlueButton360px"),
 
-    STAR("Star.png"), STAR_BLACK("StarBLACK.png"), STAR_RED("StarRED.png"), STAR_BLUE("StarBLUE.png"), STAR_SPARKLE("StarSPARKLE.png"),
-
-    BASE("shooterSmall.png"),
-
-    FONT_MAP("GalaxyForceFont_30x38.png");
+    FONT_MAP("GalaxyForceFont_30x38");
 
 
     private final String name;

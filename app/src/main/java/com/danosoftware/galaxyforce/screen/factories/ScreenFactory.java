@@ -32,7 +32,10 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
+import com.danosoftware.galaxyforce.textures.TextureLoader;
 import com.danosoftware.galaxyforce.textures.TextureMap;
+import com.danosoftware.galaxyforce.textures.TextureRegionXmlParser;
+import com.danosoftware.galaxyforce.textures.TextureService;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
@@ -60,6 +63,7 @@ public class ScreenFactory {
     private final Input input;
     private final String versionName;
     private final StarFieldTemplate starFieldTemplate;
+    private final TextureService textureService;
 
     public ScreenFactory(
             GLGraphics glGraphics,
@@ -90,6 +94,10 @@ public class ScreenFactory {
         this.batcher = new SpriteBatcher(glGraphics, MAX_SPRITES);
         this.camera = new Camera2D(glGraphics, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
         this.starFieldTemplate = new StarFieldTemplate(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+        this.textureService = new TextureService(
+                glGraphics,
+                new TextureRegionXmlParser(assets),
+                new TextureLoader(assets));
     }
 
     public IScreen newScreen(ScreenType screenType) {
@@ -104,7 +112,8 @@ public class ScreenFactory {
                 return new ExitingScreen(
                         new SplashModelImpl(game, controller, billingService, versionName),
                         controller,
-                        TextureMap.SPLASH,
+                        textureService,
+                        TextureMap.MENU,
                         glGraphics,
                         fileIO,
                         camera,
@@ -114,6 +123,7 @@ public class ScreenFactory {
                 return new ExitingScreen(
                         new MainMenuModelImpl(game, controller, billingService, starFieldTemplate),
                         controller,
+                        textureService,
                         TextureMap.MENU,
                         glGraphics,
                         fileIO,
@@ -124,6 +134,7 @@ public class ScreenFactory {
                 return new Screen(
                         new OptionsModelImpl(game, controller, configurationService, sounds, music, vibrator, starFieldTemplate),
                         controller,
+                        textureService,
                         TextureMap.MENU,
                         glGraphics,
                         fileIO,
@@ -134,6 +145,7 @@ public class ScreenFactory {
                 return new SelectLevelScreen(
                         new SelectLevelModelImpl(game, controller, billingService, savedGame, starFieldTemplate),
                         controller,
+                        textureService,
                         TextureMap.MENU,
                         glGraphics,
                         fileIO,
@@ -144,6 +156,7 @@ public class ScreenFactory {
                 return new Screen(
                         new UnlockFullVersionModelImpl(game, controller, billingService, starFieldTemplate),
                         controller,
+                        textureService,
                         TextureMap.MENU,
                         glGraphics,
                         fileIO,
@@ -154,6 +167,7 @@ public class ScreenFactory {
                 return new Screen(
                         new GameCompleteModelImpl(game, controller, starFieldTemplate),
                         controller,
+                        textureService,
                         TextureMap.MENU,
                         glGraphics,
                         fileIO,
@@ -171,6 +185,7 @@ public class ScreenFactory {
         return new Screen(
                 gameModel,
                 controller,
+                textureService,
                 TextureMap.GAME,
                 glGraphics,
                 fileIO,
@@ -205,6 +220,7 @@ public class ScreenFactory {
         return new Screen(
                 new GamePausedModelImpl(game, controller, pausedSprites),
                 controller,
+                textureService,
                 TextureMap.GAME,
                 glGraphics,
                 fileIO,
@@ -217,6 +233,7 @@ public class ScreenFactory {
         return new Screen(
                 new GameOverModelImpl(game, controller, previousWave, starFieldTemplate),
                 controller,
+                textureService,
                 TextureMap.GAME,
                 glGraphics,
                 fileIO,

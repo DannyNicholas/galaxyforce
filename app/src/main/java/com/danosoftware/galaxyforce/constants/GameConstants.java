@@ -20,15 +20,6 @@ public class GameConstants {
     // should we show the FPS counter
     public static final boolean SHOW_FPS = true;
 
-    // font glyphs per row - i.e. characters in a row within texture map
-    public final static int FONT_GLYPHS_PER_ROW = 8;
-
-    // font glyphs width - i.e. width of individual character
-    public final static int FONT_GLYPHS_WIDTH = 30;
-
-    // font glyphs height - i.e. height of individual character
-    public final static int FONT_GLYPHS_HEIGHT = 38;
-
     /*
      * font characters in map - displayed text will only support these
      * characters
