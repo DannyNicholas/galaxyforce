@@ -27,7 +27,6 @@ public class Flag extends AbstractSprite {
     private static final int FLAGS_START_Y = GameConstants.GAME_HEIGHT - (FLAGS_HEIGHT / 2);
 
     // constants for each supported flag
-    private static final ISpriteIdentifier FLAG_100 = GameSpriteIdentifier.FLAG_100;
     private static final ISpriteIdentifier FLAG_50 = GameSpriteIdentifier.FLAG_50;
     private static final ISpriteIdentifier FLAG_10 = GameSpriteIdentifier.FLAG_10;
     private static final ISpriteIdentifier FLAG_5 = GameSpriteIdentifier.FLAG_5;
@@ -37,7 +36,6 @@ public class Flag extends AbstractSprite {
     private static final Map<Integer, ISpriteIdentifier> flagMap = new HashMap<>();
 
     static {
-        flagMap.put(100, Flag.FLAG_100);
         flagMap.put(50, Flag.FLAG_50);
         flagMap.put(10, Flag.FLAG_10);
         flagMap.put(5, Flag.FLAG_5);

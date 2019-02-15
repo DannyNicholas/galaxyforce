@@ -13,8 +13,8 @@ import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 public enum TextureMap {
 
     GAME(
-            "game.png",
-            "game.xml",
+            "gameTextures.png",
+            "gameTextures.xml",
             GameSpriteIdentifier.values(),
             GameSpriteIdentifier.FONT_MAP),
     MENU(

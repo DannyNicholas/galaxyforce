@@ -12,9 +12,9 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
     LEVEL_FRAME_LOCKED("LockedButton128px"), LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed"),
 
-    NEXT_LEVEL("GreenRightArrow128px"), NEXT_LEVEL_PRESSED("GreenRightArrowPressed128px"),
+    NEXT_LEVEL("GreenRightArrow64px"), NEXT_LEVEL_PRESSED("GreenRightArrowPressed64px"),
 
-    PREVIOUS_LEVEL("GreenLeftArrow128px"), PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed128px"),
+    PREVIOUS_LEVEL("GreenLeftArrow64px"), PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed64px"),
 
     OPTION_UNSELECTED("GreyButton180px"), OPTION_SELECTED("GoldButton180pxPressed"),
 

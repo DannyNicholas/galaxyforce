@@ -29,25 +29,29 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     /* Base Sprites */
 
-    BASE("BaseUp_64px.png"), BASE_SPIN_1("BaseUpSpin1_64px.png"), BASE_SPIN_2("BaseUpSpin2_64px.png"), BASE_SPIN_3("BaseUpSpin3_64px.png"),
+    BASE("BaseUp_64px.png"),
+//    BASE_SPIN_1("BaseUpSpin1_64px.png"), BASE_SPIN_2("BaseUpSpin2_64px.png"), BASE_SPIN_3("BaseUpSpin3_64px.png"),
 
-    BASE_FLAT("BaseFlat_64px.png"),
+//    BASE_FLAT("BaseFlat_64px.png"),
 
-    BASE_FLIP("BaseDown_64px.png"), BASE_FLIP_SPIN_1("BaseDownSpin1_64px.png"), BASE_FLIP_SPIN_2("BaseDownSpin2_64px.png"), BASE_FLIP_SPIN_3(
-            "BaseDownSpin3_64px.png"),
+//    BASE_FLIP("BaseDown_64px.png"), BASE_FLIP_SPIN_1("BaseDownSpin1_64px.png"), BASE_FLIP_SPIN_2("BaseDownSpin2_64px.png"), BASE_FLIP_SPIN_3(
+//            "BaseDownSpin3_64px.png"),
 
-    BASE_RIGHT("BaseUpRight_64px.png"), BASE_LEFT("BaseUpLeft_64px.png"), BASE_FLIP_RIGHT("BaseDownRight_64px.png"), BASE_FLIP_LEFT(
-            "BaseDownLeft_64px.png"),
+    BASE_RIGHT("BaseUpRight_64px.png"), BASE_LEFT("BaseUpLeft_64px.png"),
+//    BASE_FLIP_RIGHT("BaseDownRight_64px.png"), BASE_FLIP_LEFT(
+//            "BaseDownLeft_64px.png"),
 
     /* Base Helper */
 
-    HELPER("BaseHelper64px_3pcNoise.png"), HELPER_SPIN_1("BaseHelperSpin1_64px.png"), HELPER_SPIN_2("BaseHelperSpin2_64px.png"), HELPER_SPIN_3(
-            "BaseHelperSpin3_64px.png"),
+    HELPER("BaseHelper64px_3pcNoise.png"),
 
-    HELPER_FLAT("BaseHelperFlat_64px.png"),
-
-    HELPER_FLIP("BaseHelperDown_64px.png"), HELPER_FLIP_SPIN_1("BaseHelperDownSpin1_64px.png"), HELPER_FLIP_SPIN_2(
-            "BaseHelperDownSpin2_64px.png"), HELPER_FLIP_SPIN_3("BaseHelperDownSpin3_64px.png"),
+//    HELPER_SPIN_1("BaseHelperSpin1_64px.png"), HELPER_SPIN_2("BaseHelperSpin2_64px.png"), HELPER_SPIN_3(
+//            "BaseHelperSpin3_64px.png"),
+//
+//    HELPER_FLAT("BaseHelperFlat_64px.png"),
+//
+//    HELPER_FLIP("BaseHelperDown_64px.png"), HELPER_FLIP_SPIN_1("BaseHelperDownSpin1_64px.png"), HELPER_FLIP_SPIN_2(
+//            "BaseHelperDownSpin2_64px.png"), HELPER_FLIP_SPIN_3("BaseHelperDownSpin3_64px.png"),
 
     /* Power Up Sprites - TODO Laser needs it's own sprite */
 
@@ -59,7 +63,7 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     POWERUP_MISSILE_SPRAY("pwrUpSpray34px.png"), POWERUP_MISSILE_LASER("pwrUpLaser34px.png"),
     POWERUP_SHIELD("pwrUpShield34px.png"), POWERUP_HELPER_BASES("pwrUpHelper34px.png"),
 
-    MISSILE_HIT_1("hit1-54px.png"), MISSILE_HIT_2("hit2-54px.png"), MISSILE_HIT_3("hit3-54px.png"),
+//    MISSILE_HIT_1("hit1-54px.png"), MISSILE_HIT_2("hit2-54px.png"), MISSILE_HIT_3("hit3-54px.png"),
 
     LASER_ALIEN("laserInvaderGreen9px.png"), LASER_BASE("laserHeroNew9px.png"),
 
@@ -69,18 +73,19 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     CONTROL("controlOpaque.png"), JOYSTICK("joystickOpaque.png"),
 
-    DRAG_1("Drag_1_54px_simple.png"), DRAG_2("Drag_2_54px_simple.png"),
+//    DRAG_1("Drag_1_54px_simple.png"), DRAG_2("Drag_2_54px_simple.png"),
 
     PAUSE_BUTTON_UP("PauseButtonUp100pxMasked.png"), PAUSE_BUTTON_DOWN("PauseButtonDown100pxMasked.png"),
 
-    FLIP_BUTTON_UP("FlipButtonUp100pxMasked.png"), FLIP_BUTTON_DOWN("FlipButtonDown100pxMasked.png"),
+//    FLIP_BUTTON_UP("FlipButtonUp100pxMasked.png"), FLIP_BUTTON_DOWN("FlipButtonDown100pxMasked.png"),
 
-    FLAG_1("Flag_1.png"), FLAG_5("Flag_5.png"), FLAG_10("Flag_10.png"), FLAG_50("Flag_50.png"), FLAG_100("Flag_100.png"),
+    FLAG_1("Flag_1.png"), FLAG_5("Flag_5.png"), FLAG_10("Flag_10.png"), FLAG_50("Flag_50.png"),
+//    FLAG_100("Flag_100.png"),
 
-    ENERGY_GREEN("Energy_Green28px.png"), ENERGY_ORANGE("Energy_Orange28px.png"), ENERGY_RED("Energy_Red28px.png"), ENERGY_YELLOW(
-            "Energy_Yellow28px.png"),
-
-    ENERGY_BAR_LEFT("EnergyBarLeft.png"), ENERGY_BAR_MIDDLE("EnergyBarMiddle.png"), ENERGY_BAR_RIGHT("EnergyBarRight.png"),
+//    ENERGY_GREEN("Energy_Green28px.png"), ENERGY_ORANGE("Energy_Orange28px.png"), ENERGY_RED("Energy_Red28px.png"), ENERGY_YELLOW(
+//            "Energy_Yellow28px.png"),
+//
+//    ENERGY_BAR_LEFT("EnergyBarLeft.png"), ENERGY_BAR_MIDDLE("EnergyBarMiddle.png"), ENERGY_BAR_RIGHT("EnergyBarRight.png"),
 
     MENU_BUTTON_UP("BlueButton360px.png"), MENU_BUTTON_DOWN("BlueButton360pxPressed.png"),
 
