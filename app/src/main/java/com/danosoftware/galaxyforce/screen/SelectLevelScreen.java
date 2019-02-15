@@ -72,7 +72,7 @@ public class SelectLevelScreen extends AbstractScreen {
                     sprite.y(),
                     props.getWidth(),
                     props.getHeight(),
-                    props.getTextureRegion());
+                    textureRegions.get(spriteId));
         }
 
         // gets sprites from model
@@ -84,7 +84,7 @@ public class SelectLevelScreen extends AbstractScreen {
                     sprite.y(),
                     props.getWidth(),
                     props.getHeight(),
-                    props.getTextureRegion());
+                    textureRegions.get(spriteId));
         }
 
         /*

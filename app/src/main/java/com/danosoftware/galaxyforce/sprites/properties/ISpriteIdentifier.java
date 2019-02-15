@@ -17,4 +17,6 @@ public interface ISpriteIdentifier {
      * called.
      */
     void updateProperties(Texture texture);
+
+    String getName();
 }

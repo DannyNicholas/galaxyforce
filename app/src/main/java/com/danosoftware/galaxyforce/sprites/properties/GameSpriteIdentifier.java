@@ -116,4 +116,9 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     public void updateProperties(Texture texture) {
         this.properties = new SpriteProperties(name, texture);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

@@ -11,11 +11,16 @@ import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
 import com.danosoftware.galaxyforce.text.Font;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.textures.Texture;
+import com.danosoftware.galaxyforce.textures.TextureDetail;
 import com.danosoftware.galaxyforce.textures.TextureMap;
+import com.danosoftware.galaxyforce.textures.TextureRegion;
 import com.danosoftware.galaxyforce.textures.TextureService;
 import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -66,6 +71,8 @@ public abstract class AbstractScreen implements IScreen {
     // TextureState identifies the texture map being used
     private final TextureMap textureMap;
 
+    final Map<ISpriteIdentifier, TextureRegion> textureRegions;
+
     AbstractScreen(
             Model model,
             Controller controller,
@@ -82,6 +89,7 @@ public abstract class AbstractScreen implements IScreen {
         this.camera = camera;
         this.controller = controller;
         this.model = model;
+        this.textureRegions = new HashMap<>();
     }
 
     @Override
@@ -111,7 +119,7 @@ public abstract class AbstractScreen implements IScreen {
                         props.getWidth(),
                         props.getHeight(),
                         sprite.rotation(),
-                        props.getTextureRegion());
+                        textureRegions.get(spriteId));
             } else {
                 // use normal sprite method
                 batcher.drawSprite(
@@ -119,7 +127,7 @@ public abstract class AbstractScreen implements IScreen {
                         sprite.y(),
                         props.getWidth(),
                         props.getHeight(),
-                        props.getTextureRegion());
+                        textureRegions.get(spriteId));
             }
         }
 
@@ -173,16 +181,27 @@ public abstract class AbstractScreen implements IScreen {
          * called after a new texture is re-loaded and before sprites can be
          * displayed.
          */
+        textureRegions.clear();
         for (ISpriteIdentifier sprite : textureMap.getSpriteIdentifiers()) {
             sprite.updateProperties(texture);
+            TextureDetail textureDetails = texture.getTextureDetail(sprite.getName());
+            textureRegions.put(
+                    sprite,
+                    new TextureRegion(
+                            texture,
+                            textureDetails.getxPos(),
+                            textureDetails.getyPos(),
+                            textureDetails.getWidth(),
+                            textureDetails.getHeight()));
         }
 
         // set-up fonts - can be null if sprite map has no fonts
         ISpriteIdentifier fontId = textureMap.getFontIdentifier();
+        TextureDetail fontTextureDetails = texture.getTextureDetail(fontId.getName());
         this.gameFont = new Font(
                 texture,
-                fontId.getProperties().getxPos(),
-                fontId.getProperties().getyPos(),
+                fontTextureDetails.getxPos(),
+                fontTextureDetails.getyPos(),
                 FONT_GLYPHS_PER_ROW,
                 FONT_GLYPHS_WIDTH,
                 FONT_GLYPHS_HEIGHT,

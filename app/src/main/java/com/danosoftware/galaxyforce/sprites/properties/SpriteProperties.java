@@ -1,21 +1,13 @@
 package com.danosoftware.galaxyforce.sprites.properties;
 
-import android.util.Log;
-
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureDetail;
-import com.danosoftware.galaxyforce.textures.TextureRegion;
 
 public class SpriteProperties implements ISpriteProperties {
-    private static final String TAG = "SpriteProperty";
 
-    // details for texture region
+    // dimensions for texture region
     private final int width;
     private final int height;
-    private final int xPos;
-    private final int yPos;
-
-    private final TextureRegion textureRegion;
 
     /**
      * Create a sprite property from the supplied sprite name and texture map.
@@ -24,20 +16,9 @@ public class SpriteProperties implements ISpriteProperties {
      * @param texture - texture map containing sprite
      */
     public SpriteProperties(String name, Texture texture) {
-
         TextureDetail textureDetails = texture.getTextureDetail(name);
-        this.xPos = textureDetails.getxPos();
-        this.yPos = textureDetails.getyPos();
         this.width = textureDetails.getWidth();
         this.height = textureDetails.getHeight();
-        this.textureRegion = new TextureRegion(
-                texture,
-                xPos,
-                yPos,
-                width,
-                height);
-
-        Log.v(TAG, "Name: " + name + ". x: " + xPos + ". y: " + yPos + ". w: " + width + ". h : " + height + ".");
     }
 
     @Override
@@ -48,20 +29,5 @@ public class SpriteProperties implements ISpriteProperties {
     @Override
     public int getHeight() {
         return height;
-    }
-
-    @Override
-    public int getxPos() {
-        return xPos;
-    }
-
-    @Override
-    public int getyPos() {
-        return yPos;
-    }
-
-    @Override
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
     }
 }
