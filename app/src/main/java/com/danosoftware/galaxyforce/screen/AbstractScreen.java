@@ -5,7 +5,6 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
@@ -52,8 +51,6 @@ public abstract class AbstractScreen implements IScreen {
 
     private final TextureService textureService;
 
-    private final FileIO fileIO;
-
     // reference to graphics texture map - set on resume
     Texture texture;
 
@@ -75,14 +72,12 @@ public abstract class AbstractScreen implements IScreen {
             TextureService textureService,
             TextureMap textureMap,
             GLGraphics glGraphics,
-            FileIO fileIO,
             Camera2D camera,
             SpriteBatcher batcher) {
 
         this.textureService = textureService;
         this.textureMap = textureMap;
         this.glGraphics = glGraphics;
-        this.fileIO = fileIO;
         this.batcher = batcher;
         this.camera = camera;
         this.controller = controller;

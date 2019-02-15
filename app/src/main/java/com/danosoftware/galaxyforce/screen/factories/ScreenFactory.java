@@ -25,7 +25,6 @@ import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
-import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -51,7 +50,6 @@ public class ScreenFactory {
     private final SpriteBatcher batcher;
     private final Camera2D camera;
     private final GLGraphics glGraphics;
-    private final FileIO fileIO;
     private final BillingService billingService;
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
@@ -67,7 +65,6 @@ public class ScreenFactory {
 
     public ScreenFactory(
             GLGraphics glGraphics,
-            FileIO fileIO,
             BillingService billingService,
             ConfigurationService configurationService,
             SoundPlayerService sounds,
@@ -80,7 +77,6 @@ public class ScreenFactory {
             String versionName) {
 
         this.glGraphics = glGraphics;
-        this.fileIO = fileIO;
         this.billingService = billingService;
         this.configurationService = configurationService;
         this.sounds = sounds;
@@ -115,7 +111,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -126,7 +121,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -137,7 +131,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -148,7 +141,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -159,7 +151,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -170,7 +161,6 @@ public class ScreenFactory {
                         textureService,
                         TextureMap.MENU,
                         glGraphics,
-                        fileIO,
                         camera,
                         batcher);
 
@@ -188,7 +178,6 @@ public class ScreenFactory {
                 textureService,
                 TextureMap.GAME,
                 glGraphics,
-                fileIO,
                 camera,
                 batcher);
     }
@@ -223,7 +212,6 @@ public class ScreenFactory {
                 textureService,
                 TextureMap.GAME,
                 glGraphics,
-                fileIO,
                 camera,
                 batcher);
     }
@@ -236,10 +224,7 @@ public class ScreenFactory {
                 textureService,
                 TextureMap.GAME,
                 glGraphics,
-                fileIO,
                 camera,
                 batcher);
     }
-
-
 }

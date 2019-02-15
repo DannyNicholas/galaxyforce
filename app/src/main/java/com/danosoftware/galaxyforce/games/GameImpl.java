@@ -19,8 +19,6 @@ import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
-import com.danosoftware.galaxyforce.services.file.FileIO;
-import com.danosoftware.galaxyforce.services.file.GameFileIO;
 import com.danosoftware.galaxyforce.services.music.Music;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerServiceImpl;
@@ -70,7 +68,6 @@ public class GameImpl implements Game {
 
         this.returningScreens = new ArrayDeque<>();
 
-        FileIO fileIO = new GameFileIO(context);
         Input input = new GameInput(glView, 1, 1);
         String versionName = versionName(context);
 
@@ -95,7 +92,6 @@ public class GameImpl implements Game {
 
         this.screenFactory = new ScreenFactory(
                 glGraphics,
-                fileIO,
                 billingService,
                 configurationService,
                 sounds,

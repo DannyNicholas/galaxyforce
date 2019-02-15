@@ -2,7 +2,6 @@ package com.danosoftware.galaxyforce.screen;
 
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.models.screens.Model;
-import com.danosoftware.galaxyforce.services.file.FileIO;
 import com.danosoftware.galaxyforce.textures.TextureMap;
 import com.danosoftware.galaxyforce.textures.TextureService;
 import com.danosoftware.galaxyforce.view.Camera2D;
@@ -17,11 +16,10 @@ public class ExitingScreen extends AbstractScreen {
             TextureService textureService,
             TextureMap textureMap,
             GLGraphics glGraphics,
-            FileIO fileIO,
             Camera2D camera,
             SpriteBatcher batcher) {
 
-        super(model, controller, textureService, textureMap, glGraphics, fileIO, camera, batcher);
+        super(model, controller, textureService, textureMap, glGraphics, camera, batcher);
     }
 
     @Override
