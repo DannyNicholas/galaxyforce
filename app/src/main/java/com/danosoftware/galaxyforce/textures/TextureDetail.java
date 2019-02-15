@@ -13,11 +13,11 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
  */
 public class TextureDetail {
 
-    public final String name;
-    public final int xPos;
-    public final int yPos;
-    public final int width;
-    public final int height;
+    private final String name;
+    private final int xPos;
+    private final int yPos;
+    private final int width;
+    private final int height;
 
     public TextureDetail(String name, String xPos, String yPos, String width, String height) {
         this.name = name;
@@ -42,4 +42,23 @@ public class TextureDetail {
         return num;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

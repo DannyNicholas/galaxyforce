@@ -118,7 +118,7 @@ public class Texture {
 
         final Map<String, TextureDetail> textureDetailMap = new HashMap<>();
         for (TextureDetail texture : xmlParser.loadTextures(textureXmlFile)) {
-            textureDetailMap.put(texture.name, texture);
+            textureDetailMap.put(texture.getName(), texture);
         }
         return textureDetailMap;
     }

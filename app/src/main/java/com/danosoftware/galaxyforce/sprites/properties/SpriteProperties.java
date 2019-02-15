@@ -26,15 +26,16 @@ public class SpriteProperties implements ISpriteProperties {
     public SpriteProperties(String name, Texture texture) {
 
         TextureDetail textureDetails = texture.getTextureDetail(name);
-
-        // populate texture region properties
-        this.xPos = textureDetails.xPos;
-        this.yPos = textureDetails.yPos;
-        this.width = textureDetails.width;
-        this.height = textureDetails.height;
-
-        // create texture region
-        this.textureRegion = new TextureRegion(texture, xPos, yPos, width, height);
+        this.xPos = textureDetails.getxPos();
+        this.yPos = textureDetails.getyPos();
+        this.width = textureDetails.getWidth();
+        this.height = textureDetails.getHeight();
+        this.textureRegion = new TextureRegion(
+                texture,
+                xPos,
+                yPos,
+                width,
+                height);
 
         Log.v(TAG, "Name: " + name + ". x: " + xPos + ". y: " + yPos + ". w: " + width + ". h : " + height + ".");
     }
