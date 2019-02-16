@@ -9,6 +9,10 @@ public class GameConstants {
     public final static int WAVES_PER_ZONE = 12;
     public final static int MAX_WAVES = MAX_ZONES * WAVES_PER_ZONE;
 
+    // sprite positions
+    public final static int LOGO_Y_POS = 817;
+    public final static int PLANET_Y_POS = 100;
+
     /*
      * maximum free wave. users must upgrade to play beyond this wave.
      */

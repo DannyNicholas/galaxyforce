@@ -13,8 +13,13 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.sprites.common.IMovingSprite;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.LogoMovingSprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.PlanetMovingSprite;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
+import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextPositionX;
@@ -29,6 +34,7 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
 
     private final List<Text> text;
     private final List<ISprite> sprites;
+    private final StarField starField;
 
     // how long splash screen has been displayed for so far (in seconds)
     private float splashScreenTime;
@@ -39,6 +45,12 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
     // version name of this package
     private final String versionName;
 
+    // variables to track planet and logo movements
+    private static final int START_PLANET_Y_POS = 0 - (267 / 2);
+    private static final int START_LOGO_Y_POS = GameConstants.GAME_HEIGHT + (184 / 2);
+    private final IMovingSprite planet;
+    private final IMovingSprite logo;
+
     /*
      * Should we rebuild the screen text?
      * Normally triggered by a change in state from a billing thread.
@@ -48,7 +60,8 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
     public SplashModelImpl(Game game,
                            Controller controller,
                            BillingService billingService,
-                           String versionName) {
+                           String versionName,
+                           StarFieldTemplate starFieldTemplate) {
 
         this.game = game;
         this.billingService = billingService;
@@ -57,16 +70,19 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
         this.text = new ArrayList<>();
         this.splashScreenTime = 0f;
         this.reBuildText = false;
-
-        sprites.add(new SplashSprite(
+        this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
+        this.planet = new PlanetMovingSprite(
                 GameConstants.SCREEN_MID_X,
-                GameConstants.SCREEN_MID_Y,
-                MenuSpriteIdentifier.PLUTO));
-
-        sprites.add(new SplashSprite(
+                START_PLANET_Y_POS,
+                MenuSpriteIdentifier.PLUTO);
+        this.logo = new LogoMovingSprite(
                 GameConstants.SCREEN_MID_X,
-                GameConstants.SCREEN_MID_Y,
-                MenuSpriteIdentifier.GALAXY_FORCE));
+                START_LOGO_Y_POS,
+                MenuSpriteIdentifier.GALAXY_FORCE);
+
+        sprites.addAll(starField.getSprites());
+        sprites.add(planet);
+        sprites.add(logo);
 
         buildTextMessages();
 
@@ -130,6 +146,12 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
             buildTextMessages();
             reBuildText = false;
         }
+
+        // move stars
+        starField.animate(deltaTime);
+
+        planet.animate(deltaTime);
+        logo.animate(deltaTime);
 
         // increment splash screen time count by deltaTime
         splashScreenTime = splashScreenTime + deltaTime;
