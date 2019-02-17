@@ -19,13 +19,13 @@ Build -> Generate Signed Bundle / APK...
 
 Choose APK then click `Next`.
 
-[Create APK Image](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/createAPK.png "Create APK Image")
+![Create APK Image](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/createAPK.png "Create APK Image")
 
 Enter details key store details then click `Next`. It is important that the same keystore is used every time as otherwise new APKs will be rejected by Google Play Console.
 
 Choose `release` build variant and the two signature versions. Click `Finish`.
 
-[Choose Build Variant](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/buildVariant.png "Choose Build Variant")
+![Choose Build Variant](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/buildVariant.png "Choose Build Variant")
 
 ***
 
@@ -59,7 +59,7 @@ Install the signed APK:
 
 Click on `Release Management -> App Releases`. Currently these are deployed to a Beta closed track. Click on `Manage`.
 
-[App Release](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/appRelease.png "App Release")
+![App Release](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/appRelease.png "App Release")
 
 Here, you can create releases and manage beta testers.
 
@@ -73,7 +73,7 @@ Here you can:
 
 Then press `Save`.
 
-[Upload](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/upload.png "Upload")
+![Upload](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/upload.png "Upload")
 
 Click `Review` to see the release changes.
 Once done, click `Start Rollout to Beta`.
@@ -89,4 +89,4 @@ Click on
 
 Upload all the mapping files for the current APK (`.../app/build/outputs/mapping/release/`)
 
-[Deobsfucation Mapping Files](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/deobsfucation.png "Deobsfucation Mapping Files")
+![Deobsfucation Mapping Files](https://github.com/DannyNicholas/galaxyforce/raw/dev/assets/deobsfucation.png "Deobsfucation Mapping Files")
