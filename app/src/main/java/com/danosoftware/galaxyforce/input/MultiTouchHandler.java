@@ -136,7 +136,8 @@ public class MultiTouchHandler implements TouchHandler {
             touchEvents.clear();
             touchEvents.addAll(touchEventsBuffer);
             touchEventsBuffer.clear();
-            return touchEvents;
+            // return a copy to avoid possibility of concurrent modification
+            return new ArrayList<>(touchEvents);
         }
     }
 
