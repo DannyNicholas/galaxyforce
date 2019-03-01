@@ -277,7 +277,7 @@ public class PrimaryBaseTest {
         Long shields = primaryBase.allSprites().stream().filter(new Predicate<ISprite>() {
             @Override
             public boolean test(ISprite iSprite) {
-                return iSprite instanceof BaseShield;
+                return iSprite instanceof BaseShieldHelper;
             }
         }).count();
         assertThat(shields, is(1L));
@@ -303,7 +303,7 @@ public class PrimaryBaseTest {
         Long shields = primaryBase.allSprites().stream().filter(new Predicate<ISprite>() {
             @Override
             public boolean test(ISprite iSprite) {
-                return iSprite instanceof BaseShield;
+                return iSprite instanceof BaseShieldHelper;
             }
         }).count();
         assertThat(shields, is(0L));

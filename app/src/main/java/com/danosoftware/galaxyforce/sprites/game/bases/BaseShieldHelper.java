@@ -1,18 +1,24 @@
 package com.danosoftware.galaxyforce.sprites.game.bases;
 
 import com.danosoftware.galaxyforce.sprites.common.AbstractMovingSprite;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class BaseShield extends AbstractMovingSprite implements IBaseShield {
+public class BaseShieldHelper extends AbstractMovingSprite implements IBaseShield {
+
+    // shield animation that pulses every second
+    private static final Animation SHIELD_PULSE = new Animation(
+            0.25f,
+            GameSpriteIdentifier.HELPER_SHIELD_ONE,
+            GameSpriteIdentifier.HELPER_SHIELD_TWO,
+            GameSpriteIdentifier.HELPER_SHIELD_THREE,
+            GameSpriteIdentifier.HELPER_SHIELD_FOUR);
+
     // state time used to help select the current animation frame
     private float stateTime;
 
-    // shield animation frames
-    private final Animation animation;
-
-    public BaseShield(int xStart, int yStart, Animation animation, float syncTime) {
-        super(animation.getKeyFrame(syncTime, Animation.ANIMATION_LOOPING), xStart, yStart);
-        this.animation = animation;
+    public BaseShieldHelper(int xStart, int yStart, float syncTime) {
+        super(SHIELD_PULSE.getKeyFrame(syncTime, Animation.ANIMATION_LOOPING), xStart, yStart);
         this.stateTime = syncTime;
     }
 
@@ -22,7 +28,7 @@ public class BaseShield extends AbstractMovingSprite implements IBaseShield {
         stateTime += deltaTime;
 
         // set base sprite using animation loop and time through animation
-        changeType(animation.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
+        changeType(SHIELD_PULSE.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
     }
 
     /**

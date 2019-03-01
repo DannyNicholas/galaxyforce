@@ -29,7 +29,39 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     /* Base Sprites */
 
-    BASE("BaseUp_64px.png"),
+    BASE("base.png"),
+    BASE_RIGHT("BaseUpRight_64px.png"),
+    BASE_LEFT("baseLeft.png"),
+    HELPER("baseHelper.png"),
+
+//    BASE_SHIELD_ONE("bigShieldFour.png"), BASE_SHIELD_TWO("bigShieldTwo.png"), BASE_SHIELD_THREE("bigShieldThree.png"), BASE_SHIELD_FOUR("bigShieldFour.png"),
+//    BASE_SHIELD_ONE("shieldOne.png"), BASE_SHIELD_TWO("shieldTwo.png"), BASE_SHIELD_THREE("shieldThree.png"),
+
+
+    // pulsing shield when base stationary
+    BASE_SHIELD_ONE("shieldOutlineOne.png"),
+    BASE_SHIELD_TWO("shieldOutlineTwo.png"),
+    BASE_SHIELD_THREE("shieldOutlineThree.png"),
+    BASE_SHIELD_FOUR("shieldOutlineFour.png"),
+
+    // pulsing shield when base turning left
+    BASE_LEFT_SHIELD_ONE("leftShieldOutlineOne.png"),
+    BASE_LEFT_SHIELD_TWO("leftShieldOutlineTwo.png"),
+    BASE_LEFT_SHIELD_THREE("leftShieldOutlineThree.png"),
+    BASE_LEFT_SHIELD_FOUR("leftShieldOutlineFour.png"),
+
+    // pulsing shield when base turning right
+    BASE_RIGHT_SHIELD_ONE("rightShieldOutlineOne.png"),
+    BASE_RIGHT_SHIELD_TWO("rightShieldOutlineTwo.png"),
+    BASE_RIGHT_SHIELD_THREE("rightShieldOutlineThree.png"),
+    BASE_RIGHT_SHIELD_FOUR("rightShieldOutlineFour.png"),
+
+    // pulsing shield for helper base
+    HELPER_SHIELD_ONE("shieldOutlineHelperOne.png"),
+    HELPER_SHIELD_TWO("shieldOutlineHelperTwo.png"),
+    HELPER_SHIELD_THREE("shieldOutlineHelperThree.png"),
+    HELPER_SHIELD_FOUR("shieldOutlineHelperFour.png"),
+
 //    BASE_SPIN_1("BaseUpSpin1_64px.png"), BASE_SPIN_2("BaseUpSpin2_64px.png"), BASE_SPIN_3("BaseUpSpin3_64px.png"),
 
 //    BASE_FLAT("BaseFlat_64px.png"),
@@ -37,13 +69,13 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 //    BASE_FLIP("BaseDown_64px.png"), BASE_FLIP_SPIN_1("BaseDownSpin1_64px.png"), BASE_FLIP_SPIN_2("BaseDownSpin2_64px.png"), BASE_FLIP_SPIN_3(
 //            "BaseDownSpin3_64px.png"),
 
-    BASE_RIGHT("BaseUpRight_64px.png"), BASE_LEFT("BaseUpLeft_64px.png"),
+//    BASE_RIGHT("BaseUpRight_64px.png"), BASE_LEFT("baseLeft.png"),
 //    BASE_FLIP_RIGHT("BaseDownRight_64px.png"), BASE_FLIP_LEFT(
 //            "BaseDownLeft_64px.png"),
 
     /* Base Helper */
 
-    HELPER("BaseHelper64px_3pcNoise.png"),
+//    HELPER("baseHelper.png"),
 
 //    HELPER_SPIN_1("BaseHelperSpin1_64px.png"), HELPER_SPIN_2("BaseHelperSpin2_64px.png"), HELPER_SPIN_3(
 //            "BaseHelperSpin3_64px.png"),
@@ -71,7 +103,7 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     STAR("Star.png"), STAR_BLACK("StarBLACK.png"), STAR_RED("StarRED.png"), STAR_BLUE("StarBLUE.png"), STAR_SPARKLE("StarSPARKLE.png"),
 
-    CONTROL("controlOpaque.png"), JOYSTICK("joystickOpaque.png"),
+//    CONTROL("controlOpaque.png"), JOYSTICK("joystickOpaque.png"),
 
 //    DRAG_1("Drag_1_54px_simple.png"), DRAG_2("Drag_2_54px_simple.png"),
 

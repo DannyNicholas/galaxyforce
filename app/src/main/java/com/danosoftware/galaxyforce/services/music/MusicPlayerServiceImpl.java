@@ -111,7 +111,7 @@ public class MusicPlayerServiceImpl implements MusicPlayerService, MediaPlayer.O
 
     private AssetFileDescriptor assetFileDescriptor(AssetManager assets, String filename) {
         try {
-            return assets.openFd(filename);
+            return assets.openFd("music/" + filename);
         } catch (IOException e) {
             throw new GalaxyForceException("Couldn't load music '" + filename + "'", e);
         }

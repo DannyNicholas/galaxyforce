@@ -16,8 +16,6 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimpl
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +64,6 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
 
     // helper base's shield
     private IBaseShield shield;
-
-    // shield animation that pulses every 0.5 seconds
-    private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
 
     // reference to primary base
     private final IBasePrimary primaryBase;
@@ -177,7 +172,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     @Override
     public void addShield(float syncTime) {
         shielded = true;
-        shield = new BaseShield(x(), y(), SHIELD_PULSE, syncTime);
+        shield = new BaseShieldHelper(x(), y(), syncTime);
     }
 
     @Override
@@ -196,6 +191,10 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
                 state = DESTROYED;
                 primaryBase.helperRemoved(side);
             }
+        }
+
+        if (shielded) {
+            shield.animate(deltaTime);
         }
     }
 

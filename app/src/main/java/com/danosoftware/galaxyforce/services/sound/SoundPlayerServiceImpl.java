@@ -87,7 +87,7 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
         String filename = soundEffect.getFileName();
 
         try {
-            AssetFileDescriptor assetDescriptor = assets.openFd(filename);
+            AssetFileDescriptor assetDescriptor = assets.openFd("sounds/" + filename);
             soundPool.setOnLoadCompleteListener(this);
             int sampleId = soundPool.load(assetDescriptor, 0);
             effectsBank.put(soundEffect, sampleId);

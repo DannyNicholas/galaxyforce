@@ -13,6 +13,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseLean;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
@@ -21,7 +22,6 @@ import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.utilities.MoveBaseHelper;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -38,13 +38,18 @@ import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EX
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
+import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_LEFT;
+import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_RIGHT;
 
 public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary {
 
-    // shield animation that pulses every 0.5 seconds
-    private static final Animation SHIELD_PULSE = new Animation(0.5f, GameSpriteIdentifier.CONTROL, GameSpriteIdentifier.JOYSTICK);
-
-    private static final ISpriteIdentifier BASE_SPRITE = BASE;
+    // shield animation that pulses every second
+    private static final Animation SHIELD_PULSE = new Animation(
+            0.25f,
+            GameSpriteIdentifier.BASE_SHIELD_ONE,
+            GameSpriteIdentifier.BASE_SHIELD_TWO,
+            GameSpriteIdentifier.BASE_SHIELD_THREE,
+            GameSpriteIdentifier.BASE_SHIELD_FOUR);
 
     private static final String TAG = "BasePrimary";
 
@@ -107,6 +112,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     /* does base have shield */
     private boolean shielded = false;
 
+    /* current lean of the base (Left, Right, None) */
+    private BaseLean lean;
+
     /* reference to model */
     private final GameModel model;
 
@@ -121,13 +129,14 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             final SoundPlayerService sounds,
             final VibrationService vibrator) {
 
-        super(BASE_SPRITE, SCREEN_MID_X, SCREEN_BOTTOM);
+        super(BASE, SCREEN_MID_X, SCREEN_BOTTOM);
         this.state = ACTIVE;
         this.helpers = new EnumMap<>(HelperSide.class);
         this.activeHelpers = new EnumMap<>(HelperSide.class);
         this.allSprites = buildAllSprites();
         this.activeBases = buildActiveBases();
         this.moveHelper = new MoveBaseHelper(this);
+        this.lean = BaseLean.NONE;
         moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
         this.explosion = new ExplodeSimple(sounds, vibrator);
@@ -205,6 +214,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
             if (shielded) {
                 shield.move(x(), y());
+                shield.animate(deltaTime);
 
                 // check when shield should be removed
                 timeUntilShieldRemoved -= deltaTime;
@@ -362,6 +372,28 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         return activeBases;
     }
 
+    @Override
+    public BaseLean getLean() {
+        return lean;
+    }
+
+    @Override
+    public void setLean(BaseLean lean) {
+        this.lean = lean;
+
+        switch (lean) {
+            case LEFT:
+                changeType(BASE_LEFT);
+                break;
+            case RIGHT:
+                changeType(BASE_RIGHT);
+                break;
+            case NONE:
+                changeType(BASE);
+                break;
+        }
+    }
+
     /**
      * Created helper base for wanted side.
      * <p>
@@ -502,7 +534,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         // only create new shields if we are not shielded
         if (!shielded) {
             shielded = true;
-            shield = new BaseShield(x(), y(), SHIELD_PULSE, syncTime);
+            shield = new BaseShieldPrimary(this, x(), y(), syncTime);
         }
 
         // add shield for any helper bases

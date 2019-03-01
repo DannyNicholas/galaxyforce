@@ -1,11 +1,9 @@
 package com.danosoftware.galaxyforce.utilities;
 
-import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseLean;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
-import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE;
-import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_LEFT;
-import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_RIGHT;
 
 /**
  * Helper class that moves the base around the screen and changes sprites depending
@@ -48,7 +46,7 @@ public class MoveBaseHelper {
     private static final float STEADY_DELAY = 0.1f;
 
     // base being animated
-    private final IBase base;
+    private final IBasePrimary base;
 
     // holds time base has been steady for (i.e. not turning left or right)
     private float baseTurnSteadyTime;
@@ -64,7 +62,7 @@ public class MoveBaseHelper {
 
 
     public MoveBaseHelper(
-            final IBase base) {
+            final IBasePrimary base) {
 
         this.base = base;
         this.baseTurnSteadyTime = 0f;
@@ -126,16 +124,16 @@ public class MoveBaseHelper {
          * un-turn.
          */
         if (weightingX > WEIGHTING_TURN) {
-            base.changeType(BASE_RIGHT);
+            base.setLean(BaseLean.RIGHT);
             baseTurnSteadyTime = 0f;
             baseTurning = true;
         }
         /*
-         * if base is going left then use base left turn sprite. reset time
+         * if base is going left then lean left. reset time
          * since base was steady so that base doesn't immediately un-turn.
          */
         else if (weightingX < -WEIGHTING_TURN) {
-            base.changeType(BASE_LEFT);
+            base.setLean(BaseLean.LEFT);
             baseTurnSteadyTime = 0f;
             baseTurning = true;
         }
@@ -147,7 +145,7 @@ public class MoveBaseHelper {
         else if (baseTurning && weightingX > -WEIGHTING_STEADY && weightingX < WEIGHTING_STEADY) {
             baseTurnSteadyTime = baseTurnSteadyTime + deltaTime;
             if (baseTurnSteadyTime > STEADY_DELAY) {
-                base.changeType(BASE);
+                base.setLean(BaseLean.NONE);
                 baseTurnSteadyTime = 0f;
                 baseTurning = false;
             }
