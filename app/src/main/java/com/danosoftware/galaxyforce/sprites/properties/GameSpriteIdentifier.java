@@ -30,7 +30,7 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     /* Base Sprites */
 
     BASE("base.png"),
-    BASE_RIGHT("BaseUpRight_64px.png"),
+    BASE_RIGHT("baseRight.png"),
     BASE_LEFT("baseLeft.png"),
     HELPER("baseHelper.png"),
 
