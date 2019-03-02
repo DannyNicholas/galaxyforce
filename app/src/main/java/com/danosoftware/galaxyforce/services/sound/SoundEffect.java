@@ -5,8 +5,16 @@ package com.danosoftware.galaxyforce.services.sound;
  */
 public enum SoundEffect {
 
-    BASE_FIRE("fire.ogg"), ALIEN_FIRE("alienFire.ogg"), EXPLOSION("explosion.ogg"), POWER_UP_SPAWN("powerUp.ogg"), POWER_UP_COLLIDE(
-            "powerUp.ogg"), BASE_FLIP("explosion.ogg"), ALIEN_SPAWN("explosion.ogg"), ALIEN_HIT("explosion.ogg"), BASE_HIT("explosion.ogg");
+    BASE_FIRE("fire.ogg"),
+    ALIEN_FIRE("alienFire.ogg"),
+    EXPLOSION("explosion.ogg"),
+    POWER_UP_SPAWN("powerUp.ogg"),
+    POWER_UP_COLLIDE("powerUp.ogg"),
+    BASE_FLIP("explosion.ogg"),
+    ALIEN_SPAWN("explosion.ogg"),
+    ALIEN_HIT("explosion.ogg"),
+    BASE_HIT("explosion.ogg"),
+    SHIELD_PULSE("shield-pulse.ogg");
 
     // filename of sound effect
     private final String fileName;

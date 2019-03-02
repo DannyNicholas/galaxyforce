@@ -59,6 +59,7 @@ public class GameImpl implements Game {
 
     private final SoundPlayerService sounds;
     private final MusicPlayerService music;
+    private final VibrationService vibrator;
 
     public GameImpl(
             Context context,
@@ -80,7 +81,7 @@ public class GameImpl implements Game {
         this.sounds = new SoundPlayerServiceImpl(context, enableSounds);
 
         boolean enableVibrator = (configurationService.getVibrationOption() == OptionVibration.ON);
-        VibrationService vibrator = new VibrationServiceImpl(context, enableVibrator);
+        this.vibrator = new VibrationServiceImpl(context, enableVibrator);
 
         boolean enableMusic = (configurationService.getMusicOption() == OptionMusic.ON);
         this.music = new MusicPlayerServiceImpl(context, enableMusic);
@@ -158,6 +159,7 @@ public class GameImpl implements Game {
     public void resume() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Resume Game");
         screen.resume();
+        sounds.resume();
         music.play();
     }
 
@@ -165,6 +167,8 @@ public class GameImpl implements Game {
     public void pause() {
         Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": Pause Game");
         screen.pause();
+        sounds.pause();
+        vibrator.stop();
         music.pause();
     }
 

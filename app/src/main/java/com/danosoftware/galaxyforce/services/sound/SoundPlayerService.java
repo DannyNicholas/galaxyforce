@@ -10,6 +10,16 @@ public interface SoundPlayerService {
     void play(SoundEffect effect);
 
     /**
+     * Pause all currently playing sounds.
+     */
+    void pause();
+
+    /**
+     * Resume any sounds that were previously paused.
+     */
+    void resume();
+
+    /**
      * Enable or disable sound using supplied parameter.
      */
     void setSoundEnabled(boolean enableSound);

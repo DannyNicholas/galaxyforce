@@ -31,4 +31,11 @@ public class VibrationServiceImpl implements VibrationService {
     public void setVibrationEnabled(boolean enableVibration) {
         this.vibrationEnabled = enableVibration;
     }
+
+    @Override
+    public void stop() {
+        if (supportsVibration) {
+            vibrator.cancel();
+        }
+    }
 }

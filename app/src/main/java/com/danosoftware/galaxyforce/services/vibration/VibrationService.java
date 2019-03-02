@@ -15,4 +15,9 @@ public interface VibrationService {
      * Will only have an impact if vibration is supported by device.
      */
     void setVibrationEnabled(boolean enableVibration);
+
+    /**
+     * Stop vibration. Normally called prior to pausing game.
+     */
+    void stop();
 }

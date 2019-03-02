@@ -203,13 +203,13 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             }
 
             if (shielded) {
-                shield.move(x(), y());
-                shield.animate(deltaTime);
-
                 // check when shield should be removed
                 timeUntilShieldRemoved -= deltaTime;
                 if (timeUntilShieldRemoved <= 0) {
                     removeShield();
+                } else {
+                    shield.move(x(), y());
+                    shield.animate(deltaTime);
                 }
             }
         }
@@ -524,7 +524,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         // only create new shields if we are not shielded
         if (!shielded) {
             shielded = true;
-            shield = new BaseShieldPrimary(this, x(), y(), syncTime);
+            shield = new BaseShieldPrimary(this, sounds, vibrator, x(), y(), syncTime);
         }
 
         // add shield for any helper bases

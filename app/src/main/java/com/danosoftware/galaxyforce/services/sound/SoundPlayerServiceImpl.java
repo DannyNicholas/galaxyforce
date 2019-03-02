@@ -53,6 +53,16 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
     }
 
     @Override
+    public void pause() {
+        soundPool.autoPause();
+    }
+
+    @Override
+    public void resume() {
+        soundPool.autoResume();
+    }
+
+    @Override
     public void setSoundEnabled(boolean soundEnabled) {
         this.soundEnabled = soundEnabled;
     }

@@ -308,6 +308,8 @@ public class GamePlayModelImpl implements Model, GameModel {
             this.previousModelState = this.modelState;
         }
         this.modelState = ModelState.PAUSE;
+        vibrator.stop();
+        sounds.pause();
     }
 
     /**
@@ -316,6 +318,7 @@ public class GamePlayModelImpl implements Model, GameModel {
     @Override
     public void resume() {
         Log.i(TAG, "Resume Game.");
+        sounds.resume();
     }
 
     /**
