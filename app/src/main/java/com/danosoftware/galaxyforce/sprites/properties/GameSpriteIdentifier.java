@@ -26,17 +26,11 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     ALIEN_GOBBY_LEFT("alienGobbyLeft48px.png"), ALIEN_GOBBY_RIGHT("alienGobbyRight48px.png"),
 
 
-
-    /* Base Sprites */
-
+    // bases
     BASE("base.png"),
     BASE_RIGHT("baseRight.png"),
     BASE_LEFT("baseLeft.png"),
     HELPER("baseHelper.png"),
-
-//    BASE_SHIELD_ONE("bigShieldFour.png"), BASE_SHIELD_TWO("bigShieldTwo.png"), BASE_SHIELD_THREE("bigShieldThree.png"), BASE_SHIELD_FOUR("bigShieldFour.png"),
-//    BASE_SHIELD_ONE("shieldOne.png"), BASE_SHIELD_TWO("shieldTwo.png"), BASE_SHIELD_THREE("shieldThree.png"),
-
 
     // pulsing shield when base stationary
     BASE_SHIELD_ONE("shieldOutlineOne.png"),
@@ -62,38 +56,16 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     HELPER_SHIELD_THREE("shieldOutlineHelperThree.png"),
     HELPER_SHIELD_FOUR("shieldOutlineHelperFour.png"),
 
-//    BASE_SPIN_1("BaseUpSpin1_64px.png"), BASE_SPIN_2("BaseUpSpin2_64px.png"), BASE_SPIN_3("BaseUpSpin3_64px.png"),
-
-//    BASE_FLAT("BaseFlat_64px.png"),
-
-//    BASE_FLIP("BaseDown_64px.png"), BASE_FLIP_SPIN_1("BaseDownSpin1_64px.png"), BASE_FLIP_SPIN_2("BaseDownSpin2_64px.png"), BASE_FLIP_SPIN_3(
-//            "BaseDownSpin3_64px.png"),
-
-//    BASE_RIGHT("BaseUpRight_64px.png"), BASE_LEFT("baseLeft.png"),
-//    BASE_FLIP_RIGHT("BaseDownRight_64px.png"), BASE_FLIP_LEFT(
-//            "BaseDownLeft_64px.png"),
-
-    /* Base Helper */
-
-//    HELPER("baseHelper.png"),
-
-//    HELPER_SPIN_1("BaseHelperSpin1_64px.png"), HELPER_SPIN_2("BaseHelperSpin2_64px.png"), HELPER_SPIN_3(
-//            "BaseHelperSpin3_64px.png"),
-//
-//    HELPER_FLAT("BaseHelperFlat_64px.png"),
-//
-//    HELPER_FLIP("BaseHelperDown_64px.png"), HELPER_FLIP_SPIN_1("BaseHelperDownSpin1_64px.png"), HELPER_FLIP_SPIN_2(
-//            "BaseHelperDownSpin2_64px.png"), HELPER_FLIP_SPIN_3("BaseHelperDownSpin3_64px.png"),
-
-    /* Power Up Sprites - TODO Laser needs it's own sprite */
-
-//    POWERUP_BATTERY("pwrUpBattery34px.png"),
-
+    // power ups
     POWERUP_LIFE("pwrUpLife34px.png"),
-    POWERUP_MISSILE_FAST("pwrUpFast34px.png"), POWERUP_MISSILE_BLAST("pwrUpBlast34px.png"),
-    POWERUP_MISSILE_GUIDED("pwrUpDirectional34px.png"), POWERUP_MISSILE_PARALLEL("pwrUpParallel34px.png"),
-    POWERUP_MISSILE_SPRAY("pwrUpSpray34px.png"), POWERUP_MISSILE_LASER("pwrUpLaser34px.png"),
-    POWERUP_SHIELD("pwrUpShield34px.png"), POWERUP_HELPER_BASES("pwrUpHelper34px.png"),
+    POWERUP_MISSILE_FAST("pwrUpFast34px.png"),
+    POWERUP_MISSILE_BLAST("pwrUpBlast34px.png"),
+    POWERUP_MISSILE_GUIDED("pwrUpDirectional34px.png"),
+    POWERUP_MISSILE_PARALLEL("pwrUpParallel34px.png"),
+    POWERUP_MISSILE_SPRAY("pwrUpSpray34px.png"),
+    POWERUP_MISSILE_LASER("pwrUpLaser34px.png"),
+    POWERUP_SHIELD("pwrUpShield34px.png"),
+    POWERUP_HELPER_BASES("pwrUpHelper34px.png"),
 
 //    MISSILE_HIT_1("hit1-54px.png"), MISSILE_HIT_2("hit2-54px.png"), MISSILE_HIT_3("hit3-54px.png"),
 

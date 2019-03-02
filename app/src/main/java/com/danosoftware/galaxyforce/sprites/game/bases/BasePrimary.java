@@ -21,9 +21,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimpl
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.utilities.MoveBaseHelper;
-import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -42,14 +40,6 @@ import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifi
 import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier.BASE_RIGHT;
 
 public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary {
-
-    // shield animation that pulses every second
-    private static final Animation SHIELD_PULSE = new Animation(
-            0.25f,
-            GameSpriteIdentifier.BASE_SHIELD_ONE,
-            GameSpriteIdentifier.BASE_SHIELD_TWO,
-            GameSpriteIdentifier.BASE_SHIELD_THREE,
-            GameSpriteIdentifier.BASE_SHIELD_FOUR);
 
     private static final String TAG = "BasePrimary";
 
