@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- Created with TexturePacker https://www.codeandweb.com/texturepacker --><!-- $TexturePacker:SmartUpdate:2a0cd61daafdc90af3ad0efeb83b3c70:404c7a02d87378abec5b6c73952a2a7d:b4b957b600d0e6e4d4d315d9910b8a56$ --><!--Format:
+<?xml version="1.0" encoding="UTF-8"?><!-- Created with TexturePacker https://www.codeandweb.com/texturepacker --><!-- $TexturePacker:SmartUpdate:f4b9660bd41830e5cbd9a36f8f19d432:0f7996753d377c01bf63d59d98fedc7c:b4b957b600d0e6e4d4d315d9910b8a56$ --><!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
 y  => sprite y pos in texture
@@ -17,77 +17,77 @@ verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
 <TextureAtlas imagePath="gameTextures.png" width="1024" height="1024">
-    <sprite n="alienBuzzDown32px.png" x="30" y="0" w="32" h="22" />
-    <sprite n="alienBuzzDown64px.png" x="629" y="0" w="64" h="44" />
-    <sprite n="alienBuzzUp32px.png" x="62" y="0" w="32" h="22" />
-    <sprite n="alienBuzzUp64px.png" x="693" y="0" w="64" h="44" />
-    <sprite n="alienDragon78px.png" x="440" y="203" w="78" h="102" />
-    <sprite n="alienGobbyLeft48px.png" x="853" y="0" w="48" h="48" />
-    <sprite n="alienGobbyRight48px.png" x="901" y="0" w="48" h="48" />
-    <sprite n="alienHead48px.png" x="805" y="0" w="48" h="48" />
-    <sprite n="alienHelmet64px.png" x="325" y="49" w="64" h="64" />
-    <sprite n="alienOctoLeft_64px.png" x="197" y="49" w="64" h="64" />
-    <sprite n="alienOctoRight_64px.png" x="901" y="49" w="64" h="64" />
-    <sprite n="alienPearl48px.png" x="757" y="0" w="48" h="48" />
-    <sprite n="asteroid_64px.png" x="0" y="113" w="64" h="64" />
-    <sprite n="bang1aSmall.png" x="773" y="49" w="64" h="64" />
-    <sprite n="bang2aSmall.png" x="709" y="49" w="64" h="64" />
-    <sprite n="bang3aSmall.png" x="837" y="49" w="64" h="64" />
-    <sprite n="base.png" x="645" y="49" w="64" h="64" />
-    <sprite n="baseHelper.png" x="113" y="49" w="20" h="64" />
-    <sprite n="baseLeft.png" x="49" y="49" w="64" h="64" />
-    <sprite n="baseRight.png" x="133" y="49" w="64" h="64" />
-    <sprite n="BlueButton360px.png" x="518" y="203" w="360" h="128" />
-    <sprite n="BlueButton360pxPressed.png" x="0" y="331" w="360" h="128" />
-    <sprite n="dragonBody2.png" x="121" y="0" w="42" h="31" />
-    <sprite n="dragonHead2.png" x="0" y="49" w="49" h="64" />
-    <sprite n="Droid.png" x="949" y="0" w="53" h="49" />
-    <sprite n="Flag_1.png" x="195" y="0" w="32" h="32" />
-    <sprite n="Flag_5.png" x="227" y="0" w="32" h="32" />
-    <sprite n="Flag_10.png" x="291" y="0" w="32" h="32" />
-    <sprite n="Flag_50.png" x="259" y="0" w="32" h="32" />
-    <sprite n="GalaxyForceFont_30x38-crop.png" x="360" y="331" w="239" h="299" />
-    <sprite n="laserHeroNew9px.png" x="112" y="0" w="9" h="25" />
-    <sprite n="laserHeroRed9px.png" x="103" y="0" w="9" h="25" />
+    <sprite n="alienBuzzDown32px.png" x="62" y="0" w="32" h="22" />
+    <sprite n="alienBuzzDown64px.png" x="705" y="0" w="64" h="44" />
+    <sprite n="alienBuzzUp32px.png" x="30" y="0" w="32" h="22" />
+    <sprite n="alienBuzzUp64px.png" x="769" y="0" w="64" h="44" />
+    <sprite n="alienDragon78px.png" x="200" y="202" w="78" h="102" />
+    <sprite n="alienGobbyLeft48px.png" x="833" y="0" w="48" h="48" />
+    <sprite n="alienGobbyRight48px.png" x="0" y="48" w="48" h="48" />
+    <sprite n="alienHead48px.png" x="881" y="0" w="48" h="48" />
+    <sprite n="alienHelmet64px.png" x="298" y="48" w="64" h="64" />
+    <sprite n="alienOctoLeft_64px.png" x="726" y="48" w="64" h="64" />
+    <sprite n="alienOctoRight_64px.png" x="0" y="112" w="64" h="64" />
+    <sprite n="alienPearl48px.png" x="929" y="0" w="48" h="48" />
+    <sprite n="asteroid_64px.png" x="790" y="48" w="64" h="64" />
+    <sprite n="bang1aSmall.png" x="918" y="48" w="64" h="64" />
+    <sprite n="bang2aSmall.png" x="108" y="112" w="64" h="64" />
+    <sprite n="bang3aSmall.png" x="234" y="48" w="64" h="64" />
+    <sprite n="base.png" x="854" y="48" w="64" h="64" />
+    <sprite n="baseHelper.png" x="121" y="0" w="18" h="28" />
+    <sprite n="baseLeft.png" x="64" y="112" w="44" h="64" />
+    <sprite n="baseRight.png" x="426" y="48" w="44" h="64" />
+    <sprite n="BlueButton360px.png" x="278" y="202" w="360" h="128" />
+    <sprite n="BlueButton360pxPressed.png" x="638" y="202" w="360" h="128" />
+    <sprite n="dragonBody2.png" x="139" y="0" w="42" h="31" />
+    <sprite n="dragonHead2.png" x="185" y="48" w="49" h="64" />
+    <sprite n="Droid.png" x="86" y="48" w="53" h="49" />
+    <sprite n="Flag_1.png" x="213" y="0" w="32" h="32" />
+    <sprite n="Flag_5.png" x="309" y="0" w="32" h="32" />
+    <sprite n="Flag_10.png" x="277" y="0" w="32" h="32" />
+    <sprite n="Flag_50.png" x="245" y="0" w="32" h="32" />
+    <sprite n="GalaxyForceFont_30x38-crop.png" x="0" y="330" w="239" h="299" />
+    <sprite n="laserHeroNew9px.png" x="103" y="0" w="9" h="25" />
+    <sprite n="laserHeroRed9px.png" x="112" y="0" w="9" h="25" />
     <sprite n="laserHeroSmall.png" x="14" y="0" w="8" h="16" />
     <sprite n="laserInvaderGreen9px.png" x="94" y="0" w="9" h="25" />
     <sprite n="laserInvaderSmall.png" x="22" y="0" w="8" h="16" />
-    <sprite n="leftShieldOutlineFour.png" x="808" y="113" w="80" h="90" />
-    <sprite n="leftShieldOutlineOne.png" x="888" y="113" w="80" h="90" />
-    <sprite n="leftShieldOutlineThree.png" x="80" y="203" w="80" h="90" />
-    <sprite n="leftShieldOutlineTwo.png" x="160" y="203" w="80" h="90" />
-    <sprite n="Life_32px.png" x="163" y="0" w="32" h="32" />
-    <sprite n="PauseButtonDown100pxMasked.png" x="340" y="203" w="100" h="100" />
-    <sprite n="PauseButtonUp100pxMasked.png" x="240" y="203" w="100" h="100" />
-    <sprite n="pwrUpBlast34px.png" x="323" y="0" w="34" h="34" />
-    <sprite n="pwrUpDirectional34px.png" x="527" y="0" w="34" h="34" />
-    <sprite n="pwrUpFast34px.png" x="595" y="0" w="34" h="34" />
-    <sprite n="pwrUpHelper34px.png" x="561" y="0" w="34" h="34" />
-    <sprite n="pwrUpLaser34px.png" x="357" y="0" w="34" h="34" />
-    <sprite n="pwrUpLife34px.png" x="391" y="0" w="34" h="34" />
-    <sprite n="pwrUpParallel34px.png" x="493" y="0" w="34" h="34" />
-    <sprite n="pwrUpShield34px.png" x="425" y="0" w="34" h="34" />
-    <sprite n="pwrUpSpray34px.png" x="459" y="0" w="34" h="34" />
-    <sprite n="rightShieldOutlineFour.png" x="0" y="203" w="80" h="90" />
-    <sprite n="rightShieldOutlineOne.png" x="442" y="113" w="80" h="90" />
-    <sprite n="rightShieldOutlineThree.png" x="316" y="113" w="80" h="90" />
-    <sprite n="rightShieldOutlineTwo.png" x="648" y="113" w="80" h="90" />
-    <sprite n="shieldOutlineFour.png" x="522" y="113" w="80" h="90" />
-    <sprite n="shieldOutlineHelperFour.png" x="602" y="113" w="46" h="90" />
-    <sprite n="shieldOutlineHelperOne.png" x="396" y="113" w="46" h="90" />
-    <sprite n="shieldOutlineHelperThree.png" x="270" y="113" w="46" h="90" />
-    <sprite n="shieldOutlineHelperTwo.png" x="224" y="113" w="46" h="90" />
-    <sprite n="shieldOutlineOne.png" x="64" y="113" w="80" h="90" />
-    <sprite n="shieldOutlineThree.png" x="144" y="113" w="80" h="90" />
-    <sprite n="shieldOutlineTwo.png" x="728" y="113" w="80" h="90" />
-    <sprite n="Star.png" x="0" y="0" w="2" h="2" />
+    <sprite n="leftShieldOutlineFour.png" x="888" y="112" w="64" h="90" />
+    <sprite n="leftShieldOutlineOne.png" x="224" y="112" w="52" h="72" />
+    <sprite n="leftShieldOutlineThree.png" x="384" y="112" w="60" h="84" />
+    <sprite n="leftShieldOutlineTwo.png" x="330" y="112" w="54" h="78" />
+    <sprite n="Life_32px.png" x="181" y="0" w="32" h="32" />
+    <sprite n="PauseButtonDown100pxMasked.png" x="100" y="202" w="100" h="100" />
+    <sprite n="PauseButtonUp100pxMasked.png" x="0" y="202" w="100" h="100" />
+    <sprite n="pwrUpBlast34px.png" x="375" y="0" w="34" h="34" />
+    <sprite n="pwrUpDirectional34px.png" x="341" y="0" w="34" h="34" />
+    <sprite n="pwrUpFast34px.png" x="409" y="0" w="34" h="34" />
+    <sprite n="pwrUpHelper34px.png" x="579" y="0" w="34" h="34" />
+    <sprite n="pwrUpLaser34px.png" x="477" y="0" w="34" h="34" />
+    <sprite n="pwrUpLife34px.png" x="443" y="0" w="34" h="34" />
+    <sprite n="pwrUpParallel34px.png" x="613" y="0" w="34" h="34" />
+    <sprite n="pwrUpShield34px.png" x="511" y="0" w="34" h="34" />
+    <sprite n="pwrUpSpray34px.png" x="545" y="0" w="34" h="34" />
+    <sprite n="rightShieldOutlineFour.png" x="824" y="112" w="64" h="90" />
+    <sprite n="rightShieldOutlineOne.png" x="172" y="112" w="52" h="72" />
+    <sprite n="rightShieldOutlineThree.png" x="444" y="112" w="60" h="84" />
+    <sprite n="rightShieldOutlineTwo.png" x="276" y="112" w="54" h="78" />
+    <sprite n="shieldOutlineFour.png" x="664" y="112" w="80" h="90" />
+    <sprite n="shieldOutlineHelperFour.png" x="139" y="48" w="46" h="54" />
+    <sprite n="shieldOutlineHelperOne.png" x="647" y="0" w="26" h="36" />
+    <sprite n="shieldOutlineHelperThree.png" x="48" y="48" w="38" h="48" />
+    <sprite n="shieldOutlineHelperTwo.png" x="673" y="0" w="32" h="42" />
+    <sprite n="shieldOutlineOne.png" x="584" y="112" w="80" h="90" />
+    <sprite n="shieldOutlineThree.png" x="504" y="112" w="80" h="90" />
+    <sprite n="shieldOutlineTwo.png" x="744" y="112" w="80" h="90" />
+    <sprite n="Star.png" x="6" y="0" w="2" h="2" />
     <sprite n="StarBLACK.png" x="2" y="0" w="2" h="2" />
-    <sprite n="StarBLUE.png" x="6" y="0" w="2" h="2" />
+    <sprite n="StarBLUE.png" x="0" y="0" w="2" h="2" />
     <sprite n="StarRED.png" x="4" y="0" w="2" h="2" />
     <sprite n="StarSPARKLE.png" x="8" y="0" w="6" h="6" />
-    <sprite n="Stork1.png" x="389" y="49" w="64" h="64" />
-    <sprite n="Stork2.png" x="261" y="49" w="64" h="64" />
-    <sprite n="Yellow_64px.png" x="581" y="49" w="64" h="64" />
-    <sprite n="YellowB_64px.png" x="453" y="49" w="64" h="64" />
-    <sprite n="YellowC_64px.png" x="517" y="49" w="64" h="64" />
+    <sprite n="Stork1.png" x="598" y="48" w="64" h="64" />
+    <sprite n="Stork2.png" x="534" y="48" w="64" h="64" />
+    <sprite n="Yellow_64px.png" x="362" y="48" w="64" h="64" />
+    <sprite n="YellowB_64px.png" x="662" y="48" w="64" h="64" />
+    <sprite n="YellowC_64px.png" x="470" y="48" w="64" h="64" />
 </TextureAtlas>

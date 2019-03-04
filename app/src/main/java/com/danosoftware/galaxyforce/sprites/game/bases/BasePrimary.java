@@ -125,8 +125,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.activeHelpers = new EnumMap<>(HelperSide.class);
         this.allSprites = buildAllSprites();
         this.activeBases = buildActiveBases();
-        this.moveHelper = new MoveBaseHelper(this);
         this.lean = BaseLean.NONE;
+        this.moveHelper = new MoveBaseHelper(this);
         moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
         this.explosion = new ExplodeSimple(sounds, vibrator);

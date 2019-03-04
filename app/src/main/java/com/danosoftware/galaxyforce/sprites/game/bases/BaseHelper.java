@@ -54,7 +54,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private static final int X_OFFSET_FROM_PRIMARY_BASE = 64;
 
     // helper's y position offset (in pixels) from primary base
-    private static final int Y_OFFSET_FROM_PRIMARY_BASE = 5;
+    private static final int Y_OFFSET_FROM_PRIMARY_BASE = 18;
 
     // helper base x offset from primary base's position
     private final int xOffset;
