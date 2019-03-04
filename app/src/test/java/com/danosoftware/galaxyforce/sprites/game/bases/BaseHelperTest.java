@@ -54,7 +54,7 @@ public class BaseHelperTest {
     private static final int INITIAL_X = 100;
     private static final int INITIAL_Y = 200;
     private static final int EXPECTED_HELPER_X_OFFSET = 64;
-    private static final int EXPECTED_HELPER_Y_OFFSET = 5;
+    private static final int EXPECTED_HELPER_Y_OFFSET = 18;
     private static final boolean SHIELD_UP = true;
     private static final boolean SHIELD_DOWN = false;
     private static final float SHIELD_SYNC_OFFSET = 0.5f;
