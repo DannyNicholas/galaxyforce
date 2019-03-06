@@ -4,27 +4,48 @@ import com.danosoftware.galaxyforce.textures.Texture;
 
 public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
+    // main logo
     GALAXY_FORCE("PlutoPanicLogo"),
 
-    MAIN_MENU("BlueButton360px"), MAIN_MENU_PRESSED("BlueButton360pxPressed"),
+    // menu buttons
+    MAIN_MENU("BlueButton360px"),
+    MAIN_MENU_PRESSED("BlueButton360pxPressed"),
 
-    LEVEL_FRAME("GreenButton128px"), LEVEL_FRAME_PRESSED("GreenButton128pxPressed"),
+    // wave select buttons
+    LEVEL_FRAME("GreenButton128px"),
+    LEVEL_FRAME_PRESSED("GreenButton128pxPressed"),
 
-    LEVEL_FRAME_LOCKED("LockedButton128px"), LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed"),
+    // locked wave buttons
+    LEVEL_FRAME_LOCKED("LockedButton128px"),
+    LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed"),
 
-    NEXT_LEVEL("GreenRightArrow64px"), NEXT_LEVEL_PRESSED("GreenRightArrowPressed64px"),
+    // next zone buttons
+    NEXT_LEVEL("GreenRightArrow96px"),
+    NEXT_LEVEL_PRESSED("GreenRightArrowPressed80px"),
 
-    PREVIOUS_LEVEL("GreenLeftArrow64px"), PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed64px"),
+    // previous zone buttons
+    PREVIOUS_LEVEL("GreenLeftArrow96px"),
+    PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed80px"),
 
-    OPTION_UNSELECTED("GreyButton180px"), OPTION_SELECTED("GoldButton180pxPressed"),
+    // option buttons
+    OPTION_UNSELECTED("GreyButton180px"),
+    OPTION_SELECTED("GoldButton180pxPressed"),
 
-    STAR("Star"), STAR_BLACK("StarBLACK"), STAR_RED("StarRED"), STAR_BLUE("StarBLUE"), STAR_SPARKLE("StarSPARKLE"),
+    // stars
+    STAR("Star"),
+    STAR_BLACK("StarBLACK"),
+    STAR_RED("StarRED"),
+    STAR_BLUE("StarBLUE"),
+    STAR_SPARKLE("StarSPARKLE"),
 
-    //TODO - remove from game complete screen
-    BASE("BlueButton360px"),
+    // pluto
+    PLUTO("Pluto"),
 
-    PLUTO("pluto"),
+    // bases
+    BASE("Base"),
+    BASE_TILT("BaseTilt"),
 
+    // fonts
     FONT_MAP("GalaxyForceFont_30x38");
 
 

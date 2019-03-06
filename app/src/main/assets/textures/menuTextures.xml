@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- Created with TexturePacker https://www.codeandweb.com/texturepacker --><!-- $TexturePacker:SmartUpdate:305eff4abd49630485b4a5ea9929021c:f983f893428d430a71a42f70127da02a:c497cf166ca27ceddc98deb2edf60fa4$ --><!--Format:
+<?xml version="1.0" encoding="UTF-8"?><!-- Created with TexturePacker https://www.codeandweb.com/texturepacker --><!-- $TexturePacker:SmartUpdate:7e417c75e290149092571f7db247d6e6:96481cfa7d6841e624c0e094506c4e80:c497cf166ca27ceddc98deb2edf60fa4$ --><!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
 y  => sprite y pos in texture
@@ -17,24 +17,26 @@ verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
 <TextureAtlas imagePath="menuTextures.png" width="1024" height="1024">
-    <sprite n="BlueButton360px" x="0" y="128" w="360" h="128" />
-    <sprite n="BlueButton360pxPressed" x="360" y="128" w="360" h="128" />
+    <sprite n="Base" x="14" y="0" w="64" h="64" />
+    <sprite n="BaseTilt" x="78" y="0" w="64" h="64" />
+    <sprite n="BlueButton360px" x="360" y="128" w="360" h="128" />
+    <sprite n="BlueButton360pxPressed" x="0" y="128" w="360" h="128" />
     <sprite n="GalaxyForceFont_30x38" x="580" y="440" w="256" h="512" />
-    <sprite n="GoldButton180pxPressed" x="720" y="128" w="180" h="128" />
-    <sprite n="GreenButton128px" x="0" y="256" w="128" h="128" />
-    <sprite n="GreenButton128pxPressed" x="128" y="256" w="128" h="128" />
-    <sprite n="GreenLeftArrow64px" x="206" y="0" w="64" h="64" />
-    <sprite n="GreenLeftArrowPressed64px" x="78" y="0" w="64" h="64" />
-    <sprite n="GreenRightArrow64px" x="14" y="0" w="64" h="64" />
-    <sprite n="GreenRightArrowPressed64px" x="142" y="0" w="64" h="64" />
-    <sprite n="GreyButton180px" x="526" y="0" w="180" h="128" />
-    <sprite n="LockedButton128px" x="398" y="0" w="128" h="128" />
-    <sprite n="LockedButton128pxPressed" x="270" y="0" w="128" h="128" />
-    <sprite n="pluto" x="0" y="440" w="580" h="267" />
-    <sprite n="PlutoPanicLogo" x="256" y="256" w="540" h="184" />
-    <sprite n="Star" x="4" y="0" w="2" h="2" />
+    <sprite n="GoldButton180pxPressed" x="494" y="0" w="180" h="128" />
+    <sprite n="GreenButton128px" x="848" y="128" w="128" h="128" />
+    <sprite n="GreenButton128pxPressed" x="0" y="256" w="128" h="128" />
+    <sprite n="GreenLeftArrow96px" x="398" y="0" w="96" h="96" />
+    <sprite n="GreenLeftArrowPressed80px" x="222" y="0" w="80" h="80" />
+    <sprite n="GreenRightArrow96px" x="302" y="0" w="96" h="96" />
+    <sprite n="GreenRightArrowPressed80px" x="142" y="0" w="80" h="80" />
+    <sprite n="GreyButton180px" x="128" y="256" w="180" h="128" />
+    <sprite n="LockedButton128px" x="308" y="256" w="128" h="128" />
+    <sprite n="LockedButton128pxPressed" x="720" y="128" w="128" h="128" />
+    <sprite n="Pluto" x="0" y="440" w="580" h="303" />
+    <sprite n="PlutoPanicLogo" x="436" y="256" w="540" h="184" />
+    <sprite n="Star" x="6" y="0" w="2" h="2" />
     <sprite n="StarBLACK" x="0" y="0" w="2" h="2" />
     <sprite n="StarBLUE" x="2" y="0" w="2" h="2" />
-    <sprite n="StarRED" x="6" y="0" w="2" h="2" />
+    <sprite n="StarRED" x="4" y="0" w="2" h="2" />
     <sprite n="StarSPARKLE" x="8" y="0" w="6" h="6" />
 </TextureAtlas>
