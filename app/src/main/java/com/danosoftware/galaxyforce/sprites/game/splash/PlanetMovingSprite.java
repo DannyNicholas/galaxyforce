@@ -9,6 +9,7 @@ public class PlanetMovingSprite extends AbstractMovingSprite {
 
     // variables to track planet movements
     private static final int DISTANCE_PER_SECOND = 100;
+    private static final float DELAY_IN_SECONDS_BEFORE_START = 1f;
 
     private final int startPosition;
     private final int maxDistanceToTravel;
@@ -24,7 +25,7 @@ public class PlanetMovingSprite extends AbstractMovingSprite {
     @Override
     public void animate(float deltaTime) {
         timeElapsed += deltaTime;
-        int distance = (int) Math.min(timeElapsed * DISTANCE_PER_SECOND, maxDistanceToTravel);
+        int distance = (int) Math.min((timeElapsed - DELAY_IN_SECONDS_BEFORE_START) * DISTANCE_PER_SECOND, maxDistanceToTravel);
         moveY(startPosition + distance);
     }
 }

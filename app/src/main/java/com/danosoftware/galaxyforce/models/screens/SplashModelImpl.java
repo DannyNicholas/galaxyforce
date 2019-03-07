@@ -15,6 +15,7 @@ import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.IMovingSprite;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.BaseMovingSprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.LogoMovingSprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.PlanetMovingSprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
@@ -40,16 +41,21 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
     private float splashScreenTime;
 
     // how long splash screen should be displayed for (in seconds)
-    private static final float SPLASH_SCREEN_WAIT = 4f;
+    private static final float SPLASH_SCREEN_WAIT = 5f;
+
+    // delay before text is displayed
+    private static final float DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED = 3.5f;
 
     // version name of this package
     private final String versionName;
 
     // variables to track planet and logo movements
     private static final int START_PLANET_Y_POS = 0 - (267 / 2);
+    private static final int START_BASE_Y_POS = 0 - (64 / 2);
     private static final int START_LOGO_Y_POS = GameConstants.GAME_HEIGHT + (184 / 2);
     private final IMovingSprite planet;
     private final IMovingSprite logo;
+    private final IMovingSprite base;
 
     /*
      * Should we rebuild the screen text?
@@ -79,12 +85,14 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
                 GameConstants.SCREEN_MID_X,
                 START_LOGO_Y_POS,
                 MenuSpriteIdentifier.GALAXY_FORCE);
+        this.base = new BaseMovingSprite(
+                GameConstants.SCREEN_MID_X,
+                START_BASE_Y_POS);
 
         sprites.addAll(starField.getSprites());
         sprites.add(planet);
+        sprites.add(base);
         sprites.add(logo);
-
-        buildTextMessages();
 
         // add button that covers the entire screen
         Button screenTouch = new ScreenTouch(this);
@@ -142,7 +150,10 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
     @Override
     public void update(float deltaTime) {
 
-        if (reBuildText) {
+        // increment splash screen time count by deltaTime
+        splashScreenTime += deltaTime;
+
+        if (reBuildText || splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED) {
             buildTextMessages();
             reBuildText = false;
         }
@@ -152,9 +163,7 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
 
         planet.animate(deltaTime);
         logo.animate(deltaTime);
-
-        // increment splash screen time count by deltaTime
-        splashScreenTime = splashScreenTime + deltaTime;
+        base.animate(deltaTime);
 
         // if splash screen has been shown for required time, move to main menu
         if (splashScreenTime >= SPLASH_SCREEN_WAIT) {
