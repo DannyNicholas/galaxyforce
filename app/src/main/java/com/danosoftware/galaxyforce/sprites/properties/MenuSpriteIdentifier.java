@@ -42,8 +42,8 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
     PLUTO("Pluto"),
 
     // bases
-    BASE("Base"),
-    BASE_TILT("BaseTilt"),
+    BASE("BaseLarge"),
+    BASE_TILT("BaseTiltLarge"),
 
     // fonts
     FONT_MAP("GalaxyForceFont_30x38");

@@ -41,7 +41,7 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
     private float splashScreenTime;
 
     // how long splash screen should be displayed for (in seconds)
-    private static final float SPLASH_SCREEN_WAIT = 5f;
+    private static final float SPLASH_SCREEN_WAIT = 4.5f;
 
     // delay before text is displayed
     private static final float DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED = 3.5f;
@@ -51,7 +51,6 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
 
     // variables to track planet and logo movements
     private static final int START_PLANET_Y_POS = 0 - (267 / 2);
-    private static final int START_BASE_Y_POS = 0 - (64 / 2);
     private static final int START_LOGO_Y_POS = GameConstants.GAME_HEIGHT + (184 / 2);
     private final IMovingSprite planet;
     private final IMovingSprite logo;
@@ -85,9 +84,7 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
                 GameConstants.SCREEN_MID_X,
                 START_LOGO_Y_POS,
                 MenuSpriteIdentifier.GALAXY_FORCE);
-        this.base = new BaseMovingSprite(
-                GameConstants.SCREEN_MID_X,
-                START_BASE_Y_POS);
+        this.base = new BaseMovingSprite();
 
         sprites.addAll(starField.getSprites());
         sprites.add(planet);
