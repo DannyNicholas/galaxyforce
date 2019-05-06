@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.waves.rules;
 
 import com.danosoftware.galaxyforce.flightpath.paths.Path;
+import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
 /*
@@ -9,6 +10,8 @@ import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 public class SubWavePathRuleProperties {
     // the path the subwave aliens will follow
     private final Path path;
+
+    private final PathSpeed pathSpeed;
 
     // total number of aliens in the sub-wave
     private final int numberOfAliens;
@@ -33,11 +36,13 @@ public class SubWavePathRuleProperties {
      */
     public SubWavePathRuleProperties(
             final Path path,
+            final PathSpeed pathSpeed,
             final int numberOfAliens,
             final float delayBetweenAliens,
             final float delayOffet,
             final boolean restartImmediately) {
         this.path = path;
+        this.pathSpeed = pathSpeed;
         this.numberOfAliens = numberOfAliens;
         this.delayBetweenAliens = delayBetweenAliens;
         this.delayOffet = delayOffet;
@@ -53,12 +58,14 @@ public class SubWavePathRuleProperties {
      */
     public SubWavePathRuleProperties(
             final Path path,
+            final PathSpeed pathSpeed,
             final int numberOfAliens,
             final float delayBetweenAliens,
             final float delayOffet,
             final boolean restartImmediately,
             final PointTranslatorChain translators) {
         this.path = path;
+        this.pathSpeed = pathSpeed;
         this.numberOfAliens = numberOfAliens;
         this.delayBetweenAliens = delayBetweenAliens;
         this.delayOffet = delayOffet;
@@ -68,6 +75,10 @@ public class SubWavePathRuleProperties {
 
     public Path getPath() {
         return path;
+    }
+
+    public PathSpeed getPathSpeed() {
+        return pathSpeed;
     }
 
     public int getNumberOfAliens() {

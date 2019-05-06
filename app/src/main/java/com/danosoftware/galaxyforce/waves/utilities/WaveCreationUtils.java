@@ -67,7 +67,8 @@ public class WaveCreationUtils {
             // create path points (that alien will follow) for sub-wave
             List<Point> path = pathFactory.createPath(
                     props.getPath(),
-                    props.getTranslators()
+                    props.getTranslators(),
+                    props.getPathSpeed()
             );
 
             // create and add a sub-wave of aliens according to provided properties

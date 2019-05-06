@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.flightpath.generators;
 
 import com.danosoftware.galaxyforce.flightpath.dto.BezierPathDTO;
+import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
@@ -24,12 +25,15 @@ public class BezierCurveGenerator implements PathGenerator {
      * and then translating them to their new positions based on the provided
      * translators (e.g. x-axis flip).
      */
-    public BezierCurveGenerator(BezierPathDTO bezierData, PointTranslatorChain translators) {
+    public BezierCurveGenerator(
+            BezierPathDTO bezierData,
+            PointTranslatorChain translators,
+            PathSpeed pathSpeed) {
         this.start = convertAndTranslatePoint(bezierData.getStart(), translators);
         this.startControl = convertAndTranslatePoint(bezierData.getStartControl(), translators);
         this.finish = convertAndTranslatePoint(bezierData.getFinish(), translators);
         this.finishControl = convertAndTranslatePoint(bezierData.getFinishControl(), translators);
-        this.pathPoints = bezierData.getPathPoints();
+        this.pathPoints = (int) (bezierData.getPathPoints() * pathSpeed.getMultiplier());
     }
 
     /**

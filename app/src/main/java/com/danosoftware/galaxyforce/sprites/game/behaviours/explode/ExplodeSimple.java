@@ -26,10 +26,21 @@ public class ExplodeSimple implements ExplodeBehaviour {
             SoundPlayerService sounds,
             VibrationService vibrator) {
         this.animation = new Animation(
-                0.15f,
-                GameSpriteIdentifier.EXPLODE_01,
-                GameSpriteIdentifier.EXPLODE_02,
-                GameSpriteIdentifier.EXPLODE_03);
+                0.075f,
+                GameSpriteIdentifier.EXPLODE_BIG_01,
+                GameSpriteIdentifier.EXPLODE_BIG_02,
+                GameSpriteIdentifier.EXPLODE_BIG_03,
+                GameSpriteIdentifier.EXPLODE_BIG_04,
+                GameSpriteIdentifier.EXPLODE_BIG_05);
+        this.sounds = sounds;
+        this.vibrator = vibrator;
+    }
+
+    public ExplodeSimple(
+            SoundPlayerService sounds,
+            VibrationService vibrator,
+            Animation animation) {
+        this.animation = animation;
         this.sounds = sounds;
         this.vibrator = vibrator;
     }

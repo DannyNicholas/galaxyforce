@@ -16,6 +16,8 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimpl
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +136,16 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         this.state = ACTIVE;
         this.side = side;
         this.xOffset = (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE);
-        this.explosion = new ExplodeSimple(sounds, vibrator);
+        this.explosion = new ExplodeSimple(
+                sounds,
+                vibrator,
+                new Animation(
+                        0.075f,
+                        GameSpriteIdentifier.EXPLODE_01,
+                        GameSpriteIdentifier.EXPLODE_02,
+                        GameSpriteIdentifier.EXPLODE_03,
+                        GameSpriteIdentifier.EXPLODE_04,
+                        GameSpriteIdentifier.EXPLODE_05));
 
         if (shieldUp) {
             addShield(shieldSyncTime);

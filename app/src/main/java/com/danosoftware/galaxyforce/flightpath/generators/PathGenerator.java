@@ -12,9 +12,7 @@ import java.util.List;
 public interface PathGenerator {
 
     /**
-     * returns a list of path points
-     *
-     * @return points
+     * returns a list of path points for the current path.
      */
     List<Point> path();
 }

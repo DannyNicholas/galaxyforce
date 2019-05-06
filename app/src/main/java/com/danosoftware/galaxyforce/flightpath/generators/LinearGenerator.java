@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.flightpath.generators;
 
 import com.danosoftware.galaxyforce.flightpath.dto.LinearPathDTO;
+import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
@@ -23,10 +24,13 @@ public class LinearGenerator implements PathGenerator {
      * and then translating them to their new positions based on the provided
      * translators (e.g. x-axis flip).
      */
-    public LinearGenerator(LinearPathDTO linearData, PointTranslatorChain translators) {
+    public LinearGenerator(
+            LinearPathDTO linearData,
+            PointTranslatorChain translators,
+            PathSpeed pathSpeed) {
         this.start = convertAndTranslatePoint(linearData.getStart(), translators);
         this.finish = convertAndTranslatePoint(linearData.getFinish(), translators);
-        this.pathPoints = linearData.getPathPoints();
+        this.pathPoints = (int) (linearData.getPathPoints() * pathSpeed.getMultiplier());
     }
 
     /**

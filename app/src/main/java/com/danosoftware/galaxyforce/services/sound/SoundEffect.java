@@ -8,6 +8,7 @@ public enum SoundEffect {
     BASE_FIRE("fire.ogg"),
     ALIEN_FIRE("alienFire.ogg"),
     EXPLOSION("explosion.ogg"),
+    BIG_EXPLOSION("bigExplosion.ogg"),
     POWER_UP_SPAWN("powerUp.ogg"),
     POWER_UP_COLLIDE("powerUp.ogg"),
     BASE_FLIP("explosion.ogg"),

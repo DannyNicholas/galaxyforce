@@ -37,7 +37,7 @@ buildscript {
      * version 3.0.1 as a classpath dependency.
      */
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.4.0'
     }
 }
 

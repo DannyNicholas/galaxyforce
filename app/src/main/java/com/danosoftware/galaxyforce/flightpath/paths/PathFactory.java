@@ -26,7 +26,10 @@ public final class PathFactory {
         this.loader = loader;
     }
 
-    public List<Point> createPath(Path path, PointTranslatorChain translators) {
+    public List<Point> createPath(
+            Path path,
+            PointTranslatorChain translators,
+            PathSpeed pathSpeed) {
         List<Point> pathPoints = new ArrayList<>();
 
         // load path data from file
@@ -37,11 +40,11 @@ public final class PathFactory {
             switch (pathDTO.getType()) {
                 case BEZIER:
                     BezierPathDTO bezierData = (BezierPathDTO) pathDTO;
-                    generator = new BezierCurveGenerator(bezierData, translators);
+                    generator = new BezierCurveGenerator(bezierData, translators, pathSpeed);
                     break;
                 case LINEAR:
                     LinearPathDTO linearData = (LinearPathDTO) pathDTO;
-                    generator = new LinearGenerator(linearData, translators);
+                    generator = new LinearGenerator(linearData, translators, pathSpeed);
                     break;
                 case PAUSE:
                     PausePathDTO pauseData = (PausePathDTO) pathDTO;
@@ -49,7 +52,7 @@ public final class PathFactory {
                     break;
                 case CIRCULAR:
                     CircularPathDTO circularData = (CircularPathDTO) pathDTO;
-                    generator = new CircularGenerator(circularData, translators);
+                    generator = new CircularGenerator(circularData, translators, pathSpeed);
                     break;
                 default:
                     throw new GalaxyForceException("Unknown path type: " + pathDTO.getType().name());

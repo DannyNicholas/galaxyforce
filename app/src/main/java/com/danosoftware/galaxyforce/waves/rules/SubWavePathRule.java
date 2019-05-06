@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.waves.rules;
 
 import com.danosoftware.galaxyforce.flightpath.paths.Path;
+import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import com.danosoftware.galaxyforce.flightpath.translators.FlipXPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.FlipYPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.OffsetXPointTranslator;
@@ -28,6 +29,7 @@ public enum SubWavePathRule {
     SPACE_INVADER(
             new SubWavePathRuleProperties(
                     Path.SPACE_INVADER,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -41,6 +43,7 @@ public enum SubWavePathRule {
     SPACE_INVADER_REVERSE(
             new SubWavePathRuleProperties(
                     Path.SPACE_INVADER,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -57,6 +60,7 @@ public enum SubWavePathRule {
     FIGURE_OF_EIGHT(
             new SubWavePathRuleProperties(
                     Path.FIGURE_OF_EIGHT,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -70,6 +74,7 @@ public enum SubWavePathRule {
     BELL_CURVE(
             new SubWavePathRuleProperties(
                     Path.BELL_CURVE,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -83,6 +88,7 @@ public enum SubWavePathRule {
     DOUBLE_BELL_CURVE(
             new SubWavePathRuleProperties(
                     Path.BELL_CURVE,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -90,6 +96,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BELL_CURVE,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -105,6 +112,7 @@ public enum SubWavePathRule {
     LOOPER_ATTACK(
             new SubWavePathRuleProperties(
                     Path.LOOPER,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -118,6 +126,7 @@ public enum SubWavePathRule {
     TEAR_DROP_ATTACK(
             new SubWavePathRuleProperties(
                     Path.TEAR_DROP,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -127,6 +136,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.TEAR_DROP,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -134,6 +144,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.TEAR_DROP,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -150,6 +161,7 @@ public enum SubWavePathRule {
     CROSSING_STEP_ATTACK(
             new SubWavePathRuleProperties(
                     Path.BEZIER_STEP_UP,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -157,6 +169,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BEZIER_STEP_UP,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -173,6 +186,7 @@ public enum SubWavePathRule {
     CROSSOVER_EXIT_ATTACK(
             new SubWavePathRuleProperties(
                     Path.EXIT_STAGE_RIGHT,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -180,6 +194,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.EXIT_STAGE_RIGHT,
+                    PathSpeed.NORMAL,
                     20,
                     0.3f,
                     0,
@@ -197,6 +212,7 @@ public enum SubWavePathRule {
     STAGGERED_BOUNCE_ATTACK(
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     0,
@@ -206,6 +222,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     0.5f,
@@ -215,6 +232,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     1f,
@@ -224,6 +242,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     1.5f,
@@ -233,6 +252,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     2f,
@@ -242,6 +262,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
                     5,
                     0.3f,
                     2.5f,
@@ -254,6 +275,7 @@ public enum SubWavePathRule {
     WAVEY_LINE(
             new SubWavePathRuleProperties(
                     Path.SINGLE_ARC,
+                    PathSpeed.NORMAL,
                     10,
                     0.5f,
                     0,
@@ -261,6 +283,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.SINGLE_ARC,
+                    PathSpeed.NORMAL,
                     10,
                     0.5f,
                     0,
@@ -278,6 +301,7 @@ public enum SubWavePathRule {
     VALLEY_DIVE(
             new SubWavePathRuleProperties(
                     Path.VALLEY_DROP,
+                    PathSpeed.NORMAL,
                     10,
                     1f,
                     0,
@@ -287,6 +311,7 @@ public enum SubWavePathRule {
     VALLEY_DIVE_INTERLEAVED(
             new SubWavePathRuleProperties(
                     Path.VALLEY_DROP,
+                    PathSpeed.NORMAL,
                     10,
                     1f,
                     0.5f,
@@ -297,6 +322,7 @@ public enum SubWavePathRule {
     WAVE_MOTHERSHIP(
             new SubWavePathRuleProperties(
                     Path.SINGLE_ARC,
+                    PathSpeed.NORMAL,
                     1,
                     0,
                     0,
@@ -310,6 +336,7 @@ public enum SubWavePathRule {
     SPIRAL(
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
+                    PathSpeed.NORMAL,
                     10,
                     1f,
                     0,
@@ -323,6 +350,7 @@ public enum SubWavePathRule {
     DOUBLE_SPIRAL(
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
+                    PathSpeed.NORMAL,
                     10,
                     1f,
                     0,
@@ -332,6 +360,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
+                    PathSpeed.NORMAL,
                     10,
                     1f,
                     0,
@@ -347,6 +376,7 @@ public enum SubWavePathRule {
     WAVE_TRIANGULAR(
             new SubWavePathRuleProperties(
                     Path.TRIANGULAR,
+                    PathSpeed.VERY_FAST,
                     10,
                     1f,
                     0f,

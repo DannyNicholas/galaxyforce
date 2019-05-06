@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
+import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
 
 import org.junit.Test;
@@ -25,7 +26,8 @@ public class CircularMathematicsTest {
         // create a linear path from control points
         final List<Point> linearPoints = createCircularPath(
                 centre,
-                piMultiplier);
+                piMultiplier,
+                PathSpeed.NORMAL);
 
         // assert path length
         final int pathLength = linearPoints.size();

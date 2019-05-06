@@ -71,9 +71,31 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     LASER_BASE("laserHeroNew9px"),
 
     // explosions
-    EXPLODE_01("bang1aSmall"),
-    EXPLODE_02("bang2aSmall"),
-    EXPLODE_03("bang3aSmall"),
+    EXPLODE_01("explodeOne"),
+    EXPLODE_02("explodeTwo"),
+    EXPLODE_03("explodeThree"),
+    EXPLODE_04("explodeFour"),
+    EXPLODE_05("explodeFive"),
+
+    // big-explosions
+    EXPLODE_BIG_01("bigExplosionOne"),
+    EXPLODE_BIG_02("bigExplosionTwo"),
+    EXPLODE_BIG_03("bigExplosionThree"),
+    EXPLODE_BIG_04("bigExplosionFour"),
+    EXPLODE_BIG_05("bigExplosionFive"),
+
+    // massive-explosions
+    BASE_EXPLODE_01("baseExplosion01"),
+    BASE_EXPLODE_02("baseExplosion02"),
+    BASE_EXPLODE_03("baseExplosion03"),
+    BASE_EXPLODE_04("baseExplosion04"),
+    BASE_EXPLODE_05("baseExplosion05"),
+    BASE_EXPLODE_06("baseExplosion06"),
+    BASE_EXPLODE_07("baseExplosion07"),
+    BASE_EXPLODE_08("baseExplosion08"),
+    BASE_EXPLODE_09("baseExplosion09"),
+    BASE_EXPLODE_10("baseExplosion10"),
+    BASE_EXPLODE_11("baseExplosion11"),
 
     // stars
     STAR("Star"),

@@ -62,7 +62,7 @@ public class PathFactoryTest {
             when(loader.loadPaths(any(String.class))).thenReturn(pathListDTO);
 
             PathFactory pathFactory = new PathFactory(loader);
-            List<Point> points = pathFactory.createPath(path, emptyTranslators);
+            List<Point> points = pathFactory.createPath(path, emptyTranslators, PathSpeed.NORMAL);
             checkPoints(points);
         }
         logger.info("All paths created.");
