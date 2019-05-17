@@ -56,6 +56,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
                 explodeBehaviour);
 
         this.hitBehaviour = hitBehaviour;
+        this.stateTime = 0f;
         this.started = false;
         this.alienMoveInPixels = alienMoveInPixels;
         this.minimumDistanceSquared = minimumDistance * minimumDistance;
