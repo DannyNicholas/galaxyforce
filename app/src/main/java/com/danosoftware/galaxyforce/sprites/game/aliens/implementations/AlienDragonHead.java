@@ -11,7 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
@@ -48,7 +48,14 @@ public class AlienDragonHead extends AbstractAlien {
     private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
     // alien animation
-    private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.DRAGON_HEAD);
+    private static final Animation ANIMATION = new Animation(
+            0.5f,
+            GameSpriteIdentifier.DRAGON_HEAD_LEFT,
+            GameSpriteIdentifier.DRAGON_HEAD_RIGHT);
+    private static final Animation HIT_ANIMATION = new Animation(
+            0.5f,
+            GameSpriteIdentifier.DRAGON_HEAD_LEFT_HIT,
+            GameSpriteIdentifier.DRAGON_HEAD_RIGHT_HIT);
 
     /*
      * ******************************************************
@@ -93,7 +100,7 @@ public class AlienDragonHead extends AbstractAlien {
                 new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
-                new HitDisabled(),
+                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
                 new ExplodeSimple(sounds, vibrator));
 
         this.model = model;
@@ -164,18 +171,26 @@ public class AlienDragonHead extends AbstractAlien {
     }
 
     /**
-     * If dragon head explodes then all body parts should also explode
+     * If dragon head explodes then all body parts should also explode.
+     * If not, show hit across all body parts.
      */
     @Override
     public void onHitBy(IBaseMissile baseMissile) {
         super.onHitBy(baseMissile);
 
         if (isExploding()) {
-            for (IAlien dragonBody : dragonBodies) {
+            for (IAlienFollower dragonBody : dragonBodies) {
                 if (dragonBody.isActive()) {
                     dragonBody.explode();
                 }
             }
+        } else {
+            for (IAlienFollower dragonBody : dragonBodies) {
+                if (dragonBody.isActive()) {
+                    dragonBody.showHit();
+                }
+            }
+
         }
     }
 

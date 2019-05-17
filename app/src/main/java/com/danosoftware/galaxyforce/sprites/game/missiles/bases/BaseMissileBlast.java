@@ -14,7 +14,7 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* how much energy will be lost by alien when this missile hits it */
-    private static final int HIT_ENERGY = 2;
+    private static final int HIT_ENERGY = 1;
 
     /* offset applied to x and y every move */
     private final int xDelta;

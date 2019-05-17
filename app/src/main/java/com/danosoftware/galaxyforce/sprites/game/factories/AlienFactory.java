@@ -23,7 +23,8 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienHun
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienInsectPath;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMinion;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMothership;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopus;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopusEasy;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopusHard;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienSpawnedInsect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienStork;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -66,7 +67,10 @@ public class AlienFactory {
         // create instance of the wanted alien
         switch (alienType) {
             case OCTOPUS:
-                aliens.add(new AlienOctopus(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(new AlienOctopusEasy(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                break;
+            case OCTOPUS_HARD:
+                aliens.add(new AlienOctopusHard(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
                 break;
 
             case GOBBY:

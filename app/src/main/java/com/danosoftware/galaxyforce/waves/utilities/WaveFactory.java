@@ -27,7 +27,10 @@ import java.util.List;
  */
 public class WaveFactory {
 
+    private static final List<PowerUpType> NO_POWER_UPS = Collections.emptyList();
+
     private final WaveCreationUtils creationUtils;
+
 
     public WaveFactory(
             WaveCreationUtils creationUtils) {
@@ -51,28 +54,41 @@ public class WaveFactory {
 
             case 1:
 
+                // triangular attack from left-to-right
                 subWaves.add(
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_TRIANGULAR,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(PowerUpType.MISSILE_BLAST, PowerUpType.LIFE)
+                                        Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
                 );
+                // triangular attack from right-to-left
                 subWaves.add(
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
-                                        SubWavePathRule.VALLEY_DIVE,
+                                        SubWavePathRule.WAVE_TRIANGULAR_REVERSED,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.HELPER_BASES)
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
+                                )
+                        )
+                );
+                // both triangular attacks at same time
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.WAVE_TRIANGULAR,
+                                        AlienType.OCTOPUS,
+                                        Collections.singletonList(PowerUpType.MISSILE_BLAST)
                                 ),
                                 new SubWavePathConfig(
-                                        SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
-                                        AlienType.MINION,
-                                        Collections.singletonList(PowerUpType.LIFE)
+                                        SubWavePathRule.WAVE_TRIANGULAR_REVERSED,
+                                        AlienType.OCTOPUS,
+                                        NO_POWER_UPS
                                 )
                         )
                 );
@@ -86,12 +102,27 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
                                         AlienType.OCTOPUS,
-                                        Collections.singletonList(PowerUpType.MISSILE_BLAST)
+                                        NO_POWER_UPS
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
                                         AlienType.MINION,
                                         Collections.singletonList(PowerUpType.MISSILE_FAST)
+                                )
+                        )
+                );
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.VALLEY_DIVE_FLIPPED,
+                                        AlienType.OCTOPUS,
+                                        NO_POWER_UPS
+                                ),
+                                new SubWavePathConfig(
+                                        SubWavePathRule.VALLEY_DIVE_INTERLEAVED_FLIPPED,
+                                        AlienType.MINION,
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
                 );
@@ -103,14 +134,29 @@ public class WaveFactory {
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
-                                        SubWavePathRule.VALLEY_DIVE,
+                                        SubWavePathRule.WAVEY_LINE,
+                                        AlienType.OCTOPUS,
+                                        NO_POWER_UPS
+                                )
+                        )
+                );
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.WAVEY_LINE_REVERSE,
+                                        AlienType.OCTOPUS,
+                                        NO_POWER_UPS
+                                )
+                        )
+                );
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.WAVEY_LINE_DOUBLE,
                                         AlienType.OCTOPUS,
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
-                                ),
-                                new SubWavePathConfig(
-                                        SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
-                                        AlienType.MINION,
-                                        Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
                 );
@@ -124,9 +170,28 @@ public class WaveFactory {
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
                                         AlienType.OCTOPUS,
-                                        Arrays.asList(
-                                                PowerUpType.MISSILE_PARALLEL,
-                                                PowerUpType.HELPER_BASES)
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
+
+                                )
+                        )
+                );
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.SPIRAL,
+                                        AlienType.MINION,
+                                        NO_POWER_UPS
+                                )
+                        )
+                );
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.DOUBLE_SPIRAL,
+                                        AlienType.MINION,
+                                        Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
                 );
@@ -162,7 +227,7 @@ public class WaveFactory {
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
-                                        SubWavePathRule.WAVEY_LINE,
+                                        SubWavePathRule.WAVEY_LINE_DOUBLE,
                                         AlienType.OCTOPUS,
                                         Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                                 )

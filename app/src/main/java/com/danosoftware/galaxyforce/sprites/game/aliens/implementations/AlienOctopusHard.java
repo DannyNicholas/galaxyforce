@@ -9,7 +9,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlienWithPath;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
@@ -17,7 +17,7 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
 
-public abstract class AlienOctopus extends AbstractAlienWithPath {
+public class AlienOctopusHard extends AbstractAlienWithPath {
 
     /*
      * ******************************************************
@@ -32,23 +32,19 @@ public abstract class AlienOctopus extends AbstractAlienWithPath {
     private static final float MISSILE_DELAY_RANDOM = 2f;
 
     /* energy of this sprite */
-    private static final int ENERGY = 4;
+    private static final int ENERGY = 1;
 
     // alien animation
     private static final Animation ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.OCTOPUS_LEFT,
-            GameSpriteIdentifier.OCTOPUS_RIGHT);
-    private static final Animation HIT_ANIMATION = new Animation(
-            0.5f,
-            GameSpriteIdentifier.OCTOPUS_LEFT_HIT,
-            GameSpriteIdentifier.OCTOPUS_RIGHT_HIT);
+            GameSpriteIdentifier.ALIEN_OCTOPUS_LEFT,
+            GameSpriteIdentifier.ALIEN_OCTOPUS_RIGHT);
 
     /**
      * Create Alien Octopus that has rotated missiles and generates random
      * power-ups.
      */
-    public AlienOctopus(
+    public AlienOctopusHard(
             final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,
@@ -65,7 +61,7 @@ public abstract class AlienOctopus extends AbstractAlienWithPath {
                         MISSILE_DELAY_RANDOM),
                 new PowerUpSingle(model, powerUp),
                 new SpawnDisabled(),
-                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
+                new HitDisabled(),
                 new ExplodeSimple(sounds, vibrator),
                 alienPath,
                 delayStart,

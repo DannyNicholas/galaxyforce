@@ -22,7 +22,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
     /* how much energy will be lost by base when this missile hits it */
-    private static final int HIT_ENERGY = 2;
+    private static final int HIT_ENERGY = 1;
 
     /* alien targeted by missile */
     private IAlien alien;

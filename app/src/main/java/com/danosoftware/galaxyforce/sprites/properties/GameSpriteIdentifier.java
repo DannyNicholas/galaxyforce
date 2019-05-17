@@ -7,15 +7,35 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     ALIEN_OCTOPUS_LEFT("alienOctoLeft_64px"), ALIEN_OCTOPUS_RIGHT("alienOctoRight_64px"),
 
+    // octopus
+    OCTOPUS_LEFT("octopusBigLeft"), OCTOPUS_RIGHT("octopusBigRight"),
+    OCTOPUS_LEFT_HIT("octopusBigHitLeft"), OCTOPUS_RIGHT_HIT("octopusBigHitRight"),
+
     ALIEN_MINION_NORMAL("Yellow_64px"), ALIEN_MINION_FUZZ1("YellowB_64px"), ALIEN_MINION_FUZZ2("YellowC_64px"),
 
     ASTEROID("asteroid_64px"),
 
-    DRAGON_HEAD("alienDragon78px"), DRAGON_BODY("dragonBody2"),
+    // dragon - head and body
+    DRAGON_HEAD_LEFT("dragonLeft"),
+    DRAGON_HEAD_RIGHT("dragonRight"),
+    DRAGON_HEAD_LEFT_HIT("dragonHitLeft"),
+    DRAGON_HEAD_RIGHT_HIT("dragonHitRight"),
+    DRAGON_BODY("dragonBody"),
+    DRAGON_BODY_HIT("dragonBodyHit"),
 
     STORK_1("Stork1"), STORK_2("Stork2"),
 
-    INSECT_WINGS_UP("alienBuzzUp64px"), INSECT_WINGS_DOWN("alienBuzzDown64px"),
+    // buzzer - small flying insect
+    INSECT_WINGS_UP("buzzerWingsUp"),
+    INSECT_WINGS_DOWN("buzzerWingsDown"),
+    INSECT_WINGS_UP_HIT("buzzerWingsUpHit"),
+    INSECT_WINGS_DOWN_HIT("buzzerWingsDownHit"),
+
+    // mother buzzer - big flying insect
+    MOTHER_BUZZER_WINGS_DOWN("motherBuzzerWingsDown"),
+    MOTHER_BUZZER_WINGS_UP("motherBuzzerWingsUp"),
+    MOTHER_BUZZER_WINGS_DOWN_HIT("motherBuzzerWingsDownHit"),
+    MOTHER_BUZZER_WINGS_UP_HIT("motherBuzzerWingsUpHit"),
 
     DROID("alienHead48px"),
 

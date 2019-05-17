@@ -280,6 +280,30 @@ public enum SubWavePathRule {
                     0.5f,
                     0,
                     false
+            )
+    ),
+
+    WAVEY_LINE_REVERSE(
+            new SubWavePathRuleProperties(
+                    Path.SINGLE_ARC,
+                    PathSpeed.NORMAL,
+                    10,
+                    0.5f,
+                    0,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipXPointTranslator(GAME_WIDTH))
+            )
+    ),
+
+    WAVEY_LINE_DOUBLE(
+            new SubWavePathRuleProperties(
+                    Path.SINGLE_ARC,
+                    PathSpeed.NORMAL,
+                    10,
+                    0.5f,
+                    0,
+                    false
             ),
             new SubWavePathRuleProperties(
                     Path.SINGLE_ARC,
@@ -301,7 +325,7 @@ public enum SubWavePathRule {
     VALLEY_DIVE(
             new SubWavePathRuleProperties(
                     Path.VALLEY_DROP,
-                    PathSpeed.NORMAL,
+                    PathSpeed.FAST,
                     10,
                     1f,
                     0,
@@ -311,11 +335,36 @@ public enum SubWavePathRule {
     VALLEY_DIVE_INTERLEAVED(
             new SubWavePathRuleProperties(
                     Path.VALLEY_DROP,
-                    PathSpeed.NORMAL,
+                    PathSpeed.FAST,
                     10,
                     1f,
                     0.5f,
                     false
+            )
+    ),
+
+    VALLEY_DIVE_FLIPPED(
+            new SubWavePathRuleProperties(
+                    Path.VALLEY_DROP,
+                    PathSpeed.FAST,
+                    10,
+                    1f,
+                    0,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipYPointTranslator(GAME_HEIGHT))
+            )
+    ),
+    VALLEY_DIVE_INTERLEAVED_FLIPPED(
+            new SubWavePathRuleProperties(
+                    Path.VALLEY_DROP,
+                    PathSpeed.FAST,
+                    10,
+                    1f,
+                    0.5f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipYPointTranslator(GAME_HEIGHT))
             )
     ),
 
@@ -326,7 +375,9 @@ public enum SubWavePathRule {
                     1,
                     0,
                     0,
-                    true
+                    true,
+                    new PointTranslatorChain()
+                            .add(new OffsetYPointTranslator(125))
             )
     ),
 
@@ -336,9 +387,9 @@ public enum SubWavePathRule {
     SPIRAL(
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
-                    PathSpeed.NORMAL,
+                    PathSpeed.FAST,
                     10,
-                    1f,
+                    0.5f,
                     0,
                     false
             )
@@ -350,9 +401,9 @@ public enum SubWavePathRule {
     DOUBLE_SPIRAL(
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
-                    PathSpeed.NORMAL,
+                    PathSpeed.FAST,
                     10,
-                    1f,
+                    0.5f,
                     0,
                     false,
                     new PointTranslatorChain()
@@ -360,7 +411,7 @@ public enum SubWavePathRule {
             ),
             new SubWavePathRuleProperties(
                     Path.SPIRAL,
-                    PathSpeed.NORMAL,
+                    PathSpeed.FAST,
                     10,
                     1f,
                     0,
@@ -376,12 +427,22 @@ public enum SubWavePathRule {
     WAVE_TRIANGULAR(
             new SubWavePathRuleProperties(
                     Path.TRIANGULAR,
-                    PathSpeed.VERY_FAST,
+                    PathSpeed.FAST,
                     10,
-                    1f,
+                    0.25f,
                     0f,
-                    false
-            )
+                    false)
+    ),
+    WAVE_TRIANGULAR_REVERSED(
+            new SubWavePathRuleProperties(
+                    Path.TRIANGULAR,
+                    PathSpeed.FAST,
+                    10,
+                    0.25f,
+                    0f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipXPointTranslator(GAME_WIDTH)))
     );
 
     // list of properties for a sub-wave

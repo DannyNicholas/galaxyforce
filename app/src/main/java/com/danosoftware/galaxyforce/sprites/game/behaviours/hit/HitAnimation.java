@@ -1,5 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.hit;
 
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
+import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
+import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -15,10 +19,16 @@ import com.danosoftware.galaxyforce.view.Animation;
 public class HitAnimation implements HitBehaviour {
 
     // max time to display hit
-    private static final float HIT_TIME_SECONDS = 0.5f;
+    private static final float HIT_TIME_SECONDS = 0.2f;
 
     // hit animation
     private final Animation hitAnimation;
+
+    // reference to sound player
+    private final SoundPlayerService sounds;
+
+    // reference to vibrator
+    private final VibrationService vibrator;
 
     // stateTime to keep in sync with parent animation
     private float stateTime;
@@ -26,7 +36,12 @@ public class HitAnimation implements HitBehaviour {
     private boolean hit;
     private float timeSinceHit;
 
-    public HitAnimation(Animation hitAnimation) {
+    public HitAnimation(
+            SoundPlayerService sounds,
+            VibrationService vibrator,
+            Animation hitAnimation) {
+        this.sounds = sounds;
+        this.vibrator = vibrator;
         this.hitAnimation = hitAnimation;
         this.stateTime = 0f;
         this.hit = false;
@@ -38,6 +53,8 @@ public class HitAnimation implements HitBehaviour {
         this.hit = true;
         this.stateTime = stateTime;
         this.timeSinceHit = 0f;
+        sounds.play(SoundEffect.ALIEN_HIT);
+        vibrator.vibrate(VibrateTime.TINY);
     }
 
     @Override
@@ -52,6 +69,6 @@ public class HitAnimation implements HitBehaviour {
         if (timeSinceHit > HIT_TIME_SECONDS) {
             this.hit = false;
         }
-        return hitAnimation.getKeyFrame(stateTime, Animation.ANIMATION_NONLOOPING);
+        return hitAnimation.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING);
     }
 }

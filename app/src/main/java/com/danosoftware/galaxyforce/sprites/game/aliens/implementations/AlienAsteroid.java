@@ -81,7 +81,7 @@ public class AlienAsteroid extends AbstractAlien {
                 new FireDisabled(),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
-                new HitAnimation(HIT_ANIMATION),
+                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
                 new ExplodeSimple(sounds, vibrator));
 
         waiting();

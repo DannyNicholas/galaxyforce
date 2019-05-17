@@ -17,6 +17,8 @@ import java.util.Map;
 
 public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnLoadCompleteListener {
 
+    private static final float EFFECTS_VOLUME = 0.2f;
+
     private final SoundPool soundPool;
 
     // is sound player enabled?
@@ -48,7 +50,7 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
     public void play(SoundEffect effect) {
         if (soundEnabled && effectsBank.containsKey(effect)) {
             int soundId = effectsBank.get(effect);
-            soundPool.play(soundId, 1, 1, 0, 0, 1);
+            soundPool.play(soundId, EFFECTS_VOLUME, EFFECTS_VOLUME, 0, 0, 1);
         }
     }
 

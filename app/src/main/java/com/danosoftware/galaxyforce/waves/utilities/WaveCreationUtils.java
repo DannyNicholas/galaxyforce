@@ -57,7 +57,7 @@ public class WaveCreationUtils {
             numberOfAliens += props.getNumberOfAliens();
         }
         final PowerUpAllocator powerUpAllocator = new PowerUpAllocator(
-                config.getPowerUps(),
+                powerUps,
                 numberOfAliens,
                 model.getLives());
 
