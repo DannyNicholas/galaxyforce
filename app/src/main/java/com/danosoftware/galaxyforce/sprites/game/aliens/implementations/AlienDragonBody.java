@@ -13,13 +13,9 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingl
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 
 public class AlienDragonBody extends AbstractAlienFollower implements IAlienFollower {
-    /*
-     * ******************************************************
-     * PRIVATE STATIC VARIABLES
-     * ******************************************************
-     */
 
     /* distance alien can move each cycle in pixels each second */
     private static final int ALIEN_MOVE_PIXELS = 5 * 60;
@@ -27,31 +23,27 @@ public class AlienDragonBody extends AbstractAlienFollower implements IAlienFoll
     /* minimum distance between dragon alien bodies */
     private static final int MIN_DISTANCE = 25;
 
-    /* energy of this sprite */
-    private static final int ENERGY = 1;
-
     // alien animation
     private static final Animation ANIMATION = new Animation(0f, GameSpriteIdentifier.DRAGON_BODY);
     private static final Animation HIT_ANIMATION = new Animation(0f, GameSpriteIdentifier.DRAGON_BODY_HIT);
 
-
     /**
-     * Create Alien Dragon's Body that has rotated missiles and generates random
-     * power-ups.
+     * Create Alien Dragon's Body.
      */
     public AlienDragonBody(
-            final PowerUpType powerUpType,
-            final int xStart,
-            final int yStart,
             final GameModel model,
             final SoundPlayerService sounds,
-            final VibrationService vibrator) {
+            final VibrationService vibrator,
+            final AlienConfig alienConfig,
+            final PowerUpType powerUpType,
+            final int xStart,
+            final int yStart) {
 
         super(
                 ANIMATION,
                 xStart,
                 yStart,
-                ENERGY,
+                alienConfig.getEnergy(),
                 new FireDisabled(),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),

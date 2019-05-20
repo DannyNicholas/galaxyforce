@@ -14,16 +14,11 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnRandomDel
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
-import com.danosoftware.galaxyforce.waves.AlienType;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 
 import java.util.List;
 
 public class AlienMothership extends AbstractAlienWithPath {
-    /*
-     * ******************************************************
-     * PRIVATE STATIC VARIABLES
-     * ******************************************************
-     */
 
     /* minimum delay between spawning aliens in seconds */
     private static final float MIN_SPAWN_DELAY = 0.5f;
@@ -33,28 +28,27 @@ public class AlienMothership extends AbstractAlienWithPath {
      */
     private static final float SPAWN_DELAY_RANDOM = 0.25f;
 
-    /* energy of this sprite */
-    private static final int ENERGY = 10;
 
     // alien animation
     private static final Animation ANIMATION = new Animation(
             0.5f,
             GameSpriteIdentifier.MOTHER_BUZZER_WINGS_DOWN,
             GameSpriteIdentifier.MOTHER_BUZZER_WINGS_UP);
-    private static final Animation ANIMATION_TRANSPARENT = new Animation(
+    private static final Animation ANIMATION_HIT = new Animation(
             0.5f,
             GameSpriteIdentifier.MOTHER_BUZZER_WINGS_DOWN_HIT,
             GameSpriteIdentifier.MOTHER_BUZZER_WINGS_UP_HIT);
 
     /**
-     * Create Alien Mothership that has rotated missiles and generates random
-     * power-ups.
+     * Create Alien Mothership that spawns aliens.
      */
     public AlienMothership(
             final AlienFactory alienFactory,
             final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,
+            final AlienConfig alienConfig,
+            final AlienConfig spawnedAlienConfig,
             final PowerUpType powerUpType,
             final List<PowerUpType> spwanPowerUpTypes,
             final List<Point> alienPath,
@@ -67,15 +61,15 @@ public class AlienMothership extends AbstractAlienWithPath {
                 new SpawnRandomDelay(
                         alienFactory,
                         model,
-                        AlienType.SPAWNED_INSECT,
+                        spawnedAlienConfig,
                         spwanPowerUpTypes,
                         MIN_SPAWN_DELAY,
                         SPAWN_DELAY_RANDOM),
-                new HitAnimation(sounds, vibrator, ANIMATION_TRANSPARENT),
+                new HitAnimation(sounds, vibrator, ANIMATION_HIT),
                 new ExplodeSimple(sounds, vibrator),
                 alienPath,
                 delayStart,
-                ENERGY,
+                alienConfig.getEnergy(),
                 restartImmediately);
     }
 }

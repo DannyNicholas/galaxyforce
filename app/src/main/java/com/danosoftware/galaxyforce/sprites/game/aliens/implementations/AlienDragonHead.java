@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
-import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -10,33 +10,20 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireRandomDelay;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 
 import java.util.List;
 
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
 public class AlienDragonHead extends AbstractAlien {
-    /*
-     * ******************************************************
-     * PRIVATE STATIC VARIABLES
-     * ******************************************************
-     */
-
-    /* minimum delay between alien firing missiles in seconds */
-    private static final float MIN_MISSILE_DELAY = 4.5f;
-
-    /* maximum addition random time before firing */
-    private static final float MISSILE_DELAY_RANDOM = 2f;
-
-    /* energy of this sprite */
-    private static final int ENERGY = 20;
 
     /* distance alien can move each cycle in pixels each second */
     private static final int ALIEN_MOVE_PIXELS = 5 * 60;
@@ -57,11 +44,8 @@ public class AlienDragonHead extends AbstractAlien {
             GameSpriteIdentifier.DRAGON_HEAD_LEFT_HIT,
             GameSpriteIdentifier.DRAGON_HEAD_RIGHT_HIT);
 
-    /*
-     * ******************************************************
-     * PRIVATE INSTANCE VARIABLES
-     * ******************************************************
-     */
+    // alien missile
+    private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
 
     /* dragon body parts - these will be destroyed when the head is destroyed */
     private final List<IAlienFollower> dragonBodies;
@@ -78,26 +62,28 @@ public class AlienDragonHead extends AbstractAlien {
     private final GameModel model;
 
     /**
-     * Create Alien Dragon's Head that has rotated missiles and generates random
-     * power-ups.
+     * Create Alien Dragon's Head.
      */
     public AlienDragonHead(
+            final GameModel model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
+            final AlienConfig alienConfig,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
             final float timeDelayStart,
-            final GameModel model,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator,
-            final List<IAlienFollower> dragonBodies
-    ) {
+            final List<IAlienFollower> dragonBodies) {
 
         super(
                 ANIMATION,
                 xStart,
                 yStart,
-                ENERGY,
-                new FireRandomDelay(model, AlienMissileType.ROTATED, MIN_MISSILE_DELAY, MISSILE_DELAY_RANDOM),
+                alienConfig.getEnergy(),
+                createFireBehaviour(
+                        model,
+                        alienConfig,
+                        MISSILE_CHARACTER),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
                 new HitAnimation(sounds, vibrator, HIT_ANIMATION),

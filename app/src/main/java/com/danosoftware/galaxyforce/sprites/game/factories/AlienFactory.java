@@ -3,6 +3,8 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
@@ -23,11 +25,14 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienHun
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienInsectPath;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMinion;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMothership;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopusEasy;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopusHard;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopus;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienSpawnedInsect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienStork;
 import com.danosoftware.galaxyforce.waves.AlienType;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
+import com.danosoftware.galaxyforce.waves.config.AlienWithMissileConfig;
+import com.danosoftware.galaxyforce.waves.config.AlienWithoutMissileConfig;
+import com.danosoftware.galaxyforce.waves.config.MissileConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 
 import java.util.ArrayList;
@@ -56,54 +61,120 @@ public class AlienFactory {
      * path.
      */
     public List<IAlien> createAlien(
-            final AlienType alienType,
+            final AlienConfig alienConfig,
             final PowerUpType powerUp,
             final List<Point> alienPath,
             final float delay,
             final boolean restartImmediately) {
 
-        List<IAlien> aliens = new ArrayList<>();
+        final List<IAlien> aliens = new ArrayList<>();
+        final AlienType alienType = alienConfig.getAlienType();
 
         // create instance of the wanted alien
         switch (alienType) {
             case OCTOPUS:
-                aliens.add(new AlienOctopusEasy(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
-                break;
-            case OCTOPUS_HARD:
-                aliens.add(new AlienOctopusHard(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienOctopus(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case GOBBY:
-                aliens.add(new AlienGobby(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienGobby(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case MINION:
-                aliens.add(new AlienMinion(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienMinion(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case MOTHERSHIP:
-                aliens.add(new AlienMothership(
-                        this,
-                        model,
-                        sounds,
-                        vibrator,
-                        powerUp,
-                        Arrays.asList(PowerUpType.MISSILE_GUIDED, PowerUpType.MISSILE_FAST, PowerUpType.MISSILE_PARALLEL),
-                        alienPath,
-                        delay,
-                        restartImmediately));
+                aliens.add(
+                        new AlienMothership(
+                                this,
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                new AlienWithMissileConfig(
+                                        AlienType.SPAWNED_INSECT,
+                                        1,
+                                        new MissileConfig(
+                                                AlienMissileType.SIMPLE,
+                                                AlienMissileSpeed.MEDIUM,
+                                                1.5f
+                                        )
+                                ),
+                                powerUp,
+                                Arrays.asList(
+                                        PowerUpType.MISSILE_GUIDED,
+                                        PowerUpType.MISSILE_FAST,
+                                        PowerUpType.MISSILE_PARALLEL),
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case STORK:
-                aliens.add(new AlienStork(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienStork(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case DROID:
-                aliens.add(new AlienDroid(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienDroid(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             case INSECT:
-                aliens.add(new AlienInsectPath(model, sounds, vibrator, powerUp, alienPath, delay, restartImmediately));
+                aliens.add(
+                        new AlienInsectPath(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                alienPath,
+                                delay,
+                                restartImmediately));
                 break;
 
             default:
@@ -120,7 +191,7 @@ public class AlienFactory {
      * Creates an alien with no path in the specified position.
      */
     public List<IAlien> createAlien(
-            final AlienType alienType,
+            final AlienConfig alienConfig,
             final PowerUpType powerUp,
             final boolean xRandom,
             final boolean yRandom,
@@ -130,6 +201,7 @@ public class AlienFactory {
             final boolean restartImmediately) {
 
         List<IAlien> aliens = new ArrayList<>();
+        final AlienType alienType = alienConfig.getAlienType();
 
         // choose a x start position
         int xStartPos;
@@ -160,15 +232,44 @@ public class AlienFactory {
         // create instance of the wanted alien
         switch (alienType) {
             case ASTEROID:
-                aliens.add(new AlienAsteroid(powerUp, xStartPos, yStartPos, delay, restartImmediately, model, sounds, vibrator));
+                aliens.add(
+                        new AlienAsteroid(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                xStartPos,
+                                yStartPos,
+                                delay,
+                                restartImmediately));
                 break;
 
             case ASTEROID_SIMPLE:
-                aliens.add(new AlienAsteroidSimple(powerUp, xStartPos, yStartPos, delay, restartImmediately, model, sounds, vibrator));
+                aliens.add(
+                        new AlienAsteroidSimple(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                xStartPos,
+                                yStartPos,
+                                delay,
+                                restartImmediately));
                 break;
 
             case HUNTER:
-                aliens.add(new AlienHunter(powerUp, xStartPos, yStartPos, delay, model, sounds, vibrator));
+                aliens.add(
+                        new AlienHunter(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUp,
+                                xStartPos,
+                                yStartPos,
+                                delay));
                 break;
 
             case DRAGON:
@@ -180,14 +281,35 @@ public class AlienFactory {
                  */
                 List<IAlienFollower> dragonBodies = new ArrayList<>();
                 int dragonBodyCount = 20;
-                List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_GUIDED, PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_SPRAY);
+                List<PowerUpType> powerUpTypes = Arrays.asList(
+                        PowerUpType.MISSILE_GUIDED,
+                        PowerUpType.MISSILE_PARALLEL,
+                        PowerUpType.MISSILE_SPRAY);
                 PowerUpAllocator powerUpAllocator = new PowerUpAllocator(powerUpTypes, dragonBodyCount, model.getLives());
                 for (int i = 0; i < dragonBodyCount; i++) {
-                    AlienDragonBody dragonBody = new AlienDragonBody(powerUpAllocator.allocate(), xStartPos, yStartPos, model, sounds, vibrator);
+                    AlienDragonBody dragonBody = new AlienDragonBody(
+                            model,
+                            sounds,
+                            vibrator,
+                            new AlienWithoutMissileConfig(
+                                    AlienType.DRAGON,
+                                    1),
+                            powerUpAllocator.allocate(),
+                            xStartPos,
+                            yStartPos);
                     dragonBodies.add(dragonBody);
                 }
 
-                aliens.add(new AlienDragonHead(powerUp, xStartPos, yStartPos, delay, model, sounds, vibrator, dragonBodies));
+                aliens.add(new AlienDragonHead(
+                        model,
+                        sounds,
+                        vibrator,
+                        alienConfig,
+                        powerUp,
+                        xStartPos,
+                        yStartPos,
+                        delay,
+                        dragonBodies));
                 aliens.addAll(dragonBodies);
                 break;
 
@@ -207,20 +329,29 @@ public class AlienFactory {
      * Returns spawned alien bean containing alien and sound effect.
      */
     public SpawnedAliensDto createSpawnedAlien(
-            final AlienType alienType,
+            final AlienConfig alienConfig,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart) {
 
         List<IAlien> aliens = new ArrayList<>();
+        final AlienType alienType = alienConfig.getAlienType();
 
         switch (alienType) {
             case SPAWNED_INSECT:
-                aliens.add(new AlienSpawnedInsect(powerUpType, xStart, yStart, model, sounds, vibrator));
+                aliens.add(
+                        new AlienSpawnedInsect(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUpType,
+                                xStart,
+                                yStart));
                 return new SpawnedAliensDto(aliens, SoundEffect.ALIEN_SPAWN);
 
             default:
-                String errorMessage = "Error: Unrecognised AlienType: '" + alienType + "'";
+                String errorMessage = "Error: Unrecognised Spawned AlienType: '" + alienType + "'";
                 Log.e(TAG, errorMessage);
                 throw new GalaxyForceException(errorMessage);
         }

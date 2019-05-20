@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
+import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -7,24 +8,17 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitDisabled;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
 public class AlienHunter extends AbstractAlien {
-    /*
-     * ******************************************************
-     * PRIVATE STATIC VARIABLES
-     * ******************************************************
-     */
-
-    /* energy of this sprite */
-    private static final int ENERGY = 10;
 
     /* distance alien can move each cycle in pixels each second */
     private static final int ALIEN_MOVE_PIXELS = 5 * 60;
@@ -39,12 +33,13 @@ public class AlienHunter extends AbstractAlien {
     private static final Animation ANIMATION = new Animation(
             0f,
             GameSpriteIdentifier.ALIEN_HELMET);
+    private static final Animation HIT_ANIMATION = new Animation(
+            0f,
+            GameSpriteIdentifier.ALIEN_HELMET);
 
-    /*
-     * ******************************************************
-     * PRIVATE INSTANCE VARIABLES
-     * ******************************************************
-     */
+    // alien missile
+    private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
+
 
     /* current for sprite rotation */
     private float angle;
@@ -61,24 +56,28 @@ public class AlienHunter extends AbstractAlien {
      * Create Alien Hunter.
      */
     public AlienHunter(
+            final GameModel model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
+            final AlienConfig alienConfig,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
-            final float timeDelayStart,
-            final GameModel model,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator) {
+            final float timeDelayStart) {
 
         // default is that asteroids are initially invisible
         super(
                 ANIMATION,
                 xStart,
                 yStart,
-                ENERGY,
-                new FireDisabled(),
+                alienConfig.getEnergy(),
+                createFireBehaviour(
+                        model,
+                        alienConfig,
+                        MISSILE_CHARACTER),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),
-                new HitDisabled(),
+                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
                 new ExplodeSimple(sounds, vibrator));
 
         waiting();

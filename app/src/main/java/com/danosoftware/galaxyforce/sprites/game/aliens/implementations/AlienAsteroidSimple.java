@@ -12,23 +12,14 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingl
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
 import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
 /**
  * Implementation of asteroid that has fixed angular speed and velocity.
- *
- * @author Danny
  */
 public class AlienAsteroidSimple extends AbstractAlien {
-    /*
-     * ******************************************************
-     * PRIVATE STATIC VARIABLES
-     * ******************************************************
-     */
-
-    /* energy of this alien */
-    private static final int ENERGY = 5;
 
     // alien animation
     private static final Animation ANIMATION = new Animation(
@@ -37,12 +28,6 @@ public class AlienAsteroidSimple extends AbstractAlien {
     // hit animation
     private static final Animation HIT_ANIMATION = new Animation(
             0f, GameSpriteIdentifier.EXPLODE_03);
-
-    /*
-     * ******************************************************
-     * PRIVATE INSTANCE VARIABLES
-     * ******************************************************
-     */
 
     /* current for sprite rotation */
     private float angle;
@@ -69,20 +54,21 @@ public class AlienAsteroidSimple extends AbstractAlien {
      * Create Alien Asteroid.
      */
     public AlienAsteroidSimple(
+            final GameModel model,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
+            final AlienConfig alienConfig,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart,
             final float timeDelayStart,
-            final boolean restartImmediately,
-            final GameModel model,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator) {
+            final boolean restartImmediately) {
         // default is that asteroids are initially invisible
         super(
                 ANIMATION,
                 xStart,
                 yStart,
-                ENERGY,
+                alienConfig.getEnergy(),
                 new FireDisabled(),
                 new PowerUpSingle(model, powerUpType),
                 new SpawnDisabled(),

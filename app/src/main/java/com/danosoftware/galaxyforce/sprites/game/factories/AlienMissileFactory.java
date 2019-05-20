@@ -1,12 +1,11 @@
 package com.danosoftware.galaxyforce.sprites.game.factories;
 
+import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
-import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
-import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotated;
-import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 
 import java.util.ArrayList;
@@ -19,7 +18,12 @@ public class AlienMissileFactory {
      * will be based on the base's position. Direction will be used to determine
      * initial position and direction of travel.
      */
-    public static AlienMissilesDto createAlienMissile(IBasePrimary base, IAlien alien, AlienMissileType missileType) {
+    public static AlienMissilesDto createAlienMissile(
+            IBasePrimary base,
+            IAlien alien,
+            AlienMissileType missileType,
+            AlienMissileSpeed missileSpeed,
+            AlienMissileCharacter missileCharacter) {
 
         List<IAlienMissile> missiles = new ArrayList<>();
 
@@ -33,21 +37,14 @@ public class AlienMissileFactory {
         /*
          * Create new missiles
          */
-        switch (missileType) {
-
-            case SIMPLE:
-
-                missiles.add(new AlienMissileSimple(x, y));
-                return new AlienMissilesDto(missiles, SoundEffect.ALIEN_FIRE);
-
-            case ROTATED:
-
-                missiles.add(new AlienMissileRotated(x, y, base));
-                return new AlienMissilesDto(missiles, SoundEffect.ALIEN_FIRE);
-
-            default:
-
-                throw new IllegalStateException("Unsupported missile type '" + missileType.name() + "'.");
-        }
+        return new AlienMissilesDto(
+                missileType.getMissiles(
+                        x,
+                        y,
+                        missileCharacter,
+                        missileSpeed,
+                        base),
+                missileType.getSound(
+                        missileCharacter));
     }
 }

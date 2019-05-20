@@ -8,7 +8,7 @@ package com.danosoftware.galaxyforce.waves;
 public enum AlienType {
 
     // OctoAlien
-    OCTOPUS, OCTOPUS_HARD,
+    OCTOPUS,
 
     // test alien
     MINION,

@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.waves.utilities;
 
+import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
@@ -7,6 +9,9 @@ import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.SubWave;
+import com.danosoftware.galaxyforce.waves.config.AlienWithMissileConfig;
+import com.danosoftware.galaxyforce.waves.config.AlienWithoutMissileConfig;
+import com.danosoftware.galaxyforce.waves.config.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
@@ -60,7 +65,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_TRIANGULAR,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
@@ -71,7 +84,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_TRIANGULAR_REVERSED,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
@@ -82,12 +103,28 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_TRIANGULAR,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_BLAST)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_TRIANGULAR_REVERSED,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 )
                         )
@@ -101,12 +138,28 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED,
-                                        AlienType.MINION,
+                                        new AlienWithMissileConfig(
+                                                AlienType.MINION,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_FAST)
                                 )
                         )
@@ -116,12 +169,28 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_FLIPPED,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.VALLEY_DIVE_INTERLEAVED_FLIPPED,
-                                        AlienType.MINION,
+                                        new AlienWithMissileConfig(
+                                                AlienType.MINION,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
@@ -135,7 +204,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 )
                         )
@@ -145,7 +222,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE_REVERSE,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 )
                         )
@@ -155,7 +240,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE_DOUBLE,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
@@ -169,7 +262,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
 
                                 )
@@ -180,7 +281,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
-                                        AlienType.MINION,
+                                        new AlienWithMissileConfig(
+                                                AlienType.MINION,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         NO_POWER_UPS
                                 )
                         )
@@ -190,7 +299,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_SPIRAL,
-                                        AlienType.MINION,
+                                        new AlienWithMissileConfig(
+                                                AlienType.MINION,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
@@ -204,7 +321,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
-                                        AlienType.MOTHERSHIP,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.MOTHERSHIP,
+                                                10
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                                 )
                         )
@@ -214,7 +334,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVE_MOTHERSHIP,
-                                        AlienType.MOTHERSHIP,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.MOTHERSHIP,
+                                                10
+                                        ),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
@@ -228,7 +351,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.WAVEY_LINE_DOUBLE,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                                 )
                         )
@@ -242,7 +373,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
-                                        AlienType.ASTEROID,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.ASTEROID,
+                                                5
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
@@ -256,7 +390,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPACE_INVADER,
-                                        AlienType.GOBBY,
+                                        new AlienWithMissileConfig(
+                                                AlienType.GOBBY,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Arrays.asList(PowerUpType.MISSILE_BLAST, PowerUpType.LIFE)
                                 )
                         )
@@ -266,7 +408,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPACE_INVADER_REVERSE,
-                                        AlienType.GOBBY,
+                                        new AlienWithMissileConfig(
+                                                AlienType.GOBBY,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
@@ -280,7 +430,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.STAGGERED_BOUNCE_ATTACK,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
@@ -294,7 +452,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.DRAGON_CHASE,
-                                        AlienType.DRAGON,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DRAGON,
+                                                20,
+                                                new MissileConfig(
+                                                        AlienMissileType.ROTATED,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
@@ -308,7 +474,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.FIGURE_OF_EIGHT,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
@@ -322,7 +496,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSING_STEP_ATTACK,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_BLAST)
                                 )
                         )
@@ -336,7 +518,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.CROSSOVER_EXIT_ATTACK,
-                                        AlienType.OCTOPUS,
+                                        new AlienWithMissileConfig(
+                                                AlienType.OCTOPUS,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.HELPER_BASES)
                                 )
                         )
@@ -350,7 +540,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
-                                        AlienType.STORK,
+                                        new AlienWithMissileConfig(
+                                                AlienType.STORK,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
@@ -360,7 +558,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_BELL_CURVE,
-                                        AlienType.STORK,
+                                        new AlienWithMissileConfig(
+                                                AlienType.STORK,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
@@ -374,7 +580,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
-                                        AlienType.DROID,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DROID,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
@@ -388,7 +602,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.TEAR_DROP_ATTACK,
-                                        AlienType.INSECT,
+                                        new AlienWithMissileConfig(
+                                                AlienType.INSECT,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.HELPER_BASES)
                                 )
                         )
@@ -402,7 +624,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        AlienType.ASTEROID_SIMPLE,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.ASTEROID_SIMPLE,
+                                                5
+                                        ),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
@@ -416,7 +641,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.SPIRAL,
-                                        AlienType.DROID,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DROID,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
                                 )
                         )
@@ -426,7 +659,15 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.DOUBLE_SPIRAL,
-                                        AlienType.DROID,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DROID,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.LIFE)
                                 )
                         )
@@ -440,7 +681,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE_EASY,
-                                        AlienType.ASTEROID_SIMPLE,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.ASTEROID_SIMPLE,
+                                                5
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
                         )
@@ -450,7 +694,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE,
-                                        AlienType.ASTEROID_SIMPLE,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.ASTEROID_SIMPLE,
+                                                5
+                                        ),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
                         )
@@ -464,7 +711,10 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.HUNTER_PAIR,
-                                        AlienType.HUNTER,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.HUNTER,
+                                                10
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )
@@ -518,17 +768,36 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
                                         SubWavePathRule.BELL_CURVE,
-                                        AlienType.STORK,
+                                        new AlienWithMissileConfig(
+                                                AlienType.STORK,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.HELPER_BASES)
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        AlienType.ASTEROID_SIMPLE,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.ASTEROID_SIMPLE,
+                                                5
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 ),
                                 new SubWavePathConfig(
                                         SubWavePathRule.LOOPER_ATTACK,
-                                        AlienType.DROID,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DROID,
+                                                1,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.MEDIUM,
+                                                        6.5f
+                                                )
+                                        ),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
                         )

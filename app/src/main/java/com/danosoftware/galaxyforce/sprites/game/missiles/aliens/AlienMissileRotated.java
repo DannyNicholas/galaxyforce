@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.aliens;
 
+import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.view.Animation;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
@@ -19,18 +19,21 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
  */
 public class AlienMissileRotated extends AbstractAlienMissile {
 
-    // distance missile can move each cycle in pixels each second
-    private static final int ALIEN_MISSILE_MOVE_PIXELS = 5 * 60;
-
-    // Sprite id
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_ALIEN;
-
     // offset applied to x and y every move
     private final int xDelta;
     private final int yDelta;
 
-    public AlienMissileRotated(int xStart, int yStart, IBasePrimary base) {
-        super(SPRITE, xStart, yStart - (SPRITE.getProperties().getHeight() / 2));
+    public AlienMissileRotated(
+            int xStart,
+            int yStart,
+            final Animation animation,
+            final AlienMissileSpeed missileSpeed,
+            final IBasePrimary base) {
+
+        super(
+                animation,
+                xStart,
+                yStart);
 
         // calculate angle from missile position to base
         final float angle;
@@ -48,12 +51,13 @@ public class AlienMissileRotated extends AbstractAlienMissile {
         rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
 
         // calculate the deltas to be applied each move
-        this.xDelta = (int) (ALIEN_MISSILE_MOVE_PIXELS * (float) Math.cos(angle));
-        this.yDelta = (int) (ALIEN_MISSILE_MOVE_PIXELS * (float) Math.sin(angle));
+        this.xDelta = (int) (missileSpeed.getSpeed() * (float) Math.cos(angle));
+        this.yDelta = (int) (missileSpeed.getSpeed() * (float) Math.sin(angle));
     }
 
     @Override
     public void animate(float deltaTime) {
+        super.animate(deltaTime);
 
         // move missile by calculated deltas
         moveByDelta(
