@@ -37,7 +37,9 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     MOTHER_BUZZER_WINGS_DOWN_HIT("motherBuzzerWingsDownHit"),
     MOTHER_BUZZER_WINGS_UP_HIT("motherBuzzerWingsUpHit"),
 
-    DROID("alienHead48px"),
+    // droid alien
+    DROID("skull"),
+    DROID_HIT("skullHit"),
 
     ALIEN_PEARL("alienPearl48px"),
 

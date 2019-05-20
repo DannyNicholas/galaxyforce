@@ -27,7 +27,7 @@ public class AlienDroid extends AbstractAlienWithPath {
             GameSpriteIdentifier.DROID);
     private static final Animation HIT_ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.DROID);
+            GameSpriteIdentifier.DROID_HIT);
 
     // alien missile
     private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
