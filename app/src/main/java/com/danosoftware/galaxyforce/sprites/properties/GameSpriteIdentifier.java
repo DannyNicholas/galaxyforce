@@ -13,7 +13,18 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     ALIEN_MINION_NORMAL("Yellow_64px"), ALIEN_MINION_FUZZ1("YellowB_64px"), ALIEN_MINION_FUZZ2("YellowC_64px"),
 
-    ASTEROID("asteroid_64px"),
+    // meaney
+    MEANEY("yellowMeany"),
+    MEANEY_HIT("yellowMeanyHit"),
+
+    // zogg
+    ZOGG_UP("zogg01"),
+    ZOGG_DOWN("zogg02"),
+    ZOGG_UP_HIT("zoggHit01"),
+    ZOGG_DOWN_HIT("zoggHit02"),
+
+    // asteroid
+    ASTEROID("asteroid"), ASTEROID_HIT("asteroidHit"),
 
     // dragon - head and body
     DRAGON_HEAD_LEFT("dragonLeft"),
@@ -36,6 +47,64 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     MOTHER_BUZZER_WINGS_UP("motherBuzzerWingsUp"),
     MOTHER_BUZZER_WINGS_DOWN_HIT("motherBuzzerWingsDownHit"),
     MOTHER_BUZZER_WINGS_UP_HIT("motherBuzzerWingsUpHit"),
+
+    // gobby
+    GOBBY_LEFT("gobby01"),
+    GOBBY_RIGHT("gobby02"),
+    GOBBY_LEFT_HIT("gobbyHit01"),
+    GOBBY_RIGHT_HIT("gobbyHit02"),
+
+    // bad cat
+    BAD_CAT("badCat"),
+    BAD_CAT_HIT("badCatHit"),
+
+    // batty
+    BATTY_FLAP_DOWN("bat01"),
+    BATTY_FLAP_UP("bat02"),
+    BATTY_FLAP_DOWN_HIT("bat01Hit"),
+    BATTY_FLAP_UP_HIT("bat02Hit"),
+
+    // book
+    BOOK_FLAT("book01"),
+    BOOK_BEND("book02"),
+    BOOK_CLOSED("book03"),
+    BBOOK_FLAT_HIT("bookHit01"),
+    BOOK_BEND_HIT("bookHit02"),
+    BOOK_CLOSED_HIT("bookHit03"),
+
+    // bouncer
+    BOUNCER_IN("bouncer01"),
+    BOUNCER_OUT("bouncer02"),
+    BOUNCER_IN_HIT("bouncer01Hit"),
+    BOUNCER_OUT_HIT("bouncer02Hit"),
+
+    // droopy
+    DROOPY_DOWN("droopyDown"),
+    DROOPY_UP("droopyUp"),
+    DROOPY_DOWN_HIT("droopyDownHit"),
+    DROOPY_UP_HIT("droopyUpHit"),
+
+    // circuit
+    CIRCUIT_LEFT("circuit01"),
+    CIRCUIT_RIGHT("circuit02"),
+    CIRCUIT_LEFT_HIT("circuit01Hit"),
+    CIRCUIT_RIGHT_HIT("circuit02Hit"),
+
+    // smokey
+    SMOKEY_FLAME_SMALL("smokey01"),
+    SMOKEY_FLAME_BIG("smokey02"),
+    SMOKEY_FLAME_NONE("smokey03"),
+    SMOKEY_FLAME_SMALL_HIT("smokeyHit01"),
+    SMOKEY_FLAME_BIG_HIT("smokeyHit02"),
+    SMOKEY_FLAME_NONE_HIT("smokeyHit03"),
+
+    // cloud
+    CLOUD("cloud"),
+    CLOUD_HIT("cloudHit"),
+
+    // helmet
+    HELMET("helmet"),
+    HELMET_HIT("helmetHit"),
 
     // droid alien
     DROID("skull"),
@@ -91,6 +160,10 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     // lasers
     LASER_ALIEN("laserInvaderGreen9px"),
     LASER_BASE("laserHeroNew9px"),
+
+    // lightning and rain missile
+    LIGHTNING("lightningLong"),
+    RAIN("rain"),
 
     // explosions
     EXPLODE_01("explodeOne"),
