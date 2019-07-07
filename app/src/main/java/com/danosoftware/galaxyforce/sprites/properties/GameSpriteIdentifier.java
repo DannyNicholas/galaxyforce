@@ -58,6 +58,14 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     BAD_CAT("badCat"),
     BAD_CAT_HIT("badCatHit"),
 
+    // bomb
+    BOMB_01("bomb01"),
+    BOMB_02("bomb02"),
+    BOMB_03("bomb03"),
+    BOMB_01_HIT("bombHit01"),
+    BOMB_02_HIT("bombHit02"),
+    BOMB_03_HIT("bombHit03"),
+
     // batty
     BATTY_FLAP_DOWN("bat01"),
     BATTY_FLAP_UP("bat02"),
@@ -68,7 +76,7 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     BOOK_FLAT("book01"),
     BOOK_BEND("book02"),
     BOOK_CLOSED("book03"),
-    BBOOK_FLAT_HIT("bookHit01"),
+    BOOK_FLAT_HIT("bookHit01"),
     BOOK_BEND_HIT("bookHit02"),
     BOOK_CLOSED_HIT("bookHit03"),
 
@@ -160,6 +168,10 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     // lasers
     LASER_ALIEN("laserInvaderGreen9px"),
     LASER_BASE("laserHeroNew9px"),
+
+    // fireball
+    FIREBALL01("fireBall01"),
+    FIREBALL02("fireBall02"),
 
     // lightning and rain missile
     LIGHTNING("lightningLong"),

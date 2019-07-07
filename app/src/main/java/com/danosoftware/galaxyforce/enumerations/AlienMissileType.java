@@ -6,6 +6,7 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRot
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,13 +22,15 @@ public enum AlienMissileType {
                 public List<IAlienMissile> createMissiles(
                         int x,
                         int y,
+                        int offset,
                         AlienMissileCharacter missileCharacter,
                         AlienMissileSpeed missileSpeed,
                         IBasePrimary base) {
+
                     return Collections.singletonList(
                             (IAlienMissile) new AlienMissileSimple(
                                     x,
-                                    y,
+                                    y - offset,
                                     missileCharacter.getAnimation(),
                                     missileSpeed));
                 }
@@ -45,16 +48,61 @@ public enum AlienMissileType {
                 public List<IAlienMissile> createMissiles(
                         int x,
                         int y,
+                        int offset,
                         AlienMissileCharacter missileCharacter,
                         AlienMissileSpeed missileSpeed,
                         IBasePrimary base) {
                     return Collections.singletonList(
                             (IAlienMissile) new AlienMissileRotated(
                                     x,
-                                    y,
+                                    y - offset,
                                     missileCharacter.getAnimation(),
                                     missileSpeed,
                                     base));
+                }
+
+                @Override
+                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+                    return missileCharacter.getSound();
+                }
+            }
+    ),
+
+    SPRAY(
+            new MissileFactory() {
+                @Override
+                public List<IAlienMissile> createMissiles(
+                        int x,
+                        int y,
+                        int offset,
+                        AlienMissileCharacter missileCharacter,
+                        AlienMissileSpeed missileSpeed,
+                        IBasePrimary base) {
+                    return Arrays.asList(
+                            (IAlienMissile) new AlienMissileRotated(
+                                    x,
+                                    y,
+                                    missileCharacter.getAnimation(),
+                                    missileSpeed,
+                                    (float) Math.atan2(-1, -1)),
+                            (IAlienMissile) new AlienMissileRotated(
+                                    x,
+                                    y,
+                                    missileCharacter.getAnimation(),
+                                    missileSpeed,
+                                    (float) Math.atan2(-1, 1)),
+                            (IAlienMissile) new AlienMissileRotated(
+                                    x,
+                                    y,
+                                    missileCharacter.getAnimation(),
+                                    missileSpeed,
+                                    (float) Math.atan2(1, -1)),
+                            (IAlienMissile) new AlienMissileRotated(
+                                    x,
+                                    y,
+                                    missileCharacter.getAnimation(),
+                                    missileSpeed,
+                                    (float) Math.atan2(1, 1)));
                 }
 
                 @Override
@@ -76,12 +124,14 @@ public enum AlienMissileType {
     // create missiles using the enum specific factory
     public List<IAlienMissile> getMissiles(int x,
                                            int y,
+                                           int offset,
                                            AlienMissileCharacter missileCharacter,
                                            AlienMissileSpeed missileSpeed,
                                            IBasePrimary base) {
         return missileFactory.createMissiles(
                 x,
                 y,
+                offset,
                 missileCharacter,
                 missileSpeed,
                 base);
@@ -101,6 +151,7 @@ public enum AlienMissileType {
         List<IAlienMissile> createMissiles(
                 int x,
                 int y,
+                int offset,
                 AlienMissileCharacter missileCharacter,
                 AlienMissileSpeed missileSpeed,
                 IBasePrimary base);

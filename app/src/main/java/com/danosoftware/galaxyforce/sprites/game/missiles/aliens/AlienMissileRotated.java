@@ -23,6 +23,7 @@ public class AlienMissileRotated extends AbstractAlienMissile {
     private final int xDelta;
     private final int yDelta;
 
+    // created rotated missile aimed at base
     public AlienMissileRotated(
             int xStart,
             int yStart,
@@ -45,6 +46,28 @@ public class AlienMissileRotated extends AbstractAlienMissile {
             // if base is null fire downwards
             angle = (float) Math.atan2(-1, 0);
         }
+
+        // convert angle to degrees for sprite rotation.
+        // needs to be adjusted by 90 deg for correct rotation.
+        rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
+
+        // calculate the deltas to be applied each move
+        this.xDelta = (int) (missileSpeed.getSpeed() * (float) Math.cos(angle));
+        this.yDelta = (int) (missileSpeed.getSpeed() * (float) Math.sin(angle));
+    }
+
+    // created rotated missile of supplied angle
+    public AlienMissileRotated(
+            int xStart,
+            int yStart,
+            final Animation animation,
+            final AlienMissileSpeed missileSpeed,
+            final float angle) {
+
+        super(
+                animation,
+                xStart,
+                yStart);
 
         // convert angle to degrees for sprite rotation.
         // needs to be adjusted by 90 deg for correct rotation.

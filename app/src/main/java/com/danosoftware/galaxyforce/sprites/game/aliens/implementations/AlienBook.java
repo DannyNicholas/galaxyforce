@@ -19,22 +19,26 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 
-public class AlienOctopus extends AbstractAlienWithPath {
+public class AlienBook extends AbstractAlienWithPath {
 
     // alien animation
     private static final Animation ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.OCTOPUS_LEFT,
-            GameSpriteIdentifier.OCTOPUS_RIGHT);
+            GameSpriteIdentifier.BOOK_FLAT,
+            GameSpriteIdentifier.BOOK_BEND,
+            GameSpriteIdentifier.BOOK_CLOSED,
+            GameSpriteIdentifier.BOOK_BEND);
     private static final Animation HIT_ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.OCTOPUS_LEFT_HIT,
-            GameSpriteIdentifier.OCTOPUS_RIGHT_HIT);
+            GameSpriteIdentifier.BOOK_FLAT_HIT,
+            GameSpriteIdentifier.BOOK_BEND_HIT,
+            GameSpriteIdentifier.BOOK_CLOSED_HIT,
+            GameSpriteIdentifier.BOOK_BEND_HIT);
 
     // alien missile
     private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
 
-    public AlienOctopus(
+    public AlienBook(
             final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,

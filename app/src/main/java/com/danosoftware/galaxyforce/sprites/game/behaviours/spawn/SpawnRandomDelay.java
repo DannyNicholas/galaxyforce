@@ -102,7 +102,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
                 alienConfig,
                 powerUpAllocator.allocate(),
                 alien.x(),
-                alien.y() - alien.height());
+                alien.y());
 
         model.spawnAliens(aliens);
     }

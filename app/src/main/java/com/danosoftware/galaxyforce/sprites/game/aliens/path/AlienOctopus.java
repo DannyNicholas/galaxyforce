@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
+package com.danosoftware.galaxyforce.sprites.game.aliens.path;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
@@ -19,25 +19,22 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 
-public class AlienGobby extends AbstractAlienWithPath {
+public class AlienOctopus extends AbstractAlienWithPath {
 
     // alien animation
     private static final Animation ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.ALIEN_GOBBY_LEFT,
-            GameSpriteIdentifier.ALIEN_GOBBY_RIGHT);
+            GameSpriteIdentifier.OCTOPUS_LEFT,
+            GameSpriteIdentifier.OCTOPUS_RIGHT);
     private static final Animation HIT_ANIMATION = new Animation(
             0.5f,
-            GameSpriteIdentifier.ALIEN_GOBBY_LEFT,
-            GameSpriteIdentifier.ALIEN_GOBBY_RIGHT);
+            GameSpriteIdentifier.OCTOPUS_LEFT_HIT,
+            GameSpriteIdentifier.OCTOPUS_RIGHT_HIT);
 
     // alien missile
     private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
 
-    /**
-     * Create Alien Gobby.
-     */
-    public AlienGobby(
+    public AlienOctopus(
             final GameModel model,
             final SoundPlayerService sounds,
             final VibrationService vibrator,

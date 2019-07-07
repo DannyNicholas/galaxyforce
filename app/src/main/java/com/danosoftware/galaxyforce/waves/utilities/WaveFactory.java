@@ -722,7 +722,83 @@ public class WaveFactory {
                 break;
 
             case 21:
+
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.BOMBER_RUN,
+                                        new AlienWithoutMissileConfig(
+                                                AlienType.BOMBER,
+                                                10
+                                        ),
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY)
+                                )
+                        )
+                );
+                break;
+
             case 22:
+
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.FLAT_ATTACK_ROW_1,
+                                        new AlienWithMissileConfig(
+                                                AlienType.DROID,
+                                                3,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.FAST,
+                                                        6.5f
+                                                )
+                                        ),
+                                        Collections.singletonList(PowerUpType.SHIELD)
+                                ),
+                                new SubWavePathConfig(
+                                        SubWavePathRule.FLAT_ATTACK_ROW_2,
+                                        new AlienWithMissileConfig(
+                                                AlienType.GOBBY,
+                                                3,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.FAST,
+                                                        6.5f
+                                                )
+                                        ),
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
+                                ),
+                                new SubWavePathConfig(
+                                        SubWavePathRule.FLAT_ATTACK_ROW_3,
+                                        new AlienWithMissileConfig(
+                                                AlienType.MINION,
+                                                3,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.FAST,
+                                                        6.5f
+                                                )
+                                        ),
+                                        Collections.singletonList(PowerUpType.HELPER_BASES)
+                                ),
+                                new SubWavePathConfig(
+                                        SubWavePathRule.FLAT_ATTACK_ROW_4,
+                                        new AlienWithMissileConfig(
+                                                AlienType.CIRCUIT,
+                                                3,
+                                                new MissileConfig(
+                                                        AlienMissileType.SIMPLE,
+                                                        AlienMissileSpeed.FAST,
+                                                        6.5f
+                                                )
+                                        ),
+                                        Collections.singletonList(PowerUpType.MISSILE_PARALLEL)
+                                )
+                        )
+                );
+                break;
+
             case 23:
             case 24:
             case 25:

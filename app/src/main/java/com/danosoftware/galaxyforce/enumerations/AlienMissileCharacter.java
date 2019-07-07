@@ -10,11 +10,22 @@ import com.danosoftware.galaxyforce.view.Animation;
 public enum AlienMissileCharacter {
 
     LASER(
-            new Animation(0f, GameSpriteIdentifier.LASER_ALIEN),
+            new Animation(
+                    0f,
+                    GameSpriteIdentifier.LASER_ALIEN),
             SoundEffect.ALIEN_FIRE
     ),
     FIREBALL(
-            new Animation(0f, GameSpriteIdentifier.LASER_ALIEN),
+            new Animation(
+                    0.1f,
+                    GameSpriteIdentifier.FIREBALL01,
+                    GameSpriteIdentifier.FIREBALL02),
+            SoundEffect.ALIEN_FIRE
+    ),
+    LIGHTNING(
+            new Animation(
+                    0f,
+                    GameSpriteIdentifier.LIGHTNING),
             SoundEffect.ALIEN_FIRE
     );
 

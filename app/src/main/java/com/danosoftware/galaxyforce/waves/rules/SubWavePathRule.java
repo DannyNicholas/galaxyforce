@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.flightpath.translators.OffsetXPointTranslato
 import com.danosoftware.galaxyforce.flightpath.translators.OffsetYPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -272,6 +273,21 @@ public enum SubWavePathRule {
             )
     ),
 
+    /**
+     * row attack where 5 columns of aliens attack from top to bottom and
+     * then bounce back up. each row is delayed compared to the previous.
+     */
+    FLAT_ATTACK_ROW_1(
+            rowSubWave(0f)),
+    FLAT_ATTACK_ROW_2(
+            rowSubWave(0.3f)),
+    FLAT_ATTACK_ROW_3(
+            rowSubWave(0.6f)),
+    FLAT_ATTACK_ROW_4(
+            rowSubWave(0.9f)),
+
+
+
     WAVEY_LINE(
             new SubWavePathRuleProperties(
                     Path.SINGLE_ARC,
@@ -381,6 +397,17 @@ public enum SubWavePathRule {
             )
     ),
 
+    BOMBER_RUN(
+            new SubWavePathRuleProperties(
+                    Path.SPACE_INVADER,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    0,
+                    true
+            )
+    ),
+
     /**
      * One spiral path from top to bottom
      */
@@ -452,10 +479,37 @@ public enum SubWavePathRule {
         this.subWaveProps = Arrays.asList(subWaveProps);
     }
 
+    SubWavePathRule(List<SubWavePathRuleProperties> subWaveProps) {
+        this.subWaveProps = subWaveProps;
+    }
+
     /**
      * Properties to create a sub-wave
      */
     public List<SubWavePathRuleProperties> subWaveProps() {
         return subWaveProps;
+    }
+
+    /**
+     * Creates a row attack
+     */
+    private static List<SubWavePathRuleProperties> rowSubWave(
+            final float delayStart) {
+        List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
+
+        for (int col = 0; col < 6; col++) {
+            subWaves.add(new SubWavePathRuleProperties(
+                    Path.BOUNCE_DOWN_AND_UP,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    delayStart,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new OffsetXPointTranslator(40 + (col * 92)))
+            ));
+        }
+
+        return subWaves;
     }
 }

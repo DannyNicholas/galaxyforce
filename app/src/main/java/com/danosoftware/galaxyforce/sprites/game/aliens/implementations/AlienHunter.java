@@ -30,12 +30,25 @@ public class AlienHunter extends AbstractAlien {
     private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
     // alien animation
+//    private static final Animation ANIMATION = new Animation(
+//            0f,
+//            GameSpriteIdentifier.ALIEN_HELMET);
+//    private static final Animation HIT_ANIMATION = new Animation(
+//            0f,
+//            GameSpriteIdentifier.ALIEN_HELMET);
+    // alien animation
     private static final Animation ANIMATION = new Animation(
-            0f,
-            GameSpriteIdentifier.ALIEN_HELMET);
+            0.2f,
+            GameSpriteIdentifier.BOOK_FLAT,
+            GameSpriteIdentifier.BOOK_BEND,
+            GameSpriteIdentifier.BOOK_CLOSED,
+            GameSpriteIdentifier.BOOK_BEND);
     private static final Animation HIT_ANIMATION = new Animation(
-            0f,
-            GameSpriteIdentifier.ALIEN_HELMET);
+            0.2f,
+            GameSpriteIdentifier.BOOK_FLAT_HIT,
+            GameSpriteIdentifier.BOOK_BEND_HIT,
+            GameSpriteIdentifier.BOOK_CLOSED_HIT,
+            GameSpriteIdentifier.BOOK_BEND_HIT);
 
     // alien missile
     private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;

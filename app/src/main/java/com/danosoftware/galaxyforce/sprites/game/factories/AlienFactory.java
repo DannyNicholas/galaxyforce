@@ -3,6 +3,7 @@ package com.danosoftware.galaxyforce.sprites.game.factories;
 import android.util.Log;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
@@ -17,17 +18,21 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienAsteroid;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienAsteroidSimple;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienBomb;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienBook;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienDragonBody;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienDragonHead;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienDroid;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienGobby;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienHunter;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienInsectPath;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMinion;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienMothership;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienOctopus;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienSpawnedInsect;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.AlienStork;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienBomber;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienDroid;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienInsectPath;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienMinion;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienMothership;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.AlienStork;
+import com.danosoftware.galaxyforce.sprites.game.aliens.path.PathAlien;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
+import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.AlienWithMissileConfig;
@@ -72,22 +77,72 @@ public class AlienFactory {
 
         // create instance of the wanted alien
         switch (alienType) {
+            case CIRCUIT:
+                aliens.add(
+                        new PathAlien.Builder()
+                                .model(model)
+                                .sounds(sounds)
+                                .vibrator(vibrator)
+                                .alienConfig(alienConfig)
+                                .powerUp(powerUp)
+                                .alienPath(alienPath)
+                                .delayStartTime(delay)
+                                .restartImmediately(restartImmediately)
+                                .animation(alienType.getAnimation())
+                                .hitAnimation(alienType.getHitAnimation())
+                                .missileCharacter(AlienMissileCharacter.LIGHTNING)
+                                .build());
+                break;
+
             case OCTOPUS:
                 aliens.add(
-                        new AlienOctopus(
-                                model,
-                                sounds,
-                                vibrator,
-                                alienConfig,
-                                powerUp,
-                                alienPath,
-                                delay,
-                                restartImmediately));
+                        new PathAlien.Builder()
+                                .model(model)
+                                .sounds(sounds)
+                                .vibrator(vibrator)
+                                .alienConfig(alienConfig)
+                                .powerUp(powerUp)
+                                .alienPath(alienPath)
+                                .delayStartTime(delay)
+                                .restartImmediately(restartImmediately)
+                                .animation(new Animation(
+                                        0.5f,
+                                        GameSpriteIdentifier.OCTOPUS_LEFT,
+                                        GameSpriteIdentifier.OCTOPUS_RIGHT))
+                                .hitAnimation(new Animation(
+                                        0.5f,
+                                        GameSpriteIdentifier.OCTOPUS_LEFT_HIT,
+                                        GameSpriteIdentifier.OCTOPUS_RIGHT_HIT))
+                                .missileCharacter(AlienMissileCharacter.LASER)
+                                .build());
                 break;
 
             case GOBBY:
                 aliens.add(
-                        new AlienGobby(
+                        new PathAlien.Builder()
+                                .model(model)
+                                .sounds(sounds)
+                                .vibrator(vibrator)
+                                .alienConfig(alienConfig)
+                                .powerUp(powerUp)
+                                .alienPath(alienPath)
+                                .delayStartTime(delay)
+                                .restartImmediately(restartImmediately)
+                                .animation(new Animation(
+                                        0.5f,
+                                        GameSpriteIdentifier.ALIEN_GOBBY_LEFT,
+                                        GameSpriteIdentifier.ALIEN_GOBBY_RIGHT))
+                                .hitAnimation(new Animation(
+                                        0.5f,
+                                        GameSpriteIdentifier.ALIEN_GOBBY_LEFT,
+                                        GameSpriteIdentifier.ALIEN_GOBBY_RIGHT))
+                                .missileCharacter(AlienMissileCharacter.LASER)
+                                .build());
+                break;
+
+            case BOOK:
+                aliens.add(
+                        new AlienBook(
                                 model,
                                 sounds,
                                 vibrator,
@@ -177,8 +232,29 @@ public class AlienFactory {
                                 restartImmediately));
                 break;
 
+            case BOMBER:
+                aliens.add(
+                        new AlienBomber(
+                                this,
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                new AlienWithoutMissileConfig(
+                                        AlienType.BOMB,
+                                        1),
+                                powerUp,
+                                Arrays.asList(
+                                        PowerUpType.MISSILE_GUIDED,
+                                        PowerUpType.MISSILE_FAST,
+                                        PowerUpType.MISSILE_PARALLEL),
+                                alienPath,
+                                delay,
+                                restartImmediately));
+                break;
+
             default:
-                String errorMessage = "Error: Unrecognised AlienType: '" + alienType + "'";
+                String errorMessage = "Error: Unrecognised Path AlienType: '" + alienType + "'";
                 Log.e(TAG, errorMessage);
                 throw new IllegalStateException(errorMessage);
         }
@@ -341,6 +417,18 @@ public class AlienFactory {
             case SPAWNED_INSECT:
                 aliens.add(
                         new AlienSpawnedInsect(
+                                model,
+                                sounds,
+                                vibrator,
+                                alienConfig,
+                                powerUpType,
+                                xStart,
+                                yStart));
+                return new SpawnedAliensDto(aliens, SoundEffect.ALIEN_SPAWN);
+
+            case BOMB:
+                aliens.add(
+                        new AlienBomb(
                                 model,
                                 sounds,
                                 vibrator,

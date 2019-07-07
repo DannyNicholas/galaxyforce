@@ -6,10 +6,6 @@ import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
-import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AlienMissileFactory {
 
@@ -25,14 +21,13 @@ public class AlienMissileFactory {
             AlienMissileSpeed missileSpeed,
             AlienMissileCharacter missileCharacter) {
 
-        List<IAlienMissile> missiles = new ArrayList<>();
-
         /*
-         * create missile's starting x and y positions based on alien position
-         * and direction
+         * create missile's starting x and y positions and offset based
+         * on alien size.
          */
         int x = alien.x();
-        int y = alien.y() - (alien.height() / 2);
+        int y = alien.y();
+        int offset = (alien.height() / 2);
 
         /*
          * Create new missiles
@@ -41,6 +36,7 @@ public class AlienMissileFactory {
                 missileType.getMissiles(
                         x,
                         y,
+                        offset,
                         missileCharacter,
                         missileSpeed,
                         base),

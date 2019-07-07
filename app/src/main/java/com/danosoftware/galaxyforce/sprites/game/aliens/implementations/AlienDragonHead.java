@@ -45,7 +45,7 @@ public class AlienDragonHead extends AbstractAlien {
             GameSpriteIdentifier.DRAGON_HEAD_RIGHT_HIT);
 
     // alien missile
-    private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
+    private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.FIREBALL;
 
     /* dragon body parts - these will be destroyed when the head is destroyed */
     private final List<IAlienFollower> dragonBodies;
