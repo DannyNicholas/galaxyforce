@@ -56,7 +56,7 @@ public enum SubWaveRule {
                     GameConstants.SCREEN_MID_X,
                     GameConstants.SCREEN_TOP,
                     1,
-                    0.5f,
+                    0f,
                     0f,
                     false
             )),
