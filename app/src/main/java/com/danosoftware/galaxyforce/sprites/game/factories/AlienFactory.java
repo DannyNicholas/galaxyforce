@@ -20,6 +20,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Follower
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.SpinningDescendingAlien;
+import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
@@ -284,6 +285,12 @@ public class AlienFactory {
                 yStart,
                 0f,
                 false);
-        return new SpawnedAliensDto(aliens, SoundEffect.ALIEN_SPAWN);
+
+        List<IAlien> reversedAlienList = new ArrayList<>();
+        for (IAlien eachAlien : Reversed.reversed(aliens)) {
+            reversedAlienList.add(eachAlien);
+        }
+
+        return new SpawnedAliensDto(reversedAlienList, SoundEffect.ALIEN_SPAWN);
     }
 }

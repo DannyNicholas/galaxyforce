@@ -12,6 +12,7 @@ import lombok.NonNull;
 public class HunterConfig extends AlienConfig {
 
     private final AlienSpeed speed;
+    private final HunterBoundariesConfig boundaries;
 
     @Builder
     public HunterConfig(
@@ -19,7 +20,8 @@ public class HunterConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
-            @NonNull final AlienSpeed speed) {
+            @NonNull final AlienSpeed speed,
+            @NonNull final HunterBoundariesConfig boundaries) {
         super(
                 AlienType.HUNTER,
                 alienCharacter,
@@ -27,5 +29,6 @@ public class HunterConfig extends AlienConfig {
                 missileConfig,
                 spawnConfig);
         this.speed = speed;
+        this.boundaries = boundaries;
     }
 }

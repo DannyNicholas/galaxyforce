@@ -18,6 +18,7 @@ public class FollowableHunterConfig extends AlienConfig {
     private final int numberOfFollowers;
     private final List<PowerUpType> followerPowerUps;
     private final AlienSpeed speed;
+    private final HunterBoundariesConfig boundaries;
 
     @Builder
     public FollowableHunterConfig(
@@ -28,7 +29,8 @@ public class FollowableHunterConfig extends AlienConfig {
             @NonNull final FollowerConfig followerConfig,
             @NonNull final Integer numberOfFollowers,
             @NonNull final List<PowerUpType> followerPowerUps,
-            @NonNull final AlienSpeed speed) {
+            @NonNull final AlienSpeed speed,
+            @NonNull final HunterBoundariesConfig boundaries) {
         super(
                 AlienType.HUNTER_FOLLOWABLE,
                 alienCharacter,
@@ -39,5 +41,6 @@ public class FollowableHunterConfig extends AlienConfig {
         this.numberOfFollowers = numberOfFollowers;
         this.followerPowerUps = followerPowerUps;
         this.speed = speed;
+        this.boundaries = boundaries;
     }
 }

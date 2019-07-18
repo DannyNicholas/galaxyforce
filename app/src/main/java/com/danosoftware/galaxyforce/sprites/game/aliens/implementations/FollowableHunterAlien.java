@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.helpers.BoundariesChecker;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
@@ -22,7 +23,6 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
-import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
 /**
  * Alien that is the head of a chain of following aliens.
@@ -55,6 +55,9 @@ public class FollowableHunterAlien extends AbstractAlien {
     private float timeSinceLastDirectionChange;
 
     private final GameModel model;
+
+    // represents the boundaries the alien can fly within
+    private final BoundariesChecker boundariesChecker;
 
     @Builder
     public FollowableHunterAlien(
@@ -91,6 +94,13 @@ public class FollowableHunterAlien extends AbstractAlien {
                 new ExplodeSimple(
                         sounds,
                         vibrator));
+
+        this.boundariesChecker = new BoundariesChecker(
+                this,
+                alienConfig.getBoundaries().getMinX(),
+                alienConfig.getBoundaries().getMaxX(),
+                alienConfig.getBoundaries().getMinY(),
+                alienConfig.getBoundaries().getMaxY());
 
         this.model = model;
         this.followers = followers;
@@ -198,9 +208,10 @@ public class FollowableHunterAlien extends AbstractAlien {
                     base.y() - y(),
                     base.x() - x());
 
-            // if alien is off screen, return it back immediately (can get lost!).
-            if (offScreenAnySide(this)) {
-                return newAngle;
+            // if alien is outside wanted boundaries (e.g. off-screen), return it back immediately (can get lost!).
+            // calculates new angle to take it to the centre of it's boundaries
+            if (boundariesChecker.isOutsideBoundaries()) {
+                return (float) Math.atan2(boundariesChecker.centreY() - y(), boundariesChecker.centreX() - x());
             }
 
             // don't allow sudden changes of direction. limit to MAX radians.

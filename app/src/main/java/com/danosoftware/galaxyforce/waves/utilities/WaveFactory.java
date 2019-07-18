@@ -19,6 +19,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.DescendingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowerConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.HunterBoundariesConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 
 
 /**
@@ -614,6 +617,8 @@ public class WaveFactory {
                                                                 PowerUpType.MISSILE_GUIDED,
                                                                 PowerUpType.MISSILE_PARALLEL,
                                                                 PowerUpType.MISSILE_SPRAY))
+                                                .boundaries(
+                                                        HunterBoundariesConfig.builder().build())
                                                 .build(),
                                         Collections.singletonList(PowerUpType.LIFE)
                                 )
@@ -906,12 +911,34 @@ public class WaveFactory {
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
-                                        SubWaveRule.HUNTER_PAIR,
+                                        SubWaveRule.HUNTER_TOP,
                                         HunterConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.BOOK)
                                                 .energy(10)
                                                 .speed(AlienSpeed.VERY_FAST)
+                                                .boundaries(
+                                                        HunterBoundariesConfig
+                                                                .builder()
+                                                                .maxX(SCREEN_MID_X)
+                                                                .build()
+                                                )
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.MISSILE_GUIDED)
+                                ),
+                                new SubWaveNoPathConfig(
+                                        SubWaveRule.HUNTER_BOTTOM,
+                                        HunterConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.BOOK)
+                                                .energy(10)
+                                                .speed(AlienSpeed.VERY_FAST)
+                                                .boundaries(
+                                                        HunterBoundariesConfig
+                                                                .builder()
+                                                                .minX(SCREEN_MID_X)
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                                 )
@@ -1034,6 +1061,63 @@ public class WaveFactory {
                 break;
 
             case 23:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.BOMBER_RUN,
+                                        PathConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.ZOGG)
+                                                .energy(10)
+                                                .spawnConfig(
+                                                        SpawningAlienConfig
+                                                                .builder()
+                                                                .spawnedAlienConfig(
+                                                                        FollowableHunterConfig
+                                                                                .builder()
+                                                                                .alienCharacter(AlienCharacter.DRAGON_HEAD)
+                                                                                .energy(20)
+                                                                                .speed(AlienSpeed.VERY_FAST)
+                                                                                .missileConfig(
+                                                                                        MissileFiringConfig
+                                                                                                .builder()
+                                                                                                .missileType(AlienMissileType.ROTATED)
+                                                                                                .missileCharacter(AlienMissileCharacter.FIREBALL)
+                                                                                                .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                                                                                .missileFrequency(6.5f)
+                                                                                                .build())
+                                                                                .numberOfFollowers(5)
+                                                                                .followerConfig(
+                                                                                        FollowerConfig
+                                                                                                .builder()
+                                                                                                .alienCharacter(AlienCharacter.DRAGON_BODY)
+                                                                                                .energy(1)
+                                                                                                .speed(AlienSpeed.VERY_FAST)
+                                                                                                .build())
+                                                                                .followerPowerUps(
+                                                                                        Arrays.asList(
+                                                                                                PowerUpType.MISSILE_GUIDED,
+                                                                                                PowerUpType.MISSILE_PARALLEL,
+                                                                                                PowerUpType.MISSILE_SPRAY))
+                                                                                .boundaries(
+                                                                                        HunterBoundariesConfig.builder().build())
+                                                                                .build())
+                                                                .minimumSpawnDelayTime(5f)
+                                                                .maximumAdditionalRandomSpawnDelayTime(2f)
+                                                                .spwanedPowerUpTypes(
+                                                                        Arrays.asList(
+                                                                                PowerUpType.MISSILE_GUIDED,
+                                                                                PowerUpType.MISSILE_FAST,
+                                                                                PowerUpType.MISSILE_PARALLEL))
+                                                                .build())
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY)
+                                )
+                        )
+                );
+                break;
+
             case 24:
             case 25:
             case 26:

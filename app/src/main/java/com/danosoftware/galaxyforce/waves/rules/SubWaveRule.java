@@ -47,16 +47,27 @@ public enum SubWaveRule {
     ASTEROID_MAZE_EASY(asteroidMazeSubWave(15, 3)),
 
     /**
-     * Hunters that start from top at random x positions and chase the base.
+     * Hunters that start at different positions and chase the base.
      */
-    HUNTER_PAIR(
+    HUNTER_TOP(
             new SubWaveRuleProperties(
-                    true,
                     false,
-                    0,
+                    false,
+                    GameConstants.SCREEN_MID_X,
                     GameConstants.SCREEN_TOP,
-                    2,
+                    1,
                     0.5f,
+                    0f,
+                    false
+            )),
+    HUNTER_BOTTOM(
+            new SubWaveRuleProperties(
+                    false,
+                    false,
+                    GameConstants.SCREEN_MID_X,
+                    GameConstants.SCREEN_BOTTOM,
+                    1,
+                    0f,
                     0f,
                     false
             )),

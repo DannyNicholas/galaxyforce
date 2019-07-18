@@ -17,6 +17,7 @@ import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowerConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.HunterBoundariesConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
+import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -58,6 +61,7 @@ public class FollowableHunterConfigTest {
                         .energy(10)
                         .speed(AlienSpeed.SLOW)
                         .build())
+                .boundaries(HunterBoundariesConfig.builder().build())
                 .build();
 
         assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
@@ -69,6 +73,10 @@ public class FollowableHunterConfigTest {
         assertThat(config.getNumberOfFollowers(), equalTo(1));
         assertThat(config.getSpawnConfig(), nullValue());
         assertThat(config.getMissileConfig(), nullValue());
+        assertThat(config.getBoundaries().getMinX(), equalTo(0));
+        assertThat(config.getBoundaries().getMaxX(), equalTo(GAME_WIDTH));
+        assertThat(config.getBoundaries().getMinY(), equalTo(0));
+        assertThat(config.getBoundaries().getMaxY(), equalTo(GAME_HEIGHT));
 
         List<IAlien> aliens = factory.createAlien(
                 config,
@@ -95,6 +103,14 @@ public class FollowableHunterConfigTest {
                 .speed(AlienSpeed.SLOW)
                 .followerPowerUps(Collections.singletonList(PowerUpType.LIFE))
                 .numberOfFollowers(1)
+                .boundaries(
+                        HunterBoundariesConfig
+                                .builder()
+                                .minX(100)
+                                .maxX(400)
+                                .minY(50)
+                                .maxY(250)
+                                .build())
                 .followerConfig(FollowerConfig
                         .builder()
                         .alienCharacter(AlienCharacter.OCTOPUS)
@@ -124,6 +140,10 @@ public class FollowableHunterConfigTest {
         assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
         assertThat(config.getMissileConfig().getType(), equalTo(MissileConfig.MissileConfigType.MISSILE));
         assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
+        assertThat(config.getBoundaries().getMinX(), equalTo(100));
+        assertThat(config.getBoundaries().getMaxX(), equalTo(400));
+        assertThat(config.getBoundaries().getMinY(), equalTo(50));
+        assertThat(config.getBoundaries().getMaxY(), equalTo(250));
 
         List<IAlien> aliens = factory.createAlien(
                 config,
