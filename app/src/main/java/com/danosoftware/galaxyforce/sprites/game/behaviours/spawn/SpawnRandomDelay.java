@@ -5,7 +5,7 @@ import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.waves.config.AlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
      * @param minSpawnDelay    - minimum delay between spawns
      * @param spawnDelayRandom - additional maximum random time before spawns
      */
-    public SpawnRandomDelay(
+    SpawnRandomDelay(
             final AlienFactory alienFactory,
             final GameModel model,
             final AlienConfig alienConfig,

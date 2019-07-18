@@ -6,28 +6,23 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireDisabled;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.view.Animation;
-import com.danosoftware.galaxyforce.waves.config.AlienConfig;
+import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
+import com.danosoftware.galaxyforce.waves.config.aliens.SpinningDescendingConfig;
 
+import lombok.Builder;
+import lombok.NonNull;
+
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
 /**
- * Implementation of asteroid that has fixed angular speed and velocity.
+ * Alien that descends from starting position down the screen until it reaches
+ * the bottom. This alien will spin at a speed relative to it's downward speed.
  */
-public class AlienAsteroidSimple extends AbstractAlien {
-
-    // alien animation
-    private static final Animation ANIMATION = new Animation(
-            0f, GameSpriteIdentifier.ASTEROID);
-
-    // hit animation
-    private static final Animation HIT_ANIMATION = new Animation(
-            0f, GameSpriteIdentifier.ASTEROID_HIT);
+public class SpinningDescendingAlien extends AbstractAlien {
 
     /* current for sprite rotation */
     private float angle;
@@ -35,45 +30,56 @@ public class AlienAsteroidSimple extends AbstractAlien {
     /* speed of sprite rotation */
     private final int anglularSpeed;
 
-    /* speed of asteroid */
+    /* downwards speed */
     private final int speed;
 
     /* how many seconds to delay before alien starts to follow path */
     private float timeDelayStart;
 
-    /* restart asteroid as soon as it leaves screen? */
+    /* restart alien as soon as it leaves screen? */
     private final boolean restartImmediately;
 
-    /* variable to store original position for asteroid */
+    /* variable to store original position for alien */
     private final int originalYPosition;
 
     /* variable to store how far alien has moved since spawned */
     private float distanceYMoved;
 
-    /**
-     * Create Alien Asteroid.
-     */
-    public AlienAsteroidSimple(
-            final GameModel model,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator,
-            final AlienConfig alienConfig,
+    @Builder
+    public SpinningDescendingAlien(
+            @NonNull AlienFactory alienFactory,
+            @NonNull GameModel model,
+            @NonNull final SoundPlayerService sounds,
+            @NonNull final VibrationService vibrator,
+            @NonNull final SpinningDescendingConfig alienConfig,
             final PowerUpType powerUpType,
-            final int xStart,
-            final int yStart,
-            final float timeDelayStart,
-            final boolean restartImmediately) {
-        // default is that asteroids are initially invisible
+            @NonNull final Integer xStart,
+            @NonNull final Integer yStart,
+            @NonNull final Float timeDelayStart,
+            @NonNull final Boolean restartImmediately) {
+
         super(
-                ANIMATION,
+                alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,
                 alienConfig.getEnergy(),
-                new FireDisabled(),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
-                new ExplodeSimple(sounds, vibrator));
+                createFireBehaviour(
+                        model,
+                        alienConfig),
+                new PowerUpSingle(
+                        model,
+                        powerUpType),
+                createSpawnBehaviour(
+                        model,
+                        alienFactory,
+                        alienConfig),
+                new HitAnimation(
+                        sounds,
+                        vibrator,
+                        alienConfig.getAlienCharacter().getHitAnimation()),
+                new ExplodeSimple(
+                        sounds,
+                        vibrator));
 
         waiting();
 
@@ -86,11 +92,10 @@ public class AlienAsteroidSimple extends AbstractAlien {
         // set random starting rotation angle
         this.angle = (float) (Math.random() * 360);
 
-        // set random rotation speed between 50 and 400
-        this.anglularSpeed = 50 + (int) (Math.random() * 350);
-
-        // set asteroid speed between 75 and 250 (related to angular speed)
-        this.speed = 100;
+        // set angular rotation speed relative to downward speed
+        final int pixelSpeed = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
+        this.speed = pixelSpeed;
+        this.anglularSpeed = (pixelSpeed - 50) * 2;
     }
 
     @Override
@@ -98,14 +103,14 @@ public class AlienAsteroidSimple extends AbstractAlien {
 
         super.animate(deltaTime);
 
-        /* if active then asteroid can move */
+        /* if active then alien can move */
         if (isActive()) {
 
             // move until off the screen and then either destroy it or reset it
             distanceYMoved += speed * deltaTime;
             moveY(originalYPosition - (int) distanceYMoved);
 
-            // if asteroid is now off screen then decide whether to destory
+            // if alien is now off screen then decide whether to destory
             // it or reset
             if (offScreenBottom(this)) {
                 if (restartImmediately) {
@@ -116,8 +121,7 @@ public class AlienAsteroidSimple extends AbstractAlien {
                 }
             }
 
-
-            // rotate asteroid
+            // rotate alien
             angle = (angle + (deltaTime * anglularSpeed)) % 360;
             rotate((int) (angle));
         } else if (isWaiting()) {

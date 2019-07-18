@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.waves.config;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 
 import java.util.List;

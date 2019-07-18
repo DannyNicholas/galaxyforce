@@ -2,8 +2,8 @@ package com.danosoftware.galaxyforce.enumerations;
 
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileDownwards;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotated;
-import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileSimple;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 public enum AlienMissileType {
 
-    SIMPLE(
+    DOWNWARDS(
             new MissileFactory() {
                 @Override
                 public List<IAlienMissile> createMissiles(
@@ -28,7 +28,7 @@ public enum AlienMissileType {
                         IBasePrimary base) {
 
                     return Collections.singletonList(
-                            (IAlienMissile) new AlienMissileSimple(
+                            (IAlienMissile) new AlienMissileDownwards(
                                     x,
                                     y - offset,
                                     missileCharacter.getAnimation(),

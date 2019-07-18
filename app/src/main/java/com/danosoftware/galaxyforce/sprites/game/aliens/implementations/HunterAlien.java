@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
-import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -10,18 +9,23 @@ import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnDisabled;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.view.Animation;
-import com.danosoftware.galaxyforce.waves.config.AlienConfig;
+import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
+import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
+
+import lombok.Builder;
+import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
-public class AlienHunter extends AbstractAlien {
+/**
+ * Alien hunter that will attempt to crash into the base.
+ */
+public class HunterAlien extends AbstractAlien {
 
     /* distance alien can move each cycle in pixels each second */
-    private static final int ALIEN_MOVE_PIXELS = 5 * 60;
+    private final int speedInPixelsPerSecond;
 
     /* time delay between alien direction changes */
     private static final float ALIEN_DIRECTION_CHANGE_DELAY = 0.1f;
@@ -29,32 +33,7 @@ public class AlienHunter extends AbstractAlien {
     /* maximum alien change direction in radians */
     private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
-    // alien animation
-//    private static final Animation ANIMATION = new Animation(
-//            0f,
-//            GameSpriteIdentifier.ALIEN_HELMET);
-//    private static final Animation HIT_ANIMATION = new Animation(
-//            0f,
-//            GameSpriteIdentifier.ALIEN_HELMET);
-    // alien animation
-    private static final Animation ANIMATION = new Animation(
-            0.2f,
-            GameSpriteIdentifier.BOOK_FLAT,
-            GameSpriteIdentifier.BOOK_BEND,
-            GameSpriteIdentifier.BOOK_CLOSED,
-            GameSpriteIdentifier.BOOK_BEND);
-    private static final Animation HIT_ANIMATION = new Animation(
-            0.2f,
-            GameSpriteIdentifier.BOOK_FLAT_HIT,
-            GameSpriteIdentifier.BOOK_BEND_HIT,
-            GameSpriteIdentifier.BOOK_CLOSED_HIT,
-            GameSpriteIdentifier.BOOK_BEND_HIT);
-
-    // alien missile
-    private static final AlienMissileCharacter MISSILE_CHARACTER = AlienMissileCharacter.LASER;
-
-
-    /* current for sprite rotation */
+    /* angle from alien to base */
     private float angle;
 
     /* how many seconds to delay before alien starts to follow path */
@@ -68,30 +47,40 @@ public class AlienHunter extends AbstractAlien {
     /**
      * Create Alien Hunter.
      */
-    public AlienHunter(
-            final GameModel model,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator,
-            final AlienConfig alienConfig,
+    @Builder
+    public HunterAlien(
+            @NonNull final AlienFactory alienFactory,
+            @NonNull final GameModel model,
+            @NonNull final SoundPlayerService sounds,
+            @NonNull final VibrationService vibrator,
+            @NonNull final HunterConfig alienConfig,
             final PowerUpType powerUpType,
-            final int xStart,
-            final int yStart,
-            final float timeDelayStart) {
+            @NonNull final Integer xStart,
+            @NonNull final Integer yStart,
+            @NonNull final Float timeDelayStart) {
 
-        // default is that asteroids are initially invisible
         super(
-                ANIMATION,
+                alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,
                 alienConfig.getEnergy(),
                 createFireBehaviour(
                         model,
-                        alienConfig,
-                        MISSILE_CHARACTER),
-                new PowerUpSingle(model, powerUpType),
-                new SpawnDisabled(),
-                new HitAnimation(sounds, vibrator, HIT_ANIMATION),
-                new ExplodeSimple(sounds, vibrator));
+                        alienConfig),
+                new PowerUpSingle(
+                        model,
+                        powerUpType),
+                createSpawnBehaviour(
+                        model,
+                        alienFactory,
+                        alienConfig),
+                new HitAnimation(
+                        sounds,
+                        vibrator,
+                        alienConfig.getAlienCharacter().getHitAnimation()),
+                new ExplodeSimple(
+                        sounds,
+                        vibrator));
 
         waiting();
 
@@ -105,6 +94,8 @@ public class AlienHunter extends AbstractAlien {
 
         // set starting direction angle
         this.angle = recalculateAngle(0f);
+
+        this.speedInPixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
     }
 
     @Override
@@ -131,8 +122,8 @@ public class AlienHunter extends AbstractAlien {
 
 
             // calculate the deltas to be applied each move
-            int xDelta = (int) (ALIEN_MOVE_PIXELS * (float) Math.cos(this.angle));
-            int yDelta = (int) (ALIEN_MOVE_PIXELS * (float) Math.sin(this.angle));
+            int xDelta = (int) (speedInPixelsPerSecond * (float) Math.cos(this.angle));
+            int yDelta = (int) (speedInPixelsPerSecond * (float) Math.sin(this.angle));
 
             // move alien by calculated deltas
             moveByDelta(

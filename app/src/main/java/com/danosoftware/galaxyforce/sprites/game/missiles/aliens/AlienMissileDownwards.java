@@ -5,12 +5,12 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
-public class AlienMissileSimple extends AbstractAlienMissile {
+public class AlienMissileDownwards extends AbstractAlienMissile {
 
     // missile speed in pixels per second
     private final int missileSpeed;
 
-    public AlienMissileSimple(
+    public AlienMissileDownwards(
             int xStart,
             int yStart,
             final Animation animation,
