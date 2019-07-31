@@ -12,6 +12,6 @@ public abstract class MissileConfig {
     }
 
     public enum MissileConfigType {
-        MISSILE
+        MISSILE, MULTI_MISSILE
     }
 }

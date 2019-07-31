@@ -75,7 +75,7 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.DROID},
             new ISpriteIdentifier[]{
                     GameSpriteIdentifier.DROID_HIT},
-            0.5f),
+            0f),
 
     // big flapping mothership alien
     INSECT_MOTHERSHIP(
@@ -151,7 +151,15 @@ public enum AlienCharacter {
             new ISpriteIdentifier[]{
                     GameSpriteIdentifier.CIRCUIT_LEFT_HIT,
                     GameSpriteIdentifier.CIRCUIT_RIGHT_HIT},
-            0.5f);
+            0.5f),
+
+    // circuit board
+    CLOUD(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.CLOUD},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.CLOUD_HIT},
+            0f);
 
 
     // alien animation frames

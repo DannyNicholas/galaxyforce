@@ -27,6 +27,12 @@ public enum AlienMissileCharacter {
                     0f,
                     GameSpriteIdentifier.LIGHTNING),
             SoundEffect.ALIEN_FIRE
+    ),
+    RAIN(
+            new Animation(
+                    0f,
+                    GameSpriteIdentifier.RAIN),
+            SoundEffect.ALIEN_FIRE
     );
 
     private final Animation animation;

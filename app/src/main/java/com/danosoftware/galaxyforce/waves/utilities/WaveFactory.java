@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.FollowerConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterBoundariesConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningDescendingConfig;
@@ -1084,7 +1085,7 @@ public class WaveFactory {
                                                                                                 .builder()
                                                                                                 .missileType(AlienMissileType.ROTATED)
                                                                                                 .missileCharacter(AlienMissileCharacter.FIREBALL)
-                                                                                                .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                                                                                .missileSpeed(AlienMissileSpeed.VERY_FAST)
                                                                                                 .missileFrequency(6.5f)
                                                                                                 .build())
                                                                                 .numberOfFollowers(5)
@@ -1119,6 +1120,46 @@ public class WaveFactory {
                 break;
 
             case 24:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.WAVE_MOTHERSHIP,
+                                        PathConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.CLOUD)
+                                                .energy(5)
+                                                .missileConfig(
+                                                        MissileMultiFiringConfig
+                                                                .builder()
+                                                                .missileConfigs(
+                                                                        Arrays.asList(
+                                                                                MissileFiringConfig
+                                                                                        .builder()
+                                                                                        .missileType(AlienMissileType.DOWNWARDS)
+                                                                                        .missileCharacter(AlienMissileCharacter.RAIN)
+                                                                                        .missileSpeed(AlienMissileSpeed.VERY_FAST)
+                                                                                        .missileFrequency(1.5f)
+                                                                                        .build(),
+                                                                                MissileFiringConfig
+                                                                                        .builder()
+                                                                                        .missileType(AlienMissileType.ROTATED)
+                                                                                        .missileCharacter(AlienMissileCharacter.FIREBALL)
+                                                                                        .missileSpeed(AlienMissileSpeed.VERY_FAST)
+                                                                                        .missileFrequency(2f)
+                                                                                        .build(),
+                                                                                MissileFiringConfig
+                                                                                        .builder()
+                                                                                        .missileType(AlienMissileType.GUIDED)
+                                                                                        .missileCharacter(AlienMissileCharacter.LIGHTNING)
+                                                                                        .missileSpeed(AlienMissileSpeed.VERY_FAST)
+                                                                                        .missileFrequency(5f)
+                                                                                        .build()))
+                                                                .build())
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY))
+                        )
+                );
             case 25:
             case 26:
             case 27:

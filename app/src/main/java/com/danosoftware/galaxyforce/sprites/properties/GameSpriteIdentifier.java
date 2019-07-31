@@ -166,8 +166,8 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     POWERUP_HELPER_BASES("pwrUpHelper34px"),
 
     // lasers
-    LASER_ALIEN("laserInvaderGreen9px"),
-    LASER_BASE("laserHeroNew9px"),
+    LASER_ALIEN("laserInvaderGreen9pxTip"),
+    LASER_BASE("laserHeroNew9pxTip"),
 
     // fireball
     FIREBALL01("fireBall01"),

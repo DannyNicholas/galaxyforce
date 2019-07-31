@@ -4,6 +4,8 @@ import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.view.Animation;
 
+import static com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotater.calculateAngle;
+import static com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotater.calculateRotation;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
 /**
@@ -18,6 +20,8 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
  * @author Danny
  */
 public class AlienMissileRotated extends AbstractAlienMissile {
+
+    private static final float DEGREES_PER_PI_RADIANS = (float) (180f / Math.PI);
 
     // offset applied to x and y every move
     private final int xDelta;
@@ -37,26 +41,16 @@ public class AlienMissileRotated extends AbstractAlienMissile {
                 yStart);
 
         // calculate angle from missile position to base
-        final float angle;
-        if (base != null) {
-            angle = (float) Math.atan2(
-                    base.y() - yStart,
-                    base.x() - xStart);
-        } else {
-            // if base is null fire downwards
-            angle = (float) Math.atan2(-1, 0);
-        }
-
-        // convert angle to degrees for sprite rotation.
-        // needs to be adjusted by 90 deg for correct rotation.
-        rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
+        final AlienMissileRotateCalculation calculation = calculateAngle(this, base);
+        final float angle = calculation.getAngle();
+        rotate(calculation.getRotation());
 
         // calculate the deltas to be applied each move
         this.xDelta = (int) (missileSpeed.getSpeed() * (float) Math.cos(angle));
         this.yDelta = (int) (missileSpeed.getSpeed() * (float) Math.sin(angle));
     }
 
-    // created rotated missile of supplied angle
+    // created rotated missile of supplied calculateAngle
     public AlienMissileRotated(
             int xStart,
             int yStart,
@@ -69,9 +63,8 @@ public class AlienMissileRotated extends AbstractAlienMissile {
                 xStart,
                 yStart);
 
-        // convert angle to degrees for sprite rotation.
-        // needs to be adjusted by 90 deg for correct rotation.
-        rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
+        // calculate sprite rotation for wanted angle
+        rotate((calculateRotation(angle)));
 
         // calculate the deltas to be applied each move
         this.xDelta = (int) (missileSpeed.getSpeed() * (float) Math.cos(angle));
@@ -91,6 +84,5 @@ public class AlienMissileRotated extends AbstractAlienMissile {
         if (offScreenAnySide(this)) {
             destroy();
         }
-
     }
 }

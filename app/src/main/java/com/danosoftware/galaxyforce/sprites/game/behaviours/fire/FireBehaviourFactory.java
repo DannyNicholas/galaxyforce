@@ -4,6 +4,10 @@ import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FireBehaviourFactory {
 
@@ -28,6 +32,27 @@ public class FireBehaviourFactory {
                     firingMissileConfig.getMissileSpeed(),
                     firingMissileConfig.getMissileCharacter(),
                     firingMissileConfig.getMissileFrequency());
+        }
+
+        if (missileConfig != null
+                && missileConfig.getType() == MissileConfig.MissileConfigType.MULTI_MISSILE
+                && missileConfig instanceof MissileMultiFiringConfig) {
+
+            final MissileMultiFiringConfig multiFiringMissileConfig = (MissileMultiFiringConfig) missileConfig;
+
+            // behaviour that fires missiles depending on config
+            final List<FireBehaviour> fireBehaviours = new ArrayList<>();
+            for (MissileFiringConfig config : multiFiringMissileConfig.getMissileConfigs()) {
+                fireBehaviours.add(
+                        new FireCyclicWithRandomStart(
+                                model,
+                                config.getMissileType(),
+                                config.getMissileSpeed(),
+                                config.getMissileCharacter(),
+                                config.getMissileFrequency())
+                );
+            }
+            return new MultiFireBehaviour(fireBehaviours);
         }
 
         // behaviour that fires no missiles
