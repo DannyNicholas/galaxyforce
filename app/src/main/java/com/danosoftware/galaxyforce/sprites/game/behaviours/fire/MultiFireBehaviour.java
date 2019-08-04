@@ -35,14 +35,12 @@ public class MultiFireBehaviour implements FireBehaviour {
      */
     @Override
     public boolean readyToFire(float deltaTime) {
-        boolean readyToFire = false;
         for (FireBehaviour firingBehaviour : fireBehaviours) {
             if (firingBehaviour.readyToFire(deltaTime)) {
                 readyToFireBehaviours.add(firingBehaviour);
-                readyToFire = true;
             }
         }
-        return readyToFire;
+        return readyToFireBehaviours.size() > 0;
     }
 
     /**

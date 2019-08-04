@@ -50,7 +50,7 @@ public class AlienMissileRotated extends AbstractAlienMissile {
         this.yDelta = (int) (missileSpeed.getSpeed() * (float) Math.sin(angle));
     }
 
-    // created rotated missile of supplied calculateAngle
+    // created rotated missile of supplied angle
     public AlienMissileRotated(
             int xStart,
             int yStart,
