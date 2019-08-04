@@ -1124,11 +1124,11 @@ public class WaveFactory {
                         createSubWave(
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWavePathConfig(
-                                        SubWavePathRule.WAVE_MOTHERSHIP,
+                                        SubWavePathRule.STAGGERED_LEFT_AND_RIGHT,
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.CLOUD)
-                                                .energy(5)
+                                                .energy(10)
                                                 .missileConfig(
                                                         MissileMultiFiringConfig
                                                                 .builder()
@@ -1139,18 +1139,11 @@ public class WaveFactory {
                                                                                         .missileType(AlienMissileType.DOWNWARDS)
                                                                                         .missileCharacter(AlienMissileCharacter.RAIN)
                                                                                         .missileSpeed(AlienMissileSpeed.VERY_FAST)
-                                                                                        .missileFrequency(1.5f)
+                                                                                        .missileFrequency(0.75f)
                                                                                         .build(),
                                                                                 MissileFiringConfig
                                                                                         .builder()
                                                                                         .missileType(AlienMissileType.ROTATED)
-                                                                                        .missileCharacter(AlienMissileCharacter.FIREBALL)
-                                                                                        .missileSpeed(AlienMissileSpeed.VERY_FAST)
-                                                                                        .missileFrequency(2f)
-                                                                                        .build(),
-                                                                                MissileFiringConfig
-                                                                                        .builder()
-                                                                                        .missileType(AlienMissileType.GUIDED)
                                                                                         .missileCharacter(AlienMissileCharacter.LIGHTNING)
                                                                                         .missileSpeed(AlienMissileSpeed.VERY_FAST)
                                                                                         .missileFrequency(5f)
@@ -1160,6 +1153,8 @@ public class WaveFactory {
                                         Collections.singletonList(PowerUpType.MISSILE_SPRAY))
                         )
                 );
+                break;
+
             case 25:
             case 26:
             case 27:
