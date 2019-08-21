@@ -31,7 +31,7 @@ public class AlienMissileGuided extends AbstractAlienMissile {
     private int xDelta;
     private int yDelta;
 
-    /* current calculateAngle of missile direction */
+    /* current angle of missile direction */
     private float angle;
 
     /* missile speed in pixels per seconds */
@@ -55,7 +55,7 @@ public class AlienMissileGuided extends AbstractAlienMissile {
 
         this.base = base;
 
-        // initial calculateAngle (i.e. straight down)
+        // initial angle (i.e. straight down)
         this.angle = (float) Math.atan2(-1, 0);
         this.speed = missileSpeed.getSpeed();
         calculateMovements();
@@ -90,7 +90,7 @@ public class AlienMissileGuided extends AbstractAlienMissile {
     }
 
     /**
-     * Calculate calculateAngle and x and y deltas required to fire missile at base's
+     * Calculate angle and x and y deltas required to fire missile at base's
      * current position. May be called several times to ensure missile remains
      * targeted as base moves.
      */
@@ -113,7 +113,7 @@ public class AlienMissileGuided extends AbstractAlienMissile {
                 this.angle = newAngle;
             }
 
-            // recalculate rotation and movement delta based on new calculateAngle
+            // recalculate rotation and movement delta based on new angle
             calculateMovements();
         }
     }

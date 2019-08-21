@@ -8,7 +8,7 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenTo
 public class BaseMissileSimple extends AbstractBaseMissile {
 
     /* missile sprite */
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.LASER_BASE;
+    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_LASER;
 
     /* distance missile can move per second */
     private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;

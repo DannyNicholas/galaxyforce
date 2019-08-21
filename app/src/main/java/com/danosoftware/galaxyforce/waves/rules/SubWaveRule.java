@@ -71,6 +71,28 @@ public enum SubWaveRule {
                     0f,
                     false
             )),
+    HUNTER_LEFT(
+            new SubWaveRuleProperties(
+                    false,
+                    false,
+                    GameConstants.SCREEN_LEFT,
+                    GameConstants.SCREEN_MID_Y,
+                    1,
+                    0f,
+                    0f,
+                    false
+            )),
+    HUNTER_RIGHT(
+            new SubWaveRuleProperties(
+                    false,
+                    false,
+                    GameConstants.SCREEN_RIGHT,
+                    GameConstants.SCREEN_MID_Y,
+                    1,
+                    0f,
+                    0f,
+                    false
+            )),
 
     /**
      * Dragon that chases the base.

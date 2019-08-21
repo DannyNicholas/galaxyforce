@@ -15,8 +15,9 @@ import static com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifi
 public class PauseButton implements SpriteButton {
 
     /* Constants for the pause button's position */
-    private static final int PAUSE_BUTTON_X = GameConstants.GAME_WIDTH - 50 - 10;
-    private static final int PAUSE_BUTTON_Y = GameConstants.GAME_HEIGHT - 50 - 10;
+    /* Raised button's dimensions are expected to be 66 pixels wide/high */
+    private static final int PAUSE_BUTTON_X = GameConstants.GAME_WIDTH - 33 - 10;
+    private static final int PAUSE_BUTTON_Y = GameConstants.GAME_HEIGHT - 33 - 10;
 
     // reference to button's parent model
     private final GameModel model;

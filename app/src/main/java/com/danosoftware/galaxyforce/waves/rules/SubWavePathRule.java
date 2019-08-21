@@ -441,6 +441,73 @@ public enum SubWavePathRule {
             )
     ),
 
+    STAGGERED_LEFT_AND_RIGHT_REVERSED(
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    0.5f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 230))
+            ),
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    0,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 200))
+            ),
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    1f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 200))
+            ),
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    0.5f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipXPointTranslator(GAME_WIDTH))
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 430))
+            ),
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    0,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipXPointTranslator(GAME_WIDTH))
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 400))
+            ),
+            new SubWavePathRuleProperties(
+                    Path.LEFT_AND_RIGHT,
+                    PathSpeed.NORMAL,
+                    1,
+                    0f,
+                    1f,
+                    false,
+                    new PointTranslatorChain()
+                            .add(new FlipXPointTranslator(GAME_WIDTH))
+                            .add(new OffsetYPointTranslator(GAME_HEIGHT - 400))
+            )
+    ),
+
+
     /**
      * One spiral path from top to bottom
      */
