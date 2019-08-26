@@ -1288,7 +1288,7 @@ public class WaveFactory {
                                         SubWavePathRule.WAVE_TRIANGULAR,
                                         PathConfig
                                                 .builder()
-                                                .alienCharacter(AlienCharacter.LADY_BIRD)
+                                                .alienCharacter(AlienCharacter.SPINNER_PULSE_GREEN)
                                                 .energy(4)
                                                 .missileConfig(
                                                         MissileFiringConfig

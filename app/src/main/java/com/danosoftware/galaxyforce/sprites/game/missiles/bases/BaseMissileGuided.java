@@ -10,7 +10,7 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
 public class BaseMissileGuided extends AbstractBaseMissile {
 
     /* missile sprite */
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_ROCKET;
+    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_MISSILE_ROCKET;
 
     /* distance missile can move in pixels each second */
     private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;

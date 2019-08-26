@@ -14,13 +14,21 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     MINION("minion"),
     MINION_HIT("minionHit"),
 
-    // pulsating green ball spinner
+    // green ball spinner
     SPINNER_GREEN_01("spinnerGreen01"),
     SPINNER_GREEN_02("spinnerGreen02"),
     SPINNER_GREEN_03("spinnerGreen03"),
     SPINNER_GREEN_01_HIT("spinnerGreenHit01"),
     SPINNER_GREEN_02_HIT("spinnerGreenHit02"),
     SPINNER_GREEN_03_HIT("spinnerGreenHit03"),
+
+    // pulsating green ball spinner
+    SPINNER_PULSE_GREEN_01("spinnerPulseGreen01"),
+    SPINNER_PULSE_GREEN_02("spinnerPulseGreen02"),
+    SPINNER_PULSE_GREEN_03("spinnerPulseGreen03"),
+    SPINNER_PULSE_GREEN_01_HIT("spinnerPulseGreenHit01"),
+    SPINNER_PULSE_GREEN_02_HIT("spinnerPulseGreenHit02"),
+    SPINNER_PULSE_GREEN_03_HIT("spinnerPulseGreenHit03"),
 
     // molecule
     MOLECULE("molecule"),
@@ -155,28 +163,28 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     HELPER("baseHelper"),
 
     // pulsing shield when base stationary
-    BASE_SHIELD_ONE("shieldOutlineOne"),
-    BASE_SHIELD_TWO("shieldOutlineTwo"),
-    BASE_SHIELD_THREE("shieldOutlineThree"),
-    BASE_SHIELD_FOUR("shieldOutlineFour"),
+    BASE_SHIELD_ONE("baseShieldOutline01"),
+    BASE_SHIELD_TWO("baseShieldOutline02"),
+    BASE_SHIELD_THREE("baseShieldOutline03"),
+    BASE_SHIELD_FOUR("baseShieldOutline04"),
 
     // pulsing shield when base turning left
-    BASE_LEFT_SHIELD_ONE("leftShieldOutlineOne"),
-    BASE_LEFT_SHIELD_TWO("leftShieldOutlineTwo"),
-    BASE_LEFT_SHIELD_THREE("leftShieldOutlineThree"),
-    BASE_LEFT_SHIELD_FOUR("leftShieldOutlineFour"),
+    BASE_LEFT_SHIELD_ONE("baseShieldLeftOutline01"),
+    BASE_LEFT_SHIELD_TWO("baseShieldLeftOutline02"),
+    BASE_LEFT_SHIELD_THREE("baseShieldLeftOutline03"),
+    BASE_LEFT_SHIELD_FOUR("baseShieldLeftOutline04"),
 
     // pulsing shield when base turning right
-    BASE_RIGHT_SHIELD_ONE("rightShieldOutlineOne"),
-    BASE_RIGHT_SHIELD_TWO("rightShieldOutlineTwo"),
-    BASE_RIGHT_SHIELD_THREE("rightShieldOutlineThree"),
-    BASE_RIGHT_SHIELD_FOUR("rightShieldOutlineFour"),
+    BASE_RIGHT_SHIELD_ONE("baseShieldRightOutline01"),
+    BASE_RIGHT_SHIELD_TWO("baseShieldRightOutline02"),
+    BASE_RIGHT_SHIELD_THREE("baseShieldRightOutline03"),
+    BASE_RIGHT_SHIELD_FOUR("baseShieldRightOutline04"),
 
     // pulsing shield for helper base
-    HELPER_SHIELD_ONE("shieldOutlineHelperOne"),
-    HELPER_SHIELD_TWO("shieldOutlineHelperTwo"),
-    HELPER_SHIELD_THREE("shieldOutlineHelperThree"),
-    HELPER_SHIELD_FOUR("shieldOutlineHelperFour"),
+    HELPER_SHIELD_ONE("baseHelperShieldOutline01"),
+    HELPER_SHIELD_TWO("baseHelperShieldOutline02"),
+    HELPER_SHIELD_THREE("baseHelperShieldOutline03"),
+    HELPER_SHIELD_FOUR("baseHelperShieldOutline04"),
 
     // power ups
     POWERUP_LIFE("pwrUpLife34px"),
@@ -189,10 +197,14 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     POWERUP_SHIELD("pwrUpShield34px"),
     POWERUP_HELPER_BASES("pwrUpHelper34px"),
 
-    // lasers
-    LASER_ALIEN("laserInvaderGreen9pxTip"),
-    BASE_LASER("baseLaser"),
-    BASE_ROCKET("baseRocket"),
+    // base missiles
+    BASE_MISSILE("baseMissile"),
+    BASE_MISSILE_LASER("baseMissileLaser"),
+    BASE_MISSILE_ROCKET("baseMissileRocket"),
+    BASE_MISSILE_BLAST("baseMissileBlast"),
+
+    // alien laser
+    ALIEN_LASER("alienLaser"),
 
     // fireball
     FIREBALL01("fireBall01"),
@@ -247,8 +259,8 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     FLAG_50("Flag_50"),
 
     // menu buttons
-    MENU_BUTTON_UP("BlueButton360px"),
-    MENU_BUTTON_DOWN("BlueButton360pxPressed"),
+    MENU_BUTTON_UP("blueButtonUp"),
+    MENU_BUTTON_DOWN("blueButtonDown"),
 
     // lives remaining
     LIVES("Life_32px"),

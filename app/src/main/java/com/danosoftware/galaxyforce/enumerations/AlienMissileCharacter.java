@@ -12,7 +12,7 @@ public enum AlienMissileCharacter {
     LASER(
             new Animation(
                     0f,
-                    GameSpriteIdentifier.LASER_ALIEN),
+                    GameSpriteIdentifier.ALIEN_LASER),
             SoundEffect.ALIEN_FIRE
     ),
     FIREBALL(

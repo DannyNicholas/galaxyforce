@@ -41,6 +41,18 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.SPINNER_GREEN_03_HIT},
             0.2f),
 
+    // green pulsating spinning balls
+    SPINNER_PULSE_GREEN(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_01,
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_02,
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_03},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_01_HIT,
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_02_HIT,
+                    GameSpriteIdentifier.SPINNER_PULSE_GREEN_03_HIT},
+            0.2f),
+
     // molecule - made from joined spheres
     MOLECULE(
             new ISpriteIdentifier[]{

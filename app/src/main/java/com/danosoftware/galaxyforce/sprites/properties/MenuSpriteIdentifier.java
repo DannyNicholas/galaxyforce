@@ -5,31 +5,31 @@ import com.danosoftware.galaxyforce.textures.Texture;
 public enum MenuSpriteIdentifier implements ISpriteIdentifier {
 
     // main logo
-    GALAXY_FORCE("PlutoPanicLogo"),
+    GALAXY_FORCE("logo"),
 
     // menu buttons
-    MAIN_MENU("BlueButton360px"),
-    MAIN_MENU_PRESSED("BlueButton360pxPressed"),
+    MAIN_MENU("blueButtonUp"),
+    MAIN_MENU_PRESSED("blueButtonDown"),
 
     // wave select buttons
-    LEVEL_FRAME("GreenButton128px"),
-    LEVEL_FRAME_PRESSED("GreenButton128pxPressed"),
+    LEVEL_FRAME("greenButtonUp"),
+    LEVEL_FRAME_PRESSED("greenButtonDown"),
 
     // locked wave buttons
-    LEVEL_FRAME_LOCKED("LockedButton128px"),
-    LEVEL_FRAME_LOCKED_PRESSED("LockedButton128pxPressed"),
+    LEVEL_FRAME_LOCKED("lockedButtonUp"),
+    LEVEL_FRAME_LOCKED_PRESSED("lockedButtonDown"),
 
     // next zone buttons
-    NEXT_LEVEL("GreenRightArrow96px"),
-    NEXT_LEVEL_PRESSED("GreenRightArrowPressed80px"),
+    NEXT_LEVEL("greenRightArrowUp"),
+    NEXT_LEVEL_PRESSED("greenRightArrowDown"),
 
     // previous zone buttons
-    PREVIOUS_LEVEL("GreenLeftArrow96px"),
-    PREVIOUS_LEVEL_PRESSED("GreenLeftArrowPressed80px"),
+    PREVIOUS_LEVEL("greenLeftArrowUp"),
+    PREVIOUS_LEVEL_PRESSED("greenLeftArrowDown"),
 
     // option buttons
-    OPTION_UNSELECTED("GreyButton180px"),
-    OPTION_SELECTED("GoldButton180pxPressed"),
+    OPTION_UNSELECTED("greyButtonUp"),
+    OPTION_SELECTED("goldButtonDown"),
 
     // stars
     STAR("Star"),
@@ -46,7 +46,7 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
     BASE_TILT("BaseTiltLarge"),
 
     // fonts
-    FONT_MAP("GalaxyForceFont_30x38");
+    FONT_MAP("GalaxyForceFont_30x38-crop");
 
 
     private final String name;
