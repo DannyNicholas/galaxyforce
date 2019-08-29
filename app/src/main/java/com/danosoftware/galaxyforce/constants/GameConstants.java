@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.constants;
 
+import com.danosoftware.galaxyforce.BuildConfig;
+
 public class GameConstants {
     // global logging tag
     public final static String LOG_TAG = "GalaxyForce";
@@ -21,8 +23,8 @@ public class GameConstants {
     /* maximum number of lives possible */
     public final static int MAX_LIVES = 5;
 
-    // should we show the FPS counter
-    public static final boolean SHOW_FPS = true;
+    // show the FPS counter if we have a DEBUG build
+    public static final boolean SHOW_FPS = BuildConfig.DEBUG;
 
     /*
      * font characters in map - displayed text will only support these
