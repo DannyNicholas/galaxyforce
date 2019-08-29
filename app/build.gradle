@@ -106,12 +106,11 @@ android {
  * restricting which dependencies leak their APIs to other modules.
  */
 dependencies {
-    implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.billingclient:billing:1.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
-    implementation 'com.android.support:support-annotations:28.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     testImplementation 'junit:junit:4.12'
@@ -122,5 +121,5 @@ dependencies {
     testImplementation 'ch.qos.logback:logback-core:1.1.2'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.0'
     testImplementation 'org.powermock:powermock-module-junit4:2.0.0'
-    androidTestImplementation 'com.android.support:support-annotations:28.0.0'
+    androidTestImplementation 'androidx.annotation:annotation:1.1.0'
 }

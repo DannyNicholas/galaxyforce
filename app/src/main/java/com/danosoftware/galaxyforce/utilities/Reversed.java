@@ -5,7 +5,7 @@ package com.danosoftware.galaxyforce.utilities;
  * and open the template in the editor.
  */
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Iterator;
 import java.util.List;

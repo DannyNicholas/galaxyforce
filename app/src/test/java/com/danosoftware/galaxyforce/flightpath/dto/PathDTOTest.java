@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.dto;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.danosoftware.galaxyforce.flightpath.paths.Path;
 import com.fasterxml.jackson.databind.ObjectMapper;
