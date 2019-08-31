@@ -26,7 +26,6 @@ import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningBySpeedConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningDescendingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
@@ -834,11 +833,16 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        SpinningDescendingConfig
+                                        DescendingConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
                                                 .speed(AlienSpeed.SLOW)
+                                                .spinningConfig(
+                                                        SpinningBySpeedConfig
+                                                                .builder()
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
@@ -901,11 +905,16 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE_EASY,
-                                        SpinningDescendingConfig
+                                        DescendingConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
                                                 .speed(AlienSpeed.SLOW)
+                                                .spinningConfig(
+                                                        SpinningBySpeedConfig
+                                                                .builder()
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
@@ -916,11 +925,16 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE,
-                                        SpinningDescendingConfig
+                                        DescendingConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
                                                 .speed(AlienSpeed.SLOW)
+                                                .spinningConfig(
+                                                        SpinningBySpeedConfig
+                                                                .builder()
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.SHIELD)
                                 )
@@ -1339,11 +1353,16 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
-                                        SpinningDescendingConfig
+                                        DescendingConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.MOLECULE)
                                                 .energy(5)
                                                 .speed(AlienSpeed.MEDIUM)
+                                                .spinningConfig(
+                                                        SpinningBySpeedConfig
+                                                                .builder()
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 )
@@ -1408,11 +1427,16 @@ public class WaveFactory {
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        SpinningDescendingConfig
+                                        DescendingConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
                                                 .speed(AlienSpeed.SLOW)
+                                                .spinningConfig(
+                                                        SpinningBySpeedConfig
+                                                                .builder()
+                                                                .build()
+                                                )
                                                 .build(),
                                         Collections.singletonList(PowerUpType.MISSILE_LASER)
                                 ),

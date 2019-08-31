@@ -17,6 +17,8 @@ import com.danosoftware.galaxyforce.waves.config.aliens.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.SpinningConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
 
 import org.junit.Test;
 
@@ -70,6 +72,8 @@ public class FollowerConfigTest {
                         AlienMissileSpeed.MEDIUM,
                         AlienMissileCharacter.LASER,
                         0f))
+                .spinningConfig(new SpinningFixedAngularConfig(
+                        10))
                 .build();
 
         assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
@@ -79,5 +83,7 @@ public class FollowerConfigTest {
         assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
         assertThat(config.getMissileConfig().getType(), equalTo(MissileConfig.MissileConfigType.MISSILE));
         assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
+        assertThat(config.getSpinningConfig().getType(), equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
+        assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
     }
 }

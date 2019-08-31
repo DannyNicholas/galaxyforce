@@ -23,9 +23,6 @@ public enum AlienType {
     // alien that descends to the bottom of the screen
     DESCENDING,
 
-    // alien that descends while spinning to the bottom of the screen
-    SPINNING_DESCENDING,
-
     // alien that spins while executing it's underlying behaviour (e.g. SPINNING while DESCENDING)
     SPINNING,
 

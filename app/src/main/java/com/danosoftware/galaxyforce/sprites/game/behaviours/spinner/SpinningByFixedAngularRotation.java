@@ -3,6 +3,10 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.spinner;
 import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 
+/**
+ * Spins alien at a fixed angular speed.
+ * Angular speed can be relative to it's movement speed speed or fixed to a value.
+ */
 public class SpinningByFixedAngularRotation implements SpinningBehaviour {
 
     /* current angle for sprite rotation */

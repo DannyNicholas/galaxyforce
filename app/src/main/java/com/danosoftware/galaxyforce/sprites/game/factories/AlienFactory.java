@@ -19,7 +19,6 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Followab
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowerAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.SpinningDescendingAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -29,7 +28,6 @@ import com.danosoftware.galaxyforce.waves.config.aliens.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningDescendingConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 
 import java.util.ArrayList;
@@ -167,23 +165,6 @@ public class AlienFactory {
                                 .sounds(sounds)
                                 .vibrator(vibrator)
                                 .alienConfig((DescendingConfig) alienConfig)
-                                .powerUpType(powerUp)
-                                .xStart(xStartPos)
-                                .yStart(yStartPos)
-                                .timeDelayStart(delay)
-                                .restartImmediately(restartImmediately)
-                                .build());
-                break;
-
-            case SPINNING_DESCENDING:
-                aliens.add(
-                        SpinningDescendingAlien
-                                .builder()
-                                .alienFactory(this)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
-                                .alienConfig((SpinningDescendingConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
                                 .yStart(yStartPos)
