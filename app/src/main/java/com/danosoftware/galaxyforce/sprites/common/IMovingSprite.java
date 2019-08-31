@@ -11,4 +11,6 @@ public interface IMovingSprite extends ISprite {
     void moveYByDelta(int yDelta);
 
     void animate(float deltaTime);
+
+    void rotate(int rotation);
 }

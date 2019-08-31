@@ -6,6 +6,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.List;
@@ -44,6 +45,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
             SpawnBehaviour spawnBehaviour,
             HitBehaviour hitBehaviour,
             ExplodeBehaviour explodeBehaviour,
+            SpinningBehaviour spinningBehaviour,
             List<Point> alienPath,
             float delayStart,
             int energy,
@@ -59,7 +61,8 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
                 powerUpBehaviour,
                 spawnBehaviour,
                 hitBehaviour,
-                explodeBehaviour);
+                explodeBehaviour,
+                spinningBehaviour);
 
         this.alienPath = alienPath;
         this.maximumPathIndex = alienPath.size() - 1;

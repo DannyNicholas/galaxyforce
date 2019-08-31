@@ -14,17 +14,20 @@ public abstract class AlienConfig {
     private final AlienCharacter alienCharacter;
     private final SpawnConfig spawnConfig;
     private final MissileConfig missileConfig;
+    private final SpinningConfig spinningConfig;
 
     public AlienConfig(
             @NonNull final AlienType alienType,
             @NonNull final AlienCharacter alienCharacter,
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
-            final SpawnConfig spawnConfig) {
+            final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig) {
         this.alienType = alienType;
         this.alienCharacter = alienCharacter;
         this.energy = energy;
         this.missileConfig = missileConfig;
         this.spawnConfig = spawnConfig;
+        this.spinningConfig = spinningConfig;
     }
 }

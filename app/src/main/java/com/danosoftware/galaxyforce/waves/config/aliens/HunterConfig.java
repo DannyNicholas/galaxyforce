@@ -20,6 +20,7 @@ public class HunterConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig,
             @NonNull final AlienSpeed speed,
             @NonNull final HunterBoundariesConfig boundaries) {
         super(
@@ -27,7 +28,8 @@ public class HunterConfig extends AlienConfig {
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
         this.speed = speed;
         this.boundaries = boundaries;
     }

@@ -26,6 +26,7 @@ public class FollowableHunterConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig,
             @NonNull final FollowerConfig followerConfig,
             @NonNull final Integer numberOfFollowers,
             @NonNull final List<PowerUpType> followerPowerUps,
@@ -36,7 +37,8 @@ public class FollowableHunterConfig extends AlienConfig {
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
         this.followerConfig = followerConfig;
         this.numberOfFollowers = numberOfFollowers;
         this.followerPowerUps = followerPowerUps;

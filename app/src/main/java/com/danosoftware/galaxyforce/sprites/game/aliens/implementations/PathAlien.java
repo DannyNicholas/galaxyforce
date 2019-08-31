@@ -19,6 +19,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien that follows a pre-determined path
@@ -55,6 +56,8 @@ public class PathAlien extends AbstractAlienWithPath {
                 new ExplodeSimple(
                         sounds,
                         vibrator),
+                createSpinningBehaviour(
+                        alienConfig),
                 alienPath,
                 delayStartTime,
                 alienConfig.getEnergy(),

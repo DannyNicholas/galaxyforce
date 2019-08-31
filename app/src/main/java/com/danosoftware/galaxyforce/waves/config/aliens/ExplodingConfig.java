@@ -20,6 +20,7 @@ public class ExplodingConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig,
             @NonNull final Float explosionTime,
             @NonNull final AlienMissileCharacter explodingMissileCharacter) {
         super(
@@ -27,7 +28,8 @@ public class ExplodingConfig extends AlienConfig {
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
         this.explosionTime = explosionTime;
         this.explodingMissileCharacter = explodingMissileCharacter;
     }

@@ -19,13 +19,15 @@ public class FollowerConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig,
             @NonNull final AlienSpeed speed) {
         super(
                 AlienType.FOLLOWER,
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
         this.speed = speed;
     }
 }

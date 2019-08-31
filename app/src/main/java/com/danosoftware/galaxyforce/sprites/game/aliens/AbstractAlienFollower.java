@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
 
 public class AbstractAlienFollower extends AbstractAlien implements IAlienFollower {
@@ -41,6 +42,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
             SpawnBehaviour spawnBehaviour,
             HitBehaviour hitBehaviour,
             ExplodeBehaviour explodeBehaviour,
+            SpinningBehaviour spinningBehaviour,
             final int alienMoveInPixels,
             int minimumDistance) {
 
@@ -53,7 +55,8 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
                 powerUpBehaviour,
                 spawnBehaviour,
                 hitBehaviour,
-                explodeBehaviour);
+                explodeBehaviour,
+                spinningBehaviour);
 
         this.hitBehaviour = hitBehaviour;
         this.stateTime = 0f;

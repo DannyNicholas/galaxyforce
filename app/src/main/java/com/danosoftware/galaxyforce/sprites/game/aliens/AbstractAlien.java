@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -38,6 +39,9 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     /* reference to how alien behaves when hit */
     private final HitBehaviour hitBehaviour;
 
+    /* reference to how alien spins */
+    private final SpinningBehaviour spinningBehaviour;
+
     /* state time used to help select the current animation frame */
     private float stateTime;
 
@@ -59,7 +63,8 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
             PowerUpBehaviour powerUpBehaviour,
             SpawnBehaviour spawnBehaviour,
             HitBehaviour hitBehaviour,
-            ExplodeBehaviour explodeBehaviour) {
+            ExplodeBehaviour explodeBehaviour,
+            SpinningBehaviour spinningBehaviour) {
 
         super(
                 animation.getKeyFrame(
@@ -74,6 +79,7 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         this.powerUpBehaviour = powerUpBehaviour;
         this.spawnBehaviour = spawnBehaviour;
         this.hitBehaviour = hitBehaviour;
+        this.spinningBehaviour = spinningBehaviour;
         this.animation = animation;
         this.stateTime = 0f;
     }
@@ -137,6 +143,11 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
 
         if (state == ACTIVE) {
 
+            // if alien is spinning then update alien
+            if (spinningBehaviour.isSpinning()) {
+                spinningBehaviour.spin(this, deltaTime);
+            }
+
             // if alien is ready to fire - then fire!!
             if (fireBehaviour.readyToFire(deltaTime)) {
                 fireBehaviour.fire(this);
@@ -161,6 +172,12 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
 
         // if exploding then animate or set destroyed once finished
         if (state == EXPLODING) {
+
+            // if alien is spinning then continue to spin while exploding
+            if (spinningBehaviour.isSpinning()) {
+                spinningBehaviour.spin(this, deltaTime);
+            }
+
             if (explodeBehaviour.finishedExploding()) {
                 destroy();
             } else {

@@ -16,6 +16,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
 /**
@@ -33,6 +34,12 @@ public class DescendingAlien extends AbstractAlien {
     /* distance moved since spawned */
     private float distanceYMoved;
 
+    /* how many seconds to delay before alien starts */
+    private float timeDelayStart;
+
+    /* restart alien as soon as it leaves screen? */
+    private final boolean restartImmediately;
+
     @Builder
     public DescendingAlien(
             @NonNull AlienFactory alienFactory,
@@ -42,7 +49,10 @@ public class DescendingAlien extends AbstractAlien {
             @NonNull final DescendingConfig alienConfig,
             final PowerUpType powerUpType,
             @NonNull final Integer xStart,
-            @NonNull final Integer yStart) {
+            @NonNull final Integer yStart,
+            @NonNull final Float timeDelayStart,
+            @NonNull final Boolean restartImmediately) {
+
         super(
                 alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
@@ -51,7 +61,9 @@ public class DescendingAlien extends AbstractAlien {
                 createFireBehaviour(
                         model,
                         alienConfig),
-                new PowerUpSingle(model, powerUpType),
+                new PowerUpSingle(
+                        model,
+                        powerUpType),
                 createSpawnBehaviour(
                         model,
                         alienFactory,
@@ -62,10 +74,18 @@ public class DescendingAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator));
+                        vibrator),
+                createSpinningBehaviour(
+                        alienConfig,
+                        alienConfig.getSpeed()));
 
-        this.distanceYMoved = 0f;
+        waiting();
+
+        // set positional and movement behaviour
+        this.timeDelayStart = timeDelayStart;
         this.originalYPosition = yStart;
+        this.distanceYMoved = 0f;
+        this.restartImmediately = restartImmediately;
         this.movePixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
     }
 
@@ -75,16 +95,31 @@ public class DescendingAlien extends AbstractAlien {
 
         /* if active then alien can move */
         if (isActive()) {
+
+            // move until off the screen and then either destroy it or reset it
             distanceYMoved += movePixelsPerSecond * deltaTime;
-
             moveY(originalYPosition - (int) distanceYMoved);
-        }
 
-        /*
-         * if alien off screen then destroy alien no need to handle explosions
-         */
-        if (offScreenBottom(this)) {
-            destroy();
+            // if alien is now off screen then decide whether to destory
+            // it or reset
+            if (offScreenBottom(this)) {
+                if (restartImmediately) {
+                    moveY(originalYPosition);
+                    distanceYMoved = 0f;
+                } else {
+                    destroy();
+                }
+            }
+        } else if (isWaiting()) {
+
+            /* if delayStart still > 0 then count down delay */
+            if (timeDelayStart > 0) {
+                timeDelayStart -= deltaTime;
+            }
+            /* otherwise activate alien. can only happen once! */
+            else {
+                activate();
+            }
         }
     }
 }

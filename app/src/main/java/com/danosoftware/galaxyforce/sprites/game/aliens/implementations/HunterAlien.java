@@ -18,6 +18,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien hunter that will attempt to crash into the base.
@@ -83,7 +84,10 @@ public class HunterAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator));
+                        vibrator),
+                createSpinningBehaviour(
+                        alienConfig,
+                        alienConfig.getSpeed()));
 
         this.boundariesChecker = new BoundariesChecker(
                 this,

@@ -21,6 +21,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien that stays in a fixed position once spawned for a defined duration
@@ -73,7 +74,9 @@ public class ExplodingAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator));
+                        vibrator),
+                createSpinningBehaviour(
+                        alienConfig));
 
         this.model = model;
         this.timeBeforeExpolosion = alienConfig.getExplosionTime();

@@ -15,12 +15,14 @@ public class PathConfig extends AlienConfig {
             @NonNull final AlienCharacter alienCharacter,
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
-            final SpawnConfig spawnConfig) {
+            final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig) {
         super(
                 AlienType.PATH,
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
     }
 }

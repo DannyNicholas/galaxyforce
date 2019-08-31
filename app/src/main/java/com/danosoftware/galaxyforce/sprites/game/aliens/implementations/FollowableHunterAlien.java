@@ -23,6 +23,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien that is the head of a chain of following aliens.
@@ -93,7 +94,10 @@ public class FollowableHunterAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator));
+                        vibrator),
+                createSpinningBehaviour(
+                        alienConfig,
+                        alienConfig.getSpeed()));
 
         this.boundariesChecker = new BoundariesChecker(
                 this,

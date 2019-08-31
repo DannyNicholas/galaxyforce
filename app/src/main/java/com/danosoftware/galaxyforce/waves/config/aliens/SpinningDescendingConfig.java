@@ -20,13 +20,15 @@ public class SpinningDescendingConfig extends AlienConfig {
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
+            final SpinningConfig spinningConfig,
             @NonNull final AlienSpeed speed) {
         super(
                 AlienType.SPINNING_DESCENDING,
                 alienCharacter,
                 energy,
                 missileConfig,
-                spawnConfig);
+                spawnConfig,
+                spinningConfig);
         this.speed = speed;
     }
 }

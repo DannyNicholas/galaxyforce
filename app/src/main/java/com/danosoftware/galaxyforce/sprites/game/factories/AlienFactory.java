@@ -170,6 +170,8 @@ public class AlienFactory {
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
                                 .yStart(yStartPos)
+                                .timeDelayStart(delay)
+                                .restartImmediately(restartImmediately)
                                 .build());
                 break;
 

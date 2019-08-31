@@ -16,6 +16,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenBottom;
 
 /**
@@ -79,7 +80,10 @@ public class SpinningDescendingAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator));
+                        vibrator),
+                createSpinningBehaviour(
+                        alienConfig,
+                        alienConfig.getSpeed()));
 
         waiting();
 

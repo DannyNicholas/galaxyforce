@@ -17,6 +17,7 @@ import lombok.NonNull;
 
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien that is one follower in a chain of following aliens.
@@ -61,6 +62,9 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
                 new ExplodeSimple(
                         sounds,
                         vibrator),
+                createSpinningBehaviour(
+                        alienConfig,
+                        alienConfig.getSpeed()),
                 alienConfig
                         .getSpeed()
                         .getSpeedInPixelsPerSeconds(),
