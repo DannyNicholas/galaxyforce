@@ -74,7 +74,7 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
         this.sprites = new ArrayList<>();
         this.text = new ArrayList<>();
         this.splashScreenTime = 0f;
-        this.reBuildText = false;
+        this.reBuildText = true;
         this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
         this.planet = new PlanetMovingSprite(
                 GameConstants.SCREEN_MID_X,
@@ -151,10 +151,9 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
         splashScreenTime += deltaTime;
 
         // display version state if...
-        // set time has elapsed or...
-        // a billing state update is received and set time has elapsed
-        if ((splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED) ||
-                (reBuildText && splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED)) {
+        // set time has elapsed and a text requires re-building
+        // this will also be built if a billing state update is received
+        if (reBuildText && splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED) {
             buildTextMessages();
             reBuildText = false;
         }
