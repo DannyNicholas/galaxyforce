@@ -150,7 +150,11 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
         // increment splash screen time count by deltaTime
         splashScreenTime += deltaTime;
 
-        if (reBuildText || splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED) {
+        // display version state if...
+        // set time has elapsed or...
+        // a billing state update is received and set time has elapsed
+        if ((splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED) ||
+                (reBuildText && splashScreenTime > DELAY_IN_SECONDS_BEFORE_TEXT_DISPLAYED)) {
             buildTextMessages();
             reBuildText = false;
         }
