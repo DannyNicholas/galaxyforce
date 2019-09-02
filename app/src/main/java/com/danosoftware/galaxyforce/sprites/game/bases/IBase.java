@@ -17,4 +17,6 @@ public interface IBase extends ICollidingSprite {
     void collectPowerUp(IPowerUp powerUp);
 
     List<ISprite> allSprites();
+
+    boolean isActive();
 }

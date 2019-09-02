@@ -91,7 +91,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
      * - Creates new helper
      * - Registers helper with primary base
      */
-    public static void createHelperBase(
+    static void createHelperBase(
             final IBasePrimary primaryBase,
             final GameModel model,
             final SoundPlayerService sounds,
@@ -240,6 +240,11 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     @Override
     public boolean isDestroyed() {
         return state == DESTROYED;
+    }
+
+    @Override
+    public boolean isActive() {
+        return state == ACTIVE;
     }
 
     @Override

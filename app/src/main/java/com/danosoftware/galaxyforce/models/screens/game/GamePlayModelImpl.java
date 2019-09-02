@@ -384,7 +384,7 @@ public class GamePlayModelImpl implements Model, GameModel {
      * level.
      */
     private void updatePlayingState() {
-        if (alienManager.isWaveComplete()) {
+        if (isWaveComplete()) {
 
             // check user is allowed to play next wave
             if (wave >= GameConstants.MAX_FREE_WAVE
@@ -420,7 +420,7 @@ public class GamePlayModelImpl implements Model, GameModel {
                 return;
             }
             // advance to next level
-            else {
+            else if (primaryBase.isActive()) {
                 Log.i(TAG, "Wave: New Wave");
                 wave++;
                 int maxLevelUnlocked = savedGame.getGameLevel();
@@ -441,15 +441,17 @@ public class GamePlayModelImpl implements Model, GameModel {
              * model state.
              */
             setupNewBase();
-        } else if (alienManager.isWaveComplete()) {
+        } else if (isWaveComplete() && primaryBase.isActive()) {
             /*
              * if base not destroyed and wave finished then start next level.
-             * special case: if the base and last alien was destroyed at the
-             * same time, then the new base state will handle the setting up of
-             * the next level after it leaves the new base state.
              */
             setupLevel();
         }
+    }
+
+    private boolean isWaveComplete() {
+        return alienManager.isWaveComplete() &&
+                assets.alienMissilesDestroyed();
     }
 
     /**

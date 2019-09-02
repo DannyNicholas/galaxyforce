@@ -118,4 +118,9 @@ public class GamePlayAssetsManager implements IGamePlayAssetsManager {
     public List<Life> getLives() {
         return lives;
     }
+
+    @Override
+    public boolean alienMissilesDestroyed() {
+        return aliensMissiles.isEmpty();
+    }
 }

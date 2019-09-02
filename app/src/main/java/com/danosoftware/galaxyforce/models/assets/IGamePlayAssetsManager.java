@@ -37,4 +37,6 @@ public interface IGamePlayAssetsManager {
     List<Flag> getFlags();
 
     List<Life> getLives();
+
+    boolean alienMissilesDestroyed();
 }
