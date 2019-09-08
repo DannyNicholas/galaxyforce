@@ -14,6 +14,11 @@ public class HitDisabled implements HitBehaviour {
     }
 
     @Override
+    public void startHitSilently(float stateTime) {
+        // no action - no hit behaviour
+    }
+
+    @Override
     public boolean isHit() {
         return false;
     }

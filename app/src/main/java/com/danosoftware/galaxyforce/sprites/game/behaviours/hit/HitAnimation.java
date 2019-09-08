@@ -50,11 +50,16 @@ public class HitAnimation implements HitBehaviour {
 
     @Override
     public void startHit(float stateTime) {
+        startHitSilently(stateTime);
+        sounds.play(SoundEffect.ALIEN_HIT);
+        vibrator.vibrate(VibrateTime.TINY);
+    }
+
+    @Override
+    public void startHitSilently(float stateTime) {
         this.hit = true;
         this.stateTime = stateTime;
         this.timeSinceHit = 0f;
-        sounds.play(SoundEffect.ALIEN_HIT);
-        vibrator.vibrate(VibrateTime.TINY);
     }
 
     @Override

@@ -189,7 +189,7 @@ public class FollowableHunterAlien extends AbstractAlien {
         if (isExploding()) {
             for (IAlienFollower follower : followers) {
                 if (follower.isActive()) {
-                    follower.explode();
+                    follower.showExplode();
                 }
             }
         } else {

@@ -21,4 +21,11 @@ public interface IAlienFollower extends IAlien {
      * another alien that has been hit.
      */
     void showHit();
+
+    /**
+     * Show explosion in alien follower.
+     * Can be used to trigger an explosion animation for all aliens following
+     * another alien that has been hit.
+     */
+    void showExplode();
 }

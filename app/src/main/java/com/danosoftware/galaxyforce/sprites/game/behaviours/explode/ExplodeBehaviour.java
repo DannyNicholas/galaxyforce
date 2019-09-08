@@ -10,6 +10,15 @@ public interface ExplodeBehaviour {
     void startExplosion();
 
     /**
+     * Initialise start of explosion.
+     * <p>
+     * This implementation is silent and does not cause an explosion
+     * sound or any vibration. Typically used for followers
+     * when another sprite will handle sound/vibration effects.
+     */
+    void startExplosionSilently();
+
+    /**
      * Get the current explosion sprite.
      */
     ISpriteIdentifier getExplosion(float deltaTime);

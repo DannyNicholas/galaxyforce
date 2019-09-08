@@ -53,6 +53,11 @@ public class ExplodeSimple implements ExplodeBehaviour {
     }
 
     @Override
+    public void startExplosionSilently() {
+        explosionTime = 0f;
+    }
+
+    @Override
     public ISpriteIdentifier getExplosion(float deltaTime) {
         explosionTime += deltaTime;
         return animation.getKeyFrame(explosionTime, Animation.ANIMATION_NONLOOPING);

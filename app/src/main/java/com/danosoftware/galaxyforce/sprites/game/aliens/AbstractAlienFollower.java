@@ -8,6 +8,8 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
 
+import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.EXPLODING;
+
 public class AbstractAlienFollower extends AbstractAlien implements IAlienFollower {
     /*
      * ******************************************************
@@ -28,6 +30,8 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
     private final HitBehaviour hitBehaviour;
     private float stateTime;
 
+    private final ExplodeBehaviour explodeBehaviour;
+    private final PowerUpBehaviour powerUpBehaviour;
 
     private boolean started;
 
@@ -59,6 +63,8 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
                 spinningBehaviour);
 
         this.hitBehaviour = hitBehaviour;
+        this.explodeBehaviour = explodeBehaviour;
+        this.powerUpBehaviour = powerUpBehaviour;
         this.stateTime = 0f;
         this.started = false;
         this.alienMoveInPixels = alienMoveInPixels;
@@ -123,10 +129,24 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
     }
 
     /**
-     * Show graphical hit in alien follower without impacting it's energy
+     * Show graphical hit in alien follower without impacting it's energy.
+     * Called if followable alien was hit and passed onto this follower.
+     * We hit silently to allow followable alien to handle sound/vibration.
      */
     @Override
     public void showHit() {
-        hitBehaviour.startHit(stateTime);
+        hitBehaviour.startHitSilently(stateTime);
+    }
+
+    /**
+     * Show graphical explosion in alien follower.
+     * Called if followable alien explodes and passed onto this follower.
+     * We hit silently to allow followable alien to handle sound/vibration.
+     */
+    @Override
+    public void showExplode() {
+        explodeBehaviour.startExplosionSilently();
+        state = EXPLODING;
+        powerUpBehaviour.releasePowerUp(this);
     }
 }
