@@ -48,11 +48,13 @@ public class WaveFactory {
     private static final List<PowerUpType> NO_POWER_UPS = Collections.emptyList();
 
     private final WaveCreationUtils creationUtils;
-
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     public WaveFactory(
-            WaveCreationUtils creationUtils) {
+            WaveCreationUtils creationUtils,
+            PowerUpAllocatorFactory powerUpAllocatorFactory) {
         this.creationUtils = creationUtils;
+        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
     }
 
     /**
@@ -65,6 +67,9 @@ public class WaveFactory {
         if (!WaveUtilities.isValidWave(wave)) {
             throw new GalaxyForceException("Wave not recognised '" + wave + "'.");
         }
+
+        // reset power-up allocation factory for a new wave
+        powerUpAllocatorFactory.newWave();
 
         List<SubWave> subWaves = new ArrayList<>();
 

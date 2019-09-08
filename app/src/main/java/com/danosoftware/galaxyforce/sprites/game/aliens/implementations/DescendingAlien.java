@@ -10,6 +10,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.DescendingConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -43,6 +44,7 @@ public class DescendingAlien extends AbstractAlien {
     @Builder
     public DescendingAlien(
             @NonNull AlienFactory alienFactory,
+            @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
             @NonNull final GameModel model,
             @NonNull final SoundPlayerService sounds,
             @NonNull final VibrationService vibrator,
@@ -67,6 +69,7 @@ public class DescendingAlien extends AbstractAlien {
                 createSpawnBehaviour(
                         model,
                         alienFactory,
+                        powerUpAllocatorFactory,
                         alienConfig),
                 new HitAnimation(
                         sounds,

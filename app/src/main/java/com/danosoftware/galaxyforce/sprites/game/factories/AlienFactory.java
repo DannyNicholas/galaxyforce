@@ -29,6 +29,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,7 @@ public class AlienFactory {
      */
     public List<IAlien> createAlien(
             final AlienConfig alienConfig,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUp,
             final List<Point> alienPath,
             final float delay,
@@ -73,6 +75,7 @@ public class AlienFactory {
                         PathAlien
                                 .builder()
                                 .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                 .model(model)
                                 .sounds(sounds)
                                 .vibrator(vibrator)
@@ -101,6 +104,7 @@ public class AlienFactory {
      */
     public List<IAlien> createAlien(
             final AlienConfig alienConfig,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUp,
             final boolean xRandom,
             final boolean yRandom,
@@ -145,6 +149,7 @@ public class AlienFactory {
                         HunterAlien
                                 .builder()
                                 .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                 .model(model)
                                 .sounds(sounds)
                                 .vibrator(vibrator)
@@ -161,6 +166,7 @@ public class AlienFactory {
                         DescendingAlien
                                 .builder()
                                 .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                 .model(model)
                                 .sounds(sounds)
                                 .vibrator(vibrator)
@@ -178,6 +184,7 @@ public class AlienFactory {
                         ExplodingAlien
                                 .builder()
                                 .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                 .model(model)
                                 .sounds(sounds)
                                 .vibrator(vibrator)
@@ -197,10 +204,9 @@ public class AlienFactory {
                  */
                 final FollowableHunterConfig followableHunterConfig = (FollowableHunterConfig) alienConfig;
                 final int followerCount = followableHunterConfig.getNumberOfFollowers();
-                final PowerUpAllocator powerUpAllocator = new PowerUpAllocator(
+                final PowerUpAllocator powerUpAllocator = powerUpAllocatorFactory.createAllocator(
                         followableHunterConfig.getFollowerPowerUps(),
-                        followerCount,
-                        model.getLives());
+                        followerCount);
 
                 // create followers
                 final List<IAlienFollower> followers = new ArrayList<>();
@@ -209,6 +215,7 @@ public class AlienFactory {
                             FollowerAlien
                                     .builder()
                                     .alienFactory(this)
+                                    .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                     .model(model)
                                     .sounds(sounds)
                                     .vibrator(vibrator)
@@ -224,6 +231,7 @@ public class AlienFactory {
                         FollowableHunterAlien
                                 .builder()
                                 .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
                                 .model(model)
                                 .sounds(sounds)
                                 .vibrator(vibrator)
@@ -255,12 +263,14 @@ public class AlienFactory {
      */
     public SpawnedAliensDto createSpawnedAlien(
             final AlienConfig alienConfig,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart) {
 
         final List<IAlien> aliens = createAlien(
                 alienConfig,
+                powerUpAllocatorFactory,
                 powerUpType,
                 false,
                 false,

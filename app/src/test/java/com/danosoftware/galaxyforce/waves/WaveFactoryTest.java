@@ -5,6 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 import com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 
@@ -62,7 +63,8 @@ public class WaveFactoryTest {
 
             logger.info("Creating wave: " + wave);
 
-            WaveFactory waveFactory = new WaveFactory(creationUtils);
+            PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
+            WaveFactory waveFactory = new WaveFactory(creationUtils, powerUpAllocatorFactory);
             List<SubWave> subWaves = waveFactory.createWave(wave);
 
             logger.info("Sub-waves: " + subWaves.size());

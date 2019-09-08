@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class PathAlien extends AbstractAlienWithPath {
     @Builder
     public PathAlien(
             @NonNull final AlienFactory alienFactory,
+            @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
             @NonNull final GameModel model,
             @NonNull final SoundPlayerService sounds,
             @NonNull final VibrationService vibrator,
@@ -48,6 +50,7 @@ public class PathAlien extends AbstractAlienWithPath {
                 createSpawnBehaviour(
                         model,
                         alienFactory,
+                        powerUpAllocatorFactory,
                         alienConfig),
                 new HitAnimation(
                         sounds,

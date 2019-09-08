@@ -15,6 +15,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingl
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.List;
 
@@ -63,6 +64,7 @@ public class FollowableHunterAlien extends AbstractAlien {
     @Builder
     public FollowableHunterAlien(
             @NonNull final AlienFactory alienFactory,
+            @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
             @NonNull GameModel model,
             @NonNull final SoundPlayerService sounds,
             @NonNull final VibrationService vibrator,
@@ -87,6 +89,7 @@ public class FollowableHunterAlien extends AbstractAlien {
                 createSpawnBehaviour(
                         model,
                         alienFactory,
+                        powerUpAllocatorFactory,
                         alienConfig),
                 new HitAnimation(
                         sounds,

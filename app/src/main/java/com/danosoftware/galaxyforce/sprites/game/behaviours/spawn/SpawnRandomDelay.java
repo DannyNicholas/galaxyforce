@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.List;
 
@@ -47,9 +48,11 @@ public class SpawnRandomDelay implements SpawnBehaviour {
     private final static int POWER_UP_MULTIPLIER = 10;
 
     private final AlienFactory alienFactory;
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     /**
      * @param alienFactory     - factory to create aliens
+     * @param powerUpAllocatorFactory - factory to create power-up allocators
      * @param model            - model to receive aliens
      * @param alienConfig      - config of alien to spawn
      * @param minSpawnDelay    - minimum delay between spawns
@@ -57,12 +60,14 @@ public class SpawnRandomDelay implements SpawnBehaviour {
      */
     SpawnRandomDelay(
             final AlienFactory alienFactory,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final GameModel model,
             final AlienConfig alienConfig,
             final List<PowerUpType> powerUpTypes,
             final float minSpawnDelay,
             final float spawnDelayRandom) {
         this.alienFactory = alienFactory;
+        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
         this.model = model;
         this.alienConfig = alienConfig;
         this.minSpawnDelay = minSpawnDelay;
@@ -77,7 +82,9 @@ public class SpawnRandomDelay implements SpawnBehaviour {
          */
         timeSinceLastSpawn = (float) (delayUntilNextSpawn * Math.random());
 
-        this.powerUpAllocator = new PowerUpAllocator(powerUpTypes, powerUpTypes.size() * POWER_UP_MULTIPLIER, model.getLives());
+        this.powerUpAllocator = powerUpAllocatorFactory.createAllocator(
+                powerUpTypes,
+                powerUpTypes.size() * POWER_UP_MULTIPLIER);
     }
 
     @Override
@@ -100,6 +107,7 @@ public class SpawnRandomDelay implements SpawnBehaviour {
         // create and send new alien bean
         SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
                 alienConfig,
+                powerUpAllocatorFactory,
                 powerUpAllocator.allocate(),
                 alien.x(),
                 alien.y());

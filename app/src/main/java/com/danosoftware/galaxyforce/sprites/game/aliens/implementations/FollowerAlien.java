@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowerConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import lombok.Builder;
 import lombok.NonNull;
@@ -32,6 +33,7 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
     @Builder
     public FollowerAlien(
             @NonNull final AlienFactory alienFactory,
+            @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
             @NonNull final GameModel model,
             @NonNull final SoundPlayerService sounds,
             @NonNull final VibrationService vibrator,
@@ -54,6 +56,7 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
                 createSpawnBehaviour(
                         model,
                         alienFactory,
+                        powerUpAllocatorFactory,
                         alienConfig),
                 new HitAnimation(
                         sounds,

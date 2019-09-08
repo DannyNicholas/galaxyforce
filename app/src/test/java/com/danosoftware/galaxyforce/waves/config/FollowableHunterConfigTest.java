@@ -24,8 +24,12 @@ import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +42,9 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FollowableHunterConfigTest {
 
@@ -47,6 +53,19 @@ public class FollowableHunterConfigTest {
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
+    private final PowerUpAllocator powerUpAllocator = mock(PowerUpAllocator.class);
+    private PowerUpAllocatorFactory powerUpAllocatorFactory;
+
+    @Before
+    public void setUp() {
+        powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
+        when(powerUpAllocatorFactory.createAllocator(
+                ArgumentMatchers.<PowerUpType>anyList(),
+                anyInt()))
+                .thenReturn(powerUpAllocator);
+
+    }
+
 
     @Test
     public void shouldCreateBasicConfiguredFollowableHunter() {
@@ -82,6 +101,7 @@ public class FollowableHunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
@@ -153,6 +173,7 @@ public class FollowableHunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,

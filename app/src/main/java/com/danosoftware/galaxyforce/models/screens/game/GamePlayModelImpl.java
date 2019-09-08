@@ -52,6 +52,7 @@ import com.danosoftware.galaxyforce.text.TextPositionX;
 import com.danosoftware.galaxyforce.utilities.OverlapTester;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import com.danosoftware.galaxyforce.waves.managers.WaveManagerImpl;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 import com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 
@@ -623,8 +624,9 @@ public class GamePlayModelImpl implements Model, GameModel {
         PathLoader pathLoader = new PathLoader(assets);
         PathFactory pathFactory = new PathFactory(pathLoader);
         AlienFactory alienFactory = new AlienFactory(model, sounds, vibrator);
-        WaveCreationUtils creationUtils = new WaveCreationUtils(model, alienFactory, pathFactory);
-        WaveFactory waveFactory = new WaveFactory(creationUtils);
+        PowerUpAllocatorFactory powerUpAllocatorFactory = new PowerUpAllocatorFactory(model);
+        WaveCreationUtils creationUtils = new WaveCreationUtils(alienFactory, pathFactory, powerUpAllocatorFactory);
+        WaveFactory waveFactory = new WaveFactory(creationUtils, powerUpAllocatorFactory);
         WaveManager waveManager = new WaveManagerImpl(waveFactory);
 
         return new AlienManager(waveManager);

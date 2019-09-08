@@ -10,8 +10,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Random;
 
-import static com.danosoftware.galaxyforce.constants.GameConstants.MAX_LIVES;
-
 /**
  * Responsible for allocating a list of power-ups to a wave of aliens.
  * <p>
@@ -35,25 +33,28 @@ public class PowerUpAllocator {
     // how many aliens remaining that will ask for power-up allocation
     private int aliensToAllocate;
 
+    private int lifePowerUpsAllocated;
+
     /**
      * Create an allocator responsible for allocating power-ups.
      *
      * @param powerUps - power-ups to allocate
      * @param aliens   - number of aliens in wave
      */
-    public PowerUpAllocator(
+    PowerUpAllocator(
             final List<PowerUpType> powerUps,
             final int aliens,
-            final int livesRemaining) {
+            final int extraLifePowerUpsAllowed) {
+
+        this.lifePowerUpsAllocated = 0;
 
         // limit extra life power-ups to avoid exceeding max lives
-        int additionLivesAllowed = MAX_LIVES - livesRemaining;
         List<PowerUpType> filteredPowerUps = new ArrayList<>();
         for (PowerUpType powerUp : powerUps) {
-            if (powerUp != PowerUpType.LIFE || additionLivesAllowed > 0) {
+            if (powerUp != PowerUpType.LIFE || lifePowerUpsAllocated < extraLifePowerUpsAllowed) {
                 filteredPowerUps.add(powerUp);
                 if (powerUp == PowerUpType.LIFE) {
-                    additionLivesAllowed--;
+                    lifePowerUpsAllocated++;
                 }
             }
         }
@@ -74,6 +75,13 @@ public class PowerUpAllocator {
                     "Attempted to allocate " + powerUps.size() + " power-ups to only " + aliensToAllocate + " aliens."
             );
         }
+    }
+
+    /**
+     * How many life power-ups have been allocated?
+     */
+    int lifePowerUpsAllocated() {
+        return lifePowerUpsAllocated;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
 
@@ -14,6 +15,7 @@ public class SpawnBehaviourFactory {
     public static SpawnBehaviour createSpawnBehaviour(
             final GameModel model,
             final AlienFactory alienFactory,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final AlienConfig alienConfig) {
 
         final SpawnConfig spawnConfig = alienConfig.getSpawnConfig();
@@ -26,6 +28,7 @@ public class SpawnBehaviourFactory {
             // behaviour that spawns aliens using spawnedAlienConfig
             return new SpawnRandomDelay(
                     alienFactory,
+                    powerUpAllocatorFactory,
                     model,
                     spawningConfig.getSpawnedAlienConfig(),
                     spawningConfig.getSpwanedPowerUpTypes(),

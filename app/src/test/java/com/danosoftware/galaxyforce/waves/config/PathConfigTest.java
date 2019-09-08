@@ -21,6 +21,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import org.junit.Test;
 
@@ -41,6 +42,7 @@ public class PathConfigTest {
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
 
     @Test
     public void shouldCreateBasicConfiguredPathAlien() {
@@ -60,6 +62,7 @@ public class PathConfigTest {
         points.add(new Point(0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 points,
                 2f,
@@ -104,6 +107,7 @@ public class PathConfigTest {
         points.add(new Point(0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 points,
                 2f,

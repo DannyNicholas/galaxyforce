@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.waves.utilities;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
 import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
@@ -24,15 +23,15 @@ public class WaveCreationUtils {
 
     private final AlienFactory alienFactory;
     private final PathFactory pathFactory;
-    private final GameModel model;
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     public WaveCreationUtils(
-            GameModel model,
             AlienFactory alienFactory,
-            PathFactory pathFactory) {
-        this.model = model;
+            PathFactory pathFactory,
+            PowerUpAllocatorFactory powerUpAllocatorFactory) {
         this.alienFactory = alienFactory;
         this.pathFactory = pathFactory;
+        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
     }
 
     /**
@@ -56,11 +55,9 @@ public class WaveCreationUtils {
         for (SubWavePathRuleProperties props : rules.subWaveProps()) {
             numberOfAliens += props.getNumberOfAliens();
         }
-        final PowerUpAllocator powerUpAllocator = new PowerUpAllocator(
+        final PowerUpAllocator powerUpAllocator = powerUpAllocatorFactory.createAllocator(
                 powerUps,
-                numberOfAliens,
-                model.getLives());
-
+                numberOfAliens);
 
         for (SubWavePathRuleProperties props : rules.subWaveProps()) {
 
@@ -93,6 +90,7 @@ public class WaveCreationUtils {
         List<IAlien> aliens = new ArrayList<>();
 
         final AlienConfig alienConfig = config.getAlienConfig();
+        final List<PowerUpType> powerUps = config.getPowerUps();
         final SubWaveRule rules = config.getSubWaveRule();
 
         // initialise power-up allocator
@@ -100,16 +98,16 @@ public class WaveCreationUtils {
         for (SubWaveRuleProperties props : rules.subWaveProps()) {
             numberOfAliens += props.getNumberOfAliens();
         }
-        final PowerUpAllocator powerUpAllocator = new PowerUpAllocator(
-                config.getPowerUps(),
-                numberOfAliens,
-                model.getLives());
+        final PowerUpAllocator powerUpAllocator = powerUpAllocatorFactory.createAllocator(
+                powerUps,
+                numberOfAliens);
 
         for (SubWaveRuleProperties props : rules.subWaveProps()) {
 
             for (int i = 0; i < props.getNumberOfAliens(); i++) {
                 aliens.addAll(alienFactory.createAlien(
                         alienConfig,
+                        powerUpAllocatorFactory,    // factory that can be re-used to allocate power-ups to spawning aliens
                         powerUpAllocator.allocate(),
                         props.isxRandom(),
                         props.isyRandom(),
@@ -139,6 +137,7 @@ public class WaveCreationUtils {
             aliensOnPath.addAll(
                     alienFactory.createAlien(
                             alienConfig,
+                            powerUpAllocatorFactory,    // factory that can be re-used to allocate power-ups to spawning aliens
                             powerUpAllocator.allocate(),
                             path,
                             (i * props.getDelayBetweenAliens()) + props.getDelayOffet(),

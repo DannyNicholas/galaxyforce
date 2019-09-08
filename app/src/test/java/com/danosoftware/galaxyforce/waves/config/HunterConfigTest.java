@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import org.junit.Test;
 
@@ -44,6 +45,7 @@ public class HunterConfigTest {
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
 
     @Test
     public void shouldCreateBasicConfiguredHunter() {
@@ -69,6 +71,7 @@ public class HunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
@@ -129,6 +132,7 @@ public class HunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
+                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
