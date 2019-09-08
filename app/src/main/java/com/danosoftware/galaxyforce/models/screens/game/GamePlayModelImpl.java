@@ -606,6 +606,8 @@ public class GamePlayModelImpl implements Model, GameModel {
         if (lives > 0) {
             // create new base at default position and change state
             addNewBase();
+            // new base starts as shielded to avoid being immediately destroyed by current wave
+            primaryBase.addShield(2f);
         }
         /* if no lives left then game over */
         else {

@@ -270,8 +270,8 @@ public class PrimaryBaseTest {
         primaryBase.collectPowerUp(shieldPowerUp);
 
         // verify helper bases were also given shields
-        verify(leftHelper, times(1)).addShield(any(float.class));
-        verify(rightHelper, times(1)).addShield(any(float.class));
+        verify(leftHelper, times(1)).addSynchronisedShield(any(float.class));
+        verify(rightHelper, times(1)).addSynchronisedShield(any(float.class));
 
         // count number of primary base shields
         Long shields = primaryBase.allSprites().stream().filter(new Predicate<ISprite>() {

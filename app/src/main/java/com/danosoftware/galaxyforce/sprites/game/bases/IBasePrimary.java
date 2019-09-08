@@ -24,4 +24,6 @@ public interface IBasePrimary extends IBase {
     BaseLean getLean();
 
     void setLean(BaseLean lean);
+
+    void addShield(float timeActive);
 }

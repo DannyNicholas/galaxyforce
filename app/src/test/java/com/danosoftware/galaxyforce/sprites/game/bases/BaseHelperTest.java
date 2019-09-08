@@ -145,7 +145,7 @@ public class BaseHelperTest {
         List<ISprite> sprites = baseHelper.allSprites();
         verifyShieldDoesNotExists(sprites);
 
-        baseHelper.addShield(SHIELD_SYNC_OFFSET);
+        baseHelper.addSynchronisedShield(SHIELD_SYNC_OFFSET);
         sprites = baseHelper.allSprites();
         verifyShieldExists(sprites);
     }

@@ -148,7 +148,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
                         GameSpriteIdentifier.EXPLODE_05));
 
         if (shieldUp) {
-            addShield(shieldSyncTime);
+            addSynchronisedShield(shieldSyncTime);
         } else {
             removeShield();
         }
@@ -181,7 +181,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     }
 
     @Override
-    public void addShield(float syncTime) {
+    public void addSynchronisedShield(float syncTime) {
         shielded = true;
         shield = new BaseShieldHelper(x(), y(), syncTime);
     }

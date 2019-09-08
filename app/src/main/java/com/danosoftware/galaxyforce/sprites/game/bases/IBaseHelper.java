@@ -7,7 +7,7 @@ interface IBaseHelper extends IBase {
 
     BaseMissilesDto fire(BaseMissileType baseMissileType);
 
-    void addShield(float syncTime);
+    void addSynchronisedShield(float syncTime);
 
     void removeShield();
 }

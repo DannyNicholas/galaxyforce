@@ -157,9 +157,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.baseMissileDelay = DEFAULT_BASE_MISSILE_DELAY;
         timeUntilDefaultMissile = 0f;
         timeSinceBaseLastFired = 0f;
-
-        // new base starts as shielded to avoid being immediately destroyed
-        addShield(2f, 0f);
     }
 
     /**
@@ -351,7 +348,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
             // add shield for set time
             case SHIELD:
-                addShield(10f, 0f);
+                addShield(10f);
                 break;
 
             // add helper bases for set time
@@ -436,6 +433,29 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     public void helperExploding(HelperSide side) {
         activeHelpers.remove(side);
         this.activeBases = buildActiveBases();
+    }
+
+    @Override
+    public void addShield(float timeActive) {
+        final float syncTime = 0f;
+
+        // reset the shield timer.
+        // will extend shield time if already shielded.
+        timeUntilShieldRemoved = timeActive;
+
+        // only create new shields if we are not shielded
+        if (!shielded) {
+            shielded = true;
+            shield = new BaseShieldPrimary(this, sounds, vibrator, x(), y(), syncTime);
+        }
+
+        // add shield for any helper bases
+        for (IBaseHelper aHelperBase : helpers.values()) {
+            aHelperBase.addSynchronisedShield(syncTime);
+        }
+
+        // refresh list of sprites
+        this.allSprites = buildAllSprites();
     }
 
 
@@ -531,27 +551,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
      * SHIELD HELPERS *
      * ***********************
      */
-
-    private void addShield(float timeActive, float syncTime) {
-
-        // reset the shield timer.
-        // will extend shield time if already shielded.
-        timeUntilShieldRemoved = timeActive;
-
-        // only create new shields if we are not shielded
-        if (!shielded) {
-            shielded = true;
-            shield = new BaseShieldPrimary(this, sounds, vibrator, x(), y(), syncTime);
-        }
-
-        // add shield for any helper bases
-        for (IBaseHelper aHelperBase : helpers.values()) {
-            aHelperBase.addShield(syncTime);
-        }
-
-        // refresh list of sprites
-        this.allSprites = buildAllSprites();
-    }
 
     private void removeShield() {
         timeUntilShieldRemoved = 0f;
