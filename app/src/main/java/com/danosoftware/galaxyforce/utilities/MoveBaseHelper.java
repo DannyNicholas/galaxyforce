@@ -193,7 +193,8 @@ public class MoveBaseHelper {
         int y = base.y() + (int) (maxDistanceMoved * weightingY);
 
         // has base reached launch target
-        if (abs(base.y() - BASE_START_Y) <= BASE_MOVE_RADIUS_LARGE) {
+        if (abs(base.y() - BASE_START_Y) <= BASE_MOVE_RADIUS_LARGE
+                || base.y() >= BASE_START_Y) {
             isLaunching = false;
         }
 

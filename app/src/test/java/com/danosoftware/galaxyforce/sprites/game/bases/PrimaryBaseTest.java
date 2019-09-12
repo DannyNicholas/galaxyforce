@@ -33,6 +33,8 @@ import java.util.function.Predicate;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
+import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
+import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_Y;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
@@ -93,8 +95,11 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shouldMoveBaseX() {
+        // launch base
+        primaryBase.move(SCREEN_MID_X, SCREEN_MID_Y);
+        primaryBase.animate(10f);
+
         // move x left to right
-        primaryBase.move(0, 0);
         primaryBase.moveTarget(300, 0);
         primaryBase.animate(10f);
         assertThat(primaryBase.x(), is(300));
@@ -110,8 +115,11 @@ public class PrimaryBaseTest {
 
     @Test()
     public void shouldMoveBaseY() {
+        // launch base
+        primaryBase.move(SCREEN_MID_X, SCREEN_MID_Y);
+        primaryBase.animate(10f);
+
         // move y bottom to top
-        primaryBase.move(0, 0);
         primaryBase.moveTarget(0, 300);
         primaryBase.animate(10f);
         assertThat(primaryBase.x(), is(0));
