@@ -45,9 +45,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
     private static final String TAG = "BasePrimary";
 
-    // base's start y position when ready
-    private static final int BASE_START_Y = 192;
-
     // explosion behaviour
     private final ExplodeBehaviour explosion;
 
