@@ -129,7 +129,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.activeBases = buildActiveBases();
         this.lean = BaseLean.NONE;
         this.moveHelper = new MoveBaseHelper(this);
-        moveHelper.updateTarget(SCREEN_MID_X, BASE_START_Y);
 
         this.explosion = new ExplodeSimple(
                 sounds,
@@ -528,7 +527,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         timeSinceBaseLastFired = timeSinceBaseLastFired + deltaTime;
 
         // if missile timer has exceeded delay time and base is active - ready to fire!!
-        return (timeSinceBaseLastFired > baseMissileDelay && state == ACTIVE);
+        return (timeSinceBaseLastFired > baseMissileDelay
+                && state == ACTIVE);
     }
 
     /**
