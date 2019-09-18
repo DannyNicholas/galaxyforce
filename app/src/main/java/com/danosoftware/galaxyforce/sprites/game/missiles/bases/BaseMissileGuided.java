@@ -18,9 +18,6 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     /* maximum missile change direction in radians */
     private static final float MAX_DIRECTION_CHANGE_ANGLE = 0.3f;
 
-    /* how much energy will be lost by base when this missile hits it */
-    private static final int HIT_ENERGY = 1;
-
     /* distance missile can move in pixels each second */
     private final int missileSpeed;
 
@@ -49,8 +46,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
         super(
                 animation,
                 xStart,
-                yStart,
-                HIT_ENERGY);
+                yStart);
         this.model = model;
         this.missileSpeed = baseMissileSpeed.getSpeed();
 

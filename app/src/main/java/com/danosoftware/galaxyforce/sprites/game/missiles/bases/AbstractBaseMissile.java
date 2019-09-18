@@ -7,9 +7,6 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 public abstract class AbstractBaseMissile extends AbstractCollidingSprite implements IBaseMissile {
 
-    // how much energy will be lost by alien when this missile hits it
-    private final int hitEnergy;
-
     private boolean isDestroyed;
 
     private final Animation animation;
@@ -20,8 +17,7 @@ public abstract class AbstractBaseMissile extends AbstractCollidingSprite implem
     AbstractBaseMissile(
             Animation animation,
             int x,
-            int y,
-            int hitEnergy) {
+            int y) {
 
         // adjust missile starting position by half the missile's height
         super(
@@ -35,7 +31,6 @@ public abstract class AbstractBaseMissile extends AbstractCollidingSprite implem
                                 Animation.ANIMATION_LOOPING))
                         .getProperties()
                         .getHeight() / 2);
-        this.hitEnergy = hitEnergy;
         this.isDestroyed = false;
         this.animation = animation;
         this.stateTime = 0f;
@@ -45,11 +40,6 @@ public abstract class AbstractBaseMissile extends AbstractCollidingSprite implem
     @Override
     public boolean hitBefore(IAlien alien) {
         return false;
-    }
-
-    @Override
-    public int energyDamage() {
-        return hitEnergy;
     }
 
     @Override

@@ -87,7 +87,7 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     @Override
     public void onHitBy(IBaseMissile baseMissile) {
         baseMissile.destroy();
-        energy -= baseMissile.energyDamage();
+        energy -= 1;
         if (energy <= 0) {
             explode();
         } else {

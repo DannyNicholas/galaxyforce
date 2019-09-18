@@ -16,9 +16,4 @@ public interface IBaseMissile extends ICollidingSprite {
      * @return has alien been hit before
      */
     boolean hitBefore(IAlien alien);
-
-    /**
-     * how much energy will be lost by alien when this missile hits it.
-     */
-    int energyDamage();
 }

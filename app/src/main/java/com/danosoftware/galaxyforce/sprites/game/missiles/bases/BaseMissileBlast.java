@@ -10,9 +10,6 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
  */
 public class BaseMissileBlast extends AbstractBaseMissile {
 
-    /* how much energy will be lost by alien when this missile hits it */
-    private static final int HIT_ENERGY = 1;
-
     /* offset applied to x and y every move */
     private final int xDelta;
     private final int yDelta;
@@ -24,7 +21,7 @@ public class BaseMissileBlast extends AbstractBaseMissile {
             final float angle,
             final BaseMissileSpeed missileSpeed) {
 
-        super(animation, xStart, yStart, HIT_ENERGY);
+        super(animation, xStart, yStart);
 
         // convert angle to degrees for sprite rotation.
         // needs to be adjusted by 90 deg for correct rotation.

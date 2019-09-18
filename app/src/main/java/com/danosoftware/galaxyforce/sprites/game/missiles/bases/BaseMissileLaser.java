@@ -14,9 +14,6 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenTo
  */
 public class BaseMissileLaser extends AbstractBaseMissile {
 
-    /* how much energy will be lost by alien when this missile hits it */
-    private static final int HIT_ENERGY = 1;
-
     /* distance missile can move per cycle */
     private final int missileSpeed;
 
@@ -31,8 +28,7 @@ public class BaseMissileLaser extends AbstractBaseMissile {
         super(
                 animation,
                 xStart,
-                yStart,
-                HIT_ENERGY);
+                yStart);
         this.missileSpeed = baseMissileSpeed.getSpeed();
         this.hitAliens = new HashSet<>();
     }
