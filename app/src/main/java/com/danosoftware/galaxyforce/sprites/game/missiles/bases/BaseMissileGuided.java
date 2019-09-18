@@ -1,19 +1,16 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.bases;
 
+import com.danosoftware.galaxyforce.enumerations.BaseMissileSpeed;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.view.Animation;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
+/**
+ * Guided missile that chases a chosen base.
+ */
 public class BaseMissileGuided extends AbstractBaseMissile {
-
-    /* missile sprite */
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_MISSILE_ROCKET;
-
-    /* distance missile can move in pixels each second */
-    private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* time delay between missile direction changes */
     private static final float MISSILE_DIRECTION_CHANGE_DELAY = 0.1f;
@@ -23,6 +20,9 @@ public class BaseMissileGuided extends AbstractBaseMissile {
 
     /* how much energy will be lost by base when this missile hits it */
     private static final int HIT_ENERGY = 1;
+
+    /* distance missile can move in pixels each second */
+    private final int missileSpeed;
 
     /* alien targeted by missile */
     private IAlien alien;
@@ -40,9 +40,19 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     /* variable to store time passed since last missile direction change */
     private float timeSinceMissileDirectionChange;
 
-    public BaseMissileGuided(int xStart, int yStart, GameModel model) {
-        super(SPRITE, xStart, yStart, HIT_ENERGY);
+    public BaseMissileGuided(
+            final int xStart,
+            final int yStart,
+            final Animation animation,
+            final BaseMissileSpeed baseMissileSpeed,
+            final GameModel model) {
+        super(
+                animation,
+                xStart,
+                yStart,
+                HIT_ENERGY);
         this.model = model;
+        this.missileSpeed = baseMissileSpeed.getSpeed();
 
         // initial angle (i.e. straight up)
         this.angle = (float) (Math.PI / 2f);
@@ -137,7 +147,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
         rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
 
         // calculate the deltas to be applied each move
-        this.xDelta = (int) (BASE_MISSILE_MOVE_PIXELS * (float) Math.cos(angle));
-        this.yDelta = (int) (BASE_MISSILE_MOVE_PIXELS * (float) Math.sin(angle));
+        this.xDelta = (int) (missileSpeed * (float) Math.cos(angle));
+        this.yDelta = (int) (missileSpeed * (float) Math.sin(angle));
     }
 }

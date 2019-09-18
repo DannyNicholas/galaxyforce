@@ -1,30 +1,39 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.bases;
 
+import com.danosoftware.galaxyforce.enumerations.BaseMissileSpeed;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.view.Animation;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenTop;
 
+/**
+ * Laser missile that is not destroyed on contact with an alien.
+ */
 public class BaseMissileLaser extends AbstractBaseMissile {
-
-    /* missile sprite */
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_MISSILE_LASER;
-
-    /* distance missile can move per cycle */
-    private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* how much energy will be lost by alien when this missile hits it */
     private static final int HIT_ENERGY = 1;
 
+    /* distance missile can move per cycle */
+    private final int missileSpeed;
+
     /* list of any aliens laser has already hit */
     private final Set<IAlien> hitAliens;
 
-    public BaseMissileLaser(int xStart, int yStart) {
-        super(SPRITE, xStart, yStart, HIT_ENERGY);
+    public BaseMissileLaser(
+            final int xStart,
+            final int yStart,
+            final Animation animation,
+            final BaseMissileSpeed baseMissileSpeed) {
+        super(
+                animation,
+                xStart,
+                yStart,
+                HIT_ENERGY);
+        this.missileSpeed = baseMissileSpeed.getSpeed();
         this.hitAliens = new HashSet<>();
     }
 
@@ -63,7 +72,7 @@ public class BaseMissileLaser extends AbstractBaseMissile {
     @Override
     public void animate(float deltaTime) {
         // move missile until off-screen and then destroy it
-        moveYByDelta((int) (BASE_MISSILE_MOVE_PIXELS * deltaTime));
+        moveYByDelta((int) (missileSpeed * deltaTime));
 
         // missile can only be destroyed when off screen
         // use superclass destroy() since our destroy()

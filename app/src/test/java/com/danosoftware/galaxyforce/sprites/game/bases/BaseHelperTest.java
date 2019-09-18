@@ -12,7 +12,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
-import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileSimple;
+import com.danosoftware.galaxyforce.sprites.game.missiles.bases.BaseMissileUpwards;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
@@ -32,7 +32,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import static com.danosoftware.galaxyforce.enumerations.BaseMissileType.SIMPLE;
+import static com.danosoftware.galaxyforce.enumerations.BaseMissileType.NORMAL;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EXPLODING;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
@@ -215,10 +215,10 @@ public class BaseHelperTest {
     @Test()
     public void shouldFireMissile() {
         baseHelper = shieldedHelper(LEFT);
-        BaseMissilesDto missile = baseHelper.fire(SIMPLE);
+        BaseMissilesDto missile = baseHelper.fire(NORMAL);
         assertThat(missile.getMissiles().size() > 0, is(true));
         for (IBaseMissile aMissile : missile.getMissiles()) {
-            assertThat(aMissile instanceof BaseMissileSimple, is(true));
+            assertThat(aMissile instanceof BaseMissileUpwards, is(true));
         }
     }
 

@@ -171,7 +171,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         // helper bases should not fire parallel missiles.
         // instead, use an equivalent single missile.
         if (baseMissileType == BaseMissileType.PARALLEL) {
-            return BaseMissileFactory.createBaseMissile(this, BaseMissileType.SIMPLE, model);
+            return BaseMissileFactory.createBaseMissile(this, BaseMissileType.NORMAL, model);
         }
         if (baseMissileType == BaseMissileType.SPRAY) {
             return BaseMissileFactory.createBaseMissile(this, BaseMissileType.GUIDED, model);

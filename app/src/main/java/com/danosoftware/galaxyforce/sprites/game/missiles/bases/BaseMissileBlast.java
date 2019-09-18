@@ -1,17 +1,14 @@
 package com.danosoftware.galaxyforce.sprites.game.missiles.bases;
 
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
-import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
+import com.danosoftware.galaxyforce.enumerations.BaseMissileSpeed;
+import com.danosoftware.galaxyforce.view.Animation;
 
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
+/**
+ * Single missile of a blast. Missiles fires in a fixed direction.
+ */
 public class BaseMissileBlast extends AbstractBaseMissile {
-
-    /* missile sprite */
-    private static final ISpriteIdentifier SPRITE = GameSpriteIdentifier.BASE_MISSILE_BLAST;
-
-    /* distance missile can move in pixels each second */
-    private static final int BASE_MISSILE_MOVE_PIXELS = 15 * 60;
 
     /* how much energy will be lost by alien when this missile hits it */
     private static final int HIT_ENERGY = 1;
@@ -20,16 +17,22 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     private final int xDelta;
     private final int yDelta;
 
-    public BaseMissileBlast(int xStart, int yStart, float angle) {
-        super(SPRITE, xStart, yStart, HIT_ENERGY);
+    public BaseMissileBlast(
+            final int xStart,
+            final int yStart,
+            final Animation animation,
+            final float angle,
+            final BaseMissileSpeed missileSpeed) {
+
+        super(animation, xStart, yStart, HIT_ENERGY);
 
         // convert angle to degrees for sprite rotation.
         // needs to be adjusted by 90 deg for correct rotation.
         rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
 
         // calculate the deltas to be applied each move
-        this.xDelta = (int) (BASE_MISSILE_MOVE_PIXELS * (float) Math.cos(angle));
-        this.yDelta = (int) (BASE_MISSILE_MOVE_PIXELS * (float) Math.sin(angle));
+        this.xDelta = (int) (missileSpeed.getSpeed() * (float) Math.cos(angle));
+        this.yDelta = (int) (missileSpeed.getSpeed() * (float) Math.sin(angle));
     }
 
     @Override

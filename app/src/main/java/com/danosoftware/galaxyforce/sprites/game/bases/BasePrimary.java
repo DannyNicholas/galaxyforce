@@ -78,7 +78,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private float baseMissileDelay;
 
     // default base missile sprite
-    private static final BaseMissileType DEFAULT_MISSILE_TYPE = BaseMissileType.SIMPLE;
+    private static final BaseMissileType DEFAULT_MISSILE_TYPE = BaseMissileType.NORMAL;
 
     /* variable to store time passed since base last fired */
     private float timeSinceBaseLastFired;
