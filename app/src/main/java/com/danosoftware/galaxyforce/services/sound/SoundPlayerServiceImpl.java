@@ -12,12 +12,15 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EnumMap;
 import java.util.Map;
 
 public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnLoadCompleteListener {
 
     private static final float EFFECTS_VOLUME = 0.2f;
+    private static final int MAX_STREAMS = 20;
 
     private final SoundPool soundPool;
 
@@ -27,11 +30,23 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
     // map of all sound effects enums to sound IDs
     private final Map<SoundEffect, Integer> effectsBank;
 
+    // queue of last N stream IDs that have been played
+    // allows us to stop any playing streams if user disables sound.
+    //
+    // this makes (the reasonable) assumption that any currently playing
+    // sounds started within the last N effects. It is possible that a
+    // very long sound effect started earlier and is still playing while
+    // other shorter effects started later and finished earlier.
+    //
+    // we have no way of asking the SoundPool what streams are currently playing.
+    private final Deque<Integer> streams;
+
     public SoundPlayerServiceImpl(Context context, boolean soundEnabled) {
 
-        this.soundPool = new SoundPool(20, AudioManager.STREAM_MUSIC, 0);
+        this.soundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_MUSIC, 0);
         this.soundEnabled = soundEnabled;
         this.effectsBank = new EnumMap<>(SoundEffect.class);
+        this.streams = new ArrayDeque<>(MAX_STREAMS);
 
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
@@ -50,7 +65,8 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
     public void play(SoundEffect effect) {
         if (soundEnabled && effectsBank.containsKey(effect)) {
             int soundId = effectsBank.get(effect);
-            soundPool.play(soundId, EFFECTS_VOLUME, EFFECTS_VOLUME, 0, 0, 1);
+            int streamId = soundPool.play(soundId, EFFECTS_VOLUME, EFFECTS_VOLUME, 0, 0, 1);
+            addStreamToQueue(streamId);
         }
     }
 
@@ -61,6 +77,15 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
 
     @Override
     public void resume() {
+        // if we are resuming and sound is now disabled then manually stop all streams.
+        // otherwise, any streams that were in the middle of playing when we paused will continue.
+        if (!soundEnabled) {
+            while (!streams.isEmpty()) {
+                int streamId = streams.poll();
+                soundPool.stop(streamId);
+            }
+        }
+
         soundPool.autoResume();
     }
 
@@ -112,5 +137,16 @@ public class SoundPlayerServiceImpl implements SoundPlayerService, SoundPool.OnL
     @Override
     public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
         Log.i(GameConstants.LOG_TAG, "Loaded Sound Effect ID : " + sampleId);
+    }
+
+    /**
+     * Add streamId to queue. If queue is full remove the oldest stream Id.
+     * Queue will hold the last N stream Ids.
+     */
+    private void addStreamToQueue(int streamId) {
+        if (streams.size() == MAX_STREAMS) {
+            streams.poll();
+        }
+        streams.offer(streamId);
     }
 }
