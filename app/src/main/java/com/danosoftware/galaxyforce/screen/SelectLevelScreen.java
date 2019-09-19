@@ -15,6 +15,11 @@ import com.danosoftware.galaxyforce.view.SpriteBatcher;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_ALPHA;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_BLUE;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_GREEN;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_RED;
+
 public class SelectLevelScreen extends AbstractScreen {
 
     private static final float SCREEN_CENTRE = GameConstants.GAME_WIDTH / 2;
@@ -47,6 +52,11 @@ public class SelectLevelScreen extends AbstractScreen {
         GL10 gl = glGraphics.getGl();
 
         /* clear colour buffer */
+        gl.glClearColor(
+                BACKGROUND_RED,
+                BACKGROUND_GREEN,
+                BACKGROUND_BLUE,
+                BACKGROUND_ALPHA);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         // move camera's x position on screen by model's current scroll speed

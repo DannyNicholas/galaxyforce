@@ -11,6 +11,12 @@ public class GameConstants {
     public final static int WAVES_PER_ZONE = 12;
     public final static int MAX_WAVES = MAX_ZONES * WAVES_PER_ZONE;
 
+    // background screen colours
+    public final static float BACKGROUND_RED = 12f / 255f;
+    public final static float BACKGROUND_GREEN = 12f / 255f;
+    public final static float BACKGROUND_BLUE = 30f / 255f;
+    public final static float BACKGROUND_ALPHA = 1.0f;
+
     // sprite positions
     public final static int LOGO_Y_POS = 817;
     public final static int PLANET_Y_POS = 100;
