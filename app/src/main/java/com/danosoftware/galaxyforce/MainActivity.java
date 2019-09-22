@@ -22,6 +22,11 @@ import com.danosoftware.galaxyforce.view.GLGraphics;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_ALPHA;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_BLUE;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_GREEN;
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_RED;
+
 public class MainActivity extends Activity {
 
     private enum ActivityState {
@@ -227,6 +232,14 @@ public class MainActivity extends Activity {
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
             Log.i(GameConstants.LOG_TAG, LOCAL_TAG + ": onSurfaceCreated");
+
+            // set game background colour.
+            // i.e. colour used when screen is cleared before each frame
+            gl.glClearColor(
+                    BACKGROUND_RED,
+                    BACKGROUND_GREEN,
+                    BACKGROUND_BLUE,
+                    BACKGROUND_ALPHA);
 
             glGraphics.setGl(gl);
 

@@ -24,11 +24,6 @@ import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_ALPHA;
-import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_BLUE;
-import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_GREEN;
-import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_RED;
-
 public abstract class AbstractScreen implements IScreen {
 
     /* logger tag */
@@ -101,12 +96,7 @@ public abstract class AbstractScreen implements IScreen {
     public void draw(float deltaTime) {
         GL10 gl = glGraphics.getGl();
 
-        /* clear colour buffer */
-        gl.glClearColor(
-                BACKGROUND_RED,
-                BACKGROUND_GREEN,
-                BACKGROUND_BLUE,
-                BACKGROUND_ALPHA);
+        // clear screen
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         camera.setViewportAndMatrices();
