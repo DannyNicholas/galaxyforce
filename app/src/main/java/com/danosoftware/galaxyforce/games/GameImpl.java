@@ -85,7 +85,7 @@ public class GameImpl implements Game {
 
         boolean enableMusic = (configurationService.getMusicOption() == OptionMusic.ON);
         this.music = new MusicPlayerServiceImpl(context, enableMusic);
-        this.music.load(Music.GAME_LOOP);
+        this.music.load(Music.MAIN_TITLE);
         this.music.play();
 
         IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);

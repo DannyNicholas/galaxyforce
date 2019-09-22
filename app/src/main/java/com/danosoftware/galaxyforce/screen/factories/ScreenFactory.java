@@ -25,6 +25,7 @@ import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.music.Music;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -135,6 +136,8 @@ public class ScreenFactory {
                         batcher);
 
             case SELECT_LEVEL:
+                this.music.load(Music.MAIN_TITLE);
+                this.music.play();
                 return new SelectLevelScreen(
                         new SelectLevelModelImpl(game, controller, billingService, savedGame, starFieldTemplate),
                         controller,
@@ -170,6 +173,8 @@ public class ScreenFactory {
     }
 
     public IScreen newGameScreen(int startingWave) {
+        this.music.load(Music.GAME_LOOP);
+        this.music.play();
         Controller controller = new ControllerImpl(input, camera);
         Model gameModel = createGameModel(controller, startingWave);
         return new Screen(

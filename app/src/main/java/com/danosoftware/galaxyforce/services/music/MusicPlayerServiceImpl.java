@@ -23,9 +23,12 @@ public class MusicPlayerServiceImpl implements MusicPlayerService, MediaPlayer.O
     // is music player enabled?
     private boolean musicEnabled;
 
+    private Music currentlyLoaded;
+
     public MusicPlayerServiceImpl(Context context, boolean musicEnabled) {
         this.musicEnabled = musicEnabled;
         this.musicFiles = new EnumMap<>(Music.class);
+        this.currentlyLoaded = null;
 
         // load map of music to files descriptors
         AssetManager assets = context.getAssets();
@@ -43,6 +46,11 @@ public class MusicPlayerServiceImpl implements MusicPlayerService, MediaPlayer.O
     @Override
     public void load(Music music) {
 
+        // no action if wanted music is already loaded
+        if (currentlyLoaded == music) {
+            return;
+        }
+
         // dispose old media player
         if (this.mediaPlayer != null) {
             dispose();
@@ -56,6 +64,7 @@ public class MusicPlayerServiceImpl implements MusicPlayerService, MediaPlayer.O
             mediaPlayer.setVolume(1f, 1f);
             mediaPlayer.prepare();
             isPrepared = true;
+            currentlyLoaded = music;
             mediaPlayer.setOnCompletionListener(this);
         } catch (Exception e) {
             throw new GalaxyForceException("Couldn't load music for '" + music.getFileName() + "'");
