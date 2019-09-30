@@ -21,12 +21,14 @@ android {
      * We do not include "release" signing configs as release builds are normally
      * built from Android Studio, where key details must be supplied manually.
      */
-    signingConfigs {
-        debug {
-            storeFile file("$KEYSTORE_FILE")
-            storePassword "$KEYSTORE_PASSWORD"
-            keyAlias = "$KEY_ALIAS"
-            keyPassword "$KEY_PASSWORD"
+    if(project.hasProperty("KEYSTORE_FILE")) {
+        signingConfigs {
+            debug {
+                storeFile file("$KEYSTORE_FILE")
+                storePassword "$KEYSTORE_PASSWORD"
+                keyAlias = "$KEY_ALIAS"
+                keyPassword "$KEY_PASSWORD"
+            }
         }
     }
 
