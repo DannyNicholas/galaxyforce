@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLSurfaceView.Renderer;
 import android.os.Bundle;
@@ -17,7 +18,11 @@ import com.danosoftware.galaxyforce.billing.BillingServiceImpl;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.view.GLGraphics;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.Task;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -26,6 +31,8 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_AL
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_BLUE;
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_GREEN;
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_RED;
+import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SAVED_GAMES;
+import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SIGN_IN;
 
 public class MainActivity extends Activity {
 
@@ -54,6 +61,9 @@ public class MainActivity extends Activity {
     /* Billing Manager for In-App Billing Requests */
     private BillingManager mBillingManager;
 
+    /* Google Play Games Services */
+    private GooglePlayServices mPlayServices;
+
     /* runs when application initially starts */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +90,9 @@ public class MainActivity extends Activity {
         BillingManager.BillingUpdatesListener billingListener = (BillingManager.BillingUpdatesListener) billingService;
         this.mBillingManager = new BillingManager(this, billingListener);
 
+        // initialise play games services
+        this.mPlayServices = new GooglePlayServices(this);
+
         // create instance of game
         game = new GameImpl(this, glGraphics, glView, billingService);
     }
@@ -100,6 +113,9 @@ public class MainActivity extends Activity {
                 && mBillingManager.getBillingClientResponseCode() == BillingClient.BillingResponse.OK) {
             mBillingManager.queryPurchases();
         }
+
+        // sign-in to google play services
+        mPlayServices.signInSilently();
     }
 
     /* runs when application is paused */
@@ -178,6 +194,20 @@ public class MainActivity extends Activity {
                         // Hide the nav bar and status bar
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
+    // invoked with result on attempts to sign-in to Google Play Services.
+    // we will pass on result to our service to handle correctly.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            mPlayServices.handleSignInResult(task);
+        }
+        if (requestCode == RC_SAVED_GAMES) {
+            mPlayServices.handleSavedGame(data);
+        }
     }
 
     /**

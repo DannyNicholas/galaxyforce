@@ -13,6 +13,24 @@ apply plugin: 'com.android.application'
 android {
 
     /**
+     * This signings config allows the application to be signed when developing
+     * on a local device in debug mode. This is essential to test Google Play Services.
+     * To avoid adding these key details into our source code, the key-values can be
+     * stored within gradle.properties.
+     *
+     * We do not include "release" signing configs as release builds are normally
+     * built from Android Studio, where key details must be supplied manually.
+     */
+    signingConfigs {
+        debug {
+            storeFile file("$KEYSTORE_FILE")
+            storePassword "$KEYSTORE_PASSWORD"
+            keyAlias = "$KEY_ALIAS"
+            keyPassword "$KEY_PASSWORD"
+        }
+    }
+
+    /**
      * compileSdkVersion specifies the Android API level Gradle should use to
      * compile your app. This means your app can use the API features included in
      * this API level and lower.
@@ -107,6 +125,13 @@ android {
  */
 dependencies {
     implementation 'com.android.billingclient:billing:1.2'
+//    implementation 'com.google.android.gms:play-services-games:18.0.1'
+//    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation "com.google.android.gms:play-services-games:11.6.2"
+    implementation "com.google.android.gms:play-services-auth:11.6.2"
+//    implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
+//        exclude group: 'org.apache.httpcomponents'
+//    }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
