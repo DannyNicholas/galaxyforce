@@ -18,6 +18,9 @@ android {
      * To avoid adding these key details into our source code, the key-values can be
      * stored within gradle.properties.
      *
+     * These properties are optional to allow builds to succeed without them.
+     * This also allows builds to succeed on Circle CI.
+     *
      * We do not include "release" signing configs as release builds are normally
      * built from Android Studio, where key details must be supplied manually.
      */
