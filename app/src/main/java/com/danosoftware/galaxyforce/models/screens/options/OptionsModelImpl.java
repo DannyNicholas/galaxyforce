@@ -17,13 +17,15 @@ import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.googleplay.ConnectionState;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayObserver;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
-import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
@@ -35,17 +37,19 @@ import com.danosoftware.galaxyforce.text.TextPositionX;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionsModelImpl implements OptionsModel, ButtonModel {
+public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayObserver {
 
     /* logger tag */
     private static final String TAG = "OptionsModelImpl";
 
     private final Game game;
+    private final Controller controller;
 
     private final ConfigurationService configurationService;
     private final SoundPlayerService sounds;
     private final MusicPlayerService music;
     private final VibrationService vibrator;
+    private final GooglePlayServices playService;
 
     // references to stars
     private final StarField starField;
@@ -58,6 +62,9 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
     // reference to all text objects in model
     private final List<Text> allText;
 
+    private boolean reBuildAssets;
+    private ConnectionState connectionState;
+
     public OptionsModelImpl(
             Game game,
             Controller controller,
@@ -65,22 +72,53 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
             SoundPlayerService sounds,
             MusicPlayerService music,
             VibrationService vibrator,
+            GooglePlayServices playService,
             StarFieldTemplate starFieldTemplate) {
         this.game = game;
+        this.controller = controller;
         this.configurationService = configurationService;
         this.sounds = sounds;
         this.music = music;
         this.vibrator = vibrator;
+        this.playService = playService;
         this.allSprites = new ArrayList<>();
         this.allText = new ArrayList<>();
         this.starField = new StarField(starFieldTemplate, StarAnimationType.MENU);
-        buildAssets(controller);
+        this.reBuildAssets = false;
+        this.connectionState = playService.connectedState();
+
+        // build screen assets
+        buildAssets();
+
+        // register for connection changes from the google play service
+        playService.registerConnectionObserver(this);
     }
 
-    private void buildAssets(Controller controller) {
+    private void buildAssets() {
+
+        // clear any current touch controllers prior to adding buttons
+        controller.clearTouchControllers();
+
+        // clear current sprites prior to rebuilding
+        allSprites.clear();
+        allText.clear();
 
         allSprites.addAll(starField.getSprites());
-        allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
+//        allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
+
+        allText.add(Text.newTextRelativePositionX(
+                "GOOGLE PLAY",
+                TextPositionX.CENTRE,
+                175 + (4 * 170)));
+
+//        ConnectionState state = playService.connectedState();
+
+        if (connectionState == ConnectionState.DISCONNECTED) {
+            addNewMenuButton(controller, 4, "CONNECT", ButtonType.PLAY_CONNECT);
+        }
+        else if (connectionState == ConnectionState.CONNECTED) {
+            addNewMenuButton(controller, 4, "CONNECTED", ButtonType.PLAY_DISCONNECT);
+        }
 
         allText.add(Text.newTextRelativePositionX(
                 "SOUND EFFECTS",
@@ -171,14 +209,19 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
             game.screenReturn();
         }
 
+        if (reBuildAssets) {
+            buildAssets();
+            reBuildAssets = false;
+        }
+
         // move stars
         starField.animate(deltaTime);
     }
 
     @Override
     public void dispose() {
-        // no action
-
+        // unregister for connection changes from the google play service
+        playService.unregisterConnectionObserver(this);
     }
 
     private void addOptionsButton(
@@ -307,9 +350,27 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel {
                 Log.d(GameConstants.LOG_TAG, "Exit Options.");
                 goBack();
                 break;
+            case PLAY_CONNECT:
+                Log.d(GameConstants.LOG_TAG, "Connect to Google Play.");
+                playService.startSignInIntent();
+                break;
+            case PLAY_DISCONNECT:
+                Log.d(GameConstants.LOG_TAG, "Disconnect from Google Play.");
+                playService.signOut();
+                break;
             default:
                 Log.e(GameConstants.LOG_TAG, "Unsupported button: '" + buttonType + "'.");
                 break;
         }
+    }
+
+    /**
+     * Receives notifications whenever the Google Play service connection state change
+     * (e.g. following a successful login attempt)
+     */
+    @Override
+    public void onConnectionStateChange(ConnectionState connectionState) {
+        this.connectionState = connectionState;
+        this.reBuildAssets = true;
     }
 }

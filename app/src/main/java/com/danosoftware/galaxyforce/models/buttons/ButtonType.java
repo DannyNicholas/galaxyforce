@@ -6,5 +6,5 @@ package com.danosoftware.galaxyforce.models.buttons;
  */
 public enum ButtonType {
 
-    PLAY, OPTIONS, RESUME, UPGRADE, EXIT
+    PLAY, OPTIONS, RESUME, UPGRADE, EXIT, PLAY_CONNECT, PLAY_DISCONNECT
 }

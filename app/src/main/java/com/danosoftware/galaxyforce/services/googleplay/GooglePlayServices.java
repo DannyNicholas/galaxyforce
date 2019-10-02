@@ -18,6 +18,9 @@ import com.google.android.gms.games.SnapshotsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SIGN_IN;
 
 public class GooglePlayServices {
@@ -25,18 +28,20 @@ public class GooglePlayServices {
     /* logger tag */
     private static final String ACTIVITY_TAG = "GooglePlayServices";
 
-    private enum ConnectedState {
-        NO_ATTEMPT, CONNECTED, DISCONNECTED;
-    }
-
     private final Activity mActivity;
     private final GoogleSignInClient signInClient;
     private final GoogleSignInOptions signInOptions;
-    private ConnectedState connectedState;
+    private volatile ConnectionState connectedState;
+
+    /*
+     * set of observers to be notified following any connection state changes.
+     */
+    private final Set<GooglePlayObserver> observers;
 
     public GooglePlayServices(Activity activity) {
         Log.d(ACTIVITY_TAG, "Creating Billing client.");
         this.mActivity = activity;
+        this.observers = new HashSet<>();
         this.signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                         // Add the APPFOLDER scope for Snapshot support.
@@ -48,7 +53,72 @@ public class GooglePlayServices {
         this.signInClient = GoogleSignIn.getClient(
                 activity,
                 signInOptions);
-        this.connectedState = ConnectedState.NO_ATTEMPT;
+        this.connectedState = ConnectionState.NO_ATTEMPT;
+    }
+
+    /**
+     * Return current connection state.
+     */
+    public synchronized ConnectionState connectedState() {
+        return connectedState;
+    }
+
+    /*
+     * Register an observer for any connection state changes. Normally called
+     * when a observer is constructed.
+     *
+     * Synchronized to avoid adding observer in main thread while notifying
+     * observers in connection callback threads.
+     */
+    public synchronized void registerConnectionObserver(GooglePlayObserver observer) {
+        Log.d(ACTIVITY_TAG, "Register Google Service Observer '" + observer + "'.");
+        observers.add(observer);
+    }
+
+    /*
+     * Unregister an observer for any connection state refreshes. Normally called
+     * when a observer is disposed.
+     *
+     * Synchronized to avoid removing observer in main thread while notifying
+     * observers in connection callback threads.
+     */
+    public synchronized void unregisterConnectionObserver(GooglePlayObserver observer) {
+        Log.d(ACTIVITY_TAG, "Unregister Google Service Observer '" + observer + "'.");
+        observers.remove(observer);
+    }
+
+    /**
+     * Called following any successful connection to Google Play Services.
+     */
+    private void onConnected(GoogleSignInAccount signedInAccount) {
+        // set view for any google-play pop-ups
+        GamesClient gamesClient = Games.getGamesClient(mActivity, signedInAccount);
+        gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
+        connectedState = ConnectionState.CONNECTED; // TODO do we need this???
+        notifyObservers(ConnectionState.CONNECTED);
+        showSavedGamesUI();
+    }
+
+    /**
+     * Called following any disconnection from Google Play Services.
+     * This includes failed log-ins or successful log-outs.
+     */
+    private void onDisconnected() {
+        connectedState = ConnectionState.DISCONNECTED; // TODO do we need this???
+        notifyObservers(ConnectionState.DISCONNECTED);
+    }
+
+    /**
+     * Notify observers of the latest connection state.
+     *
+     * Synchronized to avoid sending notifications to observers while observers
+     * are being added/removed in another thread.
+     */
+    private synchronized void notifyObservers(ConnectionState connectionState) {
+        for (GooglePlayObserver observer : observers) {
+            Log.i(ACTIVITY_TAG, "Sending Connection State Change " + connectionState.name() + " to " + observer);
+            observer.onConnectionStateChange(connectionState);
+        }
     }
 
     /**
@@ -59,6 +129,7 @@ public class GooglePlayServices {
     public void signInSilently() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
         if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+            Log.i(ACTIVITY_TAG, "Already signed-in");
             // Already signed in.
             onConnected(account);
         } else {
@@ -73,15 +144,15 @@ public class GooglePlayServices {
                                 onConnected(signedInAccount);
                             } else {
                                 Log.w(ACTIVITY_TAG, "Failed signInSilently");
-                                connectedState = ConnectedState.DISCONNECTED;
-                                startSignInIntent();
+                                connectedState = ConnectionState.DISCONNECTED;
+//                                startSignInIntent();
                             }
                         }
                     });
         }
     }
 
-    private void startSignInIntent() {
+    public void startSignInIntent() {
         Log.d(ACTIVITY_TAG, "startSignInIntent()");
         Intent intent = signInClient.getSignInIntent();
 
@@ -149,7 +220,7 @@ public class GooglePlayServices {
             onConnected(account);
         } catch (ApiException e) {
             Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
-            connectedState = ConnectedState.DISCONNECTED;
+            connectedState = ConnectionState.DISCONNECTED;
 //            signInSilently();
         }
     }
@@ -161,16 +232,9 @@ public class GooglePlayServices {
                     public void onComplete(@NonNull Task<Void> task) {
                         boolean successful = task.isSuccessful();
                         Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
+                        onDisconnected();
                     }
                 });
-    }
-
-    private void onConnected(GoogleSignInAccount signedInAccount) {
-        // set view for any google-play pop-ups
-        GamesClient gamesClient = Games.getGamesClient(mActivity, signedInAccount);
-        gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
-        connectedState = ConnectedState.CONNECTED;
-        showSavedGamesUI();
     }
 
     private void showSavedGamesUI() {

@@ -19,6 +19,7 @@ import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.screen.factories.ScreenFactory;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.music.Music;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerServiceImpl;
@@ -65,7 +66,8 @@ public class GameImpl implements Game {
             Context context,
             GLGraphics glGraphics,
             GLSurfaceView glView,
-            BillingService billingService) {
+            BillingService billingService,
+            GooglePlayServices playService) {
 
         this.returningScreens = new ArrayDeque<>();
 
@@ -98,6 +100,7 @@ public class GameImpl implements Game {
                 sounds,
                 music,
                 vibrator,
+                playService,
                 savedGame,
                 context.getAssets(),
                 this,

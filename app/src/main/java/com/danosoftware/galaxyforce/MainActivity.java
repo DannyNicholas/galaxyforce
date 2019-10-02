@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         this.mPlayServices = new GooglePlayServices(this);
 
         // create instance of game
-        game = new GameImpl(this, glGraphics, glView, billingService);
+        game = new GameImpl(this, glGraphics, glView, billingService, mPlayServices);
     }
 
     /* runs after onCreate or resuming after being in background */
