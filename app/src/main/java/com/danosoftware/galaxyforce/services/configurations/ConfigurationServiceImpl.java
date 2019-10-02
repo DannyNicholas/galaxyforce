@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.services.configurations;
 
+import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
@@ -15,11 +16,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private final static String SOUND_KEY = "sound.option";
     private final static String MUSIC_KEY = "music.option";
     private final static String VIBRATION_KEY = "vibration.option";
+    private final static String GOOGLE_PLAY_KEY = "google.play.option";
 
     // default values if configuration option not already persisted
     private final static String DEFAULT_SOUND_OPTION = OptionSound.ON.name();
     private final static String DEFAULT_MUSIC_OPTION = OptionMusic.ON.name();
     private final static String DEFAULT_VIBRATION_OPTION = OptionVibration.ON.name();
+    private final static String DEFAULT_GOOGLE_PLAY_OPTION = OptionGooglePlay.ON.name();
 
     // shared preferences service
     private final IPreferences<String> preferences;
@@ -28,6 +31,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private OptionSound soundOption;
     private OptionMusic musicOption;
     private OptionVibration vibrationOption;
+    private OptionGooglePlay googlePlayOption;
 
     // private constructor
     public ConfigurationServiceImpl(IPreferences<String> preferences) {
@@ -44,6 +48,10 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         // retrieve chosen vibration option
         String vibrationString = preferences.getPreference(VIBRATION_KEY, DEFAULT_VIBRATION_OPTION);
         this.vibrationOption = OptionVibration.valueOf(vibrationString);
+
+        // retrieve chosen google play option
+        String googlePlayString = preferences.getPreference(GOOGLE_PLAY_KEY, DEFAULT_GOOGLE_PLAY_OPTION);
+        this.googlePlayOption = OptionGooglePlay.valueOf(googlePlayString);
     }
 
     /*
@@ -88,6 +96,19 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         this.vibrationOption = vibrationOption;
     }
 
+    /*
+     * GOOGLE PLAY OPTION
+     */
+
+    @Override
+    public OptionGooglePlay getGooglePlayOption() {
+        return googlePlayOption;
+    }
+
+    @Override
+    public void setGooglePlayOption(OptionGooglePlay googlePlayOption) {
+        this.googlePlayOption = googlePlayOption;
+    }
 
     /*
      * PERSIST CONFIGURATION
@@ -99,6 +120,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         keyValueMap.put(SOUND_KEY, soundOption.name());
         keyValueMap.put(MUSIC_KEY, musicOption.name());
         keyValueMap.put(VIBRATION_KEY, vibrationOption.name());
+        keyValueMap.put(GOOGLE_PLAY_KEY, googlePlayOption.name());
 
         // store configurations to shared preferences to persist in future
         preferences.storePreference(keyValueMap);

@@ -18,7 +18,11 @@ import com.danosoftware.galaxyforce.billing.BillingServiceImpl;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationServiceImpl;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
+import com.danosoftware.galaxyforce.services.preferences.IPreferences;
+import com.danosoftware.galaxyforce.services.preferences.PreferencesString;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -90,11 +94,16 @@ public class MainActivity extends Activity {
         BillingManager.BillingUpdatesListener billingListener = (BillingManager.BillingUpdatesListener) billingService;
         this.mBillingManager = new BillingManager(this, billingListener);
 
+        // set-up configuration service that uses shared preferences
+        // for persisting configuration
+        IPreferences<String> configPreferences = new PreferencesString(this);
+        ConfigurationService configurationService = new ConfigurationServiceImpl(configPreferences);
+
         // initialise play games services
-        this.mPlayServices = new GooglePlayServices(this);
+        this.mPlayServices = new GooglePlayServices(this, configurationService);
 
         // create instance of game
-        game = new GameImpl(this, glGraphics, glView, billingService, mPlayServices);
+        game = new GameImpl(this, glGraphics, glView, billingService, mPlayServices, configurationService);
     }
 
     /* runs after onCreate or resuming after being in background */

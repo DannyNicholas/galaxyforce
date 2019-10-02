@@ -13,10 +13,12 @@ import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.ModelState;
 import com.danosoftware.galaxyforce.options.Option;
+import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.googleplay.ConnectionRequest;
 import com.danosoftware.galaxyforce.services.googleplay.ConnectionState;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayObserver;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
@@ -63,6 +65,8 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
     private final List<Text> allText;
 
     private boolean reBuildAssets;
+
+    // current state of google play service connection
     private ConnectionState connectionState;
 
     public OptionsModelImpl(
@@ -103,41 +107,31 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
         allSprites.clear();
         allText.clear();
 
+        // add stars
         allSprites.addAll(starField.getSprites());
-//        allSprites.add(new SplashSprite(GameConstants.SCREEN_MID_X, 817, MenuSpriteIdentifier.GALAXY_FORCE));
 
-        allText.add(Text.newTextRelativePositionX(
-                "GOOGLE PLAY",
-                TextPositionX.CENTRE,
-                175 + (4 * 170)));
-
-//        ConnectionState state = playService.connectedState();
-
-        if (connectionState == ConnectionState.DISCONNECTED) {
-            addNewMenuButton(controller, 4, "CONNECT", ButtonType.PLAY_CONNECT);
-        }
-        else if (connectionState == ConnectionState.CONNECTED) {
-            addNewMenuButton(controller, 4, "CONNECTED", ButtonType.PLAY_DISCONNECT);
-        }
+        /**
+         * add buttons
+         */
 
         allText.add(Text.newTextRelativePositionX(
                 "SOUND EFFECTS",
                 TextPositionX.CENTRE,
-                175 + (3 * 170)));
+                175 + (4 * 170)));
 
         ToggleButtonGroup soundToggleGroup = new ToggleOption(
                 this,
                 configurationService.getSoundOption());
         addOptionsButton(
                 controller,
-                3,
+                4,
                 0,
                 OptionSound.ON,
                 soundToggleGroup,
                 90);
         addOptionsButton(
                 controller,
-                3,
+                4,
                 1,
                 OptionSound.OFF,
                 soundToggleGroup,
@@ -146,21 +140,21 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
         allText.add(Text.newTextRelativePositionX(
                 "MUSIC",
                 TextPositionX.CENTRE,
-                175 + (2 * 170)));
+                175 + (3 * 170)));
 
         ToggleButtonGroup musicToggleGroup = new ToggleOption(
                 this,
                 configurationService.getMusicOption());
         addOptionsButton(
                 controller,
-                2,
+                3,
                 0,
                 OptionMusic.ON,
                 musicToggleGroup,
                 90);
         addOptionsButton(
                 controller,
-                2,
+                3,
                 1,
                 OptionMusic.OFF,
                 musicToggleGroup,
@@ -169,25 +163,53 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
         allText.add(Text.newTextRelativePositionX(
                 "VIBRATION",
                 TextPositionX.CENTRE,
-                175 + (1 * 170)));
+                175 + (2 * 170)));
 
         ToggleButtonGroup vibrationToggleGroup = new ToggleOption(
                 this,
                 configurationService.getVibrationOption());
         addOptionsButton(
                 controller,
-                1,
+                2,
                 0,
                 OptionVibration.ON,
                 vibrationToggleGroup,
                 90);
         addOptionsButton(
                 controller,
-                1,
+                2,
                 1,
                 OptionVibration.OFF,
                 vibrationToggleGroup,
                 90);
+
+        // Google Play options are different to other options.
+        // They do not reflect the state of the persisted options.
+        // Instead they show the current Google Play signed-in state.
+        if (connectionState == ConnectionState.CONNECTED || connectionState == ConnectionState.DISCONNECTED) {
+            allText.add(Text.newTextRelativePositionX(
+                    "GOOGLE PLAY",
+                    TextPositionX.CENTRE,
+                    175 + (1 * 170)));
+
+            ToggleButtonGroup googlePlayToggleGroup = new ToggleOption(
+                    this,
+                    (connectionState == ConnectionState.CONNECTED) ? OptionGooglePlay.ON : OptionGooglePlay.OFF);
+            addOptionsButton(
+                    controller,
+                    1,
+                    0,
+                    OptionGooglePlay.ON,
+                    googlePlayToggleGroup,
+                    90);
+            addOptionsButton(
+                    controller,
+                    1,
+                    1,
+                    OptionGooglePlay.OFF,
+                    googlePlayToggleGroup,
+                    90);
+        }
 
         addNewMenuButton(controller, 0, "BACK", ButtonType.EXIT);
     }
@@ -323,6 +345,29 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
             // vibrate (if enabled) to prove vibrator is on
             vibrator.vibrate(VibrateTime.MEDIUM);
         }
+
+        if (optionSelected instanceof OptionGooglePlay) {
+            OptionGooglePlay googlePlayType = (OptionGooglePlay) optionSelected;
+            Log.d(TAG, "Google Play Option Selected: " + googlePlayType.getText());
+
+            switch(googlePlayType) {
+                case ON:
+                    if (connectionState != ConnectionState.CONNECTED) {
+                        Log.d(GameConstants.LOG_TAG, "Attempting to connect to Google Play.");
+                        playService.startSignInIntent();
+                    }
+                    break;
+                case OFF:
+                    if (connectionState != ConnectionState.DISCONNECTED) {
+                        Log.d(GameConstants.LOG_TAG, "Attempting to disconnect from Google Play.");
+                        playService.signOut();
+                    }
+                    break;
+                default:
+                    Log.e(GameConstants.LOG_TAG, "Unsupported Google Play Option: '" + googlePlayType.name() + "'.");
+                    break;
+            }
+        }
     }
 
     @Override
@@ -350,14 +395,6 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
                 Log.d(GameConstants.LOG_TAG, "Exit Options.");
                 goBack();
                 break;
-            case PLAY_CONNECT:
-                Log.d(GameConstants.LOG_TAG, "Connect to Google Play.");
-                playService.startSignInIntent();
-                break;
-            case PLAY_DISCONNECT:
-                Log.d(GameConstants.LOG_TAG, "Disconnect from Google Play.");
-                playService.signOut();
-                break;
             default:
                 Log.e(GameConstants.LOG_TAG, "Unsupported button: '" + buttonType + "'.");
                 break;
@@ -369,8 +406,19 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
      * (e.g. following a successful login attempt)
      */
     @Override
-    public void onConnectionStateChange(ConnectionState connectionState) {
+    public void onConnectionStateChange(
+            ConnectionRequest request,
+            ConnectionState connectionState) {
         this.connectionState = connectionState;
         this.reBuildAssets = true;
+
+        // Remember if user has chosen to sign-in or sign-out (and this was successful).
+        // This is used to decide whether to sign them in automatically (silently) next time.
+        if (request == ConnectionRequest.LOG_OUT && connectionState == ConnectionState.DISCONNECTED) {
+            configurationService.setGooglePlayOption(OptionGooglePlay.OFF);
+        }
+        if (request == ConnectionRequest.LOG_IN && connectionState == ConnectionState.CONNECTED) {
+            configurationService.setGooglePlayOption(OptionGooglePlay.ON);
+        }
     }
 }

@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.danosoftware.galaxyforce.options.OptionGooglePlay;
+import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -29,6 +31,7 @@ public class GooglePlayServices {
     private static final String ACTIVITY_TAG = "GooglePlayServices";
 
     private final Activity mActivity;
+    private final ConfigurationService configurationService;
     private final GoogleSignInClient signInClient;
     private final GoogleSignInOptions signInOptions;
     private volatile ConnectionState connectedState;
@@ -38,9 +41,12 @@ public class GooglePlayServices {
      */
     private final Set<GooglePlayObserver> observers;
 
-    public GooglePlayServices(Activity activity) {
+    public GooglePlayServices(
+            final Activity activity,
+            final ConfigurationService configurationService) {
         Log.d(ACTIVITY_TAG, "Creating Billing client.");
         this.mActivity = activity;
+        this.configurationService = configurationService;
         this.observers = new HashSet<>();
         this.signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
@@ -90,12 +96,14 @@ public class GooglePlayServices {
     /**
      * Called following any successful connection to Google Play Services.
      */
-    private void onConnected(GoogleSignInAccount signedInAccount) {
+    private void onConnected(
+            GoogleSignInAccount signedInAccount,
+            ConnectionRequest connectionRequest) {
         // set view for any google-play pop-ups
         GamesClient gamesClient = Games.getGamesClient(mActivity, signedInAccount);
         gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
         connectedState = ConnectionState.CONNECTED; // TODO do we need this???
-        notifyObservers(ConnectionState.CONNECTED);
+        notifyObservers(connectionRequest, ConnectionState.CONNECTED);
         showSavedGamesUI();
     }
 
@@ -103,9 +111,9 @@ public class GooglePlayServices {
      * Called following any disconnection from Google Play Services.
      * This includes failed log-ins or successful log-outs.
      */
-    private void onDisconnected() {
+    private void onDisconnected(ConnectionRequest connectionRequest) {
         connectedState = ConnectionState.DISCONNECTED; // TODO do we need this???
-        notifyObservers(ConnectionState.DISCONNECTED);
+        notifyObservers(connectionRequest, ConnectionState.DISCONNECTED);
     }
 
     /**
@@ -114,10 +122,12 @@ public class GooglePlayServices {
      * Synchronized to avoid sending notifications to observers while observers
      * are being added/removed in another thread.
      */
-    private synchronized void notifyObservers(ConnectionState connectionState) {
+    private synchronized void notifyObservers(
+            ConnectionRequest connectionRequest,
+            ConnectionState connectionState) {
         for (GooglePlayObserver observer : observers) {
             Log.i(ACTIVITY_TAG, "Sending Connection State Change " + connectionState.name() + " to " + observer);
-            observer.onConnectionStateChange(connectionState);
+            observer.onConnectionStateChange(connectionRequest, connectionState);
         }
     }
 
@@ -127,11 +137,18 @@ public class GooglePlayServices {
      * do not try again.
      */
     public void signInSilently() {
+
+        if (configurationService.getGooglePlayOption() == OptionGooglePlay.OFF) {
+            Log.i(ACTIVITY_TAG, "User has previously chosen to sign-out. We will not attempt to sign-in silently.");
+            onDisconnected(ConnectionRequest.LOG_IN);
+            return;
+        }
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
             Log.i(ACTIVITY_TAG, "Already signed-in");
             // Already signed in.
-            onConnected(account);
+            onConnected(account, ConnectionRequest.LOG_IN);
         } else {
             // Not signed-in. Try the silent sign-in first.
             signInClient.silentSignIn().addOnCompleteListener(mActivity,
@@ -141,10 +158,11 @@ public class GooglePlayServices {
                             if (task.isSuccessful()) {
                                 Log.i(ACTIVITY_TAG, "Success signInSilently");
                                 GoogleSignInAccount signedInAccount = task.getResult();
-                                onConnected(signedInAccount);
+                                onConnected(signedInAccount, ConnectionRequest.LOG_IN);
                             } else {
                                 Log.w(ACTIVITY_TAG, "Failed signInSilently");
-                                connectedState = ConnectionState.DISCONNECTED;
+                                onDisconnected(ConnectionRequest.LOG_IN);
+//                                connectedState = ConnectionState.DISCONNECTED;
 //                                startSignInIntent();
                             }
                         }
@@ -153,6 +171,14 @@ public class GooglePlayServices {
     }
 
     public void startSignInIntent() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+            Log.i(ACTIVITY_TAG, "Already signed-in");
+            // Already signed in.
+            onConnected(account, ConnectionRequest.LOG_IN);
+            return;
+        }
+
         Log.d(ACTIVITY_TAG, "startSignInIntent()");
         Intent intent = signInClient.getSignInIntent();
 
@@ -217,10 +243,11 @@ public class GooglePlayServices {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.i(ACTIVITY_TAG, "signInResult:success");
-            onConnected(account);
+            onConnected(account, ConnectionRequest.LOG_IN);
         } catch (ApiException e) {
             Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
-            connectedState = ConnectionState.DISCONNECTED;
+            onDisconnected(ConnectionRequest.LOG_IN);
+//            connectedState = ConnectionState.DISCONNECTED;
 //            signInSilently();
         }
     }
@@ -232,7 +259,7 @@ public class GooglePlayServices {
                     public void onComplete(@NonNull Task<Void> task) {
                         boolean successful = task.isSuccessful();
                         Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
-                        onDisconnected();
+                        onDisconnected(ConnectionRequest.LOG_OUT);
                     }
                 });
     }

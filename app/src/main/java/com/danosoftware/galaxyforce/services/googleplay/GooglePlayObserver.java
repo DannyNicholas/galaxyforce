@@ -6,7 +6,10 @@ public interface GooglePlayObserver {
      * google play service has changed (possibly following a login or logout
      * request).
      *
+     * @param request - request that triggered change
      * @param state - latest state of google play connection
      */
-    void onConnectionStateChange(ConnectionState state);
+    void onConnectionStateChange(
+            ConnectionRequest request,
+            ConnectionState state);
 }
