@@ -7,6 +7,9 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
     // main logo
     GALAXY_FORCE("logo"),
 
+    // google play icon
+    GOOGLE_PLAY("googlePlay"),
+
     // menu buttons
     MAIN_MENU("blueButtonUp"),
     MAIN_MENU_PRESSED("blueButtonDown"),

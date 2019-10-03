@@ -28,6 +28,7 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
+import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarAnimationType;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarField;
 import com.danosoftware.galaxyforce.sprites.game.starfield.StarFieldTemplate;
@@ -187,9 +188,26 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
         // They do not reflect the state of the persisted options.
         // Instead they show the current Google Play signed-in state.
         if (connectionState == ConnectionState.CONNECTED || connectionState == ConnectionState.DISCONNECTED) {
-            allText.add(Text.newTextRelativePositionX(
-                    "GOOGLE PLAY",
-                    TextPositionX.CENTRE,
+
+            // we will place google play icon alongside text.
+            // compute the positions of each so combined icon/text is centred.
+            final String text = "GOOGLE PLAY";
+            final MenuSpriteIdentifier icon = MenuSpriteIdentifier.GOOGLE_PLAY;
+            final int halfIconWidth = (icon.getProperties() != null ? icon.getProperties().getWidth() / 2 : 0);
+            final int fontWidth = 30;
+            final int buffer = 10;
+            final int iconTextLength = text.length() * fontWidth;
+            final int xPos = (GameConstants.GAME_WIDTH / 2) + halfIconWidth + buffer;
+            final int iconXPos = xPos - (iconTextLength / 2) - halfIconWidth - buffer;
+
+            allSprites.add(
+                    new SplashSprite(
+                            iconXPos,
+                            175 + (1 * 170),
+                            icon));
+            allText.add(Text.newTextAbsolutePosition(
+                    text,
+                    xPos,
                     175 + (1 * 170)));
 
             ToggleButtonGroup googlePlayToggleGroup = new ToggleOption(
@@ -350,7 +368,7 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
             OptionGooglePlay googlePlayType = (OptionGooglePlay) optionSelected;
             Log.d(TAG, "Google Play Option Selected: " + googlePlayType.getText());
 
-            switch(googlePlayType) {
+            switch (googlePlayType) {
                 case ON:
                     if (connectionState != ConnectionState.CONNECTED) {
                         Log.d(GameConstants.LOG_TAG, "Attempting to connect to Google Play.");
