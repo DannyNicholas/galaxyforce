@@ -213,9 +213,6 @@ public class MainActivity extends Activity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             mPlayServices.handleSignInResult(task);
         }
-//        if (requestCode == RC_SAVED_GAMES) {
-//            mPlayServices.handleSavedGame(data);
-//        }
     }
 
     /**

@@ -8,7 +8,6 @@ public class GameConstants {
 
     // Request code used to invoke Google Play sign-in user interactions.
     public static final int RC_SIGN_IN = 9001;
-    public static final int RC_SAVED_GAMES = 9009;
 
     // Saved Game name
     public static final String SAVED_GAME_FILENAME = "SavedGame";

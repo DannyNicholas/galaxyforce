@@ -8,9 +8,6 @@ public enum ConnectionState {
     // no request made yet
     NO_ATTEMPT,
 
-    // request in progress - waiting for response
-    PENDING,
-
     // successfully connected to Google Play Service
     CONNECTED,
 

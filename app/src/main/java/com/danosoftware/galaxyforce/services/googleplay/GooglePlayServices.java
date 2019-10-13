@@ -39,6 +39,10 @@ import java.util.Set;
 import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SIGN_IN;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SAVED_GAME_FILENAME;
 
+/**
+ * Services responsible for connecting to Google Play Services and
+ * managing Saved Games.
+ */
 public class GooglePlayServices {
 
     /* logger tag */
@@ -65,7 +69,6 @@ public class GooglePlayServices {
     public GooglePlayServices(
             final Activity activity,
             final ConfigurationService configurationService) {
-        Log.d(ACTIVITY_TAG, "Creating Billing client.");
         this.mActivity = activity;
         this.configurationService = configurationService;
         this.connectionObservers = new HashSet<>();
@@ -141,10 +144,11 @@ public class GooglePlayServices {
     private void onConnected(
             GoogleSignInAccount signedInAccount,
             ConnectionRequest connectionRequest) {
+
         // set view for any google-play pop-ups
         GamesClient gamesClient = Games.getGamesClient(mActivity, signedInAccount);
         gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
-        connectedState = ConnectionState.CONNECTED; // TODO do we need this???
+        connectedState = ConnectionState.CONNECTED;
         notifyConnectionObservers(connectionRequest, ConnectionState.CONNECTED);
 
         // load the latest saved game once connected
@@ -201,6 +205,100 @@ public class GooglePlayServices {
         }
     }
 
+    /**
+     * Attempt to sign-in without interrupting the user.
+     * If previous attempts have resulted in us being disconected,
+     * do not try again.
+     */
+    public void signInSilently() {
+
+        if (configurationService.getGooglePlayOption() == OptionGooglePlay.OFF) {
+            Log.i(ACTIVITY_TAG, "User has previously chosen to sign-out. We will not attempt to sign-in silently.");
+            onDisconnected(ConnectionRequest.LOG_IN);
+            return;
+        }
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+            Log.i(ACTIVITY_TAG, "Already signed-in");
+            // Already signed in.
+            onConnected(account, ConnectionRequest.LOG_IN);
+        } else {
+            // Not signed-in. Try the silent sign-in first.
+            signInClient.silentSignIn().addOnCompleteListener(mActivity,
+                    new OnCompleteListener<GoogleSignInAccount>() {
+                        @Override
+                        public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                            if (task.isSuccessful()) {
+                                Log.i(ACTIVITY_TAG, "Success signInSilently");
+                                GoogleSignInAccount signedInAccount = task.getResult();
+                                onConnected(signedInAccount, ConnectionRequest.LOG_IN);
+                            } else {
+                                Log.w(ACTIVITY_TAG, "Failed signInSilently");
+                                onDisconnected(ConnectionRequest.LOG_IN);
+                            }
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Initiate a manual sign-in to Google PLay Services
+     */
+    public void startSignInIntent() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
+            Log.i(ACTIVITY_TAG, "Already signed-in");
+            // Already signed in.
+            onConnected(account, ConnectionRequest.LOG_IN);
+            return;
+        }
+
+        Log.d(ACTIVITY_TAG, "startSignInIntent()");
+        Intent intent = signInClient.getSignInIntent();
+
+        // invoke manual sign-on using our activity.
+        // on-completion, this will call onActivityResult() within our activity.
+        // this will in-turn pass the result back to our handleSignInResult()
+        mActivity.startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    /**
+     * Handles the response following a sign-in attempt.
+     *
+     * @param completedTask
+     */
+    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.i(ACTIVITY_TAG, "signInResult:success");
+            onConnected(account, ConnectionRequest.LOG_IN);
+        } catch (ApiException e) {
+            Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
+            onDisconnected(ConnectionRequest.LOG_IN);
+        }
+    }
+
+    /**
+     * Disconnect from Google Play Services
+     */
+    public void signOut() {
+        signInClient.signOut().addOnCompleteListener(mActivity,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        boolean successful = task.isSuccessful();
+                        Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
+                        onDisconnected(ConnectionRequest.LOG_OUT);
+                    }
+                });
+    }
+
+    /**
+     * Save game progress.
+     *
+     * @param savedGame
+     */
     public void saveGame(final GooglePlaySavedGame savedGame) {
 
         if (connectedState != ConnectionState.CONNECTED
@@ -237,92 +335,15 @@ public class GooglePlayServices {
         });
     }
 
+
     /**
-     * Attempt to sign-in without interupting the user.
-     * If previous attempts have resulted in us being disconected,
-     * do not try again.
+     * Load the latest snapshot and resolve any conflicts (if any).
      */
-    public void signInSilently() {
-
-        if (configurationService.getGooglePlayOption() == OptionGooglePlay.OFF) {
-            Log.i(ACTIVITY_TAG, "User has previously chosen to sign-out. We will not attempt to sign-in silently.");
-            onDisconnected(ConnectionRequest.LOG_IN);
-            return;
-        }
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-            Log.i(ACTIVITY_TAG, "Already signed-in");
-            // Already signed in.
-            onConnected(account, ConnectionRequest.LOG_IN);
-        } else {
-            // Not signed-in. Try the silent sign-in first.
-            signInClient.silentSignIn().addOnCompleteListener(mActivity,
-                    new OnCompleteListener<GoogleSignInAccount>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                            if (task.isSuccessful()) {
-                                Log.i(ACTIVITY_TAG, "Success signInSilently");
-                                GoogleSignInAccount signedInAccount = task.getResult();
-                                onConnected(signedInAccount, ConnectionRequest.LOG_IN);
-                            } else {
-                                Log.w(ACTIVITY_TAG, "Failed signInSilently");
-                                onDisconnected(ConnectionRequest.LOG_IN);
-                            }
-                        }
-                    });
-        }
-    }
-
-    public void startSignInIntent() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-            Log.i(ACTIVITY_TAG, "Already signed-in");
-            // Already signed in.
-            onConnected(account, ConnectionRequest.LOG_IN);
-            return;
-        }
-
-        Log.d(ACTIVITY_TAG, "startSignInIntent()");
-        Intent intent = signInClient.getSignInIntent();
-
-        // invoke manual sign-on using our activity.
-        // on-completion, this will call onActivityResult() within our activity.
-        // this will in-turn pass the result back to our handleSignInResult()
-        mActivity.startActivityForResult(intent, RC_SIGN_IN);
-    }
-
-    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.i(ACTIVITY_TAG, "signInResult:success");
-            onConnected(account, ConnectionRequest.LOG_IN);
-        } catch (ApiException e) {
-            Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
-            onDisconnected(ConnectionRequest.LOG_IN);
-        }
-    }
-
-    public void signOut() {
-        signInClient.signOut().addOnCompleteListener(mActivity,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        boolean successful = task.isSuccessful();
-                        Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
-                        onDisconnected(ConnectionRequest.LOG_OUT);
-                    }
-                });
-    }
-
     private Task<Snapshot> loadSnapshot() {
 
         // Get the SnapshotsClient from the signed in account.
         SnapshotsClient snapshotsClient =
                 Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
-
-        // In the case of a conflict, the most recently modified version of this snapshot will be used.
-//        int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
 
         // Open the saved game using its name.
         return snapshotsClient.open(SAVED_GAME_FILENAME, true)
@@ -345,6 +366,10 @@ public class GooglePlayServices {
                         });
     }
 
+    /**
+     * Recursive function that resolves conflicts until snapshot is no longer in conflict.
+     * Will eventually give-up if snapshot is still in conflict after a supplied number of re-tries.
+     */
     private Task<Snapshot> processSnapshotAndResolveConflicts(
             final SnapshotsClient.DataOrConflict<Snapshot> result,
             final int retryCount) {
@@ -356,10 +381,7 @@ public class GooglePlayServices {
             return source.getTask();
         }
 
-        // There was a conflict.  Try resolving it by selecting the newest of the conflicting snapshots.
-        // This is the same as using RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED as a conflict resolution
-        // policy, but we are implementing it as an example of a manual resolution.
-        // One option is to present a UI to the user to choose which snapshot to resolve.
+        // There was a conflict - we need to resolve it.
         SnapshotsClient.SnapshotConflict conflict = result.getConflict();
 
         Snapshot snapshot = conflict.getSnapshot();
@@ -400,6 +422,9 @@ public class GooglePlayServices {
     }
 
 
+    /**
+     * Returns a task to write the save game snapshot with a suitable description.
+     */
     private Task<SnapshotMetadata> writeSnapshot(
             Snapshot snapshot,
             byte[] data,
@@ -422,7 +447,6 @@ public class GooglePlayServices {
 
         // Create the change operation
         SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
-                .setProgressValue(waveUnlocked) // highest wave reached used for conflict resolution
                 .setDescription(description)
                 .build();
 
@@ -433,6 +457,9 @@ public class GooglePlayServices {
         return snapshotsClient.commitAndClose(snapshot, metadataChange);
     }
 
+    /**
+     * Extract the save game details from the supplied snapshot.
+     */
     private GooglePlaySavedGame extractSavedGame(final Snapshot snapshot) {
         try {
             byte[] snapshotContents = snapshot.getSnapshotContents().readFully();
