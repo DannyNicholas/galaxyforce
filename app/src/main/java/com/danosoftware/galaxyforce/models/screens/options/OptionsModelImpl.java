@@ -20,7 +20,7 @@ import com.danosoftware.galaxyforce.options.OptionVibration;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.googleplay.ConnectionRequest;
 import com.danosoftware.galaxyforce.services.googleplay.ConnectionState;
-import com.danosoftware.galaxyforce.services.googleplay.GooglePlayObserver;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayConnectionObserver;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.music.MusicPlayerService;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
@@ -40,7 +40,7 @@ import com.danosoftware.galaxyforce.text.TextPositionX;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayObserver {
+public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayConnectionObserver {
 
     /* logger tag */
     private static final String TAG = "OptionsModelImpl";
@@ -196,9 +196,9 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayOb
             final int halfIconWidth = (icon.getProperties() != null ? icon.getProperties().getWidth() / 2 : 0);
             final int fontWidth = 30;
             final int buffer = 10;
-            final int iconTextLength = text.length() * fontWidth;
+            final int textLength = text.length() * fontWidth;
             final int xPos = (GameConstants.GAME_WIDTH / 2) + halfIconWidth + buffer;
-            final int iconXPos = xPos - (iconTextLength / 2) - halfIconWidth - buffer;
+            final int iconXPos = xPos - (textLength / 2) - halfIconWidth - buffer;
 
             allSprites.add(
                     new SplashSprite(

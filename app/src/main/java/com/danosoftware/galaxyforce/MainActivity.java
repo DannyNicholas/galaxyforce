@@ -35,7 +35,6 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_AL
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_BLUE;
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_GREEN;
 import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_RED;
-import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SAVED_GAMES;
 import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SIGN_IN;
 
 public class MainActivity extends Activity {
@@ -214,9 +213,9 @@ public class MainActivity extends Activity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             mPlayServices.handleSignInResult(task);
         }
-        if (requestCode == RC_SAVED_GAMES) {
-            mPlayServices.handleSavedGame(data);
-        }
+//        if (requestCode == RC_SAVED_GAMES) {
+//            mPlayServices.handleSavedGame(data);
+//        }
     }
 
     /**

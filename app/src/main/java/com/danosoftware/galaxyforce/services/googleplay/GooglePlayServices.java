@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.services.googleplay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
 
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,18 +20,28 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.SnapshotsClient;
+import com.google.android.gms.games.snapshot.Snapshot;
+import com.google.android.gms.games.snapshot.SnapshotMetadata;
+import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.RC_SIGN_IN;
+import static com.danosoftware.galaxyforce.constants.GameConstants.SAVED_GAME_FILENAME;
 
 public class GooglePlayServices {
 
     /* logger tag */
     private static final String ACTIVITY_TAG = "GooglePlayServices";
+
+    private static final int MAX_SNAPSHOT_RESOLVE_RETRIES = 10;
 
     private final Activity mActivity;
     private final ConfigurationService configurationService;
@@ -39,7 +52,12 @@ public class GooglePlayServices {
     /*
      * set of observers to be notified following any connection state changes.
      */
-    private final Set<GooglePlayObserver> observers;
+    private final Set<GooglePlayConnectionObserver> connectionObservers;
+
+    /*
+     * set of observers to be notified following any saved game loads.
+     */
+    private final Set<GooglePlaySavedGameObserver> savedGameObservers;
 
     public GooglePlayServices(
             final Activity activity,
@@ -47,7 +65,8 @@ public class GooglePlayServices {
         Log.d(ACTIVITY_TAG, "Creating Billing client.");
         this.mActivity = activity;
         this.configurationService = configurationService;
-        this.observers = new HashSet<>();
+        this.connectionObservers = new HashSet<>();
+        this.savedGameObservers = new HashSet<>();
         this.signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                         // Add the APPFOLDER scope for Snapshot support.
@@ -74,11 +93,11 @@ public class GooglePlayServices {
      * when a observer is constructed.
      *
      * Synchronized to avoid adding observer in main thread while notifying
-     * observers in connection callback threads.
+     * connectionObservers in connection callback threads.
      */
-    public synchronized void registerConnectionObserver(GooglePlayObserver observer) {
+    public synchronized void registerConnectionObserver(GooglePlayConnectionObserver observer) {
         Log.d(ACTIVITY_TAG, "Register Google Service Observer '" + observer + "'.");
-        observers.add(observer);
+        connectionObservers.add(observer);
     }
 
     /*
@@ -86,11 +105,35 @@ public class GooglePlayServices {
      * when a observer is disposed.
      *
      * Synchronized to avoid removing observer in main thread while notifying
+     * connectionObservers in connection callback threads.
+     */
+    public synchronized void unregisterConnectionObserver(GooglePlayConnectionObserver observer) {
+        Log.d(ACTIVITY_TAG, "Unregister Google Service Observer '" + observer + "'.");
+        connectionObservers.remove(observer);
+    }
+
+    /*
+     * Register an observer for any saved game loads. Normally called
+     * when a observer is constructed.
+     *
+     * Synchronized to avoid adding observer in main thread while notifying
      * observers in connection callback threads.
      */
-    public synchronized void unregisterConnectionObserver(GooglePlayObserver observer) {
-        Log.d(ACTIVITY_TAG, "Unregister Google Service Observer '" + observer + "'.");
-        observers.remove(observer);
+    public synchronized void registerSavedGameObserver(GooglePlaySavedGameObserver observer) {
+        Log.d(ACTIVITY_TAG, "Register Google Saved Game Observer '" + observer + "'.");
+        savedGameObservers.add(observer);
+    }
+
+    /*
+     * Unregister an observer for any saved game loads. Normally called
+     * when a observer is disposed.
+     *
+     * Synchronized to avoid removing observer in main thread while notifying
+     * observers in connection callback threads.
+     */
+    public synchronized void unregisterSavedGameObserver(GooglePlaySavedGameObserver observer) {
+        Log.d(ACTIVITY_TAG, "Unregister Google Saved Game Observer '" + observer + "'.");
+        savedGameObservers.remove(observer);
     }
 
     /**
@@ -103,8 +146,23 @@ public class GooglePlayServices {
         GamesClient gamesClient = Games.getGamesClient(mActivity, signedInAccount);
         gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
         connectedState = ConnectionState.CONNECTED; // TODO do we need this???
-        notifyObservers(connectionRequest, ConnectionState.CONNECTED);
-        showSavedGamesUI();
+        notifyConnectionObservers(connectionRequest, ConnectionState.CONNECTED);
+
+        // load the latest saved game once connected
+        Task<Snapshot> snapshot = loadSnapshot();
+        snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<Snapshot> task) {
+                final Snapshot snapshot = task.getResult();
+                final GooglePlaySavedGame savedGame = extractSavedGame(snapshot);
+                if (savedGame != null) {
+                    notifySavedGameObservers(savedGame);
+                    Log.i(ACTIVITY_TAG, "Loaded Saved Game");
+                    new AlertDialog.Builder(mActivity).setMessage("Loaded " + savedGame.getHighestWaveReached())
+                            .setNeutralButton(android.R.string.ok, null).show();
+                }
+            }
+        });
     }
 
     /**
@@ -113,22 +171,71 @@ public class GooglePlayServices {
      */
     private void onDisconnected(ConnectionRequest connectionRequest) {
         connectedState = ConnectionState.DISCONNECTED; // TODO do we need this???
-        notifyObservers(connectionRequest, ConnectionState.DISCONNECTED);
+        notifyConnectionObservers(connectionRequest, ConnectionState.DISCONNECTED);
     }
 
     /**
      * Notify observers of the latest connection state.
-     *
+     * <p>
      * Synchronized to avoid sending notifications to observers while observers
      * are being added/removed in another thread.
      */
-    private synchronized void notifyObservers(
+    private synchronized void notifyConnectionObservers(
             ConnectionRequest connectionRequest,
             ConnectionState connectionState) {
-        for (GooglePlayObserver observer : observers) {
+        for (GooglePlayConnectionObserver observer : connectionObservers) {
             Log.i(ACTIVITY_TAG, "Sending Connection State Change " + connectionState.name() + " to " + observer);
             observer.onConnectionStateChange(connectionRequest, connectionState);
         }
+    }
+
+    /**
+     * Notify observers of the saved game loads.
+     * <p>
+     * Synchronized to avoid sending notifications to observers while observers
+     * are being added/removed in another thread.
+     */
+    private synchronized void notifySavedGameObservers(
+            GooglePlaySavedGame savedGame) {
+        for (GooglePlaySavedGameObserver observer : savedGameObservers) {
+            observer.onSavedGameLoaded(savedGame);
+        }
+    }
+
+    public void saveGame(final GooglePlaySavedGame savedGame) {
+
+        if (connectedState != ConnectionState.CONNECTED
+                || GoogleSignIn.getLastSignedInAccount(mActivity) == null) {
+            // we are no longer signed-in. Saving game is impossible.
+            Log.d(ACTIVITY_TAG, "Save Game Unavailable. User is not signed-in.");
+            return;
+        }
+
+        Task<Snapshot> snapshot = loadSnapshot();
+        snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<Snapshot> task) {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    byte[] array = mapper.writeValueAsBytes(savedGame);
+                    writeSnapshot(task.getResult(), array)
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                                }
+                            })
+                            .addOnCompleteListener(new OnCompleteListener<SnapshotMetadata>() {
+                                @Override
+                                public void onComplete(@NonNull Task<SnapshotMetadata> task) {
+                                    Log.i(ACTIVITY_TAG, "Game Saved");
+                                }
+                            });
+                } catch (JsonProcessingException e) {
+                    Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                }
+            }
+        });
     }
 
     /**
@@ -162,8 +269,6 @@ public class GooglePlayServices {
                             } else {
                                 Log.w(ACTIVITY_TAG, "Failed signInSilently");
                                 onDisconnected(ConnectionRequest.LOG_IN);
-//                                connectedState = ConnectionState.DISCONNECTED;
-//                                startSignInIntent();
                             }
                         }
                     });
@@ -189,57 +294,6 @@ public class GooglePlayServices {
     }
 
     public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-
-//        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//
-//        result.
-//        if (result.isSuccess()) {
-//            // The signed in account is stored in the result.
-//            GoogleSignInAccount signedInAccount = result.getSignInAccount();
-////                GamesClient gamesClient = Games.getGamesClient(this, signedInAccount);
-////                gamesClient.setViewForPopups(this.findViewById(android.R.id.content));
-//        } else {
-//            String message = result.getStatus().getStatusMessage();
-//            if (message == null || message.isEmpty()) {
-//                message = "Unknown";
-//            }
-////                new AlertDialog.Builder(this).setMessage(message)
-////                        .setNeutralButton(android.R.string.ok, null).show();
-//        }
-
-
-
-
-//        if(completedTask.isSuccessful()) {
-//            GoogleSignInAccount signedInAccount = completedTask.getResult();
-//            Log.i(ACTIVITY_TAG, "signInResult:success");
-//            onConnected(signedInAccount);
-//        } else {
-//            String message = completedTask.getStatus().getStatusMessage();
-//            if (message == null || message.isEmpty()) {
-//                message = "Unknown";
-//            }
-//                new AlertDialog.Builder(mActivity).setMessage(message)
-//                        .setNeutralButton(android.R.string.ok, null).show();
-//        }
-//            Exception exception = completedTask.getException();
-//            if (exception instanceof ApiException) {
-//                final ApiException apiException = (ApiException) exception;
-//                final int exceptionCode = apiException.getStatusCode();
-//                final String exceptionCause = CommonStatusCodes.getStatusCodeString(exceptionCode);
-//                Log.w(ACTIVITY_TAG, String.format(
-//                        "signInResult:failure code={}. reason={}",
-//                        exceptionCode,
-//                        exceptionCause));
-//                connectedState = ConnectedState.DISCONNECTED;
-//            } else {
-//                Log.w(ACTIVITY_TAG, String.format(
-//                        "signInResult:failure reason={}",
-//                        exception.getMessage()));
-//            }
-//        }
-
-
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.i(ACTIVITY_TAG, "signInResult:success");
@@ -247,8 +301,6 @@ public class GooglePlayServices {
         } catch (ApiException e) {
             Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
             onDisconnected(ConnectionRequest.LOG_IN);
-//            connectedState = ConnectionState.DISCONNECTED;
-//            signInSilently();
         }
     }
 
@@ -264,53 +316,125 @@ public class GooglePlayServices {
                 });
     }
 
-    private void showSavedGamesUI() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        SnapshotsClient snapshotsClient =
-                Games.getSnapshotsClient(mActivity, account);
-//        int maxNumberOfSavedGamesToShow = 5;
-//
-//        Task<Intent> intentTask = snapshotsClient.getSelectSnapshotIntent(
-//                "See My Saves", true, true, maxNumberOfSavedGamesToShow);
-//
-//        intentTask.addOnSuccessListener(new OnSuccessListener<Intent>() {
-//            @Override
-//            public void onSuccess(Intent intent) {
-//                mActivity.startActivityForResult(intent, RC_SAVED_GAMES);
-//            }
-//        });
+    private Task<Snapshot> loadSnapshot() {
 
-//        intentTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                throw new RuntimeException("error", e);
-//            }
-//        });
+        // Get the SnapshotsClient from the signed in account.
+        SnapshotsClient snapshotsClient =
+                Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
+
+        // In the case of a conflict, the most recently modified version of this snapshot will be used.
+//        int conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED;
+
+        // Open the saved game using its name.
+        return snapshotsClient.open(SAVED_GAME_FILENAME, true)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(ACTIVITY_TAG, "Error while opening Snapshot.", e);
+                    }
+                })
+                .continueWithTask(
+                        new Continuation<
+                                SnapshotsClient.DataOrConflict<Snapshot>,
+                                Task<Snapshot>>() {
+                            @Override
+                            public Task<Snapshot> then(
+                                    @NonNull Task<SnapshotsClient.DataOrConflict<Snapshot>> task)
+                                    throws Exception {
+                                return processSnapshotAndResolveConflicts(task.getResult(), MAX_SNAPSHOT_RESOLVE_RETRIES);
+                            }
+                        });
     }
 
-    /**
-     * This callback will be triggered after you call startActivityForResult from the
-     * showSavedGamesUI method.
-     */
-    public void handleSavedGame(Intent intent) {
-        String mCurrentSaveName = "snapshotTemp";
-        if (intent != null) {
-//            if (intent.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_METADATA)) {
-//                // Load a snapshot.
-//                SnapshotMetadata snapshotMetadata =
-//                        intent.getParcelableExtra(SnapshotsClient.EXTRA_SNAPSHOT_METADATA);
-//                mCurrentSaveName = snapshotMetadata.getUniqueName();
+    private Task<Snapshot> processSnapshotAndResolveConflicts(
+            final SnapshotsClient.DataOrConflict<Snapshot> result,
+            final int retryCount) {
+
+        if (!result.isConflict()) {
+            // There was no conflict, so return the result of the source.
+            TaskCompletionSource<Snapshot> source = new TaskCompletionSource<>();
+            source.setResult(result.getData());
+            return source.getTask();
+        }
+
+        // There was a conflict.  Try resolving it by selecting the newest of the conflicting snapshots.
+        // This is the same as using RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED as a conflict resolution
+        // policy, but we are implementing it as an example of a manual resolution.
+        // One option is to present a UI to the user to choose which snapshot to resolve.
+        SnapshotsClient.SnapshotConflict conflict = result.getConflict();
+
+        Snapshot snapshot = conflict.getSnapshot();
+        Snapshot conflictSnapshot = conflict.getConflictingSnapshot();
+        GooglePlaySavedGame savedGame = extractSavedGame(snapshot);
+        GooglePlaySavedGame conflictSavedGame = extractSavedGame(conflictSnapshot);
+
+        // Resolve between conflicts by selecting the snapshots with the most progress.
+        Snapshot resolvedSnapshot = snapshot;
+        if (savedGame != null
+                && conflictSavedGame != null
+                && conflictSavedGame.getHighestWaveReached() > savedGame.getHighestWaveReached()) {
+            resolvedSnapshot = conflictSnapshot;
+        } else if (savedGame == null
+                && conflictSavedGame != null) {
+            resolvedSnapshot = conflictSnapshot;
+        }
+
+        return Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity))
+                .resolveConflict(conflict.getConflictId(), resolvedSnapshot)
+                .continueWithTask(
+                        new Continuation<
+                                SnapshotsClient.DataOrConflict<Snapshot>,
+                                Task<Snapshot>>() {
+                            @Override
+                            public Task<Snapshot> then(
+                                    @NonNull Task<SnapshotsClient.DataOrConflict<Snapshot>> task)
+                                    throws Exception {
+                                // Resolving the conflict may cause another conflict,
+                                // so recurse and try another resolution.
+                                if (retryCount < MAX_SNAPSHOT_RESOLVE_RETRIES) {
+                                    return processSnapshotAndResolveConflicts(task.getResult(), retryCount + 1);
+                                } else {
+                                    throw new Exception("Could not resolve snapshot conflicts");
+                                }
+                            }
+                        });
+    }
+
+
+    private Task<SnapshotMetadata> writeSnapshot(Snapshot snapshot,
+                                                 byte[] data) {
 //
-//                // Load the game data from the Snapshot
-//                // ...
-//            } else if (intent.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_NEW)) {
-//                // Create a new snapshot named with a unique string
-//                String unique = new BigInteger(281, new Random()).toString(13);
-//                mCurrentSaveName = "snapshotTemp-" + unique;
-//
-//                // Create the new snapshot
-//                // ...
-//            }
+//        private Task<SnapshotMetadata> writeSnapshot(Snapshot snapshot,
+//        byte[] data, Bitmap coverImage, String desc) {
+
+        // Set the data payload for the snapshot
+        snapshot.getSnapshotContents().writeBytes(data);
+
+        // Create the change operation
+        SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
+//                .setCoverImage(coverImage)
+//                .setDescription(desc)
+                .build();
+
+        SnapshotsClient snapshotsClient =
+                Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
+
+        // Commit the operation
+        return snapshotsClient.commitAndClose(snapshot, metadataChange);
+    }
+
+    private GooglePlaySavedGame extractSavedGame(final Snapshot snapshot) {
+        try {
+            byte[] snapshotContents = snapshot.getSnapshotContents().readFully();
+            ObjectMapper mapper = new ObjectMapper();
+            if (snapshotContents.length == 0) {
+                return null;
+            } else {
+                return mapper.readValue(snapshotContents, GooglePlaySavedGame.class);
+            }
+        } catch (IOException e) {
+            Log.e(ACTIVITY_TAG, "Failed to read Saved Game", e);
+            return null;
         }
     }
 }

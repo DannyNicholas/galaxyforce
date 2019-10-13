@@ -85,7 +85,7 @@ public class GameImpl implements Game {
         this.music.play();
 
         IPreferences<Integer> savedGamePreferences = new PreferencesInteger(context);
-        SavedGame savedGame = new SavedGameImpl(savedGamePreferences);
+        SavedGame savedGame = new SavedGameImpl(savedGamePreferences, playService);
 
         this.screenFactory = new ScreenFactory(
                 glGraphics,

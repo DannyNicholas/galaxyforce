@@ -1,13 +1,18 @@
 package com.danosoftware.galaxyforce.services.savedgame;
 
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlaySavedGame;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlaySavedGameObserver;
+import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.preferences.IPreferences;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
-public class SavedGameImpl implements SavedGame {
+public class SavedGameImpl implements SavedGame, GooglePlaySavedGameObserver {
 
     // key for shared preference persistence
     private final static String GAME_LEVEL_KEY = "game.level";
@@ -18,11 +23,23 @@ public class SavedGameImpl implements SavedGame {
     // reference to shared preferences
     private final IPreferences<Integer> preferences;
 
-    // current highest game level reached
-    private int gameLevel;
+    // reference to Google Play Services that can persist to the cloud
+    private final GooglePlayServices playService;
 
-    public SavedGameImpl(IPreferences<Integer> preferences) {
+    // current highest game level reached
+    private volatile int gameLevel;
+
+    /*
+     * set of observers to be notified following any highest level unlocked changes.
+     */
+    private final Set<HighestLevelChangeObserver> highestLevelChangeObservers;
+
+    public SavedGameImpl(
+            final IPreferences<Integer> preferences,
+            final GooglePlayServices playService) {
         this.preferences = preferences;
+        this.playService = playService;
+        this.highestLevelChangeObservers = new HashSet<>();
 
         // retrieve game level from preferences
         int retrievedLevel = preferences.getPreference(GAME_LEVEL_KEY, DEFAULT_GAME_LEVEL);
@@ -30,6 +47,25 @@ public class SavedGameImpl implements SavedGame {
             this.gameLevel = retrievedLevel;
         } else {
             this.gameLevel = DEFAULT_GAME_LEVEL;
+        }
+
+        // register for saved game loads from the google play service
+        playService.registerSavedGameObserver(this);
+    }
+
+    @Override
+    public synchronized void registerHighestLevelChangeObserver(HighestLevelChangeObserver observer) {
+        highestLevelChangeObservers.add(observer);
+    }
+
+    @Override
+    public void unregisterHighestLevelChangeObserver(HighestLevelChangeObserver observer) {
+        highestLevelChangeObservers.remove(observer);
+    }
+
+    private void notifyHighestLevelChangeObservers(int level) {
+        for (HighestLevelChangeObserver observer : highestLevelChangeObservers) {
+            observer.onHighestLevelUnlockedChange(level);
         }
     }
 
@@ -39,10 +75,38 @@ public class SavedGameImpl implements SavedGame {
     }
 
     @Override
-    public void saveGameLevel(final int gameLevel) {
+    public synchronized void saveGameLevel(final int gameLevel) {
         this.gameLevel = gameLevel;
 
         // persist game level
+        saveLocalDevice(gameLevel);
+
+        // persist game level to Google Play Services
+        saveGooglePlay(gameLevel);
+
+        notifyHighestLevelChangeObservers(gameLevel);
+    }
+
+    // called when Google Play Services have loaded a saved game from the cloud
+    @Override
+    public synchronized void onSavedGameLoaded(GooglePlaySavedGame savedGame) {
+
+        final int googlePlayGameLevel = savedGame.getHighestWaveReached();
+
+        // reset local device level if Google Play shows player has previously reached a higher level
+        if (googlePlayGameLevel > gameLevel) {
+            gameLevel = googlePlayGameLevel;
+            saveLocalDevice(gameLevel);
+            notifyHighestLevelChangeObservers(gameLevel);
+        }
+        // if player has already reached a higher level on this device then update
+        // Google Play saved game so other devices can also play this higher level
+        else if (gameLevel > googlePlayGameLevel) {
+            saveGooglePlay(gameLevel);
+        }
+    }
+
+    private void saveLocalDevice(final int gameLevel) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
@@ -51,5 +115,9 @@ public class SavedGameImpl implements SavedGame {
                 preferences.storePreference(keyValueMap);
             }
         });
+    }
+
+    private void saveGooglePlay(final int gameLevel) {
+        playService.saveGame(new GooglePlaySavedGame(gameLevel));
     }
 }

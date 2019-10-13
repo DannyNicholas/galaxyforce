@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.services.googleplay;
 
-public interface GooglePlayObserver {
+public interface GooglePlayConnectionObserver {
     /**
      * Notify a google play service observer that the connection state of the
      * google play service has changed (possibly following a login or logout

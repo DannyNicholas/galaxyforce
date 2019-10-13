@@ -10,6 +10,9 @@ public class GameConstants {
     public static final int RC_SIGN_IN = 9001;
     public static final int RC_SAVED_GAMES = 9009;
 
+    // Saved Game name
+    public static final String SAVED_GAME_FILENAME = "SavedGame";
+
     // maximum waves
     public final static int MAX_ZONES = 5;
     public final static int WAVES_PER_ZONE = 12;

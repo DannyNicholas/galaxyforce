@@ -64,10 +64,10 @@ android {
         targetSdkVersion 28
 
         // Defines the version number of your app.
-        versionCode 15
+        versionCode 16
 
         // Defines a user-friendly version name for your app.
-        versionName "0.15"
+        versionName "0.16"
     }
 
     /**
@@ -141,6 +141,12 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
     implementation 'androidx.annotation:annotation:1.1.0'
+
+    // line below stops build parcelable error but do we really need it?
+    // looks like games libraries bring it in
+    // https://stackoverflow.com/questions/57601897/android-studio-3-5-warning-the-rule-keep-public-class-extends-androidx-vers
+//    implementation "androidx.versionedparcelable:versionedparcelable:1.1.0"
+
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     testImplementation 'junit:junit:4.12'

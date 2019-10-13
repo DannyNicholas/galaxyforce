@@ -14,4 +14,16 @@ public interface SavedGame {
      * Persist game level reached.
      */
     void saveGameLevel(int gameLevel);
+
+    /**
+     * Register an observer for highest level unlocked changes
+     * @param observer
+     */
+    void registerHighestLevelChangeObserver(HighestLevelChangeObserver observer);
+
+    /**
+     * Unregister an observer for highest level unlocked changes
+     * @param observer
+     */
+    void unregisterHighestLevelChangeObserver(HighestLevelChangeObserver observer);
 }
