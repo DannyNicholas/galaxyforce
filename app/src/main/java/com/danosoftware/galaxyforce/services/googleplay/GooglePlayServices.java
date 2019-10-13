@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.danosoftware.galaxyforce.R;
+import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -402,18 +404,26 @@ public class GooglePlayServices {
             Snapshot snapshot,
             byte[] data,
             GooglePlaySavedGame savedGame) {
-//
-//        private Task<SnapshotMetadata> writeSnapshot(Snapshot snapshot,
-//        byte[] data, Bitmap coverImage, String desc) {
 
         // Set the data payload for the snapshot
         snapshot.getSnapshotContents().writeBytes(data);
 
+        final int waveUnlocked = savedGame.getHighestWaveReached();
+        final boolean finishedAllWaves = waveUnlocked > GameConstants.MAX_WAVES;
+
+        final String description = finishedAllWaves ?
+                String.format(
+                        "%s: Completed All Waves",
+                        mActivity.getString(R.string.app_name)) :
+                String.format(
+                        "%s: Unlocked Wave %d",
+                        mActivity.getString(R.string.app_name),
+                        waveUnlocked);
+
         // Create the change operation
         SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
-                .setProgressValue(savedGame.getHighestWaveReached()) // highest wave reached used for conflict resolution
-//                .setCoverImage(coverImage)
-//                .setDescription(desc)
+                .setProgressValue(waveUnlocked) // highest wave reached used for conflict resolution
+                .setDescription(description)
                 .build();
 
         SnapshotsClient snapshotsClient =
