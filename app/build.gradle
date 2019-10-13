@@ -64,10 +64,10 @@ android {
         targetSdkVersion 28
 
         // Defines the version number of your app.
-        versionCode 16
+        versionCode 17
 
         // Defines a user-friendly version name for your app.
-        versionName "0.16"
+        versionName "0.17"
     }
 
     /**
@@ -130,22 +130,20 @@ android {
  */
 dependencies {
     implementation 'com.android.billingclient:billing:1.2'
-//    implementation 'com.google.android.gms:play-services-games:18.0.1'
-//    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation "com.google.android.gms:play-services-games:11.6.2"
-    implementation "com.google.android.gms:play-services-auth:11.6.2"
-//    implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
-//        exclude group: 'org.apache.httpcomponents'
-//    }
+    implementation 'com.google.android.gms:play-services-games:18.0.1'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation('com.google.apis:google-api-services-drive:v3-rev173-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
     implementation 'androidx.annotation:annotation:1.1.0'
 
-    // line below stops build parcelable error but do we really need it?
-    // looks like games libraries bring it in
-    // https://stackoverflow.com/questions/57601897/android-studio-3-5-warning-the-rule-keep-public-class-extends-androidx-vers
-//    implementation "androidx.versionedparcelable:versionedparcelable:1.1.0"
+    // dependency below stops build parcelable error on release builds.
+    // play-services libraries bring in an earlier version (with a bug) of this library.
+    // see: https://stackoverflow.com/questions/57601897/android-studio-3-5-warning-the-rule-keep-public-class-extends-androidx-vers
+    implementation "androidx.versionedparcelable:versionedparcelable:1.1.0"
 
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'

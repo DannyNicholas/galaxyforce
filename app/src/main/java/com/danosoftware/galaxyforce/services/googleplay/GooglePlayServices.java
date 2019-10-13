@@ -16,7 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.drive.Drive;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.SnapshotsClient;
@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.api.services.drive.DriveScopes;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -69,11 +70,7 @@ public class GooglePlayServices {
         this.savedGameObservers = new HashSet<>();
         this.signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
-                        // Add the APPFOLDER scope for Snapshot support.
-                        .requestScopes(Drive.SCOPE_APPFOLDER)
-                        // below scopes are replace the above deprecated scope
-//                        .requestScopes(new Scope(DriveScopes.DRIVE_APPDATA))
-//                        .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                        .requestScopes(new Scope(DriveScopes.DRIVE_APPDATA))
                         .build();
         this.signInClient = GoogleSignIn.getClient(
                 activity,
@@ -218,7 +215,7 @@ public class GooglePlayServices {
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     byte[] array = mapper.writeValueAsBytes(savedGame);
-                    writeSnapshot(task.getResult(), array)
+                    writeSnapshot(task.getResult(), array, savedGame)
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
@@ -401,8 +398,10 @@ public class GooglePlayServices {
     }
 
 
-    private Task<SnapshotMetadata> writeSnapshot(Snapshot snapshot,
-                                                 byte[] data) {
+    private Task<SnapshotMetadata> writeSnapshot(
+            Snapshot snapshot,
+            byte[] data,
+            GooglePlaySavedGame savedGame) {
 //
 //        private Task<SnapshotMetadata> writeSnapshot(Snapshot snapshot,
 //        byte[] data, Bitmap coverImage, String desc) {
@@ -412,6 +411,7 @@ public class GooglePlayServices {
 
         // Create the change operation
         SnapshotMetadataChange metadataChange = new SnapshotMetadataChange.Builder()
+                .setProgressValue(savedGame.getHighestWaveReached()) // highest wave reached used for conflict resolution
 //                .setCoverImage(coverImage)
 //                .setDescription(desc)
                 .build();

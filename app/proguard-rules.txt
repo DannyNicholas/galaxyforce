@@ -11,3 +11,10 @@
 
 # don't obfuscate classes holding Jackson annotations
 -keep class com.danosoftware.galaxyforce.flightpath.dto.** { *; }
+-keep class com.danosoftware.galaxyforce.services.googleplay.GooglePlaySavedGame { *; }
+
+# Google Drive API depends on Guava 20.0
+# Proguard requires the following configuration to avoid warnings
+# see: https://stackoverflow.com/questions/9120338/proguard-configuration-for-guava-with-obfuscation-and-optimization
+-dontwarn   java.lang.ClassValue
+-keep class java.lang.ClassValue { *; }
