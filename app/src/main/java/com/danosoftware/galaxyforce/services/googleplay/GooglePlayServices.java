@@ -21,6 +21,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.GamesClient;
+import com.google.android.gms.games.GamesClientStatusCodes;
 import com.google.android.gms.games.SnapshotsClient;
 import com.google.android.gms.games.snapshot.Snapshot;
 import com.google.android.gms.games.snapshot.SnapshotMetadata;
@@ -156,13 +157,13 @@ public class GooglePlayServices {
         snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
             @Override
             public void onComplete(@NonNull Task<Snapshot> task) {
-                final Snapshot snapshot = task.getResult();
-                final GooglePlaySavedGame savedGame = extractSavedGame(snapshot);
-                if (savedGame != null) {
-                    notifySavedGameObservers(savedGame);
-                    Log.i(ACTIVITY_TAG, "Loaded Saved Game");
-                    new AlertDialog.Builder(mActivity).setMessage("Loaded " + savedGame.getHighestWaveReached())
-                            .setNeutralButton(android.R.string.ok, null).show();
+                if (task.isSuccessful()) {
+                    final Snapshot snapshot = task.getResult();
+                    final GooglePlaySavedGame savedGame = extractSavedGame(snapshot);
+                    if (savedGame != null) {
+                        notifySavedGameObservers(savedGame);
+                        Log.i(ACTIVITY_TAG, "Loaded Saved Game. Wave: " + savedGame.getHighestWaveReached());
+                    }
                 }
             }
         });
@@ -220,25 +221,28 @@ public class GooglePlayServices {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
         if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-            Log.i(ACTIVITY_TAG, "Already signed-in");
             // Already signed in.
-            onConnected(account, ConnectionRequest.LOG_IN);
+            // This can occur if user has just manually signed-in.
+            // After a manual sign-in, the app will resume which will trigger this silent sign-in.
+            Log.i(ACTIVITY_TAG, "Already signed-in");
+            return;
         } else {
             // Not signed-in. Try the silent sign-in first.
-            signInClient.silentSignIn().addOnCompleteListener(mActivity,
-                    new OnCompleteListener<GoogleSignInAccount>() {
-                        @Override
-                        public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                            if (task.isSuccessful()) {
-                                Log.i(ACTIVITY_TAG, "Success signInSilently");
-                                GoogleSignInAccount signedInAccount = task.getResult();
-                                onConnected(signedInAccount, ConnectionRequest.LOG_IN);
-                            } else {
-                                Log.w(ACTIVITY_TAG, "Failed signInSilently");
-                                onDisconnected(ConnectionRequest.LOG_IN);
+            signInClient.silentSignIn()
+                    .addOnCompleteListener(mActivity,
+                        new OnCompleteListener<GoogleSignInAccount>() {
+                            @Override
+                            public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
+                                if (task.isSuccessful()) {
+                                    Log.i(ACTIVITY_TAG, "Success signInSilently");
+                                    GoogleSignInAccount signedInAccount = task.getResult();
+                                    onConnected(signedInAccount, ConnectionRequest.LOG_IN);
+                                } else {
+                                    Log.w(ACTIVITY_TAG, "Failed signInSilently");
+                                    onDisconnected(ConnectionRequest.LOG_IN);
+                                }
                             }
-                        }
-                    });
+                        });
         }
     }
 
@@ -273,9 +277,14 @@ public class GooglePlayServices {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.i(ACTIVITY_TAG, "signInResult:success");
             onConnected(account, ConnectionRequest.LOG_IN);
-        } catch (ApiException e) {
-            Log.w(ACTIVITY_TAG, "signInResult:failed code=" + e.getStatusCode());
+        } catch (ApiException apiException) {
+            final String reason = extractApiFailure(apiException);
+            Log.w(ACTIVITY_TAG, "signInResult:failed=" + reason);
             onDisconnected(ConnectionRequest.LOG_IN);
+            new AlertDialog.Builder(mActivity)
+                    .setMessage("Sign-in failed. Please try again later.")
+                    .setNeutralButton(android.R.string.ok, null)
+                    .show();
         }
     }
 
@@ -312,24 +321,26 @@ public class GooglePlayServices {
         snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
             @Override
             public void onComplete(@NonNull Task<Snapshot> task) {
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    byte[] array = mapper.writeValueAsBytes(savedGame);
-                    writeSnapshot(task.getResult(), array, savedGame)
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
-                                }
-                            })
-                            .addOnCompleteListener(new OnCompleteListener<SnapshotMetadata>() {
-                                @Override
-                                public void onComplete(@NonNull Task<SnapshotMetadata> task) {
-                                    Log.i(ACTIVITY_TAG, "Game Saved");
-                                }
-                            });
-                } catch (JsonProcessingException e) {
-                    Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                if (task.isSuccessful()) {
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        byte[] array = mapper.writeValueAsBytes(savedGame);
+                        writeSnapshot(task.getResult(), array, savedGame)
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                                    }
+                                })
+                                .addOnCompleteListener(new OnCompleteListener<SnapshotMetadata>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<SnapshotMetadata> task) {
+                                        Log.i(ACTIVITY_TAG, "Game Saved");
+                                    }
+                                });
+                    } catch (JsonProcessingException e) {
+                        Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                    }
                 }
             }
         });
@@ -473,5 +484,19 @@ public class GooglePlayServices {
             Log.e(ACTIVITY_TAG, "Failed to read Saved Game", e);
             return null;
         }
+    }
+
+    /**
+     * Extract a reason for a ApiException
+     * This is not designed to be readable/understandable to a player
+     * and should only be used in logging/debugging.
+     */
+    private String extractApiFailure(ApiException apiException) {
+        final int code  = apiException.getStatusCode();
+        String message = GamesClientStatusCodes.getStatusCodeString(code);
+        if (message == null || message.isEmpty()) {
+            message = "Unknown Failure:" + code;
+        }
+        return message;
     }
 }
