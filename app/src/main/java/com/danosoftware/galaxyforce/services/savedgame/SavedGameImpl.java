@@ -1,7 +1,6 @@
 package com.danosoftware.galaxyforce.services.savedgame;
 
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlaySavedGame;
-import com.danosoftware.galaxyforce.services.googleplay.GooglePlaySavedGameObserver;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.preferences.IPreferences;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
-public class SavedGameImpl implements SavedGame, GooglePlaySavedGameObserver {
+public class SavedGameImpl implements SavedGame {
 
     // key for shared preference persistence
     private final static String GAME_LEVEL_KEY = "game.level";
@@ -50,7 +49,7 @@ public class SavedGameImpl implements SavedGame, GooglePlaySavedGameObserver {
         }
 
         // register for saved game loads from the google play service
-        playService.registerSavedGameObserver(this);
+        playService.registerSavedGameService(this);
     }
 
     @Override
@@ -87,23 +86,27 @@ public class SavedGameImpl implements SavedGame, GooglePlaySavedGameObserver {
         notifyHighestLevelChangeObservers(gameLevel);
     }
 
-    // called when Google Play Services have loaded a saved game from the cloud
+    // called when Google Play Services have loaded a saved game from the cloud.
+    // compute and return the highest level seen based on local device and cloud saved games.
+    // if the cloud's saved wave is higher than our current wave, then update our device
     @Override
-    public synchronized void onSavedGameLoaded(GooglePlaySavedGame savedGame) {
+    public synchronized GooglePlaySavedGame computeHighestWaveOnSavedGameLoaded(
+            GooglePlaySavedGame googleSavedGame) {
 
-        final int googlePlayGameLevel = savedGame.getHighestWaveReached();
+        final int googlePlayGameLevel = googleSavedGame.getHighestWaveReached();
 
         // reset local device level if Google Play shows player has previously reached a higher level
         if (googlePlayGameLevel > gameLevel) {
             gameLevel = googlePlayGameLevel;
             saveLocalDevice(gameLevel);
             notifyHighestLevelChangeObservers(gameLevel);
+            return googleSavedGame;
         }
-        // if player has already reached a higher level on this device then update
-        // Google Play saved game so other devices can also play this higher level
-        else if (gameLevel > googlePlayGameLevel) {
-            saveGooglePlay(gameLevel);
-        }
+
+        // otherwise player has already reached the cloud's saved wave or exceeded it on this device.
+        // so return this value back to Google Play service so other devices may also benefit
+        // from playing this higher level
+        return new GooglePlaySavedGame(gameLevel);
     }
 
     private void saveLocalDevice(final int gameLevel) {

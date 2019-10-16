@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 
 import com.danosoftware.galaxyforce.R;
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
+import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -29,8 +31,10 @@ import com.google.android.gms.games.snapshot.SnapshotMetadataChange;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
 import com.google.api.services.drive.DriveScopes;
 
 import java.io.IOException;
@@ -63,9 +67,9 @@ public class GooglePlayServices {
     private final Set<GooglePlayConnectionObserver> connectionObservers;
 
     /*
-     * set of observers to be notified following any saved game loads.
+     * saved game service to be notified following any saved game loads.
      */
-    private final Set<GooglePlaySavedGameObserver> savedGameObservers;
+    private volatile SavedGame savedGame;
 
     public GooglePlayServices(
             final Activity activity,
@@ -73,7 +77,6 @@ public class GooglePlayServices {
         this.mActivity = activity;
         this.configurationService = configurationService;
         this.connectionObservers = new HashSet<>();
-        this.savedGameObservers = new HashSet<>();
         this.signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                         .requestScopes(new Scope(DriveScopes.DRIVE_APPDATA))
@@ -116,27 +119,12 @@ public class GooglePlayServices {
     }
 
     /*
-     * Register an observer for any saved game loads. Normally called
-     * when a observer is constructed.
-     *
-     * Synchronized to avoid adding observer in main thread while notifying
-     * observers in connection callback threads.
+     * Register the save game service. This will be notified for any saved game loads.
+     * Normally called when save game is constructed.
      */
-    public synchronized void registerSavedGameObserver(GooglePlaySavedGameObserver observer) {
-        Log.d(ACTIVITY_TAG, "Register Google Saved Game Observer '" + observer + "'.");
-        savedGameObservers.add(observer);
-    }
-
-    /*
-     * Unregister an observer for any saved game loads. Normally called
-     * when a observer is disposed.
-     *
-     * Synchronized to avoid removing observer in main thread while notifying
-     * observers in connection callback threads.
-     */
-    public synchronized void unregisterSavedGameObserver(GooglePlaySavedGameObserver observer) {
-        Log.d(ACTIVITY_TAG, "Unregister Google Saved Game Observer '" + observer + "'.");
-        savedGameObservers.remove(observer);
+    public void registerSavedGameService(SavedGame saveGameSvc) {
+        Log.d(ACTIVITY_TAG, "Register Saved Game Service '" + saveGameSvc + "'.");
+        this.savedGame = saveGameSvc;
     }
 
     /**
@@ -151,22 +139,6 @@ public class GooglePlayServices {
         gamesClient.setViewForPopups(mActivity.findViewById(android.R.id.content));
         connectedState = ConnectionState.CONNECTED;
         notifyConnectionObservers(connectionRequest, ConnectionState.CONNECTED);
-
-        // load the latest saved game once connected
-        Task<Snapshot> snapshot = loadSnapshot();
-        snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<Snapshot> task) {
-                if (task.isSuccessful()) {
-                    final Snapshot snapshot = task.getResult();
-                    final GooglePlaySavedGame savedGame = extractSavedGame(snapshot);
-                    if (savedGame != null) {
-                        notifySavedGameObservers(savedGame);
-                        Log.i(ACTIVITY_TAG, "Loaded Saved Game. Wave: " + savedGame.getHighestWaveReached());
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -174,7 +146,7 @@ public class GooglePlayServices {
      * This includes failed log-ins or successful log-outs.
      */
     private void onDisconnected(ConnectionRequest connectionRequest) {
-        connectedState = ConnectionState.DISCONNECTED; // TODO do we need this???
+        connectedState = ConnectionState.DISCONNECTED;
         notifyConnectionObservers(connectionRequest, ConnectionState.DISCONNECTED);
     }
 
@@ -194,19 +166,6 @@ public class GooglePlayServices {
     }
 
     /**
-     * Notify observers of the saved game loads.
-     * <p>
-     * Synchronized to avoid sending notifications to observers while observers
-     * are being added/removed in another thread.
-     */
-    private synchronized void notifySavedGameObservers(
-            GooglePlaySavedGame savedGame) {
-        for (GooglePlaySavedGameObserver observer : savedGameObservers) {
-            observer.onSavedGameLoaded(savedGame);
-        }
-    }
-
-    /**
      * Attempt to sign-in without interrupting the user.
      * If previous attempts have resulted in us being disconected,
      * do not try again.
@@ -219,45 +178,16 @@ public class GooglePlayServices {
             return;
         }
 
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-            // Already signed in.
-            // This can occur if user has just manually signed-in.
-            // After a manual sign-in, the app will resume which will trigger this silent sign-in.
-            Log.i(ACTIVITY_TAG, "Already signed-in");
-            return;
-        } else {
-            // Not signed-in. Try the silent sign-in first.
-            signInClient.silentSignIn()
-                    .addOnCompleteListener(mActivity,
-                        new OnCompleteListener<GoogleSignInAccount>() {
-                            @Override
-                            public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                                if (task.isSuccessful()) {
-                                    Log.i(ACTIVITY_TAG, "Success signInSilently");
-                                    GoogleSignInAccount signedInAccount = task.getResult();
-                                    onConnected(signedInAccount, ConnectionRequest.LOG_IN);
-                                } else {
-                                    Log.w(ACTIVITY_TAG, "Failed signInSilently");
-                                    onDisconnected(ConnectionRequest.LOG_IN);
-                                }
-                            }
-                        });
-        }
+        // start async login and snapshot loading (using silent sign-in)
+        loginAndLoadSnapshotAsync(
+                silentSignInTask()
+        );
     }
 
     /**
      * Initiate a manual sign-in to Google PLay Services
      */
     public void startSignInIntent() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
-        if (account != null && GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-            Log.i(ACTIVITY_TAG, "Already signed-in");
-            // Already signed in.
-            onConnected(account, ConnectionRequest.LOG_IN);
-            return;
-        }
-
         Log.d(ACTIVITY_TAG, "startSignInIntent()");
         Intent intent = signInClient.getSignInIntent();
 
@@ -269,38 +199,51 @@ public class GooglePlayServices {
 
     /**
      * Handles the response following a sign-in attempt.
-     *
-     * @param completedTask
      */
-    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.i(ACTIVITY_TAG, "signInResult:success");
-            onConnected(account, ConnectionRequest.LOG_IN);
-        } catch (ApiException apiException) {
-            final String reason = extractApiFailure(apiException);
-            Log.w(ACTIVITY_TAG, "signInResult:failed=" + reason);
-            onDisconnected(ConnectionRequest.LOG_IN);
-            new AlertDialog.Builder(mActivity)
-                    .setMessage("Sign-in failed. Please try again later.")
-                    .setNeutralButton(android.R.string.ok, null)
-                    .show();
-        }
+    public void handleSignInResult(Task<GoogleSignInAccount> signInTask) {
+        signInTask
+                .addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
+                    @Override
+                    public void onSuccess(GoogleSignInAccount googleSignInAccount) {
+                        Log.i(ACTIVITY_TAG, "signInResult:success");
+                        onConnected(googleSignInAccount, ConnectionRequest.LOG_IN);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception ex) {
+                        final String reason = extractApiFailure(ex);
+                        Log.w(ACTIVITY_TAG, "signInResult:failed=" + reason);
+                        onDisconnected(ConnectionRequest.LOG_IN);
+                        new AlertDialog.Builder(mActivity)
+                                .setMessage("Sign-in failed. Please try again later.")
+                                .setNeutralButton(android.R.string.ok, null)
+                                .show();
+
+                    }
+                });
+
+        // start async login and snapshot loading (using supplied sign-in task)
+        loginAndLoadSnapshotAsync(
+                signInTask
+        );
     }
 
     /**
      * Disconnect from Google Play Services
      */
     public void signOut() {
-        signInClient.signOut().addOnCompleteListener(mActivity,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        boolean successful = task.isSuccessful();
-                        Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
-                        onDisconnected(ConnectionRequest.LOG_OUT);
-                    }
-                });
+        signInClient.signOut()
+                .addOnCompleteListener(
+                        mActivity,
+                        new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                boolean successful = task.isSuccessful();
+                                Log.d(ACTIVITY_TAG, "signOut(): " + (successful ? "success" : "failed"));
+                                onDisconnected(ConnectionRequest.LOG_OUT);
+                            }
+                        });
     }
 
     /**
@@ -310,54 +253,142 @@ public class GooglePlayServices {
      */
     public void saveGame(final GooglePlaySavedGame savedGame) {
 
-        if (connectedState != ConnectionState.CONNECTED
-                || GoogleSignIn.getLastSignedInAccount(mActivity) == null) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (connectedState != ConnectionState.CONNECTED || account == null) {
             // we are no longer signed-in. Saving game is impossible.
             Log.d(ACTIVITY_TAG, "Save Game Unavailable. User is not signed-in.");
             return;
         }
 
-        Task<Snapshot> snapshot = loadSnapshot();
-        snapshot.addOnCompleteListener(new OnCompleteListener<Snapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<Snapshot> task) {
-                if (task.isSuccessful()) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    try {
-                        byte[] array = mapper.writeValueAsBytes(savedGame);
-                        writeSnapshot(task.getResult(), array, savedGame)
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
-                                    }
-                                })
-                                .addOnCompleteListener(new OnCompleteListener<SnapshotMetadata>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<SnapshotMetadata> task) {
-                                        Log.i(ACTIVITY_TAG, "Game Saved");
-                                    }
-                                });
-                    } catch (JsonProcessingException e) {
-                        Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
-                    }
-                }
-            }
-        });
+        // start async save game
+        saveSnapshotAsync(account, savedGame);
     }
 
+    /**
+     * Asynchronously sign-in to Google Play Services.
+     * Then Asynchronously load latest snapshot and resolve conflicts.
+     * Then asynchronously overwrite snapshot with current game progress.
+     * <p>
+     * If current device's game progress is on a higher wave than the the wave
+     * stored in Google Play, then immediately overwrite the Google Play's snapshot
+     * so other devices can see this progress.
+     */
+    private void loginAndLoadSnapshotAsync(Task<GoogleSignInAccount> signInTask) {
+
+        // attempt to sign-in to Google Play
+        signInTask
+                // then attempt to load snapshot and resolve conflicts
+                .continueWithTask(new Continuation<GoogleSignInAccount, Task<Snapshot>>() {
+                    @Override
+                    public Task<Snapshot> then(@NonNull Task<GoogleSignInAccount> accountTask) throws Exception {
+                        return loadSnapshotAndResolveConflictsTask(accountTask.getResult());
+                    }
+                })
+                // then attempt to save snapshot if player has progressed beyond current saved snapshot
+                .continueWithTask(new Continuation<Snapshot, Task<SnapshotMetadata>>() {
+                    @Override
+                    public Task<SnapshotMetadata> then(@NonNull Task<Snapshot> snapshotTask) throws Exception {
+                        Snapshot snapshot = snapshotTask.getResult();
+                        GooglePlaySavedGame googleSavedGame = extractSavedGame(snapshot);
+                        Log.i(ACTIVITY_TAG, "Loaded wave " + googleSavedGame.getHighestWaveReached());
+
+                        // tell SavedGame service of latest saved game loaded and ask for highest wave reached.
+                        if (savedGame != null) {
+                            GooglePlaySavedGame deviceSavedGame = savedGame.computeHighestWaveOnSavedGameLoaded(googleSavedGame);
+
+                            // if player has already progressed beyond cloud's saved game on local device then update cloud save
+                            if (deviceSavedGame.getHighestWaveReached() > googleSavedGame.getHighestWaveReached()) {
+                                return writeSnapshotTask(snapshot, deviceSavedGame);
+                            }
+                        }
+                        // otherwise just return task for current snapshot without saving anything
+                        SnapshotsClient snapshotsClient =
+                                Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
+                        snapshotsClient.discardAndClose(snapshot);
+                        return Tasks.forResult(snapshot.getMetadata());
+                    }
+                })
+                // all requests successful
+                .addOnSuccessListener(new OnSuccessListener<SnapshotMetadata>() {
+                    @Override
+                    public void onSuccess(SnapshotMetadata snapshotMetadata) {
+                        Log.i(ACTIVITY_TAG, "Successful login and saved game load.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i(ACTIVITY_TAG, "Failed login and saved game load.", e);
+                    }
+                });
+    }
+
+    /**
+     * Asynchronously load latest snapshot and resolve conflicts.
+     * Then asynchronously overwrite snapshot with current game progress
+     * .
+     *
+     * @param account   - player's account
+     * @param savedGame - latest game progress to save
+     */
+    private void saveSnapshotAsync(
+            final GoogleSignInAccount account,
+            final GooglePlaySavedGame savedGame) {
+
+        loadSnapshotAndResolveConflictsTask(account)
+                .continueWithTask(new Continuation<Snapshot, Task<SnapshotMetadata>>() {
+                    @Override
+                    public Task<SnapshotMetadata> then(@NonNull Task<Snapshot> snapshotTask) throws Exception {
+                        return writeSnapshotTask(snapshotTask.getResult(), savedGame);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<SnapshotMetadata>() {
+                    @Override
+                    public void onSuccess(SnapshotMetadata snapshotMetadata) {
+                        int wave = savedGame != null ? savedGame.getHighestWaveReached() : 0;
+                        Log.i(ACTIVITY_TAG, "Game Saved: Wave " + wave);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(ACTIVITY_TAG, "Game Saved Failed", e);
+                    }
+                });
+    }
+
+    /**
+     * Return a task that will asynchronously attempt to sign-in to Google Play Services.
+     */
+    private Task<GoogleSignInAccount> silentSignInTask() {
+        return signInClient.silentSignIn()
+                .addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
+                    @Override
+                    public void onSuccess(GoogleSignInAccount googleSignInAccount) {
+                        Log.i(ACTIVITY_TAG, "Success signedIn");
+                        onConnected(googleSignInAccount, ConnectionRequest.LOG_IN);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(ACTIVITY_TAG, "Failed signIn", e);
+                        onDisconnected(ConnectionRequest.LOG_IN);
+                    }
+                });
+    }
 
     /**
      * Load the latest snapshot and resolve any conflicts (if any).
      */
-    private Task<Snapshot> loadSnapshot() {
+    private Task<Snapshot> loadSnapshotAndResolveConflictsTask(GoogleSignInAccount account) {
 
         // Get the SnapshotsClient from the signed in account.
         SnapshotsClient snapshotsClient =
-                Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
+                Games.getSnapshotsClient(mActivity, account);
 
         // Open the saved game using its name.
-        return snapshotsClient.open(SAVED_GAME_FILENAME, true)
+        return snapshotsClient
+                .open(SAVED_GAME_FILENAME, true)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
@@ -372,16 +403,23 @@ public class GooglePlayServices {
                             public Task<Snapshot> then(
                                     @NonNull Task<SnapshotsClient.DataOrConflict<Snapshot>> task)
                                     throws Exception {
-                                return processSnapshotAndResolveConflicts(task.getResult(), MAX_SNAPSHOT_RESOLVE_RETRIES);
+                                return processSnapshotAndResolveConflictsTask(
+                                        task.getResult(),
+                                        MAX_SNAPSHOT_RESOLVE_RETRIES);
                             }
-                        });
+                        }).addOnSuccessListener(new OnSuccessListener<Snapshot>() {
+                    @Override
+                    public void onSuccess(Snapshot snapshot) {
+                        Log.i(ACTIVITY_TAG, "Successfully opened Snapshot.");
+                    }
+                });
     }
 
     /**
      * Recursive function that resolves conflicts until snapshot is no longer in conflict.
      * Will eventually give-up if snapshot is still in conflict after a supplied number of re-tries.
      */
-    private Task<Snapshot> processSnapshotAndResolveConflicts(
+    private Task<Snapshot> processSnapshotAndResolveConflictsTask(
             final SnapshotsClient.DataOrConflict<Snapshot> result,
             final int retryCount) {
 
@@ -424,9 +462,9 @@ public class GooglePlayServices {
                                 // Resolving the conflict may cause another conflict,
                                 // so recurse and try another resolution.
                                 if (retryCount < MAX_SNAPSHOT_RESOLVE_RETRIES) {
-                                    return processSnapshotAndResolveConflicts(task.getResult(), retryCount + 1);
+                                    return processSnapshotAndResolveConflictsTask(task.getResult(), retryCount + 1);
                                 } else {
-                                    throw new Exception("Could not resolve snapshot conflicts");
+                                    throw new GalaxyForceException("Could not resolve snapshot conflicts");
                                 }
                             }
                         });
@@ -436,13 +474,14 @@ public class GooglePlayServices {
     /**
      * Returns a task to write the save game snapshot with a suitable description.
      */
-    private Task<SnapshotMetadata> writeSnapshot(
+    private Task<SnapshotMetadata> writeSnapshotTask(
             Snapshot snapshot,
-            byte[] data,
-            GooglePlaySavedGame savedGame) {
+            GooglePlaySavedGame savedGame) throws JsonProcessingException {
 
         // Set the data payload for the snapshot
-        snapshot.getSnapshotContents().writeBytes(data);
+        final ObjectMapper mapper = new ObjectMapper();
+        final byte[] gameData = mapper.writeValueAsBytes(savedGame);
+        snapshot.getSnapshotContents().writeBytes(gameData);
 
         final int waveUnlocked = savedGame.getHighestWaveReached();
         final boolean finishedAllWaves = waveUnlocked > GameConstants.MAX_WAVES;
@@ -465,7 +504,13 @@ public class GooglePlayServices {
                 Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
 
         // Commit the operation
-        return snapshotsClient.commitAndClose(snapshot, metadataChange);
+        return snapshotsClient.commitAndClose(snapshot, metadataChange)
+                .addOnSuccessListener(new OnSuccessListener<SnapshotMetadata>() {
+                    @Override
+                    public void onSuccess(SnapshotMetadata snapshotMetadata) {
+                        Log.i(ACTIVITY_TAG, "Gamed saved. Wave: " + waveUnlocked);
+                    }
+                });
     }
 
     /**
@@ -476,7 +521,7 @@ public class GooglePlayServices {
             byte[] snapshotContents = snapshot.getSnapshotContents().readFully();
             ObjectMapper mapper = new ObjectMapper();
             if (snapshotContents.length == 0) {
-                return null;
+                return new GooglePlaySavedGame(1);
             } else {
                 return mapper.readValue(snapshotContents, GooglePlaySavedGame.class);
             }
@@ -491,12 +536,16 @@ public class GooglePlayServices {
      * This is not designed to be readable/understandable to a player
      * and should only be used in logging/debugging.
      */
-    private String extractApiFailure(ApiException apiException) {
-        final int code  = apiException.getStatusCode();
-        String message = GamesClientStatusCodes.getStatusCodeString(code);
-        if (message == null || message.isEmpty()) {
-            message = "Unknown Failure:" + code;
+    private String extractApiFailure(Exception exception) {
+        if (exception instanceof ApiException) {
+            ApiException apiException = (ApiException) exception;
+            final int code = apiException.getStatusCode();
+            String message = GamesClientStatusCodes.getStatusCodeString(code);
+            if (message == null || message.isEmpty()) {
+                message = "Unknown Failure:" + code;
+            }
+            return message;
         }
-        return message;
+        return "Unknown Failure:" + exception.getMessage();
     }
 }
