@@ -58,7 +58,6 @@ public class GooglePlayServices {
     private final Activity mActivity;
     private final ConfigurationService configurationService;
     private final GoogleSignInClient signInClient;
-    private final GoogleSignInOptions signInOptions;
     private volatile ConnectionState connectedState;
 
     /*
@@ -77,7 +76,7 @@ public class GooglePlayServices {
         this.mActivity = activity;
         this.configurationService = configurationService;
         this.connectionObservers = new HashSet<>();
-        this.signInOptions =
+        final GoogleSignInOptions signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
                         .requestScopes(new Scope(DriveScopes.DRIVE_APPDATA))
                         .build();
@@ -248,8 +247,6 @@ public class GooglePlayServices {
 
     /**
      * Save game progress.
-     *
-     * @param savedGame
      */
     public void saveGame(final GooglePlaySavedGame savedGame) {
 
