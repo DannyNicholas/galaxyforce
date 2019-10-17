@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.danosoftware.galaxyforce.R;
-import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
@@ -323,7 +322,6 @@ public class GooglePlayServices {
     /**
      * Asynchronously load latest snapshot and resolve conflicts.
      * Then asynchronously overwrite snapshot with current game progress
-     * .
      *
      * @param account   - player's account
      * @param savedGame - latest game progress to save
@@ -402,7 +400,7 @@ public class GooglePlayServices {
                                     throws Exception {
                                 return processSnapshotAndResolveConflictsTask(
                                         task.getResult(),
-                                        MAX_SNAPSHOT_RESOLVE_RETRIES);
+                                        0);
                             }
                         }).addOnSuccessListener(new OnSuccessListener<Snapshot>() {
                     @Override
@@ -426,6 +424,7 @@ public class GooglePlayServices {
             source.setResult(result.getData());
             return source.getTask();
         }
+        Log.w(ACTIVITY_TAG, "Snapshot conflict found. Attempting to resolve conflict.");
 
         // There was a conflict - we need to resolve it.
         SnapshotsClient.SnapshotConflict conflict = result.getConflict();
@@ -481,12 +480,7 @@ public class GooglePlayServices {
         snapshot.getSnapshotContents().writeBytes(gameData);
 
         final int waveUnlocked = savedGame.getHighestWaveReached();
-        final boolean finishedAllWaves = waveUnlocked > GameConstants.MAX_WAVES;
-
-        final String description = finishedAllWaves ?
-                String.format(
-                        "%s: Completed All Waves",
-                        mActivity.getString(R.string.app_name)) :
+        final String description =
                 String.format(
                         "%s: Unlocked Wave %d",
                         mActivity.getString(R.string.app_name),
