@@ -342,8 +342,8 @@ public class GooglePlayServices {
                         // beyond the wave we're about to save while we've been playing.
                         // in this case, update our saved game service but there's no need
                         // for us to save anything to the google play service.
-                        if (googleSavedGame.getHighestWaveReached() > gameToSave.getHighestWaveReached()) {
-                            Log.i(ACTIVITY_TAG, "Higher wave "
+                        if (googleSavedGame.getHighestWaveReached() >= gameToSave.getHighestWaveReached()) {
+                            Log.i(ACTIVITY_TAG, "Wave "
                                     + googleSavedGame.getHighestWaveReached()
                                     + " already saved to Google Play. Save Cancelled.");
                             savedGame.computeHighestWaveOnSavedGameLoaded(googleSavedGame);
