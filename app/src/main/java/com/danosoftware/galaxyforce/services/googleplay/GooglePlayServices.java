@@ -324,24 +324,43 @@ public class GooglePlayServices {
      * Then asynchronously overwrite snapshot with current game progress
      *
      * @param account   - player's account
-     * @param savedGame - latest game progress to save
+     * @param gameToSave - latest game progress to save
      */
     private void saveSnapshotAsync(
             final GoogleSignInAccount account,
-            final GooglePlaySavedGame savedGame) {
+            final GooglePlaySavedGame gameToSave) {
 
         loadSnapshotAndResolveConflictsTask(account)
                 .continueWithTask(new Continuation<Snapshot, Task<SnapshotMetadata>>() {
                     @Override
                     public Task<SnapshotMetadata> then(@NonNull Task<Snapshot> snapshotTask) throws Exception {
-                        return writeSnapshotTask(snapshotTask.getResult(), savedGame);
+
+                        Snapshot snapshot = snapshotTask.getResult();
+                        GooglePlaySavedGame googleSavedGame = extractSavedGame(snapshot);
+
+                        // check for the very rare scenario that another device has progressed
+                        // beyond the wave we're about to save while we've been playing.
+                        // in this case, update our saved game service but there's no need
+                        // for us to save anything to the google play service.
+                        if (googleSavedGame.getHighestWaveReached() > gameToSave.getHighestWaveReached()) {
+                            Log.i(ACTIVITY_TAG, "Higher wave "
+                                    + googleSavedGame.getHighestWaveReached()
+                                    + " already saved to Google Play. Save Cancelled.");
+                            savedGame.computeHighestWaveOnSavedGameLoaded(googleSavedGame);
+                            SnapshotsClient snapshotsClient =
+                                    Games.getSnapshotsClient(mActivity, GoogleSignIn.getLastSignedInAccount(mActivity));
+                            snapshotsClient.discardAndClose(snapshot);
+                            return Tasks.forResult(snapshot.getMetadata());
+                        }
+
+                        Log.i(ACTIVITY_TAG, "Game Saved: Saving wave " + gameToSave.getHighestWaveReached());
+                        return writeSnapshotTask(snapshot, gameToSave);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<SnapshotMetadata>() {
                     @Override
                     public void onSuccess(SnapshotMetadata snapshotMetadata) {
-                        int wave = savedGame != null ? savedGame.getHighestWaveReached() : 0;
-                        Log.i(ACTIVITY_TAG, "Game Saved: Wave " + wave);
+                        Log.i(ACTIVITY_TAG, "Game Saved Completed");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
