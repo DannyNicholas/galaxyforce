@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.EXPLODING;
 
@@ -37,6 +38,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
 
 
     public AbstractAlienFollower(
+            AlienCharacter character,
             Animation animation,
             int x,
             int y,
@@ -51,6 +53,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
             int minimumDistance) {
 
         super(
+                character,
                 animation,
                 x,
                 y,

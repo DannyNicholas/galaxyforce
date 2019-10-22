@@ -261,6 +261,36 @@ public class GooglePlayServices {
     }
 
     /**
+     * Unlock supplied achievements.
+     */
+    public void unlockAchievement(int id) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (connectedState != ConnectionState.CONNECTED || account == null) {
+            Log.i(ACTIVITY_TAG, "Achievement Unlocks Unavailable. User is not signed-in.");
+            return;
+        }
+        String achievementId = mActivity.getString(id);
+        Log.i(ACTIVITY_TAG, "Achievements: Unlocking id: " + achievementId);
+        Games.getAchievementsClient(mActivity, account)
+                .unlock(achievementId);
+    }
+
+    /**
+     * Increment supplied achievements.
+     */
+    public void incrementAchievement(int id, int amount) {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
+        if (connectedState != ConnectionState.CONNECTED || account == null) {
+            Log.i(ACTIVITY_TAG, "Achievement Increments Unavailable. User is not signed-in.");
+            return;
+        }
+        String achievementId = mActivity.getString(id);
+        Log.i(ACTIVITY_TAG, "Achievements: Incrementing id: " + achievementId + " by " + amount);
+        Games.getAchievementsClient(mActivity, account)
+                .increment(achievementId, amount);
+    }
+
+    /**
      * Asynchronously sign-in to Google Play Services.
      * Then Asynchronously load latest snapshot and resolve conflicts.
      * Then asynchronously overwrite snapshot with current game progress.

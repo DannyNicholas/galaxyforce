@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
     private final boolean restartImmediately;
 
     protected AbstractAlienWithPath(
+            AlienCharacter character,
             Animation animation,
             FireBehaviour fireBehaviour,
             PowerUpBehaviour powerUpBehaviour,
@@ -53,6 +55,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
         // default is that all aliens with paths start invisible at first
         // position
         super(
+                character,
                 animation,
                 alienPath.get(0).getX(),
                 alienPath.get(0).getY(),

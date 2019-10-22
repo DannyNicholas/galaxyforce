@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.models.aliens;
 
 import android.util.Log;
 
+import com.danosoftware.galaxyforce.services.achievements.AchievementService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienWithPath;
 import com.danosoftware.galaxyforce.waves.SubWave;
@@ -28,6 +29,8 @@ public class AlienManager implements IAlienManager {
     // provides waves
     private final WaveManager waveManager;
 
+    private final AchievementService achievements;
+
     // state of current sub-wave
     private List<IAlien> aliens;
     private List<IAlien> activeAliens;
@@ -40,8 +43,11 @@ public class AlienManager implements IAlienManager {
     private final List<IAlien> spawnedAliens;
 
 
-    public AlienManager(WaveManager waveManager) {
+    public AlienManager(
+            WaveManager waveManager,
+            AchievementService achievements) {
         this.waveManager = waveManager;
+        this.achievements = achievements;
         this.aliens = new ArrayList<>();
         this.activeAliens = new ArrayList<>();
         this.visibleAliens = new ArrayList<>();
@@ -86,6 +92,8 @@ public class AlienManager implements IAlienManager {
             }
             if (!alien.isDestroyed()) {
                 nonDestroyedAliens.add(alien);
+            } else {
+                achievements.alienDestroyed(alien.character());
             }
         }
 

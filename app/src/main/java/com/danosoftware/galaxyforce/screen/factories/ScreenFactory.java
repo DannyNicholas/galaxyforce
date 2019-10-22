@@ -24,6 +24,7 @@ import com.danosoftware.galaxyforce.screen.IScreen;
 import com.danosoftware.galaxyforce.screen.Screen;
 import com.danosoftware.galaxyforce.screen.SelectLevelScreen;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.achievements.AchievementService;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.services.music.Music;
@@ -195,6 +196,7 @@ public class ScreenFactory {
      * Returns a normal game model or a Frames-per-Second decorated version.
      */
     private Model createGameModel(Controller controller, int startingWave) {
+        final AchievementService achievements = new AchievementService(playService);
         Model gameModel = new GamePlayModelImpl(
                 game,
                 controller,
@@ -203,6 +205,7 @@ public class ScreenFactory {
                 sounds,
                 vibrator,
                 savedGame,
+                achievements,
                 assets,
                 starFieldTemplate);
 

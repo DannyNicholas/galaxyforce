@@ -66,6 +66,7 @@ public class HunterAlien extends AbstractAlien {
             @NonNull final Float timeDelayStart) {
 
         super(
+                alienConfig.getAlienCharacter(),
                 alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,

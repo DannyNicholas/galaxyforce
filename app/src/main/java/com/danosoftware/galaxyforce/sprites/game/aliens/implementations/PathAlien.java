@@ -40,6 +40,7 @@ public class PathAlien extends AbstractAlienWithPath {
             @NonNull final Float delayStartTime,
             @NonNull final Boolean restartImmediately) {
         super(
+                alienConfig.getAlienCharacter(),
                 alienConfig.getAlienCharacter().getAnimation(),
                 createFireBehaviour(
                         model,

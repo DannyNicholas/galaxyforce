@@ -10,6 +10,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.ACTIVE;
 import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.DESTROYED;
@@ -54,7 +55,11 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     /* has alien been destroyed */
     AlienState state;
 
+    // alien character
+    private final AlienCharacter character;
+
     protected AbstractAlien(
+            AlienCharacter character,
             Animation animation,
             int x,
             int y,
@@ -72,6 +77,7 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
                         Animation.ANIMATION_LOOPING),
                 x,
                 y);
+        this.character = character;
         state = ACTIVE;
         this.energy = energy;
         this.explodeBehaviour = explodeBehaviour;
@@ -82,6 +88,11 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         this.spinningBehaviour = spinningBehaviour;
         this.animation = animation;
         this.stateTime = 0f;
+    }
+
+    @Override
+    public AlienCharacter character() {
+        return character;
     }
 
     @Override

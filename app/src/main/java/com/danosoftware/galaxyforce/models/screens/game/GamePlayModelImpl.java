@@ -30,6 +30,8 @@ import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.achievements.AchievementService;
+import com.danosoftware.galaxyforce.services.achievements.CompletedWaveAchievements;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -127,6 +129,9 @@ public class GamePlayModelImpl implements Model, GameModel {
     // saved game service
     private final SavedGame savedGame;
 
+    // achievements service
+    private final AchievementService achievements;
+
     /*
      * Instance variables required in GET_READY state
      */
@@ -137,6 +142,11 @@ public class GamePlayModelImpl implements Model, GameModel {
 
     // time since get ready message first appeared
     private float timeSinceGetReady;
+
+    // used to track if any lives were lost in current wave for achievements
+    // set to false when a new wave starts
+    // set to true whenever a life is lost
+    private boolean nolivesLostInWave;
 
     /*
      * ******************************************************
@@ -154,6 +164,7 @@ public class GamePlayModelImpl implements Model, GameModel {
             SoundPlayerService sounds,
             VibrationService vibrator,
             SavedGame savedGame,
+            AchievementService achievements,
             AssetManager assets,
             StarFieldTemplate starFieldTemplate) {
         this.game = game;
@@ -162,6 +173,7 @@ public class GamePlayModelImpl implements Model, GameModel {
         this.sounds = sounds;
         this.vibrator = vibrator;
         this.savedGame = savedGame;
+        this.achievements = achievements;
 
         // no text initially
         this.waveText = null;
@@ -387,6 +399,15 @@ public class GamePlayModelImpl implements Model, GameModel {
     private void updatePlayingState() {
         if (isWaveComplete()) {
 
+            // reward user with end of wave achievements
+            achievements.waveCompleted(
+                    CompletedWaveAchievements
+                            .builder()
+                            .wave(wave)
+                            .nolivesLostInWave(nolivesLostInWave)
+                            .build()
+            );
+
             // check user is allowed to play next wave
             if (wave >= GameConstants.MAX_FREE_WAVE
                     && (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED
@@ -437,6 +458,7 @@ public class GamePlayModelImpl implements Model, GameModel {
          * as set-up level will bypass the new base state.
          */
         if (primaryBase.isDestroyed()) {
+            nolivesLostInWave = false;
             /*
              * if destroyed object primary base then add new base and change
              * model state.
@@ -504,6 +526,7 @@ public class GamePlayModelImpl implements Model, GameModel {
                 if (checkCollision(eachPowerUp, eachBase)) {
                     eachBase.collectPowerUp(eachPowerUp);
                     sounds.play(SoundEffect.POWER_UP_COLLIDE);
+                    achievements.powerUpCollected(eachPowerUp.getPowerUpType());
                 }
             }
         }
@@ -533,6 +556,9 @@ public class GamePlayModelImpl implements Model, GameModel {
 
         // set up get ready text and put model in get ready state.
         setupGetReady();
+
+        // reset lives lost for new wave
+        this.nolivesLostInWave = true;
     }
 
     /**
@@ -612,6 +638,7 @@ public class GamePlayModelImpl implements Model, GameModel {
         /* if no lives left then game over */
         else {
             this.modelState = ModelState.GAME_OVER;
+            achievements.gameOver();
         }
     }
 
@@ -631,6 +658,6 @@ public class GamePlayModelImpl implements Model, GameModel {
         WaveFactory waveFactory = new WaveFactory(creationUtils, powerUpAllocatorFactory);
         WaveManager waveManager = new WaveManagerImpl(waveFactory);
 
-        return new AlienManager(waveManager);
+        return new AlienManager(waveManager, achievements);
     }
 }

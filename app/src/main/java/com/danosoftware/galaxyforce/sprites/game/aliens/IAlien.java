@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.sprites.game.aliens;
 
 import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 public interface IAlien extends ICollidingSprite {
 
@@ -23,4 +24,9 @@ public interface IAlien extends ICollidingSprite {
      * trigger alien explosion
      */
     void explode();
+
+    /**
+     * Return the alien's character.
+     */
+    AlienCharacter character();
 }

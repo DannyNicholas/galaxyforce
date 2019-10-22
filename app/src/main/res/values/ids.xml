@@ -1,18 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-   Copyright (C) 2013 Google Inc.
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-      http://www.apache.org/licenses/LICENSE-2.0
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
+<?xml version="1.0" encoding="utf-8"?>
+    <!--
+        Google Play game services IDs.
+        Save this file as res/values/games-ids.xml in your project.
+    -->
 <resources>
-    <!-- TODO: Replace this entire file with the ids.xml provided from the Google Play Console.
-         NOTE: You can find this file by clicking the `Get Resources` link in
-         the Events, Achievements, or Leaderboards menu of the Google Play Console. -->
+    <!-- app_id -->
     <string name="app_id" translatable="false">905913629081</string>
+    <!-- package_name -->
+    <string name="package_name" translatable="false">com.danosoftware.galaxyforce</string>
+    <!-- achievement Smashing Start -->
+    <string name="achievement_smashing_start" translatable="false">CgkImfOj5a4aEAIQAQ</string>
+    <!-- achievement Exit The Dragon -->
+    <string name="achievement_exit_the_dragon" translatable="false">CgkImfOj5a4aEAIQAg</string>
+    <!-- achievement Dragon Buster -->
+    <string name="achievement_dragon_buster" translatable="false">CgkImfOj5a4aEAIQAw</string>
+    <!-- achievement Hoarder -->
+    <string name="achievement_hoarder" translatable="false">CgkImfOj5a4aEAIQBA</string>
+    <!-- achievement Book Basher -->
+    <string name="achievement_book_basher" translatable="false">CgkImfOj5a4aEAIQBQ</string>
+    <!-- achievement Book Basher One Life -->
+    <string name="achievement_book_basher_one_life" translatable="false">CgkImfOj5a4aEAIQBg</string>
+    <!-- achievement Collect 10 Life Power-Ups -->
+    <string name="achievement_collect_10_life_powerups" translatable="false">CgkImfOj5a4aEAIQBw</string>
+    <!-- achievement Collect 10 Fast Missile Power-Ups -->
+    <string name="achievement_collect_10_fast_missile_powerups" translatable="false">CgkImfOj5a4aEAIQCA</string>
+    <!-- achievement Collect 10 Blast Power-Ups -->
+    <string name="achievement_collect_10_blast_powerups" translatable="false">CgkImfOj5a4aEAIQCQ</string>
+    <!-- achievement Collect 10 Guided Missile Power-Ups -->
+    <string name="achievement_collect_10_guided_missile_powerups" translatable="false">CgkImfOj5a4aEAIQCg</string>
+    <!-- achievement Collect 10 Parallel Missile Power-Ups -->
+    <string name="achievement_collect_10_parallel_missile_powerups" translatable="false">CgkImfOj5a4aEAIQCw</string>
+    <!-- achievement Collect 10 Spray Missile Power-Ups -->
+    <string name="achievement_collect_10_spray_missile_powerups" translatable="false">CgkImfOj5a4aEAIQDA</string>
+    <!-- achievement Collect 10 Laser Power-Ups -->
+    <string name="achievement_collect_10_laser_powerups" translatable="false">CgkImfOj5a4aEAIQDQ</string>
+    <!-- achievement Collect 10 Shield Power-Ups -->
+    <string name="achievement_collect_10_shield_powerups" translatable="false">CgkImfOj5a4aEAIQDg</string>
+    <!-- achievement Collect 10 Helper Base Power-Ups -->
+    <string name="achievement_collect_10_helper_base_powerups" translatable="false">CgkImfOj5a4aEAIQDw</string>
+    <!-- achievement Destroy 25 Aliens -->
+    <string name="achievement_destroy_25_aliens" translatable="false">CgkImfOj5a4aEAIQEA</string>
+    <!-- achievement Destroy 25 Octopus -->
+    <string name="achievement_destroy_25_octopus" translatable="false">CgkImfOj5a4aEAIQEQ</string>
+    <!-- achievement Complete 1 wave without losing a life -->
+    <string name="achievement_complete_1_wave_without_losing_a_life" translatable="false">CgkImfOj5a4aEAIQEg</string>
+    <!-- achievement Complete 3 waves without losing a life -->
+    <string name="achievement_complete_3_waves_without_losing_a_life" translatable="false">CgkImfOj5a4aEAIQEw</string>
+    <!-- achievement Complete 5 waves without losing a life -->
+    <string name="achievement_complete_5_waves_without_losing_a_life" translatable="false">CgkImfOj5a4aEAIQFA</string>
+    <!-- achievement Complete 3 waves in one game -->
+    <string name="achievement_complete_3_waves_in_one_game" translatable="false">CgkImfOj5a4aEAIQFQ</string>
+    <!-- achievement Complete 5 waves in one game -->
+    <string name="achievement_complete_5_waves_in_one_game" translatable="false">CgkImfOj5a4aEAIQFg</string>
+    <!-- achievement That was tricky! -->
+    <string name="achievement_that_was_tricky" translatable="false">CgkImfOj5a4aEAIQFw</string>
 </resources>

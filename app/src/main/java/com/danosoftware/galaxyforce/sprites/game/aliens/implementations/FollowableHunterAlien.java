@@ -76,6 +76,7 @@ public class FollowableHunterAlien extends AbstractAlien {
             @NonNull final List<IAlienFollower> followers) {
 
         super(
+                alienConfig.getAlienCharacter(),
                 alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,

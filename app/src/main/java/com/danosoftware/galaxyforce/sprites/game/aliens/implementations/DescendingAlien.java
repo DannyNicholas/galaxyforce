@@ -56,6 +56,7 @@ public class DescendingAlien extends AbstractAlien {
             @NonNull final Boolean restartImmediately) {
 
         super(
+                alienConfig.getAlienCharacter(),
                 alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,

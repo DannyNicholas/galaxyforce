@@ -56,6 +56,7 @@ public class ExplodingAlien extends AbstractAlien {
             @NonNull final Integer yStart) {
 
         super(
+                alienConfig.getAlienCharacter(),
                 alienConfig.getAlienCharacter().getAnimation(),
                 xStart,
                 yStart,
