@@ -1,13 +1,12 @@
 package com.danosoftware.galaxyforce.services.achievements;
 
-import android.util.SparseIntArray;
-
 import com.danosoftware.galaxyforce.R;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Map;
 public class AchievementService {
 
     // map of waves completed to unlocked achievements
-    private static final SparseIntArray completedWaveAchievementsMap = new SparseIntArray();
+    private static final Map<Integer, Integer> completedWaveAchievementsMap = new HashMap<>();
     static {
         completedWaveAchievementsMap.put(
                 1,
@@ -39,7 +38,7 @@ public class AchievementService {
     }
 
     // map of waves completed in one life to unlocked achievements
-    private static final SparseIntArray oneLifeCompletedWaveAchievementsMap = new SparseIntArray();
+    private static final Map<Integer, Integer> oneLifeCompletedWaveAchievementsMap = new HashMap<>();
     static {
         oneLifeCompletedWaveAchievementsMap.put(
                 12,
@@ -144,16 +143,14 @@ public class AchievementService {
 
         // trigger unlocks based on waves completed
         final int completedWave = completedWaveAchievements.getWave();
-        final int completeWaveAchievementId = completedWaveAchievementsMap.get(completedWave, -1);
-        if (completeWaveAchievementId != -1) {
-            playService.unlockAchievement(completeWaveAchievementId);
+        if (completedWaveAchievementsMap.containsKey(completedWave)) {
+            playService.unlockAchievement(completedWaveAchievementsMap.get(completedWave));
         }
 
         // trigger unlocks based on waves completed in one life
         final boolean completedWaveInOneLife = completedWaveAchievements.isNolivesLostInWave();
-        final int completeWaveInOneLifeAchievementId = oneLifeCompletedWaveAchievementsMap.get(completedWave, -1);
-        if (completedWaveInOneLife && completeWaveInOneLifeAchievementId != -1) {
-            playService.unlockAchievement(completeWaveInOneLifeAchievementId);
+        if (completedWaveInOneLife && oneLifeCompletedWaveAchievementsMap.containsKey(completedWave)) {
+            playService.unlockAchievement(oneLifeCompletedWaveAchievementsMap.get(completedWave));
         }
 
         // trigger incremental achievements due to power-ups collected

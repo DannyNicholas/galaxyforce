@@ -2,6 +2,7 @@ package com.danosoftware.galaxyforce.models.aliens;
 
 import android.util.Log;
 
+import com.danosoftware.galaxyforce.services.achievements.AchievementService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienWithPath;
 import com.danosoftware.galaxyforce.waves.SubWave;
@@ -33,12 +34,13 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class,})
+@PrepareForTest({Log.class})
 public class AlienManagerTest {
 
     private AlienManager alienMgr;
     private WaveManager mockWaveMgr;
     private IAlienWithPath mockAlien;
+    private AchievementService achievements;
 
     private static final int ALIEN_COUNT = 10;
 
@@ -67,7 +69,9 @@ public class AlienManagerTest {
         when(mockWaveMgr.hasNext()).thenReturn(true);
         when(mockWaveMgr.next()).thenReturn(subWave);
 
-        alienMgr = new AlienManager(mockWaveMgr);
+        achievements = mock(AchievementService.class);
+
+        alienMgr = new AlienManager(mockWaveMgr, achievements);
         alienMgr.isWaveReady();
     }
 
