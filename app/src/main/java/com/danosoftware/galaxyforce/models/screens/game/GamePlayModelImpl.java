@@ -144,8 +144,8 @@ public class GamePlayModelImpl implements Model, GameModel {
     private float timeSinceGetReady;
 
     // used to track if any lives were lost in current wave for achievements
-    // set to false when a new wave starts
-    // set to true whenever a life is lost
+    // set to true when a new wave starts
+    // set to false whenever a life is lost
     private boolean nolivesLostInWave;
 
     /*
