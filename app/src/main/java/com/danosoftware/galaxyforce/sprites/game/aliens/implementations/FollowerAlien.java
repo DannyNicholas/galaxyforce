@@ -65,7 +65,8 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator),
+                        vibrator,
+                        alienConfig.getAlienCharacter().getExplosionAnimation()),
                 createSpinningBehaviour(
                         alienConfig,
                         alienConfig.getSpeed()),

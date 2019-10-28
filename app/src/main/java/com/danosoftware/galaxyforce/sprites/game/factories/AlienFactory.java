@@ -19,6 +19,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Followab
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowerAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
@@ -28,6 +29,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.StaticConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
@@ -243,6 +245,22 @@ public class AlienFactory {
                                 .followers(followers)
                                 .build());
                 aliens.addAll(followers);
+                break;
+
+            case STATIC:
+                aliens.add(
+                        StaticAlien
+                                .builder()
+                                .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                .model(model)
+                                .sounds(sounds)
+                                .vibrator(vibrator)
+                                .alienConfig((StaticConfig) alienConfig)
+                                .powerUpType(powerUp)
+                                .xStart(xStartPos)
+                                .yStart(yStartPos)
+                                .build());
                 break;
 
 

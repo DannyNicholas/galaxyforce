@@ -4,7 +4,6 @@ import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
-import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -21,20 +20,6 @@ public class ExplodeSimple implements ExplodeBehaviour {
 
     // time since explosion started
     private float explosionTime;
-
-    public ExplodeSimple(
-            SoundPlayerService sounds,
-            VibrationService vibrator) {
-        this.animation = new Animation(
-                0.075f,
-                GameSpriteIdentifier.EXPLODE_BIG_01,
-                GameSpriteIdentifier.EXPLODE_BIG_02,
-                GameSpriteIdentifier.EXPLODE_BIG_03,
-                GameSpriteIdentifier.EXPLODE_BIG_04,
-                GameSpriteIdentifier.EXPLODE_BIG_05);
-        this.sounds = sounds;
-        this.vibrator = vibrator;
-    }
 
     public ExplodeSimple(
             SoundPlayerService sounds,

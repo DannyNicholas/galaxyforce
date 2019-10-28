@@ -25,8 +25,10 @@ import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAndExplodingAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningBySpeedConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.StaticConfig;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
 
@@ -1375,7 +1377,80 @@ public class WaveFactory {
                 );
                 break;
 
+            /**
+             * Alien spawns an egg that cracks and then spawns a dragon!!
+             */
             case 28:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.BOMBER_RUN,
+                                        PathConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.ZOGG)
+                                                .energy(10)
+                                                .spawnConfig(
+                                                        SpawningAlienConfig
+                                                                .builder()
+                                                                .spawnedAlienConfig(
+                                                                        StaticConfig
+                                                                                .builder()
+                                                                                .alienCharacter(AlienCharacter.EGG)
+                                                                                .energy(1)
+                                                                                .spawnConfig(
+                                                                                        SpawningAndExplodingAlienConfig.builder()
+                                                                                                .spawnedAlienConfig(
+                                                                                                    FollowableHunterConfig
+                                                                                                            .builder()
+                                                                                                            .alienCharacter(AlienCharacter.DRAGON_HEAD)
+                                                                                                            .energy(5)
+                                                                                                            .speed(AlienSpeed.VERY_FAST)
+                                                                                                            .missileConfig(
+                                                                                                                    MissileFiringConfig
+                                                                                                                            .builder()
+                                                                                                                            .missileType(AlienMissileType.ROTATED)
+                                                                                                                            .missileCharacter(AlienMissileCharacter.FIREBALL)
+                                                                                                                            .missileSpeed(AlienMissileSpeed.VERY_FAST)
+                                                                                                                            .missileFrequency(6.5f)
+                                                                                                                            .build())
+                                                                                                            .numberOfFollowers(5)
+                                                                                                            .followerConfig(
+                                                                                                                    FollowerConfig
+                                                                                                                            .builder()
+                                                                                                                            .alienCharacter(AlienCharacter.DRAGON_BODY)
+                                                                                                                            .energy(1)
+                                                                                                                            .speed(AlienSpeed.VERY_FAST)
+                                                                                                                            .build())
+                                                                                                            .followerPowerUps(
+                                                                                                                    Arrays.asList(
+                                                                                                                            PowerUpType.MISSILE_GUIDED,
+                                                                                                                            PowerUpType.MISSILE_PARALLEL,
+                                                                                                                            PowerUpType.MISSILE_SPRAY))
+                                                                                                            .boundaries(
+                                                                                                                    HunterBoundariesConfig.builder().build())
+                                                                                                            .build())
+                                                                                                .spwanedPowerUpType(PowerUpType.MISSILE_GUIDED)
+                                                                                                .spawnDelayTime(2.25f)  // aligns to egg cracking animation 9 x 0.25f
+                                                                                        .build()
+                                                                                )
+                                                                                .build())
+                                                                .minimumSpawnDelayTime(1f)
+                                                                .maximumAdditionalRandomSpawnDelayTime(5f)
+                                                                .spwanedPowerUpTypes(
+                                                                        Arrays.asList(
+                                                                                PowerUpType.MISSILE_GUIDED,
+                                                                                PowerUpType.MISSILE_FAST,
+                                                                                PowerUpType.MISSILE_PARALLEL))
+                                                                .build())
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.MISSILE_SPRAY)
+                                )
+                        )
+                );
+                break;
+
+
             case 29:
             case 30:
             case 31:

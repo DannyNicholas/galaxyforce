@@ -28,4 +28,7 @@ public enum AlienType {
 
     // alien that remains static and then explodes missiles
     EXPLODING,
+
+    // alien that remains static
+    STATIC,
 }

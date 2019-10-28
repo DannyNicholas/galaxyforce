@@ -14,6 +14,6 @@ public abstract class SpawnConfig {
     }
 
     public enum SpawnType {
-        SPAWN
+        SPAWN, SPAWN_AND_EXPLODE
     }
 }

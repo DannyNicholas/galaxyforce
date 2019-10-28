@@ -272,7 +272,38 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.HELMET},
             new ISpriteIdentifier[]{
                     GameSpriteIdentifier.HELMET_HIT},
-            0f);
+            0f),
+
+    EGG(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.EGG_CRACK_01,
+                    GameSpriteIdentifier.EGG_CRACK_02,
+                    GameSpriteIdentifier.EGG_CRACK_03,
+                    GameSpriteIdentifier.EGG_CRACK_02,
+                    GameSpriteIdentifier.EGG_CRACK_03,
+                    GameSpriteIdentifier.EGG_CRACK_02,
+                    GameSpriteIdentifier.EGG_CRACK_03,
+                    GameSpriteIdentifier.EGG_CRACK_02,
+                    GameSpriteIdentifier.EGG_CRACK_03},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.EGG_CRACK_01_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_02_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_03_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_02_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_03_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_02_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_03_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_02_HIT,
+                    GameSpriteIdentifier.EGG_CRACK_03_HIT},
+            0.25f,
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.EGG_CRACK_04,
+                    GameSpriteIdentifier.EGG_CRACK_05,
+                    GameSpriteIdentifier.EGG_CRACK_06,
+                    GameSpriteIdentifier.EGG_CRACK_07},
+            0.075f);
+
+    private static final float DEFAULT_EXPLOSION_FRAME_DURATION = 0.075f;
 
     // alien animation frames
     private final ISpriteIdentifier[] animationFrames;
@@ -283,13 +314,38 @@ public enum AlienCharacter {
     // time between frame transitions
     private final float frameDuration;
 
+    // alien animation frames when exploding
+    private final ISpriteIdentifier[] explosionAnimationFrames;
+    private final float explosionFrameDuration;
+
     AlienCharacter(
             final ISpriteIdentifier[] animationFrames,
             final ISpriteIdentifier[] hitAnimationFrames,
             final float frameDuration) {
+        this(
+                animationFrames,
+                hitAnimationFrames,
+                frameDuration,
+                new ISpriteIdentifier[]{
+                        GameSpriteIdentifier.EXPLODE_BIG_01,
+                        GameSpriteIdentifier.EXPLODE_BIG_02,
+                        GameSpriteIdentifier.EXPLODE_BIG_03,
+                        GameSpriteIdentifier.EXPLODE_BIG_04,
+                        GameSpriteIdentifier.EXPLODE_BIG_05},
+                DEFAULT_EXPLOSION_FRAME_DURATION);
+    }
+
+    AlienCharacter(
+            final ISpriteIdentifier[] animationFrames,
+            final ISpriteIdentifier[] hitAnimationFrames,
+            final float frameDuration,
+            final ISpriteIdentifier[] explosionAnimationFrames,
+            final float explosionFrameDuration) {
         this.animationFrames = animationFrames;
         this.hitAnimationFrames = hitAnimationFrames;
         this.frameDuration = frameDuration;
+        this.explosionAnimationFrames = explosionAnimationFrames;
+        this.explosionFrameDuration = explosionFrameDuration;
     }
 
     public Animation getAnimation() {
@@ -298,5 +354,9 @@ public enum AlienCharacter {
 
     public Animation getHitAnimation() {
         return new Animation(frameDuration, hitAnimationFrames);
+    }
+
+    public Animation getExplosionAnimation() {
+        return new Animation(explosionFrameDuration, explosionAnimationFrames);
     }
 }

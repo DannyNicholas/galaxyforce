@@ -59,7 +59,8 @@ public class PathAlien extends AbstractAlienWithPath {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator),
+                        vibrator,
+                        alienConfig.getAlienCharacter().getExplosionAnimation()),
                 createSpinningBehaviour(
                         alienConfig),
                 alienPath,

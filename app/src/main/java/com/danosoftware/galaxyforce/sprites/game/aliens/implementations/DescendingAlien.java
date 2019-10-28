@@ -78,7 +78,8 @@ public class DescendingAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 new ExplodeSimple(
                         sounds,
-                        vibrator),
+                        vibrator,
+                        alienConfig.getAlienCharacter().getExplosionAnimation()),
                 createSpinningBehaviour(
                         alienConfig,
                         alienConfig.getSpeed()));

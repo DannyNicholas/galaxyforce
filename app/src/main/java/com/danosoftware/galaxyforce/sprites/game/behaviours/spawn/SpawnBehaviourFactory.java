@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAndExplodingAlienConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
@@ -34,6 +35,22 @@ public class SpawnBehaviourFactory {
                     spawningConfig.getSpwanedPowerUpTypes(),
                     spawningConfig.getMinimumSpawnDelayTime(),
                     spawningConfig.getMaximumAdditionalRandomSpawnDelayTime());
+        }
+
+        if (spawnConfig != null
+                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_AND_EXPLODE
+                && spawnConfig instanceof SpawningAndExplodingAlienConfig) {
+
+            final SpawningAndExplodingAlienConfig spawningConfig = ((SpawningAndExplodingAlienConfig) spawnConfig);
+
+            // behaviour that spawns a single alien and then explodes
+            return new SpawnAndExplode(
+                    alienFactory,
+                    powerUpAllocatorFactory,
+                    model,
+                    spawningConfig.getSpawnedAlienConfig(),
+                    spawningConfig.getSpwanedPowerUpType(),
+                    spawningConfig.getSpawnDelayTime());
         }
 
         // behaviour that disables spawning
