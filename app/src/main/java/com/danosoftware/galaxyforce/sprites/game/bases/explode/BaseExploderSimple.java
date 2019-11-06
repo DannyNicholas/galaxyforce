@@ -1,14 +1,14 @@
-package com.danosoftware.galaxyforce.sprites.game.behaviours.explode;
+package com.danosoftware.galaxyforce.sprites.game.bases.explode;
 
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
-import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.sprites.game.bases.IBase;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
-public class ExplodeSimple implements ExplodeBehaviour {
+public class BaseExploderSimple implements BaseExploder {
 
     // explosion animation
     private final Animation animation;
@@ -22,7 +22,7 @@ public class ExplodeSimple implements ExplodeBehaviour {
     // time since explosion started
     private float explosionTime;
 
-    public ExplodeSimple(
+    public BaseExploderSimple(
             SoundPlayerService sounds,
             VibrationService vibrator,
             Animation animation) {
@@ -32,15 +32,10 @@ public class ExplodeSimple implements ExplodeBehaviour {
     }
 
     @Override
-    public void startExplosion(IAlien alien) {
+    public void startExplosion(IBase base) {
         explosionTime = 0f;
         sounds.play(SoundEffect.EXPLOSION);
         vibrator.vibrate(VibrateTime.TINY);
-    }
-
-    @Override
-    public void startExplosionSilently() {
-        explosionTime = 0f;
     }
 
     @Override

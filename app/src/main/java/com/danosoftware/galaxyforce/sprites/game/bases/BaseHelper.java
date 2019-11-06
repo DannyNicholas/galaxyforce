@@ -11,8 +11,8 @@ import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploder;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploderSimple;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
@@ -77,7 +77,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private final SoundPlayerService sounds;
 
     // explosion behaviour
-    private final ExplodeBehaviour explosion;
+    private final BaseExploder explosion;
 
     // base state
     private BaseState state;
@@ -136,7 +136,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
         this.state = ACTIVE;
         this.side = side;
         this.xOffset = (side == LEFT ? -X_OFFSET_FROM_PRIMARY_BASE : +X_OFFSET_FROM_PRIMARY_BASE);
-        this.explosion = new ExplodeSimple(
+        this.explosion = new BaseExploderSimple(
                 sounds,
                 vibrator,
                 new Animation(

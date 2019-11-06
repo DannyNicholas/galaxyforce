@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.explode;
 
-import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 
 public interface ExplodeBehaviour {
@@ -8,7 +8,7 @@ public interface ExplodeBehaviour {
     /**
      * Initialise start of explosion
      */
-    void startExplosion(ICollidingSprite sprite);
+    void startExplosion(IAlien alien);
 
     /**
      * Initialise start of explosion.

@@ -16,8 +16,8 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseLean;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploder;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploderSimple;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
@@ -46,7 +46,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private static final String TAG = "BasePrimary";
 
     // explosion behaviour
-    private final ExplodeBehaviour explosion;
+    private final BaseExploder explosion;
 
     // all sprites
     // cached as an optimisation to improve performance
@@ -127,7 +127,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.lean = BaseLean.NONE;
         this.moveHelper = new MoveBaseHelper(this);
 
-        this.explosion = new ExplodeSimple(
+        this.explosion = new BaseExploderSimple(
                 sounds,
                 vibrator,
                 new Animation(

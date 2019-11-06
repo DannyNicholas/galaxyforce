@@ -1,6 +1,5 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.explode;
 
-import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
@@ -25,9 +24,9 @@ public class ExplodeAndSpawn implements ExplodeBehaviour {
     }
 
     @Override
-    public void startExplosion(ICollidingSprite sprite) {
-        exploder.startExplosion(sprite);
-        spawner.spawn((IAlien) sprite);
+    public void startExplosion(IAlien alien) {
+        exploder.startExplosion(alien);
+        spawner.spawn(alien);
     }
 
     @Override
