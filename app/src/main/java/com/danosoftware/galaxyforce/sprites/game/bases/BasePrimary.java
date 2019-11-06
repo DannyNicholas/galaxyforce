@@ -281,7 +281,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public void destroy() {
 
-        explosion.startExplosion();
+        explosion.startExplosion(this);
         state = EXPLODING;
 
         // play explosion sound effect

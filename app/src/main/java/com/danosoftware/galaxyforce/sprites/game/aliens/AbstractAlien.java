@@ -112,7 +112,7 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
 
     @Override
     public void explode() {
-        explodeBehaviour.startExplosion();
+        explodeBehaviour.startExplosion(this);
         state = EXPLODING;
         powerUpBehaviour.releasePowerUp(this);
     }

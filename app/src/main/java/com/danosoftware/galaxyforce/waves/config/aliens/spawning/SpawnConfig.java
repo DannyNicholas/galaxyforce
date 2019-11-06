@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.waves.config.aliens;
+package com.danosoftware.galaxyforce.waves.config.aliens.spawning;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,6 +14,6 @@ public abstract class SpawnConfig {
     }
 
     public enum SpawnType {
-        SPAWN, SPAWN_AND_EXPLODE
+        SPAWN, SPAWN_AND_EXPLODE, SPAWN_ON_DEMAND
     }
 }

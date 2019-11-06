@@ -57,8 +57,8 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     ASTEROID_HIT("asteroidHit"),
 
     // mini-asteroid
-    MINI_ASTEROID("miniAsteroid"),
-    MINI_ASTEROID_HIT("miniAsteroidHit"),
+    ASTEROID_MINI("miniAsteroid"),
+    ASTEROID_MINI_HIT("miniAsteroidHit"),
 
     // egg
     EGG_CRACK_01("eggCrack01"),

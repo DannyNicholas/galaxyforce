@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.waves.config.aliens;
+package com.danosoftware.galaxyforce.waves.config.aliens.missiles;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;

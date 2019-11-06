@@ -1,4 +1,4 @@
-package com.danosoftware.galaxyforce.waves.config.aliens;
+package com.danosoftware.galaxyforce.waves.config.aliens.types;
 
 import lombok.Builder;
 import lombok.Getter;

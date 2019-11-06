@@ -2,10 +2,10 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.spawn;
 
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpawnConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAndExplodingAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAndExplodingAlienConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
@@ -17,9 +17,8 @@ public class SpawnBehaviourFactory {
             final GameModel model,
             final AlienFactory alienFactory,
             final PowerUpAllocatorFactory powerUpAllocatorFactory,
-            final AlienConfig alienConfig) {
+            final SpawnConfig spawnConfig) {
 
-        final SpawnConfig spawnConfig = alienConfig.getSpawnConfig();
         if (spawnConfig != null
                 && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN
                 && spawnConfig instanceof SpawningAlienConfig) {
@@ -51,6 +50,21 @@ public class SpawnBehaviourFactory {
                     spawningConfig.getSpawnedAlienConfig(),
                     spawningConfig.getSpwanedPowerUpType(),
                     spawningConfig.getSpawnDelayTime());
+        }
+
+        if (spawnConfig != null
+                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_ON_DEMAND
+                && spawnConfig instanceof SpawnOnDemandConfig) {
+
+            final SpawnOnDemandConfig spawningConfig = ((SpawnOnDemandConfig) spawnConfig);
+
+            // behaviour that spawns on  request
+            return new SpawnOnDemand(
+                    alienFactory,
+                    powerUpAllocatorFactory,
+                    model,
+                    spawningConfig.getSpawnedAlienConfig(),
+                    spawningConfig.getSpwanedPowerUpTypes());
         }
 
         // behaviour that disables spawning

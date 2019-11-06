@@ -6,11 +6,10 @@ import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlienWithPath;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeSimple;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.NonNull;
 
+import static com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory.createExplosionBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
@@ -44,7 +44,7 @@ public class PathAlien extends AbstractAlienWithPath {
                 alienConfig.getAlienCharacter().getAnimation(),
                 createFireBehaviour(
                         model,
-                        alienConfig),
+                        alienConfig.getMissileConfig()),
                 new PowerUpSingle(
                         model,
                         powerUpType),
@@ -52,17 +52,21 @@ public class PathAlien extends AbstractAlienWithPath {
                         model,
                         alienFactory,
                         powerUpAllocatorFactory,
-                        alienConfig),
+                        alienConfig.getSpawnConfig()),
                 new HitAnimation(
                         sounds,
                         vibrator,
                         alienConfig.getAlienCharacter().getHitAnimation()),
-                new ExplodeSimple(
+                createExplosionBehaviour(
+                        model,
+                        alienConfig.getExplosionConfig(),
+                        alienConfig.getAlienCharacter().getExplosionAnimation(),
+                        alienFactory,
+                        powerUpAllocatorFactory,
                         sounds,
-                        vibrator,
-                        alienConfig.getAlienCharacter().getExplosionAnimation()),
+                        vibrator),
                 createSpinningBehaviour(
-                        alienConfig),
+                        alienConfig.getSpinningConfig()),
                 alienPath,
                 delayStartTime,
                 alienConfig.getEnergy(),

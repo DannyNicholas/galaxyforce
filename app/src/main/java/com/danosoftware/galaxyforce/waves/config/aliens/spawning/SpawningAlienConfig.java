@@ -1,6 +1,7 @@
-package com.danosoftware.galaxyforce.waves.config.aliens;
+package com.danosoftware.galaxyforce.waves.config.aliens.spawning;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
+import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 
 import java.util.List;
 

@@ -14,6 +14,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DescendingAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DirectionalAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.ExplodingAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowableHunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowerAlien;
@@ -24,12 +25,14 @@ import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.DescendingConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.ExplodingConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.StaticConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DescendingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
@@ -261,6 +264,39 @@ public class AlienFactory {
                                 .xStart(xStartPos)
                                 .yStart(yStartPos)
                                 .build());
+                break;
+
+            case SPLITTER:
+                SplitterConfig splitterConfig = (SplitterConfig) alienConfig;
+                for (float angle : splitterConfig.getAngles()) {
+
+                    DirectionalConfig directionalConfig = new DirectionalConfig(
+                            splitterConfig.getAlienCharacter(),
+                            splitterConfig.getEnergy(),
+                            splitterConfig.getMissileConfig(),
+                            splitterConfig.getSpawnConfig(),
+                            splitterConfig.getSpinningConfig(),
+                            splitterConfig.getExplosionConfig(),
+                            splitterConfig.getSpeed(),
+                            angle
+                    );
+
+                    aliens.add(
+                            DirectionalAlien
+                                    .builder()
+                                    .alienFactory(this)
+                                    .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                    .model(model)
+                                    .sounds(sounds)
+                                    .vibrator(vibrator)
+                                    .alienConfig(directionalConfig)
+                                    .powerUpType(powerUp)
+                                    .xStart(xStartPos)
+                                    .yStart(yStartPos)
+                                    .timeDelayStart(delay)
+                                    .restartImmediately(restartImmediately)
+                                    .build());
+                }
                 break;
 
 

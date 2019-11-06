@@ -4,6 +4,7 @@ import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
+import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -31,7 +32,7 @@ public class ExplodeSimple implements ExplodeBehaviour {
     }
 
     @Override
-    public void startExplosion() {
+    public void startExplosion(ICollidingSprite sprite) {
         explosionTime = 0f;
         sounds.play(SoundEffect.EXPLOSION);
         vibrator.vibrate(VibrateTime.TINY);

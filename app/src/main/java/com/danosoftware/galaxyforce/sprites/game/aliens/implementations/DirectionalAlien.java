@@ -1,10 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
-import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
-import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
-import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.models.assets.AlienMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -12,8 +8,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import lombok.Builder;
@@ -23,37 +18,41 @@ import static com.danosoftware.galaxyforce.sprites.game.behaviours.explode.Explo
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
 import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAnySide;
 
 /**
- * Alien that stays in a fixed position once spawned for a defined duration
- * and then explodes by spraying missiles in all directions.
+ * Alien that descends from starting position down the screen until it reaches
+ * the bottom.
  */
-public class ExplodingAlien extends AbstractAlien {
+public class DirectionalAlien extends AbstractAlien {
 
-    /* how many seconds before bomb explodes */
-    private final float timeBeforeExpolosion;
+    // offset applied to x and y every move
+    private final int xDelta;
+    private final int yDelta;
 
-    // exploding missile
-    private final AlienMissileCharacter explodingMissileCharacter;
+    /* original position */
+    private final int originalXPosition;
+    private final int originalYPosition;
 
-    private final GameModel model;
+    /* how many seconds to delay before alien starts */
+    private float timeDelayStart;
 
-    /* variable to store time passed */
-    private float timer;
-
-    private boolean isExploding;
+    /* restart alien as soon as it leaves screen? */
+    private final boolean restartImmediately;
 
     @Builder
-    public ExplodingAlien(
-            @NonNull final AlienFactory alienFactory,
+    public DirectionalAlien(
+            @NonNull AlienFactory alienFactory,
             @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
             @NonNull final GameModel model,
             @NonNull final SoundPlayerService sounds,
             @NonNull final VibrationService vibrator,
-            @NonNull final ExplodingConfig alienConfig,
+            @NonNull final DirectionalConfig alienConfig,
             final PowerUpType powerUpType,
             @NonNull final Integer xStart,
-            @NonNull final Integer yStart) {
+            @NonNull final Integer yStart,
+            @NonNull final Float timeDelayStart,
+            @NonNull final Boolean restartImmediately) {
 
         super(
                 alienConfig.getAlienCharacter(),
@@ -85,35 +84,54 @@ public class ExplodingAlien extends AbstractAlien {
                         sounds,
                         vibrator),
                 createSpinningBehaviour(
-                        alienConfig.getSpinningConfig()));
+                        alienConfig.getSpinningConfig(),
+                        alienConfig.getSpeed()));
 
-        this.model = model;
-        this.timeBeforeExpolosion = alienConfig.getExplosionTime();
-        this.explodingMissileCharacter = alienConfig.getExplodingMissileCharacter();
+        waiting();
 
-        // reset timer
-        timer = 0f;
-        isExploding = false;
+        // set positional and movement behaviour
+        this.timeDelayStart = timeDelayStart;
+        this.originalXPosition = xStart;
+        this.originalYPosition = yStart;
+        this.restartImmediately = restartImmediately;
+
+        // calculate the deltas to be applied each move
+        final int movePixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
+        final float angle = alienConfig.getAngle();
+        this.xDelta = (int) (movePixelsPerSecond * (float) Math.cos(angle));
+        this.yDelta = (int) (movePixelsPerSecond * (float) Math.sin(angle));
     }
 
     @Override
     public void animate(float deltaTime) {
-
         super.animate(deltaTime);
 
-        if (!isExploding) {
-            timer += deltaTime;
-            if (timer > timeBeforeExpolosion) {
-                explode();
-                // send missiles to model
-                AlienMissilesDto missiles = AlienMissileFactory.createAlienMissile(
-                        model.getBase(),
-                        this,
-                        AlienMissileType.SPRAY,
-                        AlienMissileSpeed.MEDIUM,
-                        explodingMissileCharacter);
-                model.fireAlienMissiles(missiles);
-                isExploding = true;
+        /* if active then alien can move */
+        if (isActive()) {
+
+            // move alien by calculated deltas
+            moveByDelta(
+                    (int) (xDelta * deltaTime),
+                    (int) (yDelta * deltaTime));
+
+            // if alien is now off screen then decide whether to destory
+            // it or reset
+            if (offScreenAnySide(this)) {
+                if (restartImmediately) {
+                    move(originalXPosition, originalYPosition);
+                } else {
+                    destroy();
+                }
+            }
+        } else if (isWaiting()) {
+
+            /* if delayStart still > 0 then count down delay */
+            if (timeDelayStart > 0) {
+                timeDelayStart -= deltaTime;
+            }
+            /* otherwise activate alien. can only happen once! */
+            else {
+                activate();
             }
         }
     }

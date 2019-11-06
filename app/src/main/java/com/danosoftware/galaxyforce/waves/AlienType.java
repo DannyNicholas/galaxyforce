@@ -23,6 +23,9 @@ public enum AlienType {
     // alien that descends to the bottom of the screen
     DESCENDING,
 
+    // alien that follows a specific direction
+    DIRECTIONAL,
+
     // alien that spins while executing it's underlying behaviour (e.g. SPINNING while DESCENDING)
     SPINNING,
 
@@ -31,4 +34,7 @@ public enum AlienType {
 
     // alien that remains static
     STATIC,
+
+    // alien that splits in different directions
+    SPLITTER,
 }

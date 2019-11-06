@@ -15,20 +15,23 @@ import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveRepeatMode;
-import com.danosoftware.galaxyforce.waves.config.aliens.DescendingConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.ExplodingConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.FollowableHunterConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.FollowerConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.HunterBoundariesConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.HunterConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.PathConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpawningAndExplodingAlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningBySpeedConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.StaticConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileMultiFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAndExplodingAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DescendingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterBoundariesConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
 
@@ -515,6 +518,30 @@ public class WaveFactory {
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
                                                                 .builder()
+                                                                .build())
+                                                .explosionConfig(
+                                                        SpawningExplosionConfig
+                                                                .builder()
+                                                                .spawnConfig(
+                                                                        SpawnOnDemandConfig
+                                                                                .builder()
+                                                                                .spwanedPowerUpTypes(
+                                                                                        NO_POWER_UPS)
+                                                                                .spawnedAlienConfig(SplitterConfig
+                                                                                        .builder()
+                                                                                        .alienCharacter(AlienCharacter.ASTEROID_MINI)
+                                                                                        .energy(1)
+                                                                                        .speed(AlienSpeed.MEDIUM)
+                                                                                        .spinningConfig(
+                                                                                                SpinningBySpeedConfig
+                                                                                                        .builder()
+                                                                                                        .build())
+                                                                                        .angles(
+                                                                                                Arrays.asList(
+                                                                                                        (float) Math.atan2(-1, -1),
+                                                                                                        (float) Math.atan2(-1, 1)))
+                                                                                        .build())
+                                                                                .build())
                                                                 .build()
                                                 )
                                                 .build(),
@@ -530,6 +557,31 @@ public class WaveFactory {
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
                                                                 .builder()
+                                                                .build()
+                                                )
+                                                .explosionConfig(
+                                                        SpawningExplosionConfig
+                                                                .builder()
+                                                                .spawnConfig(
+                                                                        SpawnOnDemandConfig
+                                                                                .builder()
+                                                                                .spwanedPowerUpTypes(
+                                                                                        NO_POWER_UPS)
+                                                                                .spawnedAlienConfig(SplitterConfig
+                                                                                        .builder()
+                                                                                        .alienCharacter(AlienCharacter.ASTEROID_MINI)
+                                                                                        .energy(1)
+                                                                                        .speed(AlienSpeed.VERY_FAST)
+                                                                                        .spinningConfig(
+                                                                                                SpinningBySpeedConfig
+                                                                                                        .builder()
+                                                                                                        .build())
+                                                                                        .angles(
+                                                                                                Arrays.asList(
+                                                                                                        (float) Math.atan2(-1, -1),
+                                                                                                        (float) Math.atan2(-1, 1)))
+                                                                                        .build())
+                                                                                .build())
                                                                 .build()
                                                 )
                                                 .build(),

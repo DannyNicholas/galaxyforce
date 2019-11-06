@@ -1,18 +1,15 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.spinner;
 
 import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningBySpeedConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.SpinningFixedAngularConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
 
 public class SpinningBehaviourFactory {
 
     public static SpinningBehaviour createSpinningBehaviour(
-            final AlienConfig alienConfig,
+            final SpinningConfig spinningConfig,
             final AlienSpeed speed) {
-
-        final SpinningConfig spinningConfig = alienConfig.getSpinningConfig();
 
         if (spinningConfig != null
                 && spinningConfig.getType() == SpinningConfig.SpinningConfigType.SPEED_BASED_ANGULAR_ROTATION
@@ -24,13 +21,11 @@ public class SpinningBehaviourFactory {
         }
 
         // create spinning behaviour based on non-speed based factory method
-        return createSpinningBehaviour(alienConfig);
+        return createSpinningBehaviour(spinningConfig);
     }
 
     public static SpinningBehaviour createSpinningBehaviour(
-            final AlienConfig alienConfig) {
-
-        final SpinningConfig spinningConfig = alienConfig.getSpinningConfig();
+            final SpinningConfig spinningConfig) {
 
         if (spinningConfig != null
                 && spinningConfig.getType() == SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION

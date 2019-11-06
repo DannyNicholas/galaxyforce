@@ -1,9 +1,14 @@
-package com.danosoftware.galaxyforce.waves.config.aliens;
+package com.danosoftware.galaxyforce.waves.config.aliens.types;
 
 import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
+import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
 
 import java.util.List;
 
@@ -27,6 +32,7 @@ public class FollowableHunterConfig extends AlienConfig {
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
             final SpinningConfig spinningConfig,
+            final ExplosionConfig explosionConfig,
             @NonNull final FollowerConfig followerConfig,
             @NonNull final Integer numberOfFollowers,
             @NonNull final List<PowerUpType> followerPowerUps,
@@ -38,7 +44,8 @@ public class FollowableHunterConfig extends AlienConfig {
                 energy,
                 missileConfig,
                 spawnConfig,
-                spinningConfig);
+                spinningConfig,
+                explosionConfig);
         this.followerConfig = followerConfig;
         this.numberOfFollowers = numberOfFollowers;
         this.followerPowerUps = followerPowerUps;

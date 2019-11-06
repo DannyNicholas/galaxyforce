@@ -1,10 +1,9 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.fire;
 
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.MissileConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.MissileFiringConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.MissileMultiFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileMultiFiringConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +15,8 @@ public class FireBehaviourFactory {
      */
     public static FireBehaviour createFireBehaviour(
             final GameModel model,
-            final AlienConfig alienConfig) {
+            final MissileConfig missileConfig) {
 
-        final MissileConfig missileConfig = alienConfig.getMissileConfig();
         if (missileConfig != null
                 && missileConfig.getType() == MissileConfig.MissileConfigType.MISSILE
                 && missileConfig instanceof MissileFiringConfig) {

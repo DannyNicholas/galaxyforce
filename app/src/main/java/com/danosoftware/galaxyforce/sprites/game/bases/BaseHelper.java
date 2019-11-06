@@ -233,7 +233,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     public void destroy() {
         this.state = EXPLODING;
         primaryBase.helperExploding(side);
-        explosion.startExplosion();
+        explosion.startExplosion(this);
         sounds.play(SoundEffect.EXPLOSION);
     }
 

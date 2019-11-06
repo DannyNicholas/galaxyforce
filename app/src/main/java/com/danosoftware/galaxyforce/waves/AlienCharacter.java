@@ -90,6 +90,14 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.ASTEROID_HIT},
             0f),
 
+    // small rocky asteroid
+    ASTEROID_MINI(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.ASTEROID_MINI},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.ASTEROID_MINI_HIT},
+            0f),
+
     // dragon
     DRAGON_HEAD(
             new ISpriteIdentifier[]{
