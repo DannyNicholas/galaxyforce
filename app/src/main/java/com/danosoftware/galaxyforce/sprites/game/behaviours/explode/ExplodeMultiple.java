@@ -24,8 +24,8 @@ import java.util.Random;
 import lombok.Getter;
 
 /**
- * Implementation of explosion behaviour that will trigger aliens to spawn
- * when the explosion happens.
+ * Implementation of explosion behaviour that will trigger multiple explosions
+ * to coincide with the alien's explosion.
  */
 public class ExplodeMultiple implements ExplodeBehaviour {
 
@@ -79,7 +79,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
         this.explodingConfig = StaticConfig
                 .builder()
                 .alienCharacter(AlienCharacter.NULL)
-                .energy(1)
+                .energy(0)
                 .explosionConfig(explosionConfig)
                 .build();
 
@@ -95,6 +95,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
         /*
          * Create a number of additional explosions around the exploding alien.
+         * The additional explosions form a circle around the alien.
          * Each extra explosion will have a position and random start time.
          * Each explosion will be triggered when elapsed time has exceeded the start time.
          */
@@ -104,8 +105,8 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
             for (int i = 0; i < numberOfExplosions; i++) {
                 final float angle = angleDelta * i;
-                final int radius = alien.halfHeight() < alien.halfHeight()
-                        ? alien.halfHeight() : alien.halfHeight();
+                final int radius = alien.halfHeight() < alien.halfWidth()
+                        ? alien.halfHeight() : alien.halfWidth();
                 final int x = alien.x() + (int) (radius * (float) Math.cos(angle));
                 final int y = alien.y() - (int) (radius * (float) Math.sin(angle));
                 timedExplosions.add(
@@ -116,7 +117,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
             }
 
             // pick a random timed-explosion and reset start time to 0.
-            // ensures at least one starts immediately
+            // ensures at least one explosion starts immediately
             int idx = random.nextInt(timedExplosions.size());
             TimedExplosion timedExplosion = timedExplosions.get(idx);
             timedExplosions.set(idx, new TimedExplosion(
@@ -157,8 +158,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
         }
 
         // the main explosion will only start if all extra explosions have already started
-        if (timedExplosions.isEmpty() && !startedMainExplosion) {
-            explosionTime = 0f;
+        if (timedExplosions.isEmpty() && !startedMainExplosion && explosionTime >= maximumExplosionStartTime) {
             startedMainExplosion = true;
             sounds.play(SoundEffect.EXPLOSION);
             vibrator.vibrate(VibrateTime.TINY);

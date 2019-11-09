@@ -46,7 +46,7 @@ public class ExplosionBehaviourFactory {
 
             final MultiExplosionConfig multiExplosionConfig = (MultiExplosionConfig) explosionConfig;
 
-            // normal explosion behaviour
+            // multi-explosion behaviour
             return new ExplodeMultiple(
                     alienFactory,
                     powerUpAllocatorFactory,
