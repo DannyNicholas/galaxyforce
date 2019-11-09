@@ -11,6 +11,6 @@ public abstract class ExplosionConfig {
     }
 
     public enum ExplosionConfigType {
-        NORMAL, NORMAL_AND_SPAWN
+        NORMAL, NORMAL_AND_SPAWN, MULTI_EXPLOSION
     }
 }

@@ -8,6 +8,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.exploding.MultiExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.NormalExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
@@ -37,6 +38,25 @@ public class ExplosionBehaviourFactory {
                     sounds,
                     vibrator,
                     explosionAnimation);
+        }
+
+        if (explosionConfig != null
+                && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.MULTI_EXPLOSION
+                && explosionConfig instanceof MultiExplosionConfig) {
+
+            final MultiExplosionConfig multiExplosionConfig = (MultiExplosionConfig) explosionConfig;
+
+            // normal explosion behaviour
+            return new ExplodeMultiple(
+                    alienFactory,
+                    powerUpAllocatorFactory,
+                    model,
+                    sounds,
+                    vibrator,
+                    explosionAnimation,
+                    multiExplosionConfig.getNumberOfExplosions(),
+                    multiExplosionConfig.getMaximumExplosionStartTime(),
+                    multiExplosionConfig.getExplosionConfig());
         }
 
         if (explosionConfig != null

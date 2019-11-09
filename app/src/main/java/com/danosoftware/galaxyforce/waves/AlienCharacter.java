@@ -12,6 +12,12 @@ import com.danosoftware.galaxyforce.view.Animation;
  */
 public enum AlienCharacter {
 
+    // special null character reserved for multi-explosions that spawn immediately exploding aliens
+    NULL(
+            new ISpriteIdentifier[]{GameSpriteIdentifier.STAR},
+            new ISpriteIdentifier[]{GameSpriteIdentifier.STAR},
+            0f),
+
     // octopus alien with flapping legs
     OCTOPUS(
             new ISpriteIdentifier[]{
