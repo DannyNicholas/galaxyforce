@@ -44,6 +44,11 @@ public abstract class AbstractMovingSprite extends AbstractSprite implements IMo
     }
 
     @Override
+    public void moveXByDelta(int xDelta) {
+        this.x += xDelta;
+    }
+
+    @Override
     public void rotate(int rotation) {
         this.rotation = rotation;
     }

@@ -15,6 +15,58 @@ import java.util.Random;
  */
 public enum SubWaveRule {
 
+    RANDOM_TOP(
+            // top
+            new SubWaveRuleProperties(
+                    true,
+                    false,
+                    0,
+                    GameConstants.SCREEN_TOP,
+                    1,
+                    0.5f,
+                    new Random().nextFloat() * 0.5f,
+                    false
+            )),
+
+    RANDOM_BOTTOM(
+            // bottom
+            new SubWaveRuleProperties(
+                    true,
+                    false,
+                    0,
+                    GameConstants.SCREEN_BOTTOM,
+                    1,
+                    0.5f,
+                    new Random().nextFloat() * 0.5f,
+                    false
+            )),
+
+    RANDOM_LEFT(
+            // left
+            new SubWaveRuleProperties(
+                    false,
+                    true,
+                    GameConstants.SCREEN_LEFT,
+                    0,
+                    1,
+                    0.5f,
+                    new Random().nextFloat() * 0.5f,
+                    false
+            )),
+
+    RANDOM_RIGHT(
+            // right
+            new SubWaveRuleProperties(
+                    false,
+                    true,
+                    GameConstants.SCREEN_RIGHT,
+                    0,
+                    1,
+                    0.5f,
+                    new Random().nextFloat() * 0.5f,
+                    false
+            )),
+
     /**
      * Asteroids that fall from top to bottom at random x positions and random
      * speeds

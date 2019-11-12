@@ -15,7 +15,6 @@ import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveRepeatMode;
-import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.MultiExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
@@ -43,6 +42,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createSurroundingAsteroids;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.flatten;
 
 
 /**
@@ -1589,6 +1590,17 @@ public class WaveFactory {
                 );
                 break;
             case 30:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                flatten(
+                                        createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 7), AlienSpeed.MEDIUM),
+                                        createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 3), AlienSpeed.FAST),
+                                        createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 5), AlienSpeed.MEDIUM)
+                                )
+                        )
+                );
+                break;
             case 31:
             case 32:
             case 33:
@@ -1736,7 +1748,7 @@ public class WaveFactory {
      * Any subsequent explosions on these aliens must also display on top so
      * reversed order is important for how aliens sprites are displayed.
      */
-    private List<IAlien> reverseAliens(List<IAlien> aliens) {
+    private static List<IAlien> reverseAliens(List<IAlien> aliens) {
         List<IAlien> reversedAlienList = new ArrayList<>();
 
         for (IAlien eachAlien : Reversed.reversed(aliens)) {
