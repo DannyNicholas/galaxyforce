@@ -14,6 +14,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DescendingAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DirectionalAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DriftingAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.ExplodingAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowableHunterAlien;
@@ -22,10 +23,10 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAl
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
-import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DescendingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
@@ -70,7 +71,6 @@ public class AlienFactory {
 
         final List<IAlien> aliens = new ArrayList<>();
         final AlienType alienType = alienConfig.getAlienType();
-        final AlienCharacter alienCharacter = alienConfig.getAlienCharacter();
 
         // create instance of the wanted alien
         switch (alienType) {
@@ -268,59 +268,19 @@ public class AlienFactory {
 
             case SPLITTER:
                 SplitterConfig splitterConfig = (SplitterConfig) alienConfig;
-                for (float angle : splitterConfig.getAngles()) {
 
-//                    DirectionalConfig directionalConfig = new DirectionalConfig(
-//                            splitterConfig.getAlienCharacter(),
-//                            splitterConfig.getEnergy(),
-//                            splitterConfig.getMissileConfig(),
-//                            splitterConfig.getSpawnConfig(),
-//                            splitterConfig.getSpinningConfig(),
-//                            splitterConfig.getExplosionConfig(),
-//                            splitterConfig.getSpeed(),
-//                            angle
-//                    );
-
-                    DriftingConfig driftingConfig = new DriftingConfig(
-                            splitterConfig.getAlienCharacter(),
-                            splitterConfig.getEnergy(),
-                            splitterConfig.getMissileConfig(),
-                            splitterConfig.getSpawnConfig(),
-                            splitterConfig.getSpinningConfig(),
-                            splitterConfig.getExplosionConfig(),
-                            splitterConfig.getSpeed(),
-                            angle
-                    );
-
-                    aliens.add(
-//                            DirectionalAlien
-//                                    .builder()
-//                                    .alienFactory(this)
-//                                    .powerUpAllocatorFactory(powerUpAllocatorFactory)
-//                                    .model(model)
-//                                    .sounds(sounds)
-//                                    .vibrator(vibrator)
-//                                    .alienConfig(directionalConfig)
-//                                    .powerUpType(powerUp)
-//                                    .xStart(xStartPos)
-//                                    .yStart(yStartPos)
-//                                    .timeDelayStart(delay)
-//                                    .restartImmediately(restartImmediately)
-//                                    .build());
-                            DriftingAlien
-                                    .builder()
-                                    .alienFactory(this)
-                                    .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                    .model(model)
-                                    .sounds(sounds)
-                                    .vibrator(vibrator)
-                                    .alienConfig(driftingConfig)
-                                    .powerUpType(powerUp)
-                                    .xStart(xStartPos)
-                                    .yStart(yStartPos)
-                                    .timeDelayStart(delay)
-                                    .restartImmediately(restartImmediately)
-                                    .build());
+                for (AlienConfig splitAlienConfig : splitterConfig.getAlienConfigs()) {
+                    aliens.addAll(
+                            createAlien(
+                                    splitAlienConfig,
+                                    powerUpAllocatorFactory,
+                                    powerUp,    // same power-up for all split aliens
+                                    false,
+                                    false,
+                                    xStart,
+                                    yStart,
+                                    0f,
+                                    false));
                 }
                 break;
 
@@ -335,6 +295,25 @@ public class AlienFactory {
                                 .sounds(sounds)
                                 .vibrator(vibrator)
                                 .alienConfig(driftingConfig)
+                                .powerUpType(powerUp)
+                                .xStart(xStartPos)
+                                .yStart(yStartPos)
+                                .timeDelayStart(delay)
+                                .restartImmediately(restartImmediately)
+                                .build());
+                break;
+
+            case DIRECTIONAL:
+                DirectionalConfig directionalConfig = (DirectionalConfig) alienConfig;
+                aliens.add(
+                        DirectionalAlien
+                                .builder()
+                                .alienFactory(this)
+                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                .model(model)
+                                .sounds(sounds)
+                                .vibrator(vibrator)
+                                .alienConfig(directionalConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
                                 .yStart(yStartPos)

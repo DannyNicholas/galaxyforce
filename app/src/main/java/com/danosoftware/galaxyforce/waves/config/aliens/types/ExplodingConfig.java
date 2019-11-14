@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.waves.config.aliens.types;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.BasicAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class ExplodingConfig extends AlienConfig {
+public class ExplodingConfig extends BasicAlienConfig {
 
     private final float explosionTime;
     private final AlienMissileCharacter explodingMissileCharacter;

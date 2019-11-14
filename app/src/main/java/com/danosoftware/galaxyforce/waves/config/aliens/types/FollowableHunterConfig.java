@@ -4,7 +4,7 @@ import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.AlienType;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.BasicAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class FollowableHunterConfig extends AlienConfig {
+public class FollowableHunterConfig extends BasicAlienConfig {
 
     private final FollowerConfig followerConfig;
     private final int numberOfFollowers;
