@@ -112,7 +112,7 @@ public class WaveFactoryHelper {
         );
     }
 
-    // drifting mini-asteroid drifting that will split off
+    // drifting mini-asteroid that will split off
     private static AlienConfig createMiniDriftingAsteroid(
             final float angle,
             final AlienSpeed speed) {
@@ -149,11 +149,11 @@ public class WaveFactoryHelper {
     }
 
     /*
-     * Flatten an array of sub-wave configs into a single arrray
+     * Flatten an array of sub-wave configs into a single array
      */
-    private static SubWaveConfig[] flatten(SubWaveConfig[]... lists) {
+    private static SubWaveConfig[] flatten(SubWaveConfig[]... configs) {
         List<SubWaveConfig> list = new ArrayList<>();
-        for (SubWaveConfig[] array: lists) {
+        for (SubWaveConfig[] array: configs) {
             list.addAll(Arrays.asList(array));
         }
         SubWaveConfig[] itemsArray = new SubWaveConfig[list.size()];

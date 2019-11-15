@@ -26,8 +26,8 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenRi
 import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenTop;
 
 /**
- * Alien that descends from starting position down the screen until it reaches
- * the bottom.
+ * Alien that drifts from starting position across the screen.
+ * When it reaches the edge of the screen, it reappears on the other side.
  */
 public class DriftingAlien extends AbstractAlien {
 

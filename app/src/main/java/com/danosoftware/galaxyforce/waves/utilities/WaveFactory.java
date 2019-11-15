@@ -43,6 +43,7 @@ import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.HALF_PI;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.NO_POWER_UPS;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.QUARTER_PI;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createAsteroidField;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createMiniDirectionalAsteroid;
@@ -54,8 +55,6 @@ import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.cre
  * aliens following a path
  */
 public class WaveFactory {
-
-    private static final List<PowerUpType> NO_POWER_UPS = Collections.emptyList();
 
     private final WaveCreationUtils creationUtils;
     private final PowerUpAllocatorFactory powerUpAllocatorFactory;
@@ -536,7 +535,7 @@ public class WaveFactory {
                                                                                         .builder()
                                                                                         .alienConfigs(
                                                                                                 Arrays.asList(
-                                                                                                        createMiniDirectionalAsteroid( -HALF_PI - QUARTER_PI, AlienSpeed.MEDIUM),
+                                                                                                        createMiniDirectionalAsteroid(-HALF_PI - QUARTER_PI, AlienSpeed.MEDIUM),
                                                                                                         createMiniDirectionalAsteroid(-HALF_PI + QUARTER_PI, AlienSpeed.MEDIUM)))
                                                                                         .build())
                                                                                 .build())
@@ -569,7 +568,7 @@ public class WaveFactory {
                                                                                         .builder()
                                                                                         .alienConfigs(
                                                                                                 Arrays.asList(
-                                                                                                        createMiniDirectionalAsteroid( -HALF_PI - QUARTER_PI, AlienSpeed.VERY_FAST),
+                                                                                                        createMiniDirectionalAsteroid(-HALF_PI - QUARTER_PI, AlienSpeed.VERY_FAST),
                                                                                                         createMiniDirectionalAsteroid(-HALF_PI + QUARTER_PI, AlienSpeed.VERY_FAST)))
                                                                                         .build())
                                                                                 .build())
