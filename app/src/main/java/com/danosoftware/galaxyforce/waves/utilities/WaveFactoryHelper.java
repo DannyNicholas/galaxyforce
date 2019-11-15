@@ -1,17 +1,24 @@
 package com.danosoftware.galaxyforce.waves.utilities;
 
+import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
+import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
+import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
+import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
 
 import java.util.ArrayList;
@@ -46,7 +53,8 @@ public class WaveFactoryHelper {
         return flatten(
                 createSurroundingAsteroids(-HALF_PI - (PI / 5.0f), AlienSpeed.MEDIUM, powerUpAllocator),
                 createSurroundingAsteroids(-HALF_PI + (PI / 7.0f), AlienSpeed.FAST, powerUpAllocator),
-                createSurroundingAsteroids(-HALF_PI + (PI / 3.0f), AlienSpeed.MEDIUM, powerUpAllocator)
+                createSurroundingAsteroids(-HALF_PI + (PI / 3.0f), AlienSpeed.MEDIUM, powerUpAllocator),
+                flyingSaucer()
         );
     }
 
@@ -158,5 +166,25 @@ public class WaveFactoryHelper {
         }
         SubWaveConfig[] itemsArray = new SubWaveConfig[list.size()];
         return list.toArray(itemsArray);
+    }
+
+    private static SubWaveConfig[] flyingSaucer() {
+        return new SubWaveConfig[] {new SubWavePathConfig(
+                SubWavePathRule.SINGLE_ARC,
+                PathConfig
+                        .builder()
+                        .alienCharacter(AlienCharacter.DROOPY)
+                        .energy(1)
+                        .missileConfig(
+                                MissileFiringConfig
+                                        .builder()
+                                        .missileType(AlienMissileType.ROTATED)
+                                        .missileCharacter(AlienMissileCharacter.LASER)
+                                        .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                        .missileFrequency(6.5f)
+                                        .build())
+                        .build(),
+                Collections.singletonList(PowerUpType.LIFE)
+        )};
     }
 }

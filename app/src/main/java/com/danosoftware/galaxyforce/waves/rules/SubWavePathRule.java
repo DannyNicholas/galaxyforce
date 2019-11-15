@@ -397,6 +397,19 @@ public enum SubWavePathRule {
             )
     ),
 
+    SINGLE_ARC(
+            new SubWavePathRuleProperties(
+                    Path.SINGLE_ARC,
+                    PathSpeed.VERY_SLOW,
+                    1,
+                    0,
+                    2.5f,
+                    true,
+                    new PointTranslatorChain()
+                            .add(new OffsetYPointTranslator(125))
+            )
+    ),
+
     BOMBER_RUN(
             new SubWavePathRuleProperties(
                     Path.SPACE_INVADER,
