@@ -35,15 +35,8 @@ public class DriftingAlien extends AbstractAlien {
     private final int xDelta;
     private final int yDelta;
 
-    /* original position */
-    private final int originalXPosition;
-    private final int originalYPosition;
-
     /* how many seconds to delay before alien starts */
     private float timeDelayStart;
-
-    /* restart alien as soon as it leaves screen? */
-    private final boolean restartImmediately;
 
     @Builder
     public DriftingAlien(
@@ -96,18 +89,10 @@ public class DriftingAlien extends AbstractAlien {
 
         // set positional and movement behaviour
         this.timeDelayStart = timeDelayStart;
-        this.originalXPosition = xStart;
-        this.originalYPosition = yStart;
-        this.restartImmediately = restartImmediately;
 
         // calculate the deltas to be applied each move
         final int movePixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
         final float angle = alienConfig.getAngle();
-
-        // calculate angle from missile position to base
-//        final double angle = Math.atan2(
-//                SCREEN_MID_Y - yStart,
-//                SCREEN_MID_X - xStart);
 
         this.xDelta = (int) (movePixelsPerSecond * Math.cos(angle));
         this.yDelta = (int) (movePixelsPerSecond * Math.sin(angle));

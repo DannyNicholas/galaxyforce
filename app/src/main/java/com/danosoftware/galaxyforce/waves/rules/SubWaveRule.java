@@ -24,7 +24,7 @@ public enum SubWaveRule {
                     GameConstants.SCREEN_TOP,
                     1,
                     0.5f,
-                    new Random().nextFloat() * 0.5f,
+                    new Random().nextFloat() * 2f,
                     false
             )),
 
@@ -37,7 +37,7 @@ public enum SubWaveRule {
                     GameConstants.SCREEN_BOTTOM,
                     1,
                     0.5f,
-                    new Random().nextFloat() * 0.5f,
+                    new Random().nextFloat() * 2f,
                     false
             )),
 
@@ -50,7 +50,7 @@ public enum SubWaveRule {
                     0,
                     1,
                     0.5f,
-                    new Random().nextFloat() * 0.5f,
+                    new Random().nextFloat() * 2f,
                     false
             )),
 
@@ -63,7 +63,7 @@ public enum SubWaveRule {
                     0,
                     1,
                     0.5f,
-                    new Random().nextFloat() * 0.5f,
+                    new Random().nextFloat() * 2f,
                     false
             )),
 

@@ -44,9 +44,9 @@ public class WaveFactoryHelper {
                 0);
 
         return flatten(
-                createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 7), AlienSpeed.MEDIUM, powerUpAllocator),
-                createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 3), AlienSpeed.FAST, powerUpAllocator),
-                createSurroundingAsteroids((float) (Math.atan2(-1, 0) + Math.PI / 5), AlienSpeed.MEDIUM, powerUpAllocator)
+                createSurroundingAsteroids(-HALF_PI - (PI / 5.0f), AlienSpeed.MEDIUM, powerUpAllocator),
+                createSurroundingAsteroids(-HALF_PI + (PI / 7.0f), AlienSpeed.FAST, powerUpAllocator),
+                createSurroundingAsteroids(-HALF_PI + (PI / 3.0f), AlienSpeed.MEDIUM, powerUpAllocator)
         );
     }
 
