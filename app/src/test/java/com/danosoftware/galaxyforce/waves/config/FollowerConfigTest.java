@@ -19,6 +19,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienCo
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
+import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import org.junit.Test;
 
@@ -34,6 +35,7 @@ public class FollowerConfigTest {
 
     private final AlienFactory factory = new AlienFactory(
             mock(GameModel.class),
+            mock(PowerUpAllocatorFactory.class),
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );

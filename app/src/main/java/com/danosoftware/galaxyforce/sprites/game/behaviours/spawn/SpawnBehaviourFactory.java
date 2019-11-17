@@ -10,13 +10,23 @@ import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
 
+    private final GameModel model;
+    private final AlienFactory alienFactory;
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
+
+    public SpawnBehaviourFactory(
+            final GameModel model,
+            final AlienFactory alienFactory,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory) {
+        this.model = model;
+        this.alienFactory = alienFactory;
+        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
+    }
+
     /**
      * Create spawn behaviour based on the supplied alien config.
      */
-    public static SpawnBehaviour createSpawnBehaviour(
-            final GameModel model,
-            final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
+    public SpawnBehaviour createSpawnBehaviour(
             final SpawnConfig spawnConfig) {
 
         if (spawnConfig != null

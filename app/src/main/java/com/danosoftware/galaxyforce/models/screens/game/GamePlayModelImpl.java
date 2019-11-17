@@ -652,8 +652,8 @@ public class GamePlayModelImpl implements Model, GameModel {
             GameModel model) {
         PathLoader pathLoader = new PathLoader(assets);
         PathFactory pathFactory = new PathFactory(pathLoader);
-        AlienFactory alienFactory = new AlienFactory(model, sounds, vibrator);
         PowerUpAllocatorFactory powerUpAllocatorFactory = new PowerUpAllocatorFactory(model);
+        AlienFactory alienFactory = new AlienFactory(model, powerUpAllocatorFactory, sounds, vibrator);
         WaveCreationUtils creationUtils = new WaveCreationUtils(alienFactory, pathFactory, powerUpAllocatorFactory);
         WaveFactory waveFactory = new WaveFactory(creationUtils, powerUpAllocatorFactory);
         WaveManager waveManager = new WaveManagerImpl(waveFactory);

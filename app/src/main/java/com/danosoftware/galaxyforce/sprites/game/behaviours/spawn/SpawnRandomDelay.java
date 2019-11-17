@@ -48,7 +48,6 @@ public class SpawnRandomDelay implements SpawnBehaviour {
     private final static int POWER_UP_MULTIPLIER = 10;
 
     private final AlienFactory alienFactory;
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     /**
      * @param alienFactory     - factory to create aliens
@@ -67,7 +66,6 @@ public class SpawnRandomDelay implements SpawnBehaviour {
             final float minSpawnDelay,
             final float spawnDelayRandom) {
         this.alienFactory = alienFactory;
-        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
         this.model = model;
         this.alienConfig = alienConfig;
         this.minSpawnDelay = minSpawnDelay;
@@ -107,7 +105,6 @@ public class SpawnRandomDelay implements SpawnBehaviour {
         // create and send new alien bean
         SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
                 alienConfig,
-                powerUpAllocatorFactory,
                 powerUpAllocator.allocate(),
                 alien.x(),
                 alien.y());

@@ -10,11 +10,16 @@ import java.util.List;
 
 public class FireBehaviourFactory {
 
+    private final GameModel model;
+
+    public FireBehaviourFactory(final GameModel model) {
+        this.model = model;
+    }
+
     /**
      * Create fire behaviour based on the supplied  alien config.
      */
-    public static FireBehaviour createFireBehaviour(
-            final GameModel model,
+    public FireBehaviour createFireBehaviour(
             final MissileConfig missileConfig) {
 
         if (missileConfig != null

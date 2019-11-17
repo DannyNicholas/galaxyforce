@@ -42,10 +42,10 @@ public class HunterConfigTest {
 
     private final AlienFactory factory = new AlienFactory(
             mock(GameModel.class),
+            mock(PowerUpAllocatorFactory.class),
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
 
     @Test
     public void shouldCreateBasicConfiguredHunter() {
@@ -71,7 +71,6 @@ public class HunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
@@ -132,7 +131,6 @@ public class HunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,

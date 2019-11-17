@@ -39,6 +39,7 @@ public class DescendingConfigTest {
 
     private final AlienFactory factory = new AlienFactory(
             mock(GameModel.class),
+            mock(PowerUpAllocatorFactory.class),
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
@@ -62,7 +63,6 @@ public class DescendingConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
@@ -110,7 +110,6 @@ public class DescendingConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,

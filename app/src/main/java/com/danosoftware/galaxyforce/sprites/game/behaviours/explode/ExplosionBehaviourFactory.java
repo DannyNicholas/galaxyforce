@@ -11,21 +11,34 @@ import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfi
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.MultiExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.NormalExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
-import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class ExplosionBehaviourFactory {
+
+    private final GameModel model;
+    private final AlienFactory alienFactory;
+    private final SoundPlayerService sounds;
+    private final VibrationService vibrator;
+    private final SpawnBehaviourFactory spawnFactory;
+
+    public ExplosionBehaviourFactory(
+            final GameModel model,
+            final AlienFactory alienFactory,
+            final SpawnBehaviourFactory spawnFactory,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator) {
+        this.model = model;
+        this.alienFactory = alienFactory;
+        this.spawnFactory = spawnFactory;
+        this.sounds = sounds;
+        this.vibrator = vibrator;
+    }
 
     /**
      * Create explosion behaviour based on the supplied  alien config.
      */
-    public static ExplodeBehaviour createExplosionBehaviour(
-            final GameModel model,
+    public ExplodeBehaviour createExplosionBehaviour(
             final ExplosionConfig explosionConfig,
-            final Animation explosionAnimation,
-            final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator) {
+            final Animation explosionAnimation) {
 
         if (explosionConfig != null
                 && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL
@@ -49,7 +62,6 @@ public class ExplosionBehaviourFactory {
             // multi-explosion behaviour
             return new ExplodeMultiple(
                     alienFactory,
-                    powerUpAllocatorFactory,
                     model,
                     sounds,
                     vibrator,
@@ -65,10 +77,7 @@ public class ExplosionBehaviourFactory {
 
             // behaviour that spawns aliens on explosion
             final SpawningExplosionConfig spawningExplosionConfig = (SpawningExplosionConfig) explosionConfig;
-            final SpawnBehaviour spawner = SpawnBehaviourFactory.createSpawnBehaviour(
-                    model,
-                    alienFactory,
-                    powerUpAllocatorFactory,
+            final SpawnBehaviour spawner = spawnFactory.createSpawnBehaviour(
                     spawningExplosionConfig.getSpawnConfig());
 
             // create explode behaviour that wraps a normal explosion

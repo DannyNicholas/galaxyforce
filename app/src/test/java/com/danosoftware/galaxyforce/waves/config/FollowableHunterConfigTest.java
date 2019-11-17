@@ -48,22 +48,21 @@ import static org.mockito.Mockito.when;
 
 public class FollowableHunterConfigTest {
 
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
     private final AlienFactory factory = new AlienFactory(
             mock(GameModel.class),
+            powerUpAllocatorFactory,
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
     private final PowerUpAllocator powerUpAllocator = mock(PowerUpAllocator.class);
-    private PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     @Before
     public void setUp() {
-        powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
         when(powerUpAllocatorFactory.createAllocator(
                 ArgumentMatchers.<PowerUpType>anyList(),
                 anyInt()))
                 .thenReturn(powerUpAllocator);
-
     }
 
 
@@ -101,7 +100,6 @@ public class FollowableHunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,
@@ -173,7 +171,6 @@ public class FollowableHunterConfigTest {
 
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 false,
                 false,

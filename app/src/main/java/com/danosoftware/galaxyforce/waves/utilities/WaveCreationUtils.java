@@ -107,7 +107,6 @@ public class WaveCreationUtils {
             for (int i = 0; i < props.getNumberOfAliens(); i++) {
                 aliens.addAll(alienFactory.createAlien(
                         alienConfig,
-                        powerUpAllocatorFactory,    // factory that can be re-used to allocate power-ups to spawning aliens
                         powerUpAllocator.allocate(),
                         props.isxRandom(),
                         props.isyRandom(),
@@ -137,7 +136,6 @@ public class WaveCreationUtils {
             aliensOnPath.addAll(
                     alienFactory.createAlien(
                             alienConfig,
-                            powerUpAllocatorFactory,    // factory that can be re-used to allocate power-ups to spawning aliens
                             powerUpAllocator.allocate(),
                             path,
                             (i * props.getDelayBetweenAliens()) + props.getDelayOffet(),

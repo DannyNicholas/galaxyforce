@@ -2,29 +2,24 @@ package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
-import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
-import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.helpers.BoundariesChecker;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitAnimation;
-import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpSingle;
-import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
-import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.List;
 
 import lombok.Builder;
 import lombok.NonNull;
-
-import static com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory.createExplosionBehaviour;
-import static com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory.createFireBehaviour;
-import static com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory.createSpawnBehaviour;
-import static com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory.createSpinningBehaviour;
 
 /**
  * Alien that is the head of a chain of following aliens.
@@ -63,11 +58,13 @@ public class FollowableHunterAlien extends AbstractAlien {
 
     @Builder
     public FollowableHunterAlien(
-            @NonNull final AlienFactory alienFactory,
-            @NonNull final PowerUpAllocatorFactory powerUpAllocatorFactory,
+            @NonNull final ExplosionBehaviourFactory explosionFactory,
+            @NonNull final SpawnBehaviourFactory spawnFactory,
+            @NonNull final SpinningBehaviourFactory spinningFactory,
+            @NonNull final PowerUpBehaviourFactory powerUpFactory,
+            @NonNull final FireBehaviourFactory fireFactory,
+            @NonNull final HitBehaviourFactory hitFactory,
             @NonNull GameModel model,
-            @NonNull final SoundPlayerService sounds,
-            @NonNull final VibrationService vibrator,
             @NonNull final FollowableHunterConfig alienConfig,
             final PowerUpType powerUpType,
             @NonNull final Integer xStart,
@@ -81,30 +78,18 @@ public class FollowableHunterAlien extends AbstractAlien {
                 xStart,
                 yStart,
                 alienConfig.getEnergy(),
-                createFireBehaviour(
-                        model,
+                fireFactory.createFireBehaviour(
                         alienConfig.getMissileConfig()),
-                new PowerUpSingle(
-                        model,
+                powerUpFactory.createPowerUpBehaviour(
                         powerUpType),
-                createSpawnBehaviour(
-                        model,
-                        alienFactory,
-                        powerUpAllocatorFactory,
+                spawnFactory.createSpawnBehaviour(
                         alienConfig.getSpawnConfig()),
-                new HitAnimation(
-                        sounds,
-                        vibrator,
+                hitFactory.createHitBehaviour(
                         alienConfig.getAlienCharacter().getHitAnimation()),
-                createExplosionBehaviour(
-                        model,
+                explosionFactory.createExplosionBehaviour(
                         alienConfig.getExplosionConfig(),
-                        alienConfig.getAlienCharacter().getExplosionAnimation(),
-                        alienFactory,
-                        powerUpAllocatorFactory,
-                        sounds,
-                        vibrator),
-                createSpinningBehaviour(
+                        alienConfig.getAlienCharacter().getExplosionAnimation()),
+                spinningFactory.createSpinningBehaviour(
                         alienConfig.getSpinningConfig(),
                         alienConfig.getSpeed()));
 

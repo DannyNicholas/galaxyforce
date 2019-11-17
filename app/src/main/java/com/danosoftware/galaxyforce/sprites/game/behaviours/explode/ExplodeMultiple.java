@@ -14,7 +14,6 @@ import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
-import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,7 +42,6 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
     private final GameModel model;
     private final AlienFactory alienFactory;
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     private ISpriteIdentifier spriteToExplode;
     private boolean startedMainExplosion;
@@ -59,7 +57,6 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
     public ExplodeMultiple(
             final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final GameModel model,
             SoundPlayerService sounds,
             VibrationService vibrator,
@@ -72,7 +69,6 @@ public class ExplodeMultiple implements ExplodeBehaviour {
         this.vibrator = vibrator;
         this.model = model;
         this.alienFactory = alienFactory;
-        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
 
         this.numberOfExplosions = numberOfExplosions;
         this.maximumExplosionStartTime = maximumExplosionStartTime;
@@ -146,7 +142,6 @@ public class ExplodeMultiple implements ExplodeBehaviour {
                 // create alien, immediately explode it and then spawn to model
                 SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
                         explodingConfig,
-                        powerUpAllocatorFactory,
                         null,
                         timedExplosion.getX(),
                         timedExplosion.getY());

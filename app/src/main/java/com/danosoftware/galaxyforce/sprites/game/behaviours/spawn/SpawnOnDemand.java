@@ -27,7 +27,6 @@ public class SpawnOnDemand implements SpawnBehaviour {
     private final PowerUpAllocator powerUpAllocator;
 
     private final AlienFactory alienFactory;
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     /**
      * @param alienFactory     - factory to create aliens
@@ -43,7 +42,6 @@ public class SpawnOnDemand implements SpawnBehaviour {
             final AlienConfig alienConfig,
             final List<PowerUpType> powerUpTypes) {
         this.alienFactory = alienFactory;
-        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
         this.model = model;
         this.alienConfig = alienConfig;
 
@@ -63,7 +61,6 @@ public class SpawnOnDemand implements SpawnBehaviour {
         // create and send new alien bean
         SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
                 alienConfig,
-                powerUpAllocatorFactory,
                 powerUpAllocator.allocate(),
                 alien.x(),
                 alien.y());

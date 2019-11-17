@@ -39,10 +39,10 @@ public class PathConfigTest {
 
     private final AlienFactory factory = new AlienFactory(
             mock(GameModel.class),
+            mock(PowerUpAllocatorFactory.class),
             mock(SoundPlayerService.class),
             mock(VibrationService.class)
     );
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
 
     @Test
     public void shouldCreateBasicConfiguredPathAlien() {
@@ -62,7 +62,6 @@ public class PathConfigTest {
         points.add(new Point(0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 points,
                 2f,
@@ -107,7 +106,6 @@ public class PathConfigTest {
         points.add(new Point(0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
-                powerUpAllocatorFactory,
                 PowerUpType.LIFE,
                 points,
                 2f,

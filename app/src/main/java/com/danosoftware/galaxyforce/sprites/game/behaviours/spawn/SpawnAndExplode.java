@@ -39,7 +39,6 @@ public class SpawnAndExplode implements SpawnBehaviour {
     private final PowerUpAllocator powerUpAllocator;
 
     private final AlienFactory alienFactory;
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
     /**
      * @param alienFactory     - factory to create aliens
@@ -59,7 +58,6 @@ public class SpawnAndExplode implements SpawnBehaviour {
 
         this.delayUntilSpawn = delayUntilSpawn;
         this.alienFactory = alienFactory;
-        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
         this.model = model;
         this.alienConfig = alienConfig;
 
@@ -89,7 +87,6 @@ public class SpawnAndExplode implements SpawnBehaviour {
         // create and send new alien bean
         SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
                 alienConfig,
-                powerUpAllocatorFactory,
                 powerUpAllocator.allocate(),
                 alien.x(),
                 alien.y());

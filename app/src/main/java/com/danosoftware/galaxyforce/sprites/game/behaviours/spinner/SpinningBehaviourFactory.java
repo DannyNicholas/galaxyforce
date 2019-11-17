@@ -7,7 +7,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAn
 
 public class SpinningBehaviourFactory {
 
-    public static SpinningBehaviour createSpinningBehaviour(
+    public SpinningBehaviour createSpinningBehaviour(
             final SpinningConfig spinningConfig,
             final AlienSpeed speed) {
 
@@ -24,7 +24,7 @@ public class SpinningBehaviourFactory {
         return createSpinningBehaviour(spinningConfig);
     }
 
-    public static SpinningBehaviour createSpinningBehaviour(
+    public SpinningBehaviour createSpinningBehaviour(
             final SpinningConfig spinningConfig) {
 
         if (spinningConfig != null

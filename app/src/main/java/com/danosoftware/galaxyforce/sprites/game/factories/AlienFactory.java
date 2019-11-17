@@ -22,6 +22,12 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Follower
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticAlien;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
+import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
@@ -45,16 +51,27 @@ public class AlienFactory {
     private final static String TAG = "AlienFactory";
 
     private final GameModel model;
-    private final SoundPlayerService sounds;
-    private final VibrationService vibrator;
+    private final ExplosionBehaviourFactory explosionFactory;
+    private final SpawnBehaviourFactory spawnFactory;
+    private final SpinningBehaviourFactory spinningFactory;
+    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
+    private final PowerUpBehaviourFactory powerUpFactory;
+    private final FireBehaviourFactory fireFactory;
+    private final HitBehaviourFactory hitFactory;
 
     public AlienFactory(
-            GameModel model,
-            SoundPlayerService sounds,
-            VibrationService vibrator) {
+            final GameModel model,
+            final PowerUpAllocatorFactory powerUpAllocatorFactory,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator) {
         this.model = model;
-        this.sounds = sounds;
-        this.vibrator = vibrator;
+        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
+        this.spawnFactory = new SpawnBehaviourFactory(model, this, powerUpAllocatorFactory);
+        this.explosionFactory = new ExplosionBehaviourFactory(model, this, spawnFactory, sounds, vibrator);
+        this.spinningFactory =  new SpinningBehaviourFactory();
+        this.powerUpFactory = new PowerUpBehaviourFactory(model);
+        this.fireFactory = new FireBehaviourFactory(model);
+        this.hitFactory = new HitBehaviourFactory(sounds, vibrator);
     }
 
     /**
@@ -63,7 +80,6 @@ public class AlienFactory {
      */
     public List<IAlien> createAlien(
             final AlienConfig alienConfig,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUp,
             final List<Point> alienPath,
             final float delay,
@@ -79,11 +95,12 @@ public class AlienFactory {
                 aliens.add(
                         PathAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .alienConfig((PathConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .alienPath(alienPath)
@@ -109,7 +126,6 @@ public class AlienFactory {
      */
     public List<IAlien> createAlien(
             final AlienConfig alienConfig,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUp,
             final boolean xRandom,
             final boolean yRandom,
@@ -153,11 +169,13 @@ public class AlienFactory {
                 aliens.add(
                         HunterAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
                                 .alienConfig((HunterConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -170,11 +188,12 @@ public class AlienFactory {
                 aliens.add(
                         DescendingAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .alienConfig((DescendingConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -188,11 +207,13 @@ public class AlienFactory {
                 aliens.add(
                         ExplodingAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
                                 .alienConfig((ExplodingConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -219,11 +240,12 @@ public class AlienFactory {
                     followers.add(
                             FollowerAlien
                                     .builder()
-                                    .alienFactory(this)
-                                    .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                    .model(model)
-                                    .sounds(sounds)
-                                    .vibrator(vibrator)
+                                    .explosionFactory(explosionFactory)
+                                    .spawnFactory(spawnFactory)
+                                    .spinningFactory(spinningFactory)
+                                    .powerUpFactory(powerUpFactory)
+                                    .fireFactory(fireFactory)
+                                    .hitFactory(hitFactory)
                                     .alienConfig(followableHunterConfig.getFollowerConfig())
                                     .powerUpType(powerUpAllocator.allocate())
                                     .xStart(xStartPos)
@@ -235,11 +257,13 @@ public class AlienFactory {
                 aliens.add(
                         FollowableHunterAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
                                 .alienConfig(followableHunterConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -254,11 +278,12 @@ public class AlienFactory {
                 aliens.add(
                         StaticAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .alienConfig((StaticConfig) alienConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -273,7 +298,6 @@ public class AlienFactory {
                     aliens.addAll(
                             createAlien(
                                     splitAlienConfig,
-                                    powerUpAllocatorFactory,
                                     powerUp,    // same power-up for all split aliens
                                     false,
                                     false,
@@ -289,11 +313,12 @@ public class AlienFactory {
                 aliens.add(
                         DriftingAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .alienConfig(driftingConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -308,11 +333,12 @@ public class AlienFactory {
                 aliens.add(
                         DirectionalAlien
                                 .builder()
-                                .alienFactory(this)
-                                .powerUpAllocatorFactory(powerUpAllocatorFactory)
-                                .model(model)
-                                .sounds(sounds)
-                                .vibrator(vibrator)
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
                                 .alienConfig(directionalConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
@@ -341,14 +367,12 @@ public class AlienFactory {
      */
     public SpawnedAliensDto createSpawnedAlien(
             final AlienConfig alienConfig,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
             final PowerUpType powerUpType,
             final int xStart,
             final int yStart) {
 
         final List<IAlien> aliens = createAlien(
                 alienConfig,
-                powerUpAllocatorFactory,
                 powerUpType,
                 false,
                 false,
