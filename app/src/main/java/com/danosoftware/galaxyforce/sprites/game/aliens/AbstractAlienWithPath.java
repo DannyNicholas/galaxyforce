@@ -17,7 +17,7 @@ import static com.danosoftware.galaxyforce.sprites.game.aliens.enums.AlienState.
 /**
  * @author Danny
  */
-public abstract class AbstractAlienWithPath extends AbstractAlien implements IAlienWithPath {
+public abstract class AbstractAlienWithPath extends AbstractAlien implements IResettableAlien {
     /*
      * reference path this alien will follow in list of x,y co-ordinates (Point
      * objects)
@@ -160,6 +160,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IAl
      * Get the original time delay. Can be used to calculate a corrected time
      * delay offset.
      */
+    @Override
     public float getTimeDelay() {
         return originalTimeDelayStart;
     }

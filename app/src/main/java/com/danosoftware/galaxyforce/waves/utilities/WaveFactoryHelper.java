@@ -14,7 +14,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplos
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
@@ -30,6 +30,7 @@ public class WaveFactoryHelper {
 
     public static final List<PowerUpType> NO_POWER_UPS = Collections.emptyList();
     public static final float HALF_PI = (float)(Math.PI/2f);
+    public static final float DOWNWARDS = -HALF_PI;
     public static final float PI = (float)(Math.PI);
     public static final float QUARTER_PI = (float)(Math.PI/4f);
 
@@ -51,9 +52,9 @@ public class WaveFactoryHelper {
                 0);
 
         return flatten(
-                createSurroundingAsteroids(-HALF_PI - (PI / 5.0f), AlienSpeed.MEDIUM, powerUpAllocator),
-                createSurroundingAsteroids(-HALF_PI + (PI / 7.0f), AlienSpeed.FAST, powerUpAllocator),
-                createSurroundingAsteroids(-HALF_PI + (PI / 3.0f), AlienSpeed.MEDIUM, powerUpAllocator),
+                createSurroundingAsteroids(DOWNWARDS - (PI / 5.0f), AlienSpeed.MEDIUM, powerUpAllocator),
+                createSurroundingAsteroids(DOWNWARDS + (PI / 7.0f), AlienSpeed.FAST, powerUpAllocator),
+                createSurroundingAsteroids(DOWNWARDS + (PI / 3.0f), AlienSpeed.MEDIUM, powerUpAllocator),
                 flyingSaucer()
         );
     }
@@ -143,7 +144,7 @@ public class WaveFactoryHelper {
             final float angle,
             final AlienSpeed speed) {
 
-        return DirectionalConfig
+        return DirectionalDestroyableConfig
             .builder()
             .alienCharacter(AlienCharacter.ASTEROID_MINI)
             .energy(1)

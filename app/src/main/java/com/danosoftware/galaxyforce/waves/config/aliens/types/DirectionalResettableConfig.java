@@ -14,13 +14,13 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class DirectionalConfig extends BasicAlienConfig {
+public class DirectionalResettableConfig extends BasicAlienConfig {
 
     private final AlienSpeed speed;
     private final Float angle;
 
     @Builder
-    public DirectionalConfig(
+    public DirectionalResettableConfig(
             @NonNull final AlienCharacter alienCharacter,
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
@@ -30,7 +30,7 @@ public class DirectionalConfig extends BasicAlienConfig {
             @NonNull final AlienSpeed speed,
             @NonNull final Float angle) {
         super(
-                AlienType.DIRECTIONAL,
+                AlienType.DIRECTIONAL_RESETTABLE,
                 alienCharacter,
                 energy,
                 missileConfig,

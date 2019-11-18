@@ -20,11 +20,11 @@ public enum AlienType {
     // follower of a followable alien
     FOLLOWER,
 
-    // alien that descends to the bottom of the screen
-    DESCENDING,
+    // alien that follows a specific direction and is reset
+    DIRECTIONAL_RESETTABLE,
 
-    // alien that follows a specific direction
-    DIRECTIONAL,
+    // alien that follows a specific direction and is destroyed
+    DIRECTIONAL_DESTROYABLE,
 
     // alien that drifts from one side of screen to another
     DRIFTING,

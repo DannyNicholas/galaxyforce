@@ -14,21 +14,23 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class DescendingConfig extends BasicAlienConfig {
+public class DirectionalDestroyableConfig extends BasicAlienConfig {
 
     private final AlienSpeed speed;
+    private final Float angle;
 
     @Builder
-    public DescendingConfig(
+    public DirectionalDestroyableConfig(
             @NonNull final AlienCharacter alienCharacter,
             @NonNull final Integer energy,
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
             final SpinningConfig spinningConfig,
             final ExplosionConfig explosionConfig,
-            @NonNull final AlienSpeed speed) {
+            @NonNull final AlienSpeed speed,
+            @NonNull final Float angle) {
         super(
-                AlienType.DESCENDING,
+                AlienType.DIRECTIONAL_DESTROYABLE,
                 alienCharacter,
                 energy,
                 missileConfig,
@@ -36,5 +38,6 @@ public class DescendingConfig extends BasicAlienConfig {
                 spinningConfig,
                 explosionConfig);
         this.speed = speed;
+        this.angle = angle;
     }
 }

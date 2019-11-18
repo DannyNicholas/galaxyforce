@@ -24,7 +24,8 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienCo
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAndExplodingAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.DescendingConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalResettableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
@@ -42,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.DOWNWARDS;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.HALF_PI;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.NO_POWER_UPS;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.QUARTER_PI;
@@ -412,10 +414,11 @@ public class WaveFactory {
                                                         SpawningAlienConfig
                                                                 .builder()
                                                                 .spawnedAlienConfig(
-                                                                        DescendingConfig
+                                                                        DirectionalDestroyableConfig
                                                                                 .builder()
                                                                                 .alienCharacter(AlienCharacter.INSECT)
                                                                                 .energy(1)
+                                                                                .angle(DOWNWARDS)
                                                                                 .missileConfig(
                                                                                         MissileFiringConfig
                                                                                                 .builder()
@@ -452,10 +455,11 @@ public class WaveFactory {
                                                         SpawningAlienConfig
                                                                 .builder()
                                                                 .spawnedAlienConfig(
-                                                                        DescendingConfig
+                                                                        DirectionalDestroyableConfig
                                                                                 .builder()
                                                                                 .alienCharacter(AlienCharacter.INSECT)
                                                                                 .energy(1)
+                                                                                .angle(DOWNWARDS)
                                                                                 .missileConfig(
                                                                                         MissileFiringConfig
                                                                                                 .builder()
@@ -514,11 +518,12 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
-                                        DescendingConfig
+                                        DirectionalResettableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(2)
                                                 .speed(AlienSpeed.MEDIUM)
+                                                .angle(DOWNWARDS)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
                                                                 .builder()
@@ -546,11 +551,12 @@ public class WaveFactory {
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
-                                        DescendingConfig
+                                        DirectionalResettableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(2)
                                                 .speed(AlienSpeed.VERY_FAST)
+                                                .angle(DOWNWARDS)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
                                                                 .builder()
@@ -882,10 +888,11 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        DescendingConfig
+                                        DirectionalDestroyableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
+                                                .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.SLOW)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
@@ -954,10 +961,11 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE_EASY,
-                                        DescendingConfig
+                                        DirectionalDestroyableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
+                                                .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.SLOW)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
@@ -974,10 +982,11 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_MAZE,
-                                        DescendingConfig
+                                        DirectionalDestroyableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
+                                                .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.SLOW)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
@@ -1402,10 +1411,11 @@ public class WaveFactory {
                                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROIDS,
-                                        DescendingConfig
+                                        DirectionalDestroyableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.MOLECULE)
                                                 .energy(5)
+                                                .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.MEDIUM)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig
@@ -1538,10 +1548,11 @@ public class WaveFactory {
                                                                         SpawningAlienConfig
                                                                                 .builder()
                                                                                 .spawnedAlienConfig(
-                                                                                        DescendingConfig
+                                                                                        DirectionalDestroyableConfig
                                                                                                 .builder()
                                                                                                 .alienCharacter(AlienCharacter.INSECT)
                                                                                                 .energy(1)
+                                                                                                .angle(DOWNWARDS)
                                                                                                 .missileConfig(
                                                                                                         MissileFiringConfig
                                                                                                                 .builder()
@@ -1641,10 +1652,11 @@ public class WaveFactory {
                                 ),
                                 new SubWaveNoPathConfig(
                                         SubWaveRule.ASTEROID_FIELD,
-                                        DescendingConfig
+                                        DirectionalDestroyableConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.ASTEROID)
                                                 .energy(5)
+                                                .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.SLOW)
                                                 .spinningConfig(
                                                         SpinningBySpeedConfig

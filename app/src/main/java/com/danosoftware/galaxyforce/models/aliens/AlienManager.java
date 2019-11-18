@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.danosoftware.galaxyforce.services.achievements.AchievementService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
-import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienWithPath;
+import com.danosoftware.galaxyforce.sprites.game.aliens.IResettableAlien;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 
@@ -87,7 +87,7 @@ public class AlienManager implements IAlienManager {
             if (alien.isVisible()) {
                 currentVisibleAliens.add(alien);
             }
-            if (alien instanceof IAlienWithPath && ((IAlienWithPath) alien).isEndOfPass()) {
+            if (alien instanceof IResettableAlien && ((IResettableAlien) alien).isEndOfPass()) {
                 finishedAliens++;
             }
             if (!alien.isDestroyed()) {
@@ -217,19 +217,19 @@ public class AlienManager implements IAlienManager {
                  * the current sub-wave should be repeated (until all aliens are
                  * destroyed) then reset the aliens and repeat the sub-wave.
                  */
-                List<IAlienWithPath> aliensToRepeat = new ArrayList<>();
+                List<IResettableAlien> aliensToRepeat = new ArrayList<>();
 
                 Float minDelay = null;
                 for (IAlien anAlien : aliens) {
                     /*
-                     * if aliens have a path then we want to restart
+                     * if aliens are resettable then we want to restart
                      * them immediately and not have to wait for their initial delay
                      * to expire. find the lowest time delay and reduce all
                      * aliens by this offset so the first alien starts
                      * immediately.
                      */
-                    if (anAlien instanceof IAlienWithPath) {
-                        IAlienWithPath alienWithPath = (IAlienWithPath) anAlien;
+                    if (anAlien instanceof IResettableAlien) {
+                        IResettableAlien alienWithPath = (IResettableAlien) anAlien;
                         aliensToRepeat.add(alienWithPath);
 
                         float timeDelay = alienWithPath.getTimeDelay();
@@ -241,10 +241,10 @@ public class AlienManager implements IAlienManager {
                 }
 
                 /*
-                 * reduce offset of all repeated aliens with path by minimum
+                 * reduce offset of all repeated resettable aliens by minimum
                  * offset. causes first alien to start immediately.
                  */
-                for (IAlienWithPath anAlienToRepeat : aliensToRepeat) {
+                for (IResettableAlien anAlienToRepeat : aliensToRepeat) {
                     anAlienToRepeat.reset(minDelay);
                 }
 

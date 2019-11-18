@@ -13,8 +13,8 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlienFollower;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DescendingAlien;
-import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DirectionalAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DirectionalDestroyableAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DirectionalResettableAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.DriftingAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.ExplodingAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowableHunterAlien;
@@ -31,8 +31,8 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBeha
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.waves.AlienType;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.DescendingConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalResettableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
@@ -184,25 +184,6 @@ public class AlienFactory {
                                 .build());
                 break;
 
-            case DESCENDING:
-                aliens.add(
-                        DescendingAlien
-                                .builder()
-                                .explosionFactory(explosionFactory)
-                                .spawnFactory(spawnFactory)
-                                .spinningFactory(spinningFactory)
-                                .powerUpFactory(powerUpFactory)
-                                .fireFactory(fireFactory)
-                                .hitFactory(hitFactory)
-                                .alienConfig((DescendingConfig) alienConfig)
-                                .powerUpType(powerUp)
-                                .xStart(xStartPos)
-                                .yStart(yStartPos)
-                                .timeDelayStart(delay)
-                                .restartImmediately(restartImmediately)
-                                .build());
-                break;
-
             case EXPLODING:
                 aliens.add(
                         ExplodingAlien
@@ -328,10 +309,10 @@ public class AlienFactory {
                                 .build());
                 break;
 
-            case DIRECTIONAL:
-                DirectionalConfig directionalConfig = (DirectionalConfig) alienConfig;
+            case DIRECTIONAL_RESETTABLE:
+                DirectionalResettableConfig directionalResettableConfig = (DirectionalResettableConfig) alienConfig;
                 aliens.add(
-                        DirectionalAlien
+                        DirectionalResettableAlien
                                 .builder()
                                 .explosionFactory(explosionFactory)
                                 .spawnFactory(spawnFactory)
@@ -339,7 +320,7 @@ public class AlienFactory {
                                 .powerUpFactory(powerUpFactory)
                                 .fireFactory(fireFactory)
                                 .hitFactory(hitFactory)
-                                .alienConfig(directionalConfig)
+                                .alienConfig(directionalResettableConfig)
                                 .powerUpType(powerUp)
                                 .xStart(xStartPos)
                                 .yStart(yStartPos)
@@ -348,7 +329,25 @@ public class AlienFactory {
                                 .build());
                 break;
 
-
+            case DIRECTIONAL_DESTROYABLE:
+                DirectionalDestroyableConfig directionalDestroyableConfig = (DirectionalDestroyableConfig) alienConfig;
+                aliens.add(
+                        DirectionalDestroyableAlien
+                                .builder()
+                                .explosionFactory(explosionFactory)
+                                .spawnFactory(spawnFactory)
+                                .spinningFactory(spinningFactory)
+                                .powerUpFactory(powerUpFactory)
+                                .fireFactory(fireFactory)
+                                .hitFactory(hitFactory)
+                                .alienConfig(directionalDestroyableConfig)
+                                .powerUpType(powerUp)
+                                .xStart(xStartPos)
+                                .yStart(yStartPos)
+                                .timeDelayStart(delay)
+                                .restartImmediately(restartImmediately)
+                                .build());
+                break;
 
             default:
                 String errorMessage = "Error: Unrecognised AlienType: '" + alienType + "'";
