@@ -247,8 +247,8 @@ public class AchievementService {
 
             // increment achievement of specific alien destroyed.
             // remove from map if successful
-            if (aliensAchievementsMap.containsKey(alien)
-                    && playService.incrementAchievement(
+            if (aliensAchievementsMap.containsKey(alien) &&
+                    playService.incrementAchievement(
                             aliensAchievementsMap.get(alien),
                             destroyed)) {
                 aliens.remove();
