@@ -263,31 +263,33 @@ public class GooglePlayServices {
     /**
      * Unlock supplied achievements.
      */
-    public void unlockAchievement(int id) {
+    public boolean unlockAchievement(int id) {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
         if (connectedState != ConnectionState.CONNECTED || account == null) {
             Log.i(ACTIVITY_TAG, "Achievement Unlocks Unavailable. User is not signed-in.");
-            return;
+            return false;
         }
         String achievementId = mActivity.getString(id);
         Log.i(ACTIVITY_TAG, "Achievements: Unlocking id: " + achievementId);
         Games.getAchievementsClient(mActivity, account)
                 .unlock(achievementId);
+        return true;
     }
 
     /**
      * Increment supplied achievements.
      */
-    public void incrementAchievement(int id, int amount) {
+    public boolean incrementAchievement(int id, int amount) {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mActivity);
         if (connectedState != ConnectionState.CONNECTED || account == null) {
             Log.i(ACTIVITY_TAG, "Achievement Increments Unavailable. User is not signed-in.");
-            return;
+            return false;
         }
         String achievementId = mActivity.getString(id);
         Log.i(ACTIVITY_TAG, "Achievements: Incrementing id: " + achievementId + " by " + amount);
         Games.getAchievementsClient(mActivity, account)
                 .increment(achievementId, amount);
+        return true;
     }
 
     /**

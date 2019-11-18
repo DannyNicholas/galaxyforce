@@ -5,8 +5,11 @@ import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +92,10 @@ public class AchievementService {
                 R.string.achievement_destroy_25_octopus);
     }
 
+    // achievements that have been earned but not yet unlocked
+    // this is a list to maintain order of achievements earned
+    private final List<Integer> unclaimedAchievements;
+
     private final GooglePlayServices playService;
 
     private final Map<PowerUpType, Integer> powerUpsCollected;
@@ -102,6 +109,7 @@ public class AchievementService {
         this.aliensDestroyed = new EnumMap<>(AlienCharacter.class);
         this.sequentialWavesCompletedWithoutLosingALife = 0;
         this.totalWavesCompletedInCurrentGame = 0;
+        this.unclaimedAchievements = new ArrayList<>();
     }
 
     /**
@@ -111,6 +119,9 @@ public class AchievementService {
      * waves and for completing waves with no lives lost.
      */
     public void waveCompleted(CompletedWaveAchievements completedWaveAchievements) {
+        // claim any unclaimed achievements
+        unlockPendingAchievements();
+
         totalWavesCompletedInCurrentGame++;
         if (completedWaveAchievements.isNolivesLostInWave()) {
             sequentialWavesCompletedWithoutLosingALife++;
@@ -121,36 +132,36 @@ public class AchievementService {
         // trigger unlocks based on total waves completed in one game
         switch(totalWavesCompletedInCurrentGame) {
             case 3:
-                playService.unlockAchievement(R.string.achievement_complete_3_waves_in_one_game);
+                unlockAchievement(R.string.achievement_complete_3_waves_in_one_game);
                 break;
             case 5:
-                playService.unlockAchievement(R.string.achievement_complete_5_waves_in_one_game);
+                unlockAchievement(R.string.achievement_complete_5_waves_in_one_game);
                 break;
         }
 
         // trigger unlocks based on sequential waves completed without losing a life
         switch(sequentialWavesCompletedWithoutLosingALife) {
             case 1:
-                playService.unlockAchievement(R.string.achievement_complete_1_wave_without_losing_a_life);
+                unlockAchievement(R.string.achievement_complete_1_wave_without_losing_a_life);
                 break;
             case 3:
-                playService.unlockAchievement(R.string.achievement_complete_3_waves_without_losing_a_life);
+                unlockAchievement(R.string.achievement_complete_3_waves_without_losing_a_life);
                 break;
             case 5:
-                playService.unlockAchievement(R.string.achievement_complete_5_waves_without_losing_a_life);
+                unlockAchievement(R.string.achievement_complete_5_waves_without_losing_a_life);
                 break;
         }
 
         // trigger unlocks based on waves completed
         final int completedWave = completedWaveAchievements.getWave();
         if (completedWaveAchievementsMap.containsKey(completedWave)) {
-            playService.unlockAchievement(completedWaveAchievementsMap.get(completedWave));
+            unlockAchievement(completedWaveAchievementsMap.get(completedWave));
         }
 
         // trigger unlocks based on waves completed in one life
         final boolean completedWaveInOneLife = completedWaveAchievements.isNolivesLostInWave();
         if (completedWaveInOneLife && oneLifeCompletedWaveAchievementsMap.containsKey(completedWave)) {
-            playService.unlockAchievement(oneLifeCompletedWaveAchievementsMap.get(completedWave));
+            unlockAchievement(oneLifeCompletedWaveAchievementsMap.get(completedWave));
         }
 
         // trigger incremental achievements due to power-ups collected
@@ -165,7 +176,7 @@ public class AchievementService {
     public void gameOver() {
         if (totalWavesCompletedInCurrentGame == 0) {
             // no waves completed in a single game
-            playService.unlockAchievement(R.string.achievement_that_was_tricky);
+            unlockAchievement(R.string.achievement_that_was_tricky);
         }
 
         submitPendingPowerUpsCollected();
@@ -203,18 +214,18 @@ public class AchievementService {
      */
     private void submitPendingPowerUpsCollected() {
         int totalPowerUpsCollected = 0;
-        for (Map.Entry<PowerUpType, Integer> entry : powerUpsCollected.entrySet()) {
-            PowerUpType powerUp = entry.getKey();
-            int collected = entry.getValue();
+        for (Iterator<PowerUpType> powerUps = powerUpsCollected.keySet().iterator(); powerUps.hasNext();) {
+            final PowerUpType powerUp = powerUps.next();
+            final int collected = powerUpsCollected.get(powerUp);
 
             // increment achievement of specific power-up type
-            if (powerUpAchievementsMap.containsKey(powerUp)) {
-                playService.incrementAchievement(
+            if (powerUpAchievementsMap.containsKey(powerUp) &&
+                    playService.incrementAchievement(
                         powerUpAchievementsMap.get(powerUp),
-                        collected);
+                        collected)) {
+                powerUps.remove();
+                totalPowerUpsCollected += collected;
             }
-
-            totalPowerUpsCollected += collected;
         }
 
         // increment generic power-up achievements
@@ -223,9 +234,6 @@ public class AchievementService {
                     R.string.achievement_hoarder,
                     totalPowerUpsCollected);
         }
-
-        // clear power-ups collected map
-        powerUpsCollected.clear();
     }
 
     /**
@@ -233,18 +241,19 @@ public class AchievementService {
      */
     private void submitPendingAliensDestroyed() {
         int totalAliensDestroyed = 0;
-        for (Map.Entry<AlienCharacter, Integer> entry : aliensDestroyed.entrySet()) {
-            AlienCharacter alien = entry.getKey();
-            int destroyed = entry.getValue();
+        for (Iterator<AlienCharacter> aliens = aliensDestroyed.keySet().iterator(); aliens.hasNext();) {
+            final AlienCharacter alien = aliens.next();
+            final int destroyed = aliensDestroyed.get(alien);
 
-            // increment achievement of specific alien destroyed
-            if (aliensAchievementsMap.containsKey(alien)) {
-                playService.incrementAchievement(
-                        aliensAchievementsMap.get(alien),
-                        destroyed);
+            // increment achievement of specific alien destroyed.
+            // remove from map if successful
+            if (aliensAchievementsMap.containsKey(alien)
+                    && playService.incrementAchievement(
+                            aliensAchievementsMap.get(alien),
+                            destroyed)) {
+                aliens.remove();
+                totalAliensDestroyed += destroyed;
             }
-
-            totalAliensDestroyed += destroyed;
         }
 
         // increment generic aliens destroyed achievements
@@ -253,8 +262,28 @@ public class AchievementService {
                     R.string.achievement_destroy_25_aliens,
                     totalAliensDestroyed);
         }
+    }
 
-        // clear aliens destroyed map
-        aliensDestroyed.clear();
+    /**
+     * Unlock achievement.
+     * If unlock fails, store in a list to allow re-try later.
+     */
+    private void unlockAchievement(final int achievementId) {
+        if (!playService.unlockAchievement(achievementId)
+                && !unclaimedAchievements.contains(achievementId)) {
+            unclaimedAchievements.add(achievementId);
+        }
+    }
+
+    /**
+     * Unlock all pending achievements from list.
+     * Remove from list if successful.
+     */
+    private void unlockPendingAchievements() {
+        for (Iterator<Integer> achievements = unclaimedAchievements.iterator(); achievements.hasNext();) {
+            if(playService.unlockAchievement(achievements.next())) {
+                achievements.remove();
+            }
+        }
     }
 }
