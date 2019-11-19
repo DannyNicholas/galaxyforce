@@ -130,7 +130,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
             // adjust angle so that a result more negative than PI/2
             // becomes a positive value. Gives missile a more direct
             // route to target (otherwise goes the long-way around).
-            if (newAngle <  -PI_BY_TWO) {
+            if (newAngle < -PI_BY_TWO) {
                 newAngle += TWO_PI;
             }
 
