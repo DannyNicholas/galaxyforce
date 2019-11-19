@@ -21,6 +21,7 @@ public class AlienMissileRotaterTest {
     private final static int MISSILE_X = 100;
     private final static int MISSILE_Y = 100;
     private final IAlienMissile missile = mock(IAlienMissile.class);
+    private final static float TWO_PI = (float) (2f * Math.PI);
 
     @Before
     public void setUp() {
@@ -77,8 +78,9 @@ public class AlienMissileRotaterTest {
 
 
         final AlienMissileRotateCalculation calculation = calculateAngle(missile, base);
-        assertThat(calculation.getAngle(), equalTo((float) Math.atan2(0, -1)));
-        assertThat(calculation.getRotation(), equalTo(180 + 90));
+        // adjusted by 2PI to fix bug so missile travels more direct path
+        assertThat(calculation.getAngle(), equalTo((float) (Math.atan2(0, -1) - TWO_PI)));
+        assertThat(calculation.getRotation(), equalTo(180 + 90 - 360));
     }
 
 
@@ -126,7 +128,8 @@ public class AlienMissileRotaterTest {
 
 
         final AlienMissileRotateCalculation calculation = calculateAngle(missile, base);
-        assertThat(calculation.getAngle(), equalTo((float) Math.atan2(1, -1)));
-        assertThat(calculation.getRotation(), equalTo(180 + 45));
+        // adjusted by 2PI to fix bug so missile travels more direct path
+        assertThat(calculation.getAngle(), equalTo((float) (Math.atan2(1, -1) - TWO_PI)));
+        assertThat(calculation.getRotation(), equalTo(180 + 45 - 360));
     }
 }
