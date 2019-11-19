@@ -20,6 +20,8 @@ public final class AlienMissileRotater {
 
     private static final double TO_DEGREES = 180f / Math.PI;
     private static final double HALF_PI_OFFSET = Math.PI / 2f;
+    private static final float PI_BY_TWO = (float) Math.PI / 2f;
+    private static final float TWO_PI = (float) Math.PI * 2f;
 
     private AlienMissileRotater() {
     }
@@ -38,9 +40,16 @@ public final class AlienMissileRotater {
     ) {
         if (base != null) {
             // calculate angle from missile position to base
-            final float angleInRadians = (float) Math.atan2(
+            float angleInRadians = (float) Math.atan2(
                     base.y() - missile.y(),
                     base.x() - missile.x());
+
+            // adjust angle so that a result more positive than PI/2
+            // becomes a negative value. Gives missile a more direct
+            // route to target (otherwise goes the long-way around).
+            if (angleInRadians > PI_BY_TWO) {
+                angleInRadians -= TWO_PI;
+            }
 
             // calculate missile sprite rotation
             final int missileRotation = calculateRotation(angleInRadians);

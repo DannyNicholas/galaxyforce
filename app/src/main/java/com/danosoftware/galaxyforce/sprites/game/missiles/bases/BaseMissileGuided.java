@@ -131,7 +131,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
             // becomes a positive value. Gives missile a more direct
             // route to target (otherwise goes the long-way around).
             if (newAngle <  -PI_BY_TWO) {
-                newAngle = newAngle + TWO_PI;
+                newAngle += TWO_PI;
             }
 
             // don't allow sudden changes of direction. limit to MAX radians
