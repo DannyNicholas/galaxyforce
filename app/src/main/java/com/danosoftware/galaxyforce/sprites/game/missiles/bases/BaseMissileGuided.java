@@ -12,6 +12,10 @@ import static com.danosoftware.galaxyforce.utilities.OffScreenTester.offScreenAn
  */
 public class BaseMissileGuided extends AbstractBaseMissile {
 
+    private static final float PI_BY_TWO = (float) Math.PI / 2f;
+    private static final float TWO_PI = (float) Math.PI * 2f;
+    private static final float DEGREES_PER_PI = (float) (180f / Math.PI);
+
     /* time delay between missile direction changes */
     private static final float MISSILE_DIRECTION_CHANGE_DELAY = 0.1f;
 
@@ -51,7 +55,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
         this.missileSpeed = baseMissileSpeed.getSpeed();
 
         // initial angle (i.e. straight up)
-        this.angle = (float) (Math.PI / 2f);
+        this.angle = PI_BY_TWO;
 
         // calculate rotation and movement delta based on angle
         calculateMovements();
@@ -123,6 +127,13 @@ public class BaseMissileGuided extends AbstractBaseMissile {
                     alien.y() - this.y(),
                     alien.x() - this.x());
 
+            // adjust angle so that a result more negative than PI/2
+            // becomes a positive value. Gives missile a more direct
+            // route to target (otherwise goes the long-way around).
+            if (newAngle <  -PI_BY_TWO) {
+                newAngle = newAngle + TWO_PI;
+            }
+
             // don't allow sudden changes of direction. limit to MAX radians
             if ((newAngle - angle) > MAX_DIRECTION_CHANGE_ANGLE) {
                 angle += MAX_DIRECTION_CHANGE_ANGLE;
@@ -140,7 +151,7 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     private void calculateMovements() {
         // convert angle to degrees for sprite rotation.
         // needs to be adjusted by 90 deg for correct rotation.
-        rotate((int) ((angle - Math.PI / 2f) * (180f / Math.PI)));
+        rotate((int) ((angle - PI_BY_TWO) * DEGREES_PER_PI));
 
         // calculate the deltas to be applied each move
         this.xDelta = (int) (missileSpeed * (float) Math.cos(angle));
