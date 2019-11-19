@@ -174,6 +174,9 @@ public class AchievementService {
      * Request any pending achievements when game is over.
      */
     public void gameOver() {
+        // claim any unclaimed achievements
+        unlockPendingAchievements();
+
         if (totalWavesCompletedInCurrentGame == 0) {
             // no waves completed in a single game
             unlockAchievement(R.string.achievement_that_was_tricky);
