@@ -56,7 +56,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @PrepareForTest({Log.class, TextureService.class})
 public class PrimaryBaseTest {
 
-    private final TextureDetail mockTextureDetail = new TextureDetail("mock", "0", "0", "0", "0");
+    private final TextureDetail mockTextureDetail = new TextureDetail("mock", "0", "0", "100", "100");
 
     private IBasePrimary primaryBase;
     private IBasePrimary primaryBaseSpy;

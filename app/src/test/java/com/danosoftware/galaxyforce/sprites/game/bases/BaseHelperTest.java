@@ -71,7 +71,7 @@ public class BaseHelperTest {
         // mock any static android logging
         mockStatic(Log.class);
 
-        final TextureDetail mockTextureDetail = new TextureDetail("mock", "0", "0", "0", "0");
+        final TextureDetail mockTextureDetail = new TextureDetail("mock", "0", "0", "100", "100");
         Texture mockTexture = mock(Texture.class);
         when(mockTexture.getTextureDetail(any(String.class))).thenReturn(mockTextureDetail);
         for (GameSpriteIdentifier spriteId : GameSpriteIdentifier.values()) {
