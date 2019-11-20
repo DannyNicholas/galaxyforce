@@ -80,4 +80,9 @@ public enum MenuSpriteIdentifier implements ISpriteIdentifier {
     public String getName() {
         return name;
     }
+
+    @Override
+    public int boundsReduction() {
+        return 0;
+    }
 }

@@ -81,12 +81,15 @@ public abstract class AbstractCollidingSprite extends AbstractMovingSprite imple
 
     // cache dimensions and bounds
     private void cacheBounds() {
+        final int boundsReduction = spriteId().boundsReduction();
+        final int twiceBoundsReduction = boundsReduction * 2;
 
+        // bounds represents bottom-left position then width and height
         this.bounds = new Rectangle(
-                x() - halfWidth(),
-                y() - halfHeight(),
-                width(),
-                height());
+                x() - halfWidth() + boundsReduction,
+                y() - halfHeight() + boundsReduction,
+                width() - twiceBoundsReduction,
+                height() - twiceBoundsReduction);
         this.boundsCached = true;
     }
 }

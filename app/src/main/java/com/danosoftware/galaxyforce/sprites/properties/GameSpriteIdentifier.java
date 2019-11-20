@@ -1,72 +1,73 @@
 package com.danosoftware.galaxyforce.sprites.properties;
 
+import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.textures.Texture;
 
 public enum GameSpriteIdentifier implements ISpriteIdentifier {
 
     // octopus
-    OCTOPUS_LEFT("octopusLeft"),
-    OCTOPUS_RIGHT("octopusRight"),
-    OCTOPUS_LEFT_HIT("octopusLeftHit"),
-    OCTOPUS_RIGHT_HIT("octopusRightHit"),
+    OCTOPUS_LEFT("octopusLeft",4),
+    OCTOPUS_RIGHT("octopusRight", 4),
+    OCTOPUS_LEFT_HIT("octopusLeftHit", 4),
+    OCTOPUS_RIGHT_HIT("octopusRightHit", 4),
 
     // yellow minion
-    MINION("minion"),
-    MINION_HIT("minionHit"),
+    MINION("minion", 2),
+    MINION_HIT("minionHit", 2),
 
     // green ball spinner
-    SPINNER_GREEN_01("spinnerGreen01"),
-    SPINNER_GREEN_02("spinnerGreen02"),
-    SPINNER_GREEN_03("spinnerGreen03"),
-    SPINNER_GREEN_01_HIT("spinnerGreenHit01"),
-    SPINNER_GREEN_02_HIT("spinnerGreenHit02"),
-    SPINNER_GREEN_03_HIT("spinnerGreenHit03"),
+    SPINNER_GREEN_01("spinnerGreen01", 4),
+    SPINNER_GREEN_02("spinnerGreen02", 4),
+    SPINNER_GREEN_03("spinnerGreen03", 4),
+    SPINNER_GREEN_01_HIT("spinnerGreenHit01", 4),
+    SPINNER_GREEN_02_HIT("spinnerGreenHit02", 4),
+    SPINNER_GREEN_03_HIT("spinnerGreenHit03", 4),
 
     // pulsating green ball spinner
-    SPINNER_PULSE_GREEN_01("spinnerPulseGreen01"),
-    SPINNER_PULSE_GREEN_02("spinnerPulseGreen02"),
-    SPINNER_PULSE_GREEN_03("spinnerPulseGreen03"),
-    SPINNER_PULSE_GREEN_01_HIT("spinnerPulseGreenHit01"),
-    SPINNER_PULSE_GREEN_02_HIT("spinnerPulseGreenHit02"),
-    SPINNER_PULSE_GREEN_03_HIT("spinnerPulseGreenHit03"),
+    SPINNER_PULSE_GREEN_01("spinnerPulseGreen01", 4),
+    SPINNER_PULSE_GREEN_02("spinnerPulseGreen02", 4),
+    SPINNER_PULSE_GREEN_03("spinnerPulseGreen03", 4),
+    SPINNER_PULSE_GREEN_01_HIT("spinnerPulseGreenHit01", 4),
+    SPINNER_PULSE_GREEN_02_HIT("spinnerPulseGreenHit02", 4),
+    SPINNER_PULSE_GREEN_03_HIT("spinnerPulseGreenHit03", 4),
 
     // molecule
-    MOLECULE("molecule"),
-    MOLECULE_HIT("moleculeHit"),
+    MOLECULE("molecule", 2),
+    MOLECULE_HIT("moleculeHit", 2),
 
     // big boss
-    BIG_BOSS_01("bigBoss01"),
-    BIG_BOSS_02("bigBoss02"),
-    BIG_BOSS_01_HIT("bigBossHit01"),
-    BIG_BOSS_02_HIT("bigBossHit02"),
+    BIG_BOSS_01("bigBoss01", 6),
+    BIG_BOSS_02("bigBoss02", 6),
+    BIG_BOSS_01_HIT("bigBossHit01", 6),
+    BIG_BOSS_02_HIT("bigBossHit02", 6),
 
     // flapping lady bird
-    LADYBIRD_01("ladyBird01"),
-    LADYBIRD_02("ladyBird02"),
-    LADYBIRD_01_HIT("ladyBirdHit01"),
-    LADYBIRD_02_HIT("ladyBirdHit02"),
+    LADYBIRD_01("ladyBird01", 6),
+    LADYBIRD_02("ladyBird02", 6),
+    LADYBIRD_01_HIT("ladyBirdHit01", 6),
+    LADYBIRD_02_HIT("ladyBirdHit02", 6),
 
     // zogg
-    ZOGG_UP("zogg01"),
-    ZOGG_DOWN("zogg02"),
-    ZOGG_UP_HIT("zoggHit01"),
-    ZOGG_DOWN_HIT("zoggHit02"),
+    ZOGG_UP("zogg01", 4),
+    ZOGG_DOWN("zogg02", 4),
+    ZOGG_UP_HIT("zoggHit01",4),
+    ZOGG_DOWN_HIT("zoggHit02", 4),
 
     // asteroid
-    ASTEROID("asteroid"),
-    ASTEROID_HIT("asteroidHit"),
+    ASTEROID("asteroid", 4),
+    ASTEROID_HIT("asteroidHit", 4),
 
     // mini-asteroid
-    ASTEROID_MINI("miniAsteroid"),
-    ASTEROID_MINI_HIT("miniAsteroidHit"),
+    ASTEROID_MINI("miniAsteroid", 3),
+    ASTEROID_MINI_HIT("miniAsteroidHit", 3),
 
     // egg
-    EGG_CRACK_01("eggCrack01"),
-    EGG_CRACK_02("eggCrack02"),
-    EGG_CRACK_03("eggCrack03"),
-    EGG_CRACK_01_HIT("eggCrackHit01"),
-    EGG_CRACK_02_HIT("eggCrackHit02"),
-    EGG_CRACK_03_HIT("eggCrackHit03"),
+    EGG_CRACK_01("eggCrack01", 3),
+    EGG_CRACK_02("eggCrack02", 3),
+    EGG_CRACK_03("eggCrack03", 3),
+    EGG_CRACK_01_HIT("eggCrackHit01", 3),
+    EGG_CRACK_02_HIT("eggCrackHit02", 3),
+    EGG_CRACK_03_HIT("eggCrackHit03", 3),
 
     // egg explosion
     EGG_CRACK_04("eggCrack04"),
@@ -75,110 +76,110 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     EGG_CRACK_07("eggCrack07"),
 
     // dragon - head and body
-    DRAGON_HEAD_LEFT("dragonLeft"),
-    DRAGON_HEAD_RIGHT("dragonRight"),
-    DRAGON_HEAD_LEFT_HIT("dragonHitLeft"),
-    DRAGON_HEAD_RIGHT_HIT("dragonHitRight"),
-    DRAGON_BODY("dragonBody"),
-    DRAGON_BODY_HIT("dragonBodyHit"),
+    DRAGON_HEAD_LEFT("dragonLeft", 5),
+    DRAGON_HEAD_RIGHT("dragonRight", 5),
+    DRAGON_HEAD_LEFT_HIT("dragonHitLeft", 5),
+    DRAGON_HEAD_RIGHT_HIT("dragonHitRight", 5),
+    DRAGON_BODY("dragonBody", 5),
+    DRAGON_BODY_HIT("dragonBodyHit",5),
 
     // buzzer - small flying insect
-    INSECT_WINGS_UP("buzzerWingsUp"),
-    INSECT_WINGS_DOWN("buzzerWingsDown"),
-    INSECT_WINGS_UP_HIT("buzzerWingsUpHit"),
-    INSECT_WINGS_DOWN_HIT("buzzerWingsDownHit"),
+    INSECT_WINGS_UP("buzzerWingsUp", 3),
+    INSECT_WINGS_DOWN("buzzerWingsDown", 3),
+    INSECT_WINGS_UP_HIT("buzzerWingsUpHit", 3),
+    INSECT_WINGS_DOWN_HIT("buzzerWingsDownHit", 3),
 
     // mother buzzer - big flying insect
-    MOTHER_BUZZER_WINGS_DOWN("motherBuzzerWingsDown"),
-    MOTHER_BUZZER_WINGS_UP("motherBuzzerWingsUp"),
-    MOTHER_BUZZER_WINGS_DOWN_HIT("motherBuzzerWingsDownHit"),
-    MOTHER_BUZZER_WINGS_UP_HIT("motherBuzzerWingsUpHit"),
+    MOTHER_BUZZER_WINGS_DOWN("motherBuzzerWingsDown", 4),
+    MOTHER_BUZZER_WINGS_UP("motherBuzzerWingsUp", 4),
+    MOTHER_BUZZER_WINGS_DOWN_HIT("motherBuzzerWingsDownHit", 4),
+    MOTHER_BUZZER_WINGS_UP_HIT("motherBuzzerWingsUpHit", 4),
 
     // gobby
-    GOBBY_LEFT("gobby01"),
-    GOBBY_RIGHT("gobby02"),
-    GOBBY_LEFT_HIT("gobbyHit01"),
-    GOBBY_RIGHT_HIT("gobbyHit02"),
+    GOBBY_LEFT("gobby01", 2),
+    GOBBY_RIGHT("gobby02", 2),
+    GOBBY_LEFT_HIT("gobbyHit01", 2),
+    GOBBY_RIGHT_HIT("gobbyHit02", 2),
 
     // bad cat
-    BAD_CAT("badCat"),
-    BAD_CAT_HIT("badCatHit"),
+    BAD_CAT("badCat", 2),
+    BAD_CAT_HIT("badCatHit", 2),
 
     // bomb
-    BOMB_01("bomb01"),
-    BOMB_02("bomb02"),
-    BOMB_03("bomb03"),
-    BOMB_01_HIT("bombHit01"),
-    BOMB_02_HIT("bombHit02"),
-    BOMB_03_HIT("bombHit03"),
+    BOMB_01("bomb01", 3),
+    BOMB_02("bomb02", 3),
+    BOMB_03("bomb03", 3),
+    BOMB_01_HIT("bombHit01", 3),
+    BOMB_02_HIT("bombHit02", 3),
+    BOMB_03_HIT("bombHit03", 3),
 
     // batty
-    BATTY_FLAP_DOWN("bat01"),
-    BATTY_FLAP_UP("bat02"),
-    BATTY_FLAP_DOWN_HIT("bat01Hit"),
-    BATTY_FLAP_UP_HIT("bat02Hit"),
+    BATTY_FLAP_DOWN("bat01", 3),
+    BATTY_FLAP_UP("bat02", 3),
+    BATTY_FLAP_DOWN_HIT("bat01Hit", 3),
+    BATTY_FLAP_UP_HIT("bat02Hit", 3),
 
     // book
-    BOOK_FLAT("book01"),
-    BOOK_BEND("book02"),
-    BOOK_CLOSED("book03"),
-    BOOK_FLAT_HIT("bookHit01"),
-    BOOK_BEND_HIT("bookHit02"),
-    BOOK_CLOSED_HIT("bookHit03"),
+    BOOK_FLAT("book01", 3),
+    BOOK_BEND("book02", 3),
+    BOOK_CLOSED("book03", 3),
+    BOOK_FLAT_HIT("bookHit01", 3),
+    BOOK_BEND_HIT("bookHit02", 3),
+    BOOK_CLOSED_HIT("bookHit03", 3),
 
     // bouncer
-    BOUNCER_IN("bouncer01"),
-    BOUNCER_OUT("bouncer02"),
-    BOUNCER_IN_HIT("bouncer01Hit"),
-    BOUNCER_OUT_HIT("bouncer02Hit"),
+    BOUNCER_IN("bouncer01", 4),
+    BOUNCER_OUT("bouncer02", 4),
+    BOUNCER_IN_HIT("bouncer01Hit", 4),
+    BOUNCER_OUT_HIT("bouncer02Hit", 4),
 
     // droopy
-    DROOPY_DOWN("droopyDown"),
-    DROOPY_UP("droopyUp"),
-    DROOPY_DOWN_HIT("droopyDownHit"),
-    DROOPY_UP_HIT("droopyUpHit"),
+    DROOPY_DOWN("droopyDown", 4),
+    DROOPY_UP("droopyUp", 4),
+    DROOPY_DOWN_HIT("droopyDownHit",4),
+    DROOPY_UP_HIT("droopyUpHit", 4),
 
     // circuit
-    CIRCUIT_LEFT("circuit01"),
-    CIRCUIT_RIGHT("circuit02"),
-    CIRCUIT_LEFT_HIT("circuit01Hit"),
-    CIRCUIT_RIGHT_HIT("circuit02Hit"),
+    CIRCUIT_LEFT("circuit01", 2),
+    CIRCUIT_RIGHT("circuit02", 2),
+    CIRCUIT_LEFT_HIT("circuit01Hit", 2),
+    CIRCUIT_RIGHT_HIT("circuit02Hit", 2),
 
     // smokey
-    SMOKEY_FLAME_BIG("smokey01"),
-    SMOKEY_FLAME_SMALL("smokey02"),
-    SMOKEY_FLAME_NONE("smokey03"),
-    SMOKEY_FLAME_BIG_HIT("smokeyHit01"),
-    SMOKEY_FLAME_SMALL_HIT("smokeyHit02"),
-    SMOKEY_FLAME_NONE_HIT("smokeyHit03"),
+    SMOKEY_FLAME_BIG("smokey01", 4),
+    SMOKEY_FLAME_SMALL("smokey02", 4),
+    SMOKEY_FLAME_NONE("smokey03", 4),
+    SMOKEY_FLAME_BIG_HIT("smokeyHit01", 4),
+    SMOKEY_FLAME_SMALL_HIT("smokeyHit02", 4),
+    SMOKEY_FLAME_NONE_HIT("smokeyHit03",4),
 
     // telly
-    TELLY_FUZZ_ONE("telly01"),
-    TELLY_FUZZ_TWO("telly02"),
-    TELLY_FUZZ_ONE_HIT("tellyHit01"),
-    TELLY_FUZZ_TWO_HIT("tellyHit02"),
+    TELLY_FUZZ_ONE("telly01", 4),
+    TELLY_FUZZ_TWO("telly02", 4),
+    TELLY_FUZZ_ONE_HIT("tellyHit01", 4),
+    TELLY_FUZZ_TWO_HIT("tellyHit02", 4),
 
     // cloud
-    CLOUD("cloud"),
-    CLOUD_HIT("cloudHit"),
+    CLOUD("cloud", 5),
+    CLOUD_HIT("cloudHit", 5),
 
     // helmet
-    HELMET("helmet"),
-    HELMET_HIT("helmetHit"),
+    HELMET("helmet", 5),
+    HELMET_HIT("helmetHit", 5),
 
     // skull alien
-    SKULL("skull"),
-    SKULL_HIT("skullHit"),
+    SKULL("skull", 3),
+    SKULL_HIT("skullHit", 3),
 
     // droid alien
-    DROID("droid"),
-    DROID_HIT("droidHit"),
+    DROID("droid", 3),
+    DROID_HIT("droidHit", 3),
 
     // bases
-    BASE("base"),
-    BASE_RIGHT("baseRight"),
-    BASE_LEFT("baseLeft"),
-    HELPER("baseHelper"),
+    BASE("base", 4),
+    BASE_RIGHT("baseRight", 3),
+    BASE_LEFT("baseLeft", 3),
+    HELPER("baseHelper", 3),
 
     // pulsing shield when base stationary
     BASE_SHIELD_ONE("baseShieldOutline01"),
@@ -290,8 +291,20 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     private final String name;
     private ISpriteProperties properties;
 
+    // for less sensitive collision detection we can optionally
+    // reduce the sprite bounds.
+    // this value will reduce bounds by this value all-around
+    // e.g. a boundsReduction value of 2 will give a 64x64 pixel
+    // a bounding box of 60x60 (2 pixels less top, bottom, left, right)
+    private final int boundsReduction;
+
     GameSpriteIdentifier(String name) {
+        this(name, 0);
+    }
+
+    GameSpriteIdentifier(String name, int boundsReduction) {
         this.name = name;
+        this.boundsReduction = boundsReduction;
     }
 
     @Override
@@ -309,10 +322,31 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     @Override
     public void updateProperties(Texture texture) {
         this.properties = new SpriteProperties(name, texture);
+        if (properties.getWidth() <= boundsReduction * 2) {
+            throw new GalaxyForceException(
+                    String.format(
+                            "Sprite: %s has width of %d but bounds reduction of %d.",
+                            name,
+                            properties.getWidth(),
+                            boundsReduction));
+        }
+        if (properties.getHeight() <= boundsReduction * 2) {
+            throw new GalaxyForceException(
+                    String.format(
+                            "Sprite: %s has height of %d but bounds reduction of %d.",
+                            name,
+                            properties.getHeight(),
+                            boundsReduction));
+        }
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public int boundsReduction() {
+        return boundsReduction;
     }
 }

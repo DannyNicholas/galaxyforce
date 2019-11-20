@@ -19,4 +19,9 @@ public interface ISpriteIdentifier {
     void updateProperties(Texture texture);
 
     String getName();
+
+    /**
+     * Number of pixels to reduce sprite by if used for collision detection
+     */
+    int boundsReduction();
 }
