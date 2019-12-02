@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractDestroyableAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFactory;
@@ -13,11 +13,20 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroy
 import lombok.Builder;
 import lombok.NonNull;
 
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.isTravellingOffScreen;
+
 /**
  * Alien that moves from starting position across the screen in a
  * set direction until it moves off-screen. The alien will then be destroyed.
  */
-public class DirectionalDestroyableAlien extends AbstractDestroyableAlien {
+public class DirectionalDestroyableAlien extends AbstractAlien {
+
+    private final int startingX;
+    private final int startingY;
+    private boolean restartImmediately;
+
+    // how many seconds to delay before alien activates
+    private float timeDelayStart;
 
     // offset applied to x and y every move
     private final int xDelta;
@@ -57,9 +66,13 @@ public class DirectionalDestroyableAlien extends AbstractDestroyableAlien {
                         alienConfig.getAlienCharacter().getExplosionAnimation()),
                 spinningFactory.createSpinningBehaviour(
                         alienConfig.getSpinningConfig(),
-                        alienConfig.getSpeed()),
-                timeDelayStart,
-                restartImmediately);
+                        alienConfig.getSpeed()));
+
+        waiting();
+        this.startingX = x;
+        this.startingY = y;
+        this.restartImmediately = restartImmediately;
+        this.timeDelayStart = timeDelayStart;
 
         // calculate the deltas to be applied each move
         final int movePixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
@@ -73,9 +86,25 @@ public class DirectionalDestroyableAlien extends AbstractDestroyableAlien {
         super.animate(deltaTime);
 
         if (isActive()) {
+            if (isTravellingOffScreen(this, xDelta, yDelta)) {
+                if (restartImmediately) {
+                    move(startingX, startingY);
+                } else {
+                    destroy();
+                }
+            }
             moveByDelta(
                     (int) (xDelta * deltaTime),
                     (int) (yDelta * deltaTime));
+        } else if (isWaiting()) {
+            // countdown until activation time
+            timeDelayStart -= deltaTime;
+
+            // activate alien. can only happen once!
+            if (timeDelayStart <= 0) {
+                activate();
+                animate(0 - timeDelayStart);
+            }
         }
     }
 }

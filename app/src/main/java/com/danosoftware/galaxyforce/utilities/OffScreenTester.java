@@ -52,4 +52,17 @@ public class OffScreenTester {
     public static boolean offScreenRight(ISprite sprite) {
         return (sprite.x() >= (GAME_WIDTH + sprite.halfWidth()));
     }
+
+    /**
+     * Is alien off-screen and continuing to move off-screen?
+     * Will return false if alien is off-screen but travelling in
+     * a direction that will bring it on-screen soon.
+     */
+    public static boolean isTravellingOffScreen(ISprite sprite, int xDelta, int yDelta) {
+        return
+                (offScreenLeft(sprite) && xDelta < 0) ||
+                        (offScreenRight(sprite) && xDelta > 0) ||
+                        (offScreenBottom(sprite) && yDelta < 0) ||
+                        (offScreenTop(sprite) && yDelta > 0);
+    }
 }

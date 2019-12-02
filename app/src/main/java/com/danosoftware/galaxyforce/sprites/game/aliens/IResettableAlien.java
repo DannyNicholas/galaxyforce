@@ -19,6 +19,11 @@ public interface IResettableAlien extends IAlien {
     boolean isEndOfPass();
 
     /**
+     * Set alien to end of path
+     */
+    void endOfPass();
+
+    /**
      * Get the original time delay. Can be used to calculate a corrected time
      * delay offset.
      */

@@ -22,7 +22,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
     private final int alienMoveInPixels;
 
     /* minimum distance between alien followers */
-    private final int minimumDistanceSquared;
+    private final int minimumAllowedDistanceFromFollowedSquared;
 
     /*
      * keep local copies of hit behaviour and stateTime to allow
@@ -71,7 +71,7 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
         this.stateTime = 0f;
         this.started = false;
         this.alienMoveInPixels = alienMoveInPixels;
-        this.minimumDistanceSquared = minimumDistance * minimumDistance;
+        this.minimumAllowedDistanceFromFollowedSquared = minimumDistance * minimumDistance;
     }
 
     /**
@@ -100,20 +100,40 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
         int newX = x() + (int) (xDelta * deltaTime);
         int newY = y() + (int) (yDelta * deltaTime);
 
-        // calculate squared distance from alien we are following
+        // calculate squared distance from alien we are following to new position
         int distX = (alienFollowed.x() - newX);
         int distY = (alienFollowed.y() - newY);
-        int distSquared = (distX * distX) + (distY * distY);
+        int distanceFromFollowedSquared = (distX * distX) + (distY * distY);
 
-        // if we are too close we need to throttle our speed
-        if (distSquared > minimumDistanceSquared) {
+        if (distanceFromFollowedSquared > minimumAllowedDistanceFromFollowedSquared) {
             move(newX, newY);
         } else {
-            float throttleRatio = (float) distSquared / minimumDistanceSquared;
+            /*
+             * we are too close to the followed alien.
+             * we must throttle our speed and calculate a revised new position.
+             */
+
+            // calculate distance from our current position to planned new position
+            int plannedMoveX = (newX - x());
+            int plannedMoveY = (newY - y());
+            int plannedMoveDistanceSquared = (plannedMoveX * plannedMoveX) + (plannedMoveY * plannedMoveY);
+
+            // calculate how much we should reduce our planned move by to
+            int reduceMoveDistanceSquared = minimumAllowedDistanceFromFollowedSquared - distanceFromFollowedSquared;
+
+            float newThrottle;
+            if (plannedMoveDistanceSquared < reduceMoveDistanceSquared) {
+                // handles small planned moves
+                newThrottle = (float) distanceFromFollowedSquared / minimumAllowedDistanceFromFollowedSquared;
+            } else {
+                // handles large planed moves
+                // normally only needed when there's been a big timing delay and followed alien has move is a long way
+                newThrottle = (float) (plannedMoveDistanceSquared - reduceMoveDistanceSquared) / plannedMoveDistanceSquared;
+            }
 
             // calculate new position based on reduced speed
-            int reducedXDelta = (int) (xDelta * throttleRatio);
-            int reducedYDelta = (int) (yDelta * throttleRatio);
+            int reducedXDelta = (int) (xDelta * newThrottle);
+            int reducedYDelta = (int) (yDelta * newThrottle);
 
             // move alien
             moveByDelta(

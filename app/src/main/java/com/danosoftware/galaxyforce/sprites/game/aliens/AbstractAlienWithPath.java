@@ -112,13 +112,13 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
                 );
             }
         } else if (isWaiting()) {
-            /* if delayStart still > 0 then count down delay */
-            if (timeDelayStart > 0) {
-                timeDelayStart -= deltaTime;
-            }
-            /* otherwise activate alien. */
-            else {
+            // countdown until activation time
+            timeDelayStart -= deltaTime;
+
+            // activate alien. can only happen once!
+            if (timeDelayStart <= 0) {
                 activate();
+                animate(0 - timeDelayStart);
             }
         }
     }
@@ -152,7 +152,8 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
         return (state == FINISHED_PASS);
     }
 
-    private void endOfPass() {
+    @Override
+    public void endOfPass() {
         state = FINISHED_PASS;
     }
 

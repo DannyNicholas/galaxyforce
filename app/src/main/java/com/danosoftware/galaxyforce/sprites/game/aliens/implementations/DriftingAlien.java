@@ -110,14 +110,13 @@ public class DriftingAlien extends AbstractAlien {
                 moveYByDelta(-GAME_HEIGHT - ((y() + halfHeight()) % GAME_HEIGHT));
             }
         } else if (isWaiting()) {
+            // countdown until activation time
+            timeDelayStart -= deltaTime;
 
-            /* if delayStart still > 0 then count down delay */
-            if (timeDelayStart > 0) {
-                timeDelayStart -= deltaTime;
-            }
-            /* otherwise activate alien. can only happen once! */
-            else {
+            // activate alien. can only happen once!
+            if (timeDelayStart <= 0) {
                 activate();
+                animate(0 - timeDelayStart);
             }
         }
     }

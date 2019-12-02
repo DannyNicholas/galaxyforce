@@ -13,11 +13,23 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalResetta
 import lombok.Builder;
 import lombok.NonNull;
 
+import static com.danosoftware.galaxyforce.utilities.OffScreenTester.isTravellingOffScreen;
+
 /**
  * Alien that moves from starting position across the screen in a
  * set direction until it moves off-screen. The alien will then be reset and replayed.
  */
 public class DirectionalResettableAlien extends AbstractResettableAlien {
+
+    private final int startingX;
+    private final int startingY;
+    private boolean restartImmediately;
+
+    /* how many seconds to delay before alien starts to follow path */
+    private float timeDelayStart;
+
+    /* original time delay before alien starts in cases where alien is reset */
+    private final float originalTimeDelayStart;
 
     // offset applied to x and y every move
     private final int xDelta;
@@ -57,9 +69,14 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
                         alienConfig.getAlienCharacter().getExplosionAnimation()),
                 spinningFactory.createSpinningBehaviour(
                         alienConfig.getSpinningConfig(),
-                        alienConfig.getSpeed()),
-                timeDelayStart,
-                restartImmediately);
+                        alienConfig.getSpeed()));
+
+        waiting();
+        this.startingX = x;
+        this.startingY = y;
+        this.restartImmediately = restartImmediately;
+        this.timeDelayStart = timeDelayStart;
+        this.originalTimeDelayStart = timeDelayStart;
 
         // calculate the deltas to be applied each move
         final int movePixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
@@ -73,9 +90,53 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
         super.animate(deltaTime);
 
         if (isActive()) {
+            if (isTravellingOffScreen(this, xDelta, yDelta)) {
+                if (restartImmediately) {
+                    reset(originalTimeDelayStart);
+                } else {
+                    endOfPass();
+                }
+            }
             moveByDelta(
                     (int) (xDelta * deltaTime),
                     (int) (yDelta * deltaTime));
+        } else if (isWaiting()) {
+            // countdown until activation time
+            timeDelayStart -= deltaTime;
+
+            // activate alien. can only happen once!
+            if (timeDelayStart <= 0) {
+                activate();
+                animate(0 - timeDelayStart);
+            }
         }
+    }
+
+    /**
+     * Resets alien if the alien has gone off-screen without being destroyed and
+     * sub-wave needs to be repeated.
+     * <p>
+     * Reduce original delay by supplied offset in case alien needs to start
+     * earlier.
+     */
+    @Override
+    public void reset(float offset) {
+        timeDelayStart = originalTimeDelayStart - offset;
+        waiting();
+
+        /*
+         * reset back at start position - will be made visible and active before
+         * recalculating it's position.
+         */
+        move(startingX, startingY);
+    }
+
+    /**
+     * Get the original time delay. Can be used to calculate a corrected time
+     * delay offset.
+     */
+    @Override
+    public float getTimeDelay() {
+        return originalTimeDelayStart;
     }
 }
