@@ -121,19 +121,19 @@ public class AbstractAlienFollower extends AbstractAlien implements IAlienFollow
             // calculate how much we should reduce our planned move by to
             int reduceMoveDistanceSquared = minimumAllowedDistanceFromFollowedSquared - distanceFromFollowedSquared;
 
-            float newThrottle;
+            float throttleRatio;
             if (plannedMoveDistanceSquared < reduceMoveDistanceSquared) {
                 // handles small planned moves
-                newThrottle = (float) distanceFromFollowedSquared / minimumAllowedDistanceFromFollowedSquared;
+                throttleRatio = (float) distanceFromFollowedSquared / minimumAllowedDistanceFromFollowedSquared;
             } else {
                 // handles large planed moves
-                // normally only needed when there's been a big timing delay and followed alien has move is a long way
-                newThrottle = (float) (plannedMoveDistanceSquared - reduceMoveDistanceSquared) / plannedMoveDistanceSquared;
+                // normally only needed when there's been a big timing delay and followed alien has moved a long way
+                throttleRatio = (float) (plannedMoveDistanceSquared - reduceMoveDistanceSquared) / plannedMoveDistanceSquared;
             }
 
             // calculate new position based on reduced speed
-            int reducedXDelta = (int) (xDelta * newThrottle);
-            int reducedYDelta = (int) (yDelta * newThrottle);
+            int reducedXDelta = (int) (xDelta * throttleRatio);
+            int reducedYDelta = (int) (yDelta * throttleRatio);
 
             // move alien
             moveByDelta(

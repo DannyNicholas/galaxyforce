@@ -195,11 +195,13 @@ public class MoveBaseHelper {
         // has base reached launch target
         if (abs(base.y() - BASE_START_Y) <= BASE_MOVE_RADIUS_LARGE
                 || base.y() >= BASE_START_Y) {
+            base.move(SCREEN_MID_X, BASE_START_Y);
             isLaunching = false;
         }
-
-        // move base to new position
-        base.move(x, y);
+        else {
+            // move base to new position
+            base.move(x, y);
+        }
     }
 
 
