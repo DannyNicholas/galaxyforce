@@ -27,6 +27,7 @@ import com.danosoftware.galaxyforce.models.assets.IGamePlayAssetsManager;
 import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
 import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
@@ -262,8 +263,12 @@ public class GamePlayModelImpl implements Model, GameModel {
 
     @Override
     public void update(float deltaTime) {
-        switch (modelState) {
 
+        if (primaryBase.isExploding()) {
+            deltaTime /= 2;
+        }
+
+        switch (modelState) {
             case PLAYING:
                 primaryBase.animate(deltaTime);
                 updatePlayingState();
@@ -275,7 +280,7 @@ public class GamePlayModelImpl implements Model, GameModel {
                 break;
 
             case PAUSE:
-                game.changeToGamePausedScreen(getPausedSprites());
+                game.changeToGamePausedScreen(getPausedSprites(), background());
                 this.modelState = previousModelState;
                 break;
 
@@ -332,6 +337,11 @@ public class GamePlayModelImpl implements Model, GameModel {
     public void resume() {
         Log.i(TAG, "Resume Game.");
         sounds.resume();
+    }
+
+    @Override
+    public RgbColour background() {
+        return primaryBase.background();
     }
 
     /**

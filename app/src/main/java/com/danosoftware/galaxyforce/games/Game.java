@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.games;
 
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 
@@ -22,7 +23,7 @@ public interface Game {
 
     void changeToGameScreen(int wave);
 
-    void changeToGamePausedScreen(List<ISprite> pausedSprites);
+    void changeToGamePausedScreen(List<ISprite> pausedSprites, RgbColour backgroundColour);
 
     void changeToGameOverScreen(int previousWave);
 

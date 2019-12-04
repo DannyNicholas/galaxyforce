@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
@@ -59,6 +60,8 @@ public class GamePausedModelImpl implements Model, ButtonModel {
     /* reference to flashing paused text */
     private final FlashingText flashingPausedText;
 
+    private final RgbColour backgroundColour;
+
     /*
      * ******************************************************
      *
@@ -70,10 +73,12 @@ public class GamePausedModelImpl implements Model, ButtonModel {
     public GamePausedModelImpl(
             Game game,
             Controller controller,
-            List<ISprite> pausedSprites) {
+            List<ISprite> pausedSprites,
+            RgbColour backgroundColour) {
         this.game = game;
         this.pausedSprites = pausedSprites;
         this.menuButtons = new ArrayList<>();
+        this.backgroundColour = backgroundColour;
         this.modelState = PausedState.RUNNING;
 
         // create list of menu buttons
@@ -182,6 +187,11 @@ public class GamePausedModelImpl implements Model, ButtonModel {
     public void resume() {
         // no action for this model
 
+    }
+
+    @Override
+    public RgbColour background() {
+        return backgroundColour;
     }
 
     @Override

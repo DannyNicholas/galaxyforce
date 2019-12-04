@@ -14,6 +14,7 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 public class UnlockFullVersionModelImpl implements Model, BillingObserver, ButtonModel, SkuDetailsListener {
 
@@ -326,6 +329,11 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         // query upgrade price by requesting the full-game purchase SKU details asyncronously.
         // onSkuDetailsRetrieved() will be invoked when SKU details are available.
         billingService.queryFullGameSkuDetailsAsync(this);
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

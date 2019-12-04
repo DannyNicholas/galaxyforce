@@ -6,6 +6,8 @@ import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
+import com.danosoftware.galaxyforce.models.screens.background.BackgroundFlash;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
@@ -30,6 +32,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_BOTTOM;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.ACTIVE;
@@ -113,6 +116,9 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     // reference to vibrator
     private final VibrationService vibrator;
 
+    // provides the background flash colour - used when base is exploding
+    private final BackgroundFlash backgroundFlash;
+
     public BasePrimary(
             final GameModel model,
             final SoundPlayerService sounds,
@@ -126,6 +132,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.activeBases = buildActiveBases();
         this.lean = BaseLean.NONE;
         this.moveHelper = new MoveBaseHelper(this);
+        this.backgroundFlash = new BackgroundFlash();
 
         this.explosion = new BaseExploderSimple(
                 sounds,
@@ -226,6 +233,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         // if exploding then animate or set destroyed once finished
         if (state == EXPLODING) {
+            backgroundFlash.update(deltaTime);
             if (explosion.finishedExploding()) {
                 state = DESTROYED;
                 this.allSprites = buildAllSprites();
@@ -454,7 +462,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.allSprites = buildAllSprites();
     }
 
-
     /*
       ***********************
       PRIVATE HELPERS *
@@ -571,5 +578,18 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public boolean isActive() {
         return state == ACTIVE;
+    }
+
+    @Override
+    public boolean isExploding() {
+        return state == EXPLODING;
+    }
+
+    @Override
+    public RgbColour background() {
+        if (isExploding()) {
+            return backgroundFlash.background();
+        }
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 }

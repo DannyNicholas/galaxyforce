@@ -12,6 +12,7 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.SplashSprite;
@@ -25,6 +26,7 @@ import com.danosoftware.galaxyforce.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 import static com.danosoftware.galaxyforce.constants.GameConstants.LOGO_Y_POS;
 import static com.danosoftware.galaxyforce.constants.GameConstants.PLANET_Y_POS;
 
@@ -202,6 +204,11 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
     @Override
     public void resume() {
         // no implementation
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

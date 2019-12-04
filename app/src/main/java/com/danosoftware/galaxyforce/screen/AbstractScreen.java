@@ -5,6 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteProperties;
@@ -23,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL10;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_ALPHA;
 
 public abstract class AbstractScreen implements IScreen {
 
@@ -97,6 +100,12 @@ public abstract class AbstractScreen implements IScreen {
         GL10 gl = glGraphics.getGl();
 
         // clear screen
+        final RgbColour backgroundColour = model.background();
+        gl.glClearColor(
+                backgroundColour.getRed(),
+                backgroundColour.getGreen(),
+                backgroundColour.getBlue(),
+                BACKGROUND_ALPHA);
         gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         camera.setViewportAndMatrices();

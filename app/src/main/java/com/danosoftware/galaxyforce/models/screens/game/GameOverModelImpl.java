@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingText;
 import com.danosoftware.galaxyforce.models.screens.flashing.FlashingTextImpl;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
@@ -27,6 +28,8 @@ import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 public class GameOverModelImpl implements Model, ButtonModel {
 
@@ -203,6 +206,11 @@ public class GameOverModelImpl implements Model, ButtonModel {
     @Override
     public void resume() {
         // no action for this model
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

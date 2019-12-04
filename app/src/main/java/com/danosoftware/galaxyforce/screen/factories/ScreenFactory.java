@@ -13,6 +13,7 @@ import com.danosoftware.galaxyforce.models.screens.MainMenuModelImpl;
 import com.danosoftware.galaxyforce.models.screens.Model;
 import com.danosoftware.galaxyforce.models.screens.SplashModelImpl;
 import com.danosoftware.galaxyforce.models.screens.UnlockFullVersionModelImpl;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.game.GameOverModelImpl;
 import com.danosoftware.galaxyforce.models.screens.game.GamePausedModelImpl;
 import com.danosoftware.galaxyforce.models.screens.game.GamePlayModelFrameRateDecorator;
@@ -216,10 +217,10 @@ public class ScreenFactory {
         return gameModel;
     }
 
-    public IScreen newPausedGameScreen(List<ISprite> pausedSprites) {
+    public IScreen newPausedGameScreen(List<ISprite> pausedSprites, RgbColour backgroundColour) {
         Controller controller = new ControllerImpl(input, camera);
         return new Screen(
-                new GamePausedModelImpl(game, controller, pausedSprites),
+                new GamePausedModelImpl(game, controller, pausedSprites, backgroundColour),
                 controller,
                 textureService,
                 TextureMap.GAME,

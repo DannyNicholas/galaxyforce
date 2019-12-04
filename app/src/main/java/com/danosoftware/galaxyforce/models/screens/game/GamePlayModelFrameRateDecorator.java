@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.assets.PowerUpsDto;
 import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.Model;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
@@ -93,6 +94,11 @@ public class GamePlayModelFrameRateDecorator implements Model, GameModel {
     @Override
     public void resume() {
         model.resume();
+    }
+
+    @Override
+    public RgbColour background() {
+        return model.background();
     }
 
     @Override

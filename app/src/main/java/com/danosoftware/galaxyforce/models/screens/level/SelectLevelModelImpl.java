@@ -17,6 +17,7 @@ import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.controllers.touch.SwipeTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.screens.ModelState;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.savedgame.HighestLevelChangeObserver;
 import com.danosoftware.galaxyforce.services.savedgame.SavedGame;
@@ -31,6 +32,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, BillingObserver, HighestLevelChangeObserver {
 
@@ -397,6 +400,11 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
     @Override
     public void resume() {
         // no implementation
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

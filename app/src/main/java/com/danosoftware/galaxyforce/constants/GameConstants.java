@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.constants;
 
 import com.danosoftware.galaxyforce.BuildConfig;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 
 public class GameConstants {
     // global logging tag
@@ -22,6 +23,10 @@ public class GameConstants {
     public final static float BACKGROUND_GREEN = 12f / 255f;
     public final static float BACKGROUND_BLUE = 30f / 255f;
     public final static float BACKGROUND_ALPHA = 1.0f;
+    public final static RgbColour DEFAULT_BACKGROUND_COLOUR = new RgbColour(
+            BACKGROUND_RED,
+            BACKGROUND_GREEN,
+            BACKGROUND_BLUE);
 
     // sprite positions
     public final static int LOGO_Y_POS = 817;

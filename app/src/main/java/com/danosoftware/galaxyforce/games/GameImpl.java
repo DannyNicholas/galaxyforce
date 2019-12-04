@@ -11,6 +11,7 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.input.GameInput;
 import com.danosoftware.galaxyforce.input.Input;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.options.OptionMusic;
 import com.danosoftware.galaxyforce.options.OptionSound;
 import com.danosoftware.galaxyforce.options.OptionVibration;
@@ -127,9 +128,9 @@ public class GameImpl implements Game {
     }
 
     @Override
-    public void changeToGamePausedScreen(List<ISprite> pausedSprites) {
+    public void changeToGamePausedScreen(List<ISprite> pausedSprites, RgbColour backgroundColour) {
         switchScreenWithReturn(
-                screenFactory.newPausedGameScreen(pausedSprites));
+                screenFactory.newPausedGameScreen(pausedSprites, backgroundColour));
     }
 
     @Override

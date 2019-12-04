@@ -7,6 +7,7 @@ import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.controllers.touch.DetectButtonTouch;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.common.RotatingSprite;
@@ -20,6 +21,8 @@ import com.danosoftware.galaxyforce.text.TextPositionX;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 public class GameCompleteModelImpl implements Model, TouchScreenModel {
 
@@ -109,6 +112,11 @@ public class GameCompleteModelImpl implements Model, TouchScreenModel {
     @Override
     public void resume() {
         // no action for this model
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.ButtonModel;
 import com.danosoftware.galaxyforce.models.buttons.ButtonType;
 import com.danosoftware.galaxyforce.models.screens.ModelState;
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.options.Option;
 import com.danosoftware.galaxyforce.options.OptionGooglePlay;
 import com.danosoftware.galaxyforce.options.OptionMusic;
@@ -39,6 +40,8 @@ import com.danosoftware.galaxyforce.text.TextPositionX;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayConnectionObserver {
 
@@ -399,6 +402,11 @@ public class OptionsModelImpl implements OptionsModel, ButtonModel, GooglePlayCo
     @Override
     public void resume() {
         // no action for this model
+    }
+
+    @Override
+    public RgbColour background() {
+        return DEFAULT_BACKGROUND_COLOUR;
     }
 
     @Override

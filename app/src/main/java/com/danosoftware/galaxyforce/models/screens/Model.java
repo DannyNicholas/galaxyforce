@@ -1,5 +1,6 @@
 package com.danosoftware.galaxyforce.models.screens;
 
+import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.text.Text;
 
@@ -46,4 +47,9 @@ public interface Model {
      * Resume the current game model.
      */
     void resume();
+
+    /**
+     * Get background colour.
+     */
+    RgbColour background();
 }
