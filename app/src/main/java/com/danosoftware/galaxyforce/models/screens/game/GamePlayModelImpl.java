@@ -264,6 +264,7 @@ public class GamePlayModelImpl implements Model, GameModel {
     @Override
     public void update(float deltaTime) {
 
+        // slow down animation when base is exploding
         if (primaryBase.isExploding()) {
             deltaTime /= 2;
         }

@@ -9,7 +9,6 @@ import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.background.BackgroundFlash;
 import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
-import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
@@ -18,8 +17,8 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseLean;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
-import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploder;
-import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploderSimple;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseMultiExploder;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.IBaseMultiExploder;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
@@ -49,7 +48,7 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     private static final String TAG = "BasePrimary";
 
     // explosion behaviour
-    private final BaseExploder explosion;
+    private final IBaseMultiExploder explosion;
 
     // all sprites
     // cached as an optimisation to improve performance
@@ -134,11 +133,12 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
         this.moveHelper = new MoveBaseHelper(this);
         this.backgroundFlash = new BackgroundFlash();
 
-        this.explosion = new BaseExploderSimple(
+        this.explosion = new BaseMultiExploder(
+                this,
                 sounds,
                 vibrator,
                 new Animation(
-                        0.075f,
+                        0.05f,
                         GameSpriteIdentifier.BASE_EXPLODE_01,
                         GameSpriteIdentifier.BASE_EXPLODE_02,
                         GameSpriteIdentifier.BASE_EXPLODE_03,
@@ -150,7 +150,6 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
                         GameSpriteIdentifier.BASE_EXPLODE_09,
                         GameSpriteIdentifier.BASE_EXPLODE_10,
                         GameSpriteIdentifier.BASE_EXPLODE_11));
-
         this.model = model;
         this.sounds = sounds;
         this.vibrator = vibrator;
@@ -180,6 +179,10 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
 
         for (IBaseHelper helper : helpers.values()) {
             sprites.addAll(helper.allSprites());
+        }
+
+        if (isExploding()) {
+            sprites.addAll(explosion.getMultiExplosion());
         }
 
         return sprites;
@@ -236,11 +239,11 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
             backgroundFlash.update(deltaTime);
             if (explosion.finishedExploding()) {
                 state = DESTROYED;
-                this.allSprites = buildAllSprites();
                 this.activeBases = buildActiveBases();
             } else {
                 changeType(explosion.getExplosion(deltaTime));
             }
+            this.allSprites = buildAllSprites();
         }
 
         // animate helper bases
@@ -289,11 +292,8 @@ public class BasePrimary extends AbstractCollidingSprite implements IBasePrimary
     @Override
     public void destroy() {
 
-        explosion.startExplosion(this);
+        explosion.startExplosion();
         state = EXPLODING;
-
-        // play explosion sound effect
-        sounds.play(SoundEffect.BIG_EXPLOSION);
 
         // if primary base explodes - all helper bases must also explode.
         for (IBaseHelper aHelperBase : helpers.values()) {

@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.sprites.game.bases;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
 import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
-import com.danosoftware.galaxyforce.services.sound.SoundEffect;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.common.AbstractCollidingSprite;
@@ -11,8 +10,8 @@ import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState;
 import com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide;
-import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploder;
 import com.danosoftware.galaxyforce.sprites.game.bases.explode.BaseExploderSimple;
+import com.danosoftware.galaxyforce.sprites.game.bases.explode.IBaseExploder;
 import com.danosoftware.galaxyforce.sprites.game.factories.BaseMissileFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
@@ -77,7 +76,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     private final SoundPlayerService sounds;
 
     // explosion behaviour
-    private final BaseExploder explosion;
+    private final IBaseExploder explosion;
 
     // base state
     private BaseState state;
@@ -233,8 +232,7 @@ public class BaseHelper extends AbstractCollidingSprite implements IBaseHelper {
     public void destroy() {
         this.state = EXPLODING;
         primaryBase.helperExploding(side);
-        explosion.startExplosion(this);
-        sounds.play(SoundEffect.EXPLOSION);
+        explosion.startExplosion();
     }
 
     @Override
