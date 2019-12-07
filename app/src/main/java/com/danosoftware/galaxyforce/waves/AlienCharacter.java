@@ -14,8 +14,8 @@ public enum AlienCharacter {
 
     // special null character reserved for multi-explosions that spawn immediately as exploding aliens
     NULL(
-            new ISpriteIdentifier[]{GameSpriteIdentifier.STAR},
-            new ISpriteIdentifier[]{GameSpriteIdentifier.STAR},
+            new ISpriteIdentifier[]{GameSpriteIdentifier.NULL},
+            new ISpriteIdentifier[]{GameSpriteIdentifier.NULL},
             0f),
 
     // octopus alien with flapping legs

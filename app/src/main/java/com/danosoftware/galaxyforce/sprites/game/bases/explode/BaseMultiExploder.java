@@ -5,6 +5,7 @@ import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrateTime;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
+import com.danosoftware.galaxyforce.sprites.properties.GameSpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 
@@ -118,6 +119,10 @@ public class BaseMultiExploder implements IBaseMultiExploder {
         }
 
         // animate main explosion
+        if (animation.isAnimationComplete()) {
+            // use a null if main explosion is finished but others are still animating
+            return GameSpriteIdentifier.NULL;
+        }
         return animation.getKeyFrame(explosionTime, Animation.ANIMATION_NONLOOPING);
     }
 

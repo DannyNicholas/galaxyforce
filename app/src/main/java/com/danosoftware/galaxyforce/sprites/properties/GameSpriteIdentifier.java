@@ -285,7 +285,10 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     LIVES("Life_32px"),
 
     // fonts
-    FONT_MAP("GalaxyForceFont_30x38-crop");
+    FONT_MAP("GalaxyForceFont_30x38-crop"),
+
+    // null - transparent 1 x 1 sprite (essentially an invisible sprite)
+    NULL("null");
 
 
     private final String name;
