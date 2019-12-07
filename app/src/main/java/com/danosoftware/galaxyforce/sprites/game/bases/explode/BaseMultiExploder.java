@@ -17,7 +17,7 @@ import lombok.Getter;
 
 public class BaseMultiExploder implements IBaseMultiExploder {
 
-    // explosion animation
+    // main base explosion animation
     private final Animation animation;
 
     // reference to sound player
@@ -28,21 +28,17 @@ public class BaseMultiExploder implements IBaseMultiExploder {
 
     private final IBasePrimary base;
 
-    private ISpriteIdentifier spriteToExplode;
-    private boolean startedMainExplosion;
-
     private final static int NUMBER_OF_EXPLOSIONS = 4;
     private final static float MAXIMUM_EXPLOSION_START_TIME = 0.25f;
-    private final static float MAIN_EXPLOSION_START_TIME = 0.3f;
     private final static float TWO_PI = (float) (2f * Math.PI);
 
     // time since explosion started
     private float explosionTime;
-    private float mainExplosionTime;
 
+    // pending multi-base explosions to start at set time
     private final List<TimedExplosion> timedExplosions;
 
-    // exploding bases for multi-base explosions
+    // active multi-base explosions
     private final List<IBaseExplosion> explodingBases;
 
     public BaseMultiExploder(
@@ -58,13 +54,9 @@ public class BaseMultiExploder implements IBaseMultiExploder {
         this.explodingBases = new ArrayList<>();
     }
 
-
     @Override
     public void startExplosion() {
         explosionTime = 0f;
-        mainExplosionTime = 0f;
-        startedMainExplosion = false;
-        spriteToExplode = base.spriteId();
 
         /*
          * Create a number of additional explosions around the exploding base.
@@ -88,16 +80,10 @@ public class BaseMultiExploder implements IBaseMultiExploder {
                                 y,
                                 random.nextFloat() * MAXIMUM_EXPLOSION_START_TIME));
             }
-
-            // pick a random timed-explosion and reset start time to 0.
-            // ensures at least one explosion starts immediately
-            int idx = random.nextInt(timedExplosions.size());
-            TimedExplosion timedExplosion = timedExplosions.get(idx);
-            timedExplosions.set(idx, new TimedExplosion(
-                    timedExplosion.getX(),
-                    timedExplosion.getY(),
-                    0f));
         }
+
+        sounds.play(SoundEffect.BIG_EXPLOSION);
+        vibrator.vibrate(VibrateTime.TINY);
     }
 
     @Override
@@ -121,6 +107,7 @@ public class BaseMultiExploder implements IBaseMultiExploder {
             }
         }
 
+        // animate active explosions
         Iterator<IBaseExplosion> explosionIterator = explodingBases.iterator();
         while (explosionIterator.hasNext()) {
             IBaseExplosion explosion = explosionIterator.next();
@@ -130,25 +117,15 @@ public class BaseMultiExploder implements IBaseMultiExploder {
             }
         }
 
-        // the main explosion will only start if all extra explosions have already started
-        if (timedExplosions.isEmpty() && !startedMainExplosion && explosionTime >= MAIN_EXPLOSION_START_TIME) {
-            startedMainExplosion = true;
-            sounds.play(SoundEffect.BIG_EXPLOSION);
-            vibrator.vibrate(VibrateTime.TINY);
-        }
-
-        //if (startedMainExplosion) {
-            mainExplosionTime += deltaTime;
-            return animation.getKeyFrame(mainExplosionTime, Animation.ANIMATION_NONLOOPING);
-        //}
-
-        // if we haven't started the main explosion, show the original frozen alien sprite
-        //return spriteToExplode;
+        // animate main explosion
+        return animation.getKeyFrame(explosionTime, Animation.ANIMATION_NONLOOPING);
     }
 
     @Override
     public boolean finishedExploding() {
-        return animation.isAnimationComplete() && timedExplosions.isEmpty();
+        return animation.isAnimationComplete()
+                && timedExplosions.isEmpty()
+                && explodingBases.isEmpty();
     }
 
     @Override

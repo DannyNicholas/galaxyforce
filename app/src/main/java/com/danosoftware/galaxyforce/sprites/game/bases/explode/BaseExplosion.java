@@ -29,7 +29,6 @@ public class BaseExplosion extends AbstractSprite implements IBaseExplosion {
                 x,
                 y);
         this.exploder = new BaseExploderSimple(sounds, vibrator, ANIMATION);
-        this.exploder.startExplosion();
     }
 
     @Override
