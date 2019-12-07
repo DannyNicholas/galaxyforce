@@ -61,7 +61,7 @@ public class BaseMultiExploder implements IBaseMultiExploder {
 
         /*
          * Create a number of additional explosions around the exploding base.
-         * The additional explosions form a circle around the alien.
+         * The additional explosions form a circle around the base.
          * Each extra explosion will have a position and random start time.
          * Each explosion will be triggered when elapsed time has exceeded the start time.
          */
