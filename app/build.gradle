@@ -115,7 +115,8 @@ android {
             buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
 
             minifyEnabled true // Enables code shrinking for the release build type.
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.txt'
         }
     }
 }
