@@ -1231,7 +1231,7 @@ public class WaveFactory {
                                                         .numberOfExplosions(10)
                                                         .maximumExplosionStartTime(0.5f)
                                                         .build())
-                                                .energy(1)
+                                                .energy(10)
                                                 .missileConfig(
                                                         MissileMultiFiringConfig
                                                                 .builder()
