@@ -90,7 +90,14 @@ public enum Path {
     /*
      * Spirals down the screen from top to bottom
      */
-    SPIRAL("spiral.json");
+    SPIRAL("spiral.json"),
+
+    /*
+     * Slides from top-right to bottom-left
+     */
+    SLIDE_LEFT("slideLeft.json"),
+    SLIDE_CENTRE("slideCentre.json"),
+    SLIDE_RIGHT("slideRight.json");
 
 
     // file name holding path data

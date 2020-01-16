@@ -1,0 +1,26 @@
+{
+  "pathData": [
+    {
+      "type": "bezier",
+      "start": {
+        "x": 476,
+        "y": 992
+      },
+      "startControl": {
+        "x": 300,
+        "y": 467
+      },
+      "finish": {
+        "x": -32,
+        "y": 246
+      },
+      "finishControl": {
+        "x": 255,
+        "y": 290
+      },
+      "pathPoints": 100
+    }
+  ],
+  "width": 540,
+  "height": 960
+}

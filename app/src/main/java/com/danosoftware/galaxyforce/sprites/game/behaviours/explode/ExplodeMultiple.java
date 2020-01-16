@@ -11,9 +11,8 @@ import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
-import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticExplosionConfig;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,10 +28,10 @@ import lombok.Getter;
 public class ExplodeMultiple implements ExplodeBehaviour {
 
     // alien config to be used for spawning exploding aliens
-    private final AlienConfig explodingConfig;
+    private final StaticExplosionConfig explodingConfig;
 
-    // explosion animation
-    private final Animation animation;
+    // explosion mainAnimation
+    private final Animation mainAnimation;
 
     // reference to sound player
     private final SoundPlayerService sounds;
@@ -58,13 +57,13 @@ public class ExplodeMultiple implements ExplodeBehaviour {
     public ExplodeMultiple(
             final AlienFactory alienFactory,
             final GameModel model,
-            SoundPlayerService sounds,
-            VibrationService vibrator,
-            Animation animation,
+            final SoundPlayerService sounds,
+            final VibrationService vibrator,
+            final AlienCharacter character,
             final int numberOfExplosions,
             final float maximumExplosionStartTime,
             final ExplosionConfig explosionConfig) {
-        this.animation = animation;
+        this.mainAnimation = character.getExplosionAnimation();
         this.sounds = sounds;
         this.vibrator = vibrator;
         this.model = model;
@@ -72,10 +71,9 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
         this.numberOfExplosions = numberOfExplosions;
         this.maximumExplosionStartTime = maximumExplosionStartTime;
-        this.explodingConfig = StaticConfig
+        this.explodingConfig = StaticExplosionConfig
                 .builder()
-                .alienCharacter(AlienCharacter.NULL)
-                .energy(0)
+                .alienCharacter(character)
                 .explosionConfig(explosionConfig)
                 .build();
 
@@ -140,11 +138,13 @@ public class ExplodeMultiple implements ExplodeBehaviour {
                 iterator.remove();
 
                 // create alien, immediately explode it and then spawn to model
-                SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
+                SpawnedAliensDto aliens = alienFactory.createStaticExplosion(
                         explodingConfig,
-                        null,
                         timedExplosion.getX(),
-                        timedExplosion.getY());
+                        timedExplosion.getY()
+                );
+
+
                 for (IAlien aAlien : aliens.getAliens()) {
                     aAlien.explode();
                 }
@@ -161,7 +161,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
         if (startedMainExplosion) {
             mainExplosionTime += deltaTime;
-            return animation.getKeyFrame(mainExplosionTime, Animation.ANIMATION_NONLOOPING);
+            return mainAnimation.getKeyFrame(mainExplosionTime, Animation.ANIMATION_NONLOOPING);
         }
 
         // if we haven't started the main explosion, show the original frozen alien sprite
@@ -170,7 +170,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
 
     @Override
     public boolean finishedExploding() {
-        return animation.isAnimationComplete() && timedExplosions.isEmpty();
+        return mainAnimation.isAnimationComplete() && timedExplosions.isEmpty();
     }
 
     @Getter

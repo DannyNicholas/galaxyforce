@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Follower
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticExplosion;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFactory;
@@ -40,10 +41,12 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticExplosionConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocator;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AlienFactory {
@@ -386,5 +389,26 @@ public class AlienFactory {
         }
 
         return new SpawnedAliensDto(reversedAlienList, SoundEffect.ALIEN_SPAWN);
+    }
+
+    public SpawnedAliensDto createStaticExplosion(
+            final StaticExplosionConfig alienConfig,
+            final int x,
+            final int y) {
+
+        IAlien alien = StaticExplosion
+                .builder()
+                .explosionFactory(explosionFactory)
+                .spawnFactory(spawnFactory)
+                .spinningFactory(spinningFactory)
+                .powerUpFactory(powerUpFactory)
+                .fireFactory(fireFactory)
+                .hitFactory(hitFactory)
+                .alienConfig(alienConfig)
+                .x(x)
+                .y(y)
+                .build();
+
+        return new SpawnedAliensDto(Collections.singletonList(alien), SoundEffect.EXPLOSION);
     }
 }

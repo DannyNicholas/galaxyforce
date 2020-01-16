@@ -240,6 +240,13 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     EXPLODE_04("explodeFour"),
     EXPLODE_05("explodeFive"),
 
+    // cloud explosions
+    CLOUD_EXPLODE_01("cloudExplode01"),
+    CLOUD_EXPLODE_02("cloudExplode02"),
+    CLOUD_EXPLODE_03("cloudExplode03"),
+    CLOUD_EXPLODE_04("cloudExplode04"),
+    CLOUD_EXPLODE_05("cloudExplode05"),
+
     // big-explosions
     EXPLODE_BIG_01("bigExplosionOne"),
     EXPLODE_BIG_02("bigExplosionTwo"),

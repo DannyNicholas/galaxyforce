@@ -6,7 +6,7 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
-import com.danosoftware.galaxyforce.view.Animation;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.MultiExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.NormalExplosionConfig;
@@ -38,7 +38,7 @@ public class ExplosionBehaviourFactory {
      */
     public ExplodeBehaviour createExplosionBehaviour(
             final ExplosionConfig explosionConfig,
-            final Animation explosionAnimation) {
+            final AlienCharacter character) {
 
         if (explosionConfig != null
                 && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL
@@ -50,7 +50,7 @@ public class ExplosionBehaviourFactory {
             return new ExplodeSimple(
                     sounds,
                     vibrator,
-                    explosionAnimation);
+                    character.getExplosionAnimation());
         }
 
         if (explosionConfig != null
@@ -65,7 +65,7 @@ public class ExplosionBehaviourFactory {
                     model,
                     sounds,
                     vibrator,
-                    explosionAnimation,
+                    character,
                     multiExplosionConfig.getNumberOfExplosions(),
                     multiExplosionConfig.getMaximumExplosionStartTime(),
                     multiExplosionConfig.getExplosionConfig());
@@ -85,7 +85,7 @@ public class ExplosionBehaviourFactory {
                     new ExplodeSimple(
                             sounds,
                             vibrator,
-                            explosionAnimation),
+                            character.getExplosionAnimation()),
                     spawner
             );
         }
@@ -94,6 +94,6 @@ public class ExplosionBehaviourFactory {
         return new ExplodeSimple(
                 sounds,
                 vibrator,
-                explosionAnimation);
+                character.getExplosionAnimation());
     }
 }

@@ -583,6 +583,32 @@ public enum SubWavePathRule {
                     false,
                     new PointTranslatorChain()
                             .add(new FlipXPointTranslator(GAME_WIDTH)))
+    ),
+    SLIDE_FORMATION(
+            new SubWavePathRuleProperties(
+                    Path.SLIDE_LEFT,
+                    PathSpeed.SLOW,
+                    1,
+                    0,
+                    0f,
+                    true
+            ),
+            new SubWavePathRuleProperties(
+                    Path.SLIDE_CENTRE,
+                    PathSpeed.SLOW,
+                    1,
+                    0,
+                    0.25f,
+                    true
+            ),
+            new SubWavePathRuleProperties(
+                    Path.SLIDE_RIGHT,
+                    PathSpeed.SLOW,
+                    1,
+                    0,
+                    0f,
+                    true
+            )
     );
 
     // list of properties for a sub-wave

@@ -47,7 +47,7 @@ public class StaticAlien extends AbstractAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 explosionFactory.createExplosionBehaviour(
                         alienConfig.getExplosionConfig(),
-                        alienConfig.getAlienCharacter().getExplosionAnimation()),
+                        alienConfig.getAlienCharacter()),
                 spinningFactory.createSpinningBehaviour(
                         alienConfig.getSpinningConfig()));
     }

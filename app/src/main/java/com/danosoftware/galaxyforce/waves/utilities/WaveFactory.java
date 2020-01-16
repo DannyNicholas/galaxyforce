@@ -1227,7 +1227,11 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.CLOUD)
-                                                .energy(10)
+                                                .explosionConfig(MultiExplosionConfig.builder()
+                                                        .numberOfExplosions(10)
+                                                        .maximumExplosionStartTime(0.5f)
+                                                        .build())
+                                                .energy(1)
                                                 .missileConfig(
                                                         MissileMultiFiringConfig
                                                                 .builder()
@@ -1260,6 +1264,10 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.CLOUD)
+                                                .explosionConfig(MultiExplosionConfig.builder()
+                                                        .numberOfExplosions(10)
+                                                        .maximumExplosionStartTime(0.5f)
+                                                        .build())
                                                 .energy(10)
                                                 .missileConfig(
                                                         MissileMultiFiringConfig
@@ -1599,6 +1607,29 @@ public class WaveFactory {
                 );
                 break;
             case 31:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWavePathConfig(
+                                        SubWavePathRule.SLIDE_FORMATION,
+                                        PathConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.BAD_CAT)
+                                                .energy(1)
+                                                .missileConfig(
+                                                        MissileFiringConfig
+                                                                .builder()
+                                                                .missileType(AlienMissileType.DOWNWARDS)
+                                                                .missileCharacter(AlienMissileCharacter.LASER)
+                                                                .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                                                .missileFrequency(6.5f)
+                                                                .build())
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.LIFE)
+                                )
+                        )
+                );
+                break;
             case 32:
             case 33:
             case 34:

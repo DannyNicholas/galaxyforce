@@ -1,58 +1,51 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
-import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
-import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlienWithPath;
+import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlien;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
-import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
-
-import java.util.List;
+import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticExplosionConfig;
 
 import lombok.Builder;
 import lombok.NonNull;
 
 /**
- * Alien that follows a pre-determined path
+ * Static explosion that stays in a fixed position.
+ * Normally used in multi-explosions where explosions are spawned
+ * around an alien.
  */
-public class PathAlien extends AbstractAlienWithPath {
+public class StaticExplosion extends AbstractAlien {
 
     @Builder
-    public PathAlien(
+    public StaticExplosion(
             @NonNull final ExplosionBehaviourFactory explosionFactory,
             @NonNull final SpawnBehaviourFactory spawnFactory,
             @NonNull final SpinningBehaviourFactory spinningFactory,
             @NonNull final PowerUpBehaviourFactory powerUpFactory,
             @NonNull final FireBehaviourFactory fireFactory,
             @NonNull final HitBehaviourFactory hitFactory,
-            @NonNull final PathConfig alienConfig,
-            final PowerUpType powerUpType,
-            @NonNull final List<Point> alienPath,
-            @NonNull final Float delayStartTime,
-            @NonNull final Boolean restartImmediately) {
+            @NonNull final StaticExplosionConfig alienConfig,
+            @NonNull final Integer x,
+            @NonNull final Integer y) {
+
         super(
-                alienConfig.getAlienCharacter(),
+                AlienCharacter.NULL,
                 alienConfig.getAlienCharacter().getAnimation(),
-                fireFactory.createFireBehaviour(
-                        alienConfig.getMissileConfig()),
-                powerUpFactory.createPowerUpBehaviour(
-                        powerUpType),
-                spawnFactory.createSpawnBehaviour(
-                        alienConfig.getSpawnConfig()),
+                x,
+                y,
+                0,
+                fireFactory.createFireBehaviour(null),
+                powerUpFactory.createPowerUpBehaviour(null),
+                spawnFactory.createSpawnBehaviour(null),
                 hitFactory.createHitBehaviour(
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 explosionFactory.createExplosionBehaviour(
                         alienConfig.getExplosionConfig(),
                         alienConfig.getAlienCharacter()),
-                spinningFactory.createSpinningBehaviour(
-                        alienConfig.getSpinningConfig()),
-                alienPath,
-                delayStartTime,
-                alienConfig.getEnergy(),
-                restartImmediately);
+                spinningFactory.createSpinningBehaviour(null));
     }
 }

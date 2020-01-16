@@ -229,7 +229,14 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.CLOUD},
             new ISpriteIdentifier[]{
                     GameSpriteIdentifier.CLOUD_HIT},
-            0f),
+            0f,
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.CLOUD_EXPLODE_01,
+                    GameSpriteIdentifier.CLOUD_EXPLODE_02,
+                    GameSpriteIdentifier.CLOUD_EXPLODE_03,
+                    GameSpriteIdentifier.CLOUD_EXPLODE_04,
+                    GameSpriteIdentifier.CLOUD_EXPLODE_05},
+            0.075f),
 
     // green bouncy alien
     BOUNCER(

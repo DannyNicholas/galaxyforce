@@ -38,6 +38,9 @@ public enum AlienType {
     // alien that remains static
     STATIC,
 
+    // explosion that remains static - normally used for multi-explosions
+    STATIC_EXPLOSION,
+
     // alien that splits in different directions
     SPLITTER,
 }

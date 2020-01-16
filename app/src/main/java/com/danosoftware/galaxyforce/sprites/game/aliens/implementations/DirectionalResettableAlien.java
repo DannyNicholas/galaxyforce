@@ -66,7 +66,7 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
                         alienConfig.getAlienCharacter().getHitAnimation()),
                 explosionFactory.createExplosionBehaviour(
                         alienConfig.getExplosionConfig(),
-                        alienConfig.getAlienCharacter().getExplosionAnimation()),
+                        alienConfig.getAlienCharacter()),
                 spinningFactory.createSpinningBehaviour(
                         alienConfig.getSpinningConfig(),
                         alienConfig.getSpeed()));
