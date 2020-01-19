@@ -338,6 +338,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.OCTOPUS)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig
@@ -361,6 +362,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.MINION)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig
@@ -383,6 +385,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.MINION)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig
@@ -916,6 +919,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.SKULL)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig
@@ -938,6 +942,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.SKULL)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig
