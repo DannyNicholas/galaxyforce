@@ -584,7 +584,7 @@ public enum SubWavePathRule {
                     new PointTranslatorChain()
                             .add(new FlipXPointTranslator(GAME_WIDTH)))
     ),
-    SLIDE_FORMATION_RIGHT_LEFT(
+    SLIDE_FORMATION_LEFT_RIGHT(
             new SubWavePathRuleProperties(
                     Path.SLIDE_LEFT,
                     PathSpeed.SLOW,
@@ -616,7 +616,7 @@ public enum SubWavePathRule {
                             .add(new FlipXPointTranslator(GAME_WIDTH))
             )
     ),
-    SLIDE_FORMATION_LEFT_RIGHT(
+    SLIDE_FORMATION_RIGHT_LEFT(
             new SubWavePathRuleProperties(
             Path.SLIDE_LEFT,
             PathSpeed.SLOW,
