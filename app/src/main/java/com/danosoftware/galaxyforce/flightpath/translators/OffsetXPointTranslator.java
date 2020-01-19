@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.translators;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 /**
  * Point translator that offsets the point in the x-axis
@@ -15,7 +15,7 @@ public class OffsetXPointTranslator implements PointTranslator {
     }
 
     @Override
-    public Point convert(Point point) {
-        return new Point(point.getX() + xOffset, point.getY());
+    public DoublePoint convert(DoublePoint point) {
+        return new DoublePoint(point.getX() + xOffset, point.getY());
     }
 }

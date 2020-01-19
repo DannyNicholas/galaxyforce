@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +18,11 @@ public class PauseMathematics {
      * a pause path represents an alien staying in the same position
      * for a set time.
      */
-    public static List<Point> createPausePath(
-            final Point pausePosition,
+    public static List<DoublePoint> createPausePath(
+            final DoublePoint pausePosition,
             final float pauseTime) {
 
-        List<Point> path = new ArrayList<>();
+        List<DoublePoint> path = new ArrayList<>();
 
         // number of points to create to pause of wanted time
         // e.g. 1 second pause requires 60 points

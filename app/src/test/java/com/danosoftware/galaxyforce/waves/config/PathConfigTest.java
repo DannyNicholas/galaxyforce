@@ -4,7 +4,7 @@ import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileType;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
@@ -58,8 +58,8 @@ public class PathConfigTest {
         assertThat(config.getSpawnConfig(), nullValue());
         assertThat(config.getMissileConfig(), nullValue());
 
-        List<Point> points = new ArrayList<>();
-        points.add(new Point(0, 0));
+        List<PathPoint> points = new ArrayList<>();
+        points.add(new PathPoint(0, 0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
                 PowerUpType.LIFE,
@@ -102,8 +102,8 @@ public class PathConfigTest {
         assertThat(config.getSpinningConfig().getType(), equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
         assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
 
-        List<Point> points = new ArrayList<>();
-        points.add(new Point(0, 0));
+        List<PathPoint> points = new ArrayList<>();
+        points.add(new PathPoint(0, 0, 0));
         List<IAlien> aliens = factory.createAlien(
                 config,
                 PowerUpType.LIFE,

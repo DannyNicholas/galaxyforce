@@ -62,24 +62,25 @@ public class PathFactoryTest {
             when(loader.loadPaths(any(String.class))).thenReturn(pathListDTO);
 
             PathFactory pathFactory = new PathFactory(loader);
-            List<Point> points = pathFactory.createPath(path, emptyTranslators, PathSpeed.NORMAL);
+            List<PathPoint> points = pathFactory.createPath(path, emptyTranslators, PathSpeed.NORMAL);
             checkPoints(points);
         }
         logger.info("All paths created.");
     }
 
     // verify points
-    private void checkPoints(List<Point> points) {
+    private void checkPoints(List<PathPoint> points) {
 
         logger.info("Path size : '{}'.", points.size());
 
         assertThat(points, is(notNullValue()));
         assertThat(points.size() > 0, is(true));
 
-        for (Point point : points) {
+        for (PathPoint point : points) {
             assertThat(point, is(notNullValue()));
             assertThat(point.getX(), is(notNullValue()));
             assertThat(point.getY(), is(notNullValue()));
+            assertThat(point.getAngle(), is(notNullValue()));
         }
     }
 

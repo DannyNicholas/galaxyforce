@@ -1615,6 +1615,7 @@ public class WaveFactory {
                                         PathConfig
                                                 .builder()
                                                 .alienCharacter(AlienCharacter.BAD_CAT)
+                                                .angledToPath(true)
                                                 .energy(1)
                                                 .missileConfig(
                                                         MissileFiringConfig

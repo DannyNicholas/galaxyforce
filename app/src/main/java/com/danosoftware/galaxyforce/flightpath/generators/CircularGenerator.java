@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.flightpath.generators;
 
 import com.danosoftware.galaxyforce.flightpath.dto.CircularPathDTO;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics
  */
 public class CircularGenerator implements PathGenerator {
 
-    private final Point centre;
+    private final DoublePoint centre;
     private final Double piMultiplier;
     private final PathSpeed pathSpeed;
 
@@ -35,7 +35,7 @@ public class CircularGenerator implements PathGenerator {
 
 
     @Override
-    public List<Point> path() {
+    public List<DoublePoint> path() {
         return createCircularPath(centre, piMultiplier, pathSpeed);
     }
 }

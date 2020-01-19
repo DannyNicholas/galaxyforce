@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 import org.junit.Test;
 
@@ -20,10 +20,10 @@ public class PauseMathematicsTest {
 
         // create pause control points
         final float pauseTimeInSeconds = 0.5f;
-        final Point pausePosition = new Point(10, 20);
+        final DoublePoint pausePosition = new DoublePoint(10, 20);
 
         // create a pause path from control points
-        final List<Point> pausePoints = createPausePath(
+        final List<DoublePoint> pausePoints = createPausePath(
                 pausePosition,
                 pauseTimeInSeconds);
 
@@ -32,7 +32,7 @@ public class PauseMathematicsTest {
         assertThat(pathLength, equalTo(30));
 
         // assert all path points match provided pause points
-        for (Point point : pausePoints) {
+        for (DoublePoint point : pausePoints) {
             assertThat(point.getX(), equalTo(pausePosition.getX()));
             assertThat(point.getY(), equalTo(pausePosition.getY()));
 

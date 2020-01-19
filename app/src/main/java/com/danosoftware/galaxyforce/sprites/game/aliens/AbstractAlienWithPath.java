@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
@@ -22,7 +22,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
      * reference path this alien will follow in list of x,y co-ordinates (Point
      * objects)
      */
-    private final List<Point> alienPath;
+    private final List<PathPoint> alienPath;
 
     /* how many seconds to delay before alien starts to follow path */
     private float timeDelayStart;
@@ -39,6 +39,9 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
     /* should the alien restart it's path immediately when it reaches the end */
     private final boolean restartImmediately;
 
+    /* should the alien be rotated to follow it's path */
+    private final boolean rotated;
+
     protected AbstractAlienWithPath(
             AlienCharacter character,
             Animation animation,
@@ -48,10 +51,11 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
             HitBehaviour hitBehaviour,
             ExplodeBehaviour explodeBehaviour,
             SpinningBehaviour spinningBehaviour,
-            List<Point> alienPath,
+            List<PathPoint> alienPath,
             float delayStart,
             int energy,
-            boolean restartImmediately) {
+            boolean restartImmediately,
+            boolean angledToPath) {
         // default is that all aliens with paths start invisible at first
         // position
         super(
@@ -71,6 +75,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
         this.maximumPathIndex = alienPath.size() - 1;
         this.originalTimeDelayStart = delayStart;
         this.restartImmediately = restartImmediately;
+        this.rotated = angledToPath;
 
         // reset timers and sets sprite inactive
         reset(0);
@@ -105,11 +110,14 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
                 }
             } else {
                 // set alien new position
-                Point position = alienPath.get(index);
+                PathPoint position = alienPath.get(index);
                 move(
                         position.getX(),
                         position.getY()
                 );
+                if (rotated) {
+                    rotate(position.getAngle());
+                }
             }
         } else if (isWaiting()) {
             // countdown until activation time
@@ -140,11 +148,14 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
          * reset back at start position - will be made visible and active before
          * recalculating it's position.
          */
-        Point position = alienPath.get(0);
+        PathPoint position = alienPath.get(0);
         move(
                 position.getX(),
                 position.getY()
         );
+        if (rotated) {
+            rotate(position.getAngle());
+        }
     }
 
     @Override

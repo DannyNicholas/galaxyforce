@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.translators;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class TranslatorChainTest {
     @Test
     public void translateTest() {
 
-        Point point = new Point(10, 20);
+        DoublePoint point = new DoublePoint(10, 20);
 
         // build up a chain of translators
         PointTranslatorChain translatorChain = new PointTranslatorChain()
@@ -27,9 +27,9 @@ public class TranslatorChainTest {
         // converts the point using the build chain
         // x = 10 -> flip:(100-10) = 90 -> offset:(90+50) = 140
         // y = 20 -> flip:(200-20) = 180 -> offset:(180+75) = 255
-        Point convertedPoint = translatorChain.translate(point);
+        DoublePoint convertedPoint = translatorChain.translate(point);
 
-        assertThat(convertedPoint.getX(), is(140));
-        assertThat(convertedPoint.getY(), is(255));
+        assertThat(convertedPoint.getX(), is(140D));
+        assertThat(convertedPoint.getY(), is(255D));
     }
 }

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.models.assets.SpawnedAliensDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 import com.danosoftware.galaxyforce.services.sound.SoundEffect;
@@ -84,7 +84,7 @@ public class AlienFactory {
     public List<IAlien> createAlien(
             final AlienConfig alienConfig,
             final PowerUpType powerUp,
-            final List<Point> alienPath,
+            final List<PathPoint> alienPath,
             final float delay,
             final boolean restartImmediately) {
 

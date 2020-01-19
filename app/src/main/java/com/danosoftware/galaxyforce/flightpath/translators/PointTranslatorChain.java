@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.translators;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,8 @@ public class PointTranslatorChain {
     /**
      * Translate the supplied point using the chain of translators
      */
-    public Point translate(final Point point) {
-        Point convertedPoint = point;
+    public DoublePoint translate(final DoublePoint point) {
+        DoublePoint convertedPoint = point;
         for (PointTranslator translator : translators) {
             convertedPoint = translator.convert(convertedPoint);
         }

@@ -15,6 +15,8 @@ import lombok.NonNull;
 @Getter
 public class PathConfig extends BasicAlienConfig {
 
+    private final Boolean angledToPath;
+
     @Builder
     public PathConfig(
             @NonNull final AlienCharacter alienCharacter,
@@ -22,7 +24,8 @@ public class PathConfig extends BasicAlienConfig {
             final MissileConfig missileConfig,
             final SpawnConfig spawnConfig,
             final SpinningConfig spinningConfig,
-            final ExplosionConfig explosionConfig) {
+            final ExplosionConfig explosionConfig,
+            final Boolean angledToPath) {
         super(
                 AlienType.PATH,
                 alienCharacter,
@@ -31,5 +34,6 @@ public class PathConfig extends BasicAlienConfig {
                 spawnConfig,
                 spinningConfig,
                 explosionConfig);
+        this.angledToPath = angledToPath != null ? angledToPath : false;
     }
 }

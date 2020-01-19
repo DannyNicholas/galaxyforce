@@ -1,8 +1,8 @@
 package com.danosoftware.galaxyforce.flightpath.generators;
 
 import com.danosoftware.galaxyforce.flightpath.dto.LinearPathDTO;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
 import java.util.List;
@@ -15,8 +15,8 @@ import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics
  */
 public class LinearGenerator implements PathGenerator {
 
-    private final Point start;
-    private final Point finish;
+    private final DoublePoint start;
+    private final DoublePoint finish;
     private final int pathPoints;
 
     /**
@@ -39,7 +39,7 @@ public class LinearGenerator implements PathGenerator {
      * @return array of points representing line
      */
     @Override
-    public List<Point> path() {
+    public List<DoublePoint> path() {
         return createLinearPath(start, finish, pathPoints);
     }
 }

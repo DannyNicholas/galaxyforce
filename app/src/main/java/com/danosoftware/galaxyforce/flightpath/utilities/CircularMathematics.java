@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,24 +17,24 @@ public final class CircularMathematics {
     /**
      * return the points for the current circular path.
      */
-    public static List<Point> createCircularPath(
-            final Point centre,
+    public static List<DoublePoint> createCircularPath(
+            final DoublePoint centre,
             final double piMultiplier,
             final PathSpeed pathSpeed) {
-        List<Point> path = new ArrayList<>();
+        List<DoublePoint> path = new ArrayList<>();
 
         double radius = 300;
 
-        final int centreX = centre.getX();
-        final int centreY = centre.getY();
+        final double centreX = centre.getX();
+        final double centreY = centre.getY();
         final double delta = 0.015 * pathSpeed.getMultiplier();
 
         for (double t = 0; t < piMultiplier * Math.PI; t = t + delta) {
 
             // calculate position based on centre, radius and angle
-            int xPos = centreX + (int) (radius * Math.cos(-t));
-            int yPos = centreY + (int) (radius * Math.sin(-t));
-            Point position = new Point(xPos, yPos);
+            double xPos = centreX + (radius * Math.cos(-t));
+            double yPos = centreY + (radius * Math.sin(-t));
+            DoublePoint position = new DoublePoint(xPos, yPos);
             path.add(position);
 
             // reduce radius for next interation

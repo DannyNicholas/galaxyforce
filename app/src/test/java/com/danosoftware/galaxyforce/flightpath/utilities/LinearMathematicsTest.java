@@ -1,6 +1,6 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 
 import org.junit.Test;
 
@@ -20,11 +20,11 @@ public class LinearMathematicsTest {
 
         // create linear control points
         final int pathPoints = 100;
-        final Point start = new Point(10, 20);
-        final Point finish = new Point(30, 40);
+        final DoublePoint start = new DoublePoint(10, 20);
+        final DoublePoint finish = new DoublePoint(30, 40);
 
         // create a linear path from control points
-        final List<Point> linearPoints = createLinearPath(
+        final List<DoublePoint> linearPoints = createLinearPath(
                 start,
                 finish,
                 pathPoints);

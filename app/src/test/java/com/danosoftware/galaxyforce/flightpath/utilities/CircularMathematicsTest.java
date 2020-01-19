@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.flightpath.utilities;
 
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
 
 import org.junit.Test;
 
@@ -21,10 +21,10 @@ public class CircularMathematicsTest {
 
         // create circular control points
         final double piMultiplier = 1;
-        final Point centre = new Point(0, 0);
+        final DoublePoint centre = new DoublePoint(0, 0);
 
         // create a linear path from control points
-        final List<Point> linearPoints = createCircularPath(
+        final List<DoublePoint> linearPoints = createCircularPath(
                 centre,
                 piMultiplier,
                 PathSpeed.NORMAL);

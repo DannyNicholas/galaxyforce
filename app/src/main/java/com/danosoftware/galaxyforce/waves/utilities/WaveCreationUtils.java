@@ -2,7 +2,7 @@ package com.danosoftware.galaxyforce.waves.utilities;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.flightpath.paths.PathFactory;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienFactory;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
@@ -62,7 +62,7 @@ public class WaveCreationUtils {
         for (SubWavePathRuleProperties props : rules.subWaveProps()) {
 
             // create path points (that alien will follow) for sub-wave
-            List<Point> path = pathFactory.createPath(
+            List<PathPoint> path = pathFactory.createPath(
                     props.getPath(),
                     props.getTranslators(),
                     props.getPathSpeed()
@@ -127,7 +127,7 @@ public class WaveCreationUtils {
     private List<IAlien> createAliens(
             final AlienConfig alienConfig,
             final PowerUpAllocator powerUpAllocator,
-            final List<Point> path,
+            final List<PathPoint> path,
             final SubWavePathRuleProperties props) {
 
         List<IAlien> aliensOnPath = new ArrayList<>();

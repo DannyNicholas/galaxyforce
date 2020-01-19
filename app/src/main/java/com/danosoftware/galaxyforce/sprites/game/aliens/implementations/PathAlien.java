@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens.implementations;
 
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.sprites.game.aliens.AbstractAlienWithPath;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplosionBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviourFactory;
@@ -31,7 +31,7 @@ public class PathAlien extends AbstractAlienWithPath {
             @NonNull final HitBehaviourFactory hitFactory,
             @NonNull final PathConfig alienConfig,
             final PowerUpType powerUpType,
-            @NonNull final List<Point> alienPath,
+            @NonNull final List<PathPoint> alienPath,
             @NonNull final Float delayStartTime,
             @NonNull final Boolean restartImmediately) {
         super(
@@ -53,6 +53,7 @@ public class PathAlien extends AbstractAlienWithPath {
                 alienPath,
                 delayStartTime,
                 alienConfig.getEnergy(),
-                restartImmediately);
+                restartImmediately,
+                alienConfig.getAngledToPath());
     }
 }

@@ -1,7 +1,7 @@
 package com.danosoftware.galaxyforce.flightpath.generators;
 
 import com.danosoftware.galaxyforce.flightpath.dto.PausePathDTO;
-import com.danosoftware.galaxyforce.flightpath.paths.Point;
+import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics
  */
 public class PauseGenerator implements PathGenerator {
 
-    private final Point pausePosition;
+    private final DoublePoint pausePosition;
     private final float pauseTime;
 
     /**
@@ -30,7 +30,7 @@ public class PauseGenerator implements PathGenerator {
     }
 
     @Override
-    public List<Point> path() {
+    public List<DoublePoint> path() {
         return createPausePath(pausePosition, pauseTime);
     }
 }
