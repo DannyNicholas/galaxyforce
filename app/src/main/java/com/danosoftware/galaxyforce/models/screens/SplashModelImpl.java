@@ -14,6 +14,7 @@ import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.models.buttons.TouchScreenModel;
 import com.danosoftware.galaxyforce.models.screens.background.RgbColour;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.common.IMovingSprite;
 import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.game.splash.BaseMovingSprite;
@@ -69,7 +70,8 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
                            Controller controller,
                            BillingService billingService,
                            String versionName,
-                           StarFieldTemplate starFieldTemplate) {
+                           StarFieldTemplate starFieldTemplate,
+                           SoundPlayerService sounds) {
 
         this.game = game;
         this.billingService = billingService;
@@ -87,7 +89,8 @@ public class SplashModelImpl implements Model, TouchScreenModel, BillingObserver
                 GameConstants.SCREEN_MID_X,
                 START_LOGO_Y_POS,
                 MenuSpriteIdentifier.GALAXY_FORCE);
-        this.base = new BaseMovingSprite();
+        this.base = new BaseMovingSprite(
+                sounds);
 
         sprites.addAll(starField.getSprites());
         sprites.add(planet);

@@ -113,7 +113,7 @@ public class ScreenFactory {
 
             case SPLASH:
                 return new ExitingScreen(
-                        new SplashModelImpl(game, controller, billingService, versionName, starFieldTemplate),
+                        new SplashModelImpl(game, controller, billingService, versionName, starFieldTemplate, sounds),
                         controller,
                         textureService,
                         TextureMap.MENU,

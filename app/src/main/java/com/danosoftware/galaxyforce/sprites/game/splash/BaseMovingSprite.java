@@ -1,6 +1,8 @@
 package com.danosoftware.galaxyforce.sprites.game.splash;
 
 import com.danosoftware.galaxyforce.constants.GameConstants;
+import com.danosoftware.galaxyforce.services.sound.SoundEffect;
+import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.sprites.common.AbstractMovingSprite;
 import com.danosoftware.galaxyforce.sprites.properties.ISpriteIdentifier;
 import com.danosoftware.galaxyforce.sprites.properties.MenuSpriteIdentifier;
@@ -32,6 +34,8 @@ public class BaseMovingSprite extends AbstractMovingSprite {
     private static final ISpriteIdentifier BASE_FLAT = MenuSpriteIdentifier.BASE;
     private static final ISpriteIdentifier BASE_TILT = MenuSpriteIdentifier.BASE_TILT;
 
+    private boolean launchSoundPlaying;
+
     // total animation time
     private float timeElapsed;
 
@@ -45,15 +49,26 @@ public class BaseMovingSprite extends AbstractMovingSprite {
 
     private BaseState state;
 
-    public BaseMovingSprite() {
+    private final SoundPlayerService sounds;
+
+    public BaseMovingSprite(
+            final SoundPlayerService sounds
+    ) {
         super(BASE_TILT, GameConstants.SCREEN_MID_X, START_BASE_Y_POS);
         this.timeElapsed = 0f;
         this.state = BaseState.LAUNCH;
+        this.sounds = sounds;
+        this.launchSoundPlaying = false;
     }
 
     @Override
     public void animate(float deltaTime) {
         timeElapsed += deltaTime;
+
+        if (!launchSoundPlaying && timeElapsed >= DELAY_IN_SECONDS_BEFORE_START) {
+            sounds.play(SoundEffect.SHIELD_PULSE);
+            launchSoundPlaying = true;
+        }
 
         switch (state) {
             case LAUNCH:
@@ -71,6 +86,7 @@ public class BaseMovingSprite extends AbstractMovingSprite {
                     changeType(BASE_FLAT);
                     maxDistanceToTravel = FINAL_BASE_Y_POS - pausedPosition;
                     timeWhenAccelerating = timeElapsed;
+                    sounds.play(SoundEffect.BIG_EXPLOSION);
                 }
                 break;
             case ACCELERATE:
