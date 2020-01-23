@@ -1739,7 +1739,7 @@ public class WaveFactory {
                                                 .angle(DOWNWARDS)
                                                 .speed(AlienSpeed.SLOW)
                                                 .build(),
-                                        Collections.singletonList(PowerUpType.SHIELD)
+                                        NO_POWER_UPS
                                 )
                         )
                 );
