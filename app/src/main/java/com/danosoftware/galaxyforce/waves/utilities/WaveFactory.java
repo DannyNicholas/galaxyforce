@@ -1727,6 +1727,23 @@ public class WaveFactory {
                 );
                 break;
             case 33:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                new SubWaveNoPathConfig(
+                                        SubWaveRule.BARRIER_MAZE,
+                                        DirectionalDestroyableConfig
+                                                .builder()
+                                                .alienCharacter(AlienCharacter.BARRIER)
+                                                .energy(Integer.MAX_VALUE)
+                                                .angle(DOWNWARDS)
+                                                .speed(AlienSpeed.SLOW)
+                                                .build(),
+                                        Collections.singletonList(PowerUpType.SHIELD)
+                                )
+                        )
+                );
+                break;
             case 34:
             case 35:
             case 36:
