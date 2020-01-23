@@ -11,9 +11,11 @@ import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplosionConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileFiringConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
@@ -155,6 +157,137 @@ public class WaveFactoryHelper {
                             .build())
             .angle(angle)
             .build();
+    }
+
+    /**
+     * Create drifting aliens starting at random positions, moving at specific angles.
+     */
+    public static SubWaveConfig[] createDriftingWave(
+            final AlienCharacter alien,
+            final Integer energy,
+            final AlienSpeed speed,
+            final List<PowerUpType> powerUpTypes,
+            final SpinningConfig spinningConfig,
+            final MissileConfig missileConfig) {
+
+        /*
+         * Normally power-ups are allocated across a sub-wave config.
+         * In this case, each alien has its own sub-wave config so we need
+         * to create our own local power-up allocator to share power-ups across our
+         * aliens.
+         */
+        final PowerUpAllocator powerUpAllocator = new PowerUpAllocator(
+                powerUpTypes,
+                3 * 4,  // expected number of aliens
+                0);
+
+        return flatten(
+                createSurroundingAliens(
+                        alien,
+                        energy,
+                        DOWNWARDS - (PI / 5.0f),
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator),
+                createSurroundingAliens(
+                        alien,
+                        energy,
+                        DOWNWARDS + (PI / 7.0f),
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator),
+                createSurroundingAliens(
+                        alien,
+                        energy,
+                        DOWNWARDS + (PI / 3.0f),
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator)
+        );
+    }
+
+    /**
+     * Create aliens that start off screen: top, bottom, left and right.
+     * The angles are adjusted so aliens move towards centre of screen.
+     */
+    public static SubWaveConfig[] createSurroundingAliens(
+            final AlienCharacter alien,
+            final Integer energy,
+            final float angle,
+            final AlienSpeed speed,
+            final SpinningConfig spinningConfig,
+            final MissileConfig missileConfig,
+            final PowerUpAllocator powerUpAllocator) {
+        return new SubWaveConfig[] {
+                createAliens(
+                        SubWaveRule.RANDOM_TOP,
+                        alien,
+                        energy,
+                        angle,
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator),
+                createAliens(
+                        SubWaveRule.RANDOM_LEFT,
+                        alien,
+                        energy,
+                        angle + HALF_PI,
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator),
+                createAliens(
+                        SubWaveRule.RANDOM_BOTTOM,
+                        alien,
+                        energy,
+                        angle + PI,
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator),
+                createAliens(
+                        SubWaveRule.RANDOM_RIGHT,
+                        alien,
+                        energy,
+                        angle - HALF_PI,
+                        speed,
+                        spinningConfig,
+                        missileConfig,
+                        powerUpAllocator)
+        };
+    }
+
+    private static SubWaveConfig createAliens(
+            final SubWaveRule subWaveRule,
+            final AlienCharacter alien,
+            final Integer energy,
+            final float angle,
+            final AlienSpeed speed,
+            final SpinningConfig spinningConfig,
+            final MissileConfig missileConfig,
+            final PowerUpAllocator powerUpAllocator) {
+
+        final PowerUpType powerUp = powerUpAllocator.allocate();
+
+        return new SubWaveNoPathConfig(
+                subWaveRule,
+                DriftingConfig
+                        .builder()
+                        .alienCharacter(alien)
+                        .energy(energy)
+                        .speed(speed)
+                        .angle(angle)
+                        .spinningConfig(
+                                spinningConfig)
+                        .missileConfig(
+                                missileConfig)
+                        .build(),
+                powerUp == null ? NO_POWER_UPS : Collections.singletonList(powerUp)
+        );
     }
 
     /*

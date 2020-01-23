@@ -31,6 +31,15 @@ public enum GameSpriteIdentifier implements ISpriteIdentifier {
     SPINNER_PULSE_GREEN_02_HIT("spinnerPulseGreenHit02", 4),
     SPINNER_PULSE_GREEN_03_HIT("spinnerPulseGreenHit03", 4),
 
+    // spinning space stations
+    SPACE_STATION("spaceStation", 4),
+    SPACE_STATION_HIT("spaceStationHit", 4),
+
+    // pulsating barrier
+    BARRIER_01("barrier01", 2),
+    BARRIER_02("barrier02", 2),
+    BARRIER_03("barrier03", 2),
+
     // molecule
     MOLECULE("molecule", 2),
     MOLECULE_HIT("moleculeHit", 2),

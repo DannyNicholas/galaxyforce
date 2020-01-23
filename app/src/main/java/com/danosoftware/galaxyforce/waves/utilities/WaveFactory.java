@@ -48,6 +48,7 @@ import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.HAL
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.NO_POWER_UPS;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.QUARTER_PI;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createAsteroidField;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createDriftingWave;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.createMiniDirectionalAsteroid;
 
 
@@ -1701,6 +1702,30 @@ public class WaveFactory {
                 );
                 break;
             case 32:
+                subWaves.add(
+                        createSubWave(
+                                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                                createDriftingWave(
+                                        AlienCharacter.SPACE_STATION,
+                                        2,
+                                        AlienSpeed.SLOW,
+                                        Arrays.asList(
+                                                PowerUpType.MISSILE_GUIDED,
+                                                PowerUpType.MISSILE_FAST,
+                                                PowerUpType.MISSILE_LASER),
+                                        SpinningBySpeedConfig
+                                                .builder()
+                                                .build(),
+                                        MissileFiringConfig
+                                                .builder()
+                                                .missileType(AlienMissileType.ROTATED)
+                                                .missileCharacter(AlienMissileCharacter.LASER)
+                                                .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                                .missileFrequency(10f)
+                                                .build())
+                        )
+                );
+                break;
             case 33:
             case 34:
             case 35:

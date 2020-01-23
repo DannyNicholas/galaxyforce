@@ -322,7 +322,25 @@ public enum AlienCharacter {
                     GameSpriteIdentifier.EGG_CRACK_05,
                     GameSpriteIdentifier.EGG_CRACK_06,
                     GameSpriteIdentifier.EGG_CRACK_07},
-            0.075f);
+            0.075f),
+
+    BARRIER(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.BARRIER_01,
+                    GameSpriteIdentifier.BARRIER_02,
+                    GameSpriteIdentifier.BARRIER_03},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.BARRIER_01,
+                    GameSpriteIdentifier.BARRIER_02,
+                    GameSpriteIdentifier.BARRIER_03},
+            0.25f),
+
+    SPACE_STATION(
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.SPACE_STATION},
+            new ISpriteIdentifier[]{
+                    GameSpriteIdentifier.SPACE_STATION_HIT},
+            0f);
 
     private static final float DEFAULT_EXPLOSION_FRAME_DURATION = 0.075f;
 
