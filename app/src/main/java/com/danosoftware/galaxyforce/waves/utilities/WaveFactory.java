@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileMultiFir
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAndExplodingAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningLimitedAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeedConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
@@ -1177,13 +1178,13 @@ public class WaveFactory {
                                                 .alienCharacter(AlienCharacter.ZOGG)
                                                 .energy(10)
                                                 .spawnConfig(
-                                                        SpawningAlienConfig
+                                                        SpawningLimitedAlienConfig
                                                                 .builder()
                                                                 .spawnedAlienConfig(
                                                                         FollowableHunterConfig
                                                                                 .builder()
                                                                                 .alienCharacter(AlienCharacter.DRAGON_HEAD)
-                                                                                .energy(20)
+                                                                                .energy(10)
                                                                                 .speed(AlienSpeed.VERY_FAST)
                                                                                 .missileConfig(
                                                                                         MissileFiringConfig
@@ -1211,6 +1212,8 @@ public class WaveFactory {
                                                                                 .build())
                                                                 .minimumSpawnDelayTime(5f)
                                                                 .maximumAdditionalRandomSpawnDelayTime(2f)
+                                                                .maximumActiveSpawnedAliens(2)
+                                                                .limitedCharacter(AlienCharacter.DRAGON_HEAD)// max 2 dragon heads at any time
                                                                 .spwanedPowerUpTypes(
                                                                         Arrays.asList(
                                                                                 PowerUpType.MISSILE_GUIDED,

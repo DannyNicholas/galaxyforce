@@ -6,6 +6,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnOnDemandConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningAndExplodingAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawningLimitedAlienConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
@@ -44,6 +45,25 @@ public class SpawnBehaviourFactory {
                     spawningConfig.getSpwanedPowerUpTypes(),
                     spawningConfig.getMinimumSpawnDelayTime(),
                     spawningConfig.getMaximumAdditionalRandomSpawnDelayTime());
+        }
+
+        if (spawnConfig != null
+                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_LIMITED
+                && spawnConfig instanceof SpawningLimitedAlienConfig) {
+
+            final SpawningLimitedAlienConfig spawningConfig = ((SpawningLimitedAlienConfig) spawnConfig);
+
+            // behaviour that spawns aliens using a limited spawnedAlienConfig
+            return new SpawnRandomDelayLimiter(
+                    alienFactory,
+                    powerUpAllocatorFactory,
+                    model,
+                    spawningConfig.getSpawnedAlienConfig(),
+                    spawningConfig.getSpwanedPowerUpTypes(),
+                    spawningConfig.getMinimumSpawnDelayTime(),
+                    spawningConfig.getMaximumAdditionalRandomSpawnDelayTime(),
+                    spawningConfig.getMaximumActiveSpawnedAliens(),
+                    spawningConfig.getLimitedCharacter());
         }
 
         if (spawnConfig != null
