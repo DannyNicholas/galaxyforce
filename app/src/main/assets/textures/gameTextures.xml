@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:03f269a0bd1ec41ceb85d412c36cd56d:9b2a2a76aa13621dc79ef1c24a436383:b4b957b600d0e6e4d4d315d9910b8a56$ -->
+<!-- $TexturePacker:SmartUpdate:3deb328fd64ed36c0ef44270dcdd8cda:c1904b775ccf34838b407534decda20a:b4b957b600d0e6e4d4d315d9910b8a56$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -20,17 +20,17 @@ verticesUV => points in sheet coordinate system (x0,y0,x1,y1,x2,y2, ...)
 triangles  => sprite triangulation, 3 vertex indices per triangle
 -->
 <TextureAtlas imagePath="gameTextures.png" width="512" height="2048">
-    <sprite n="alienLaser" x="463" y="0" w="12" h="26"/>
+    <sprite n="alienLaser" x="453" y="0" w="12" h="26"/>
     <sprite n="asteroid" x="302" y="560" w="64" h="64"/>
     <sprite n="asteroidHit" x="54" y="756" w="68" h="68"/>
     <sprite n="badCat" x="390" y="316" w="58" h="58"/>
     <sprite n="badCatHit" x="128" y="434" w="62" h="62"/>
-    <sprite n="barrier01" x="15" y="0" w="108" h="14"/>
-    <sprite n="barrier02" x="137" y="0" w="108" h="14"/>
-    <sprite n="barrier03" x="245" y="0" w="108" h="14"/>
+    <sprite n="barrier01" x="223" y="0" w="106" h="14"/>
+    <sprite n="barrier02" x="15" y="0" w="104" h="10"/>
+    <sprite n="barrier03" x="119" y="0" w="104" h="10"/>
     <sprite n="base" x="170" y="496" w="64" h="64"/>
-    <sprite n="baseExplosion01" x="123" y="0" w="14" h="14"/>
-    <sprite n="baseExplosion02" x="367" y="0" w="22" h="20"/>
+    <sprite n="baseExplosion01" x="329" y="0" w="14" h="14"/>
+    <sprite n="baseExplosion02" x="357" y="0" w="22" h="20"/>
     <sprite n="baseExplosion03" x="70" y="560" w="62" h="64"/>
     <sprite n="baseExplosion04" x="398" y="690" w="62" h="66"/>
     <sprite n="baseExplosion05" x="448" y="316" w="58" h="58"/>
@@ -46,10 +46,10 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="baseHelperShieldOutline03" x="192" y="106" w="38" h="48"/>
     <sprite n="baseHelperShieldOutline04" x="0" y="260" w="44" h="54"/>
     <sprite n="baseLeft" x="62" y="496" w="44" h="64"/>
-    <sprite n="baseMissile" x="451" y="0" w="12" h="26"/>
-    <sprite n="baseMissileBlast" x="427" y="0" w="24" h="26"/>
+    <sprite n="baseMissile" x="441" y="0" w="12" h="26"/>
+    <sprite n="baseMissileBlast" x="417" y="0" w="24" h="26"/>
     <sprite n="baseMissileLaser" x="52" y="206" w="12" h="52"/>
-    <sprite n="baseMissileRocket" x="409" y="0" w="18" h="24"/>
+    <sprite n="baseMissileRocket" x="399" y="0" w="18" h="24"/>
     <sprite n="baseRight" x="366" y="560" w="44" h="64"/>
     <sprite n="baseShieldLeftOutline01" x="334" y="894" w="52" h="72"/>
     <sprite n="baseShieldLeftOutline02" x="238" y="1046" w="54" h="78"/>
@@ -103,7 +103,7 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="circuit02" x="390" y="624" w="66" h="66"/>
     <sprite n="circuit02Hit" x="0" y="894" w="70" h="70"/>
     <sprite n="cloud" x="132" y="560" w="170" h="64"/>
-    <sprite n="cloudExplode01" x="475" y="0" w="30" h="28"/>
+    <sprite n="cloudExplode01" x="465" y="0" w="30" h="28"/>
     <sprite n="cloudExplode02" x="236" y="62" w="40" h="40"/>
     <sprite n="cloudExplode03" x="374" y="434" w="60" h="62"/>
     <sprite n="cloudExplode04" x="0" y="496" w="62" h="62"/>
@@ -133,9 +133,9 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="eggCrackHit03" x="206" y="1214" w="66" h="92"/>
     <sprite n="explodeFive" x="226" y="28" w="32" h="32"/>
     <sprite n="explodeFour" x="194" y="28" w="32" h="32"/>
-    <sprite n="explodeOne" x="353" y="0" w="14" h="14"/>
+    <sprite n="explodeOne" x="343" y="0" w="14" h="14"/>
     <sprite n="explodeThree" x="48" y="28" w="30" h="30"/>
-    <sprite n="explodeTwo" x="389" y="0" w="20" h="20"/>
+    <sprite n="explodeTwo" x="379" y="0" w="20" h="20"/>
     <sprite n="fireBall01" x="320" y="28" w="18" h="32"/>
     <sprite n="fireBall02" x="338" y="28" w="18" h="32"/>
     <sprite n="Flag_1" x="258" y="28" w="32" h="32"/>
@@ -204,9 +204,9 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="spinnerPulseGreenHit01" x="60" y="374" w="62" h="60"/>
     <sprite n="spinnerPulseGreenHit02" x="52" y="106" w="48" h="48"/>
     <sprite n="spinnerPulseGreenHit03" x="244" y="260" w="58" h="56"/>
-    <sprite n="Star" x="1" y="0" w="2" h="2"/>
-    <sprite n="StarBLACK" x="7" y="0" w="2" h="2"/>
-    <sprite n="StarBLUE" x="5" y="0" w="2" h="2"/>
+    <sprite n="Star" x="7" y="0" w="2" h="2"/>
+    <sprite n="StarBLACK" x="5" y="0" w="2" h="2"/>
+    <sprite n="StarBLUE" x="1" y="0" w="2" h="2"/>
     <sprite n="StarRED" x="3" y="0" w="2" h="2"/>
     <sprite n="StarSPARKLE" x="9" y="0" w="6" h="6"/>
     <sprite n="telly01" x="132" y="690" w="66" h="66"/>
