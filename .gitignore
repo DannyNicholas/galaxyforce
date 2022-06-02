@@ -14,3 +14,4 @@
 .externalNativeBuild
 /app/src/main/res/values/billing.xml
 *.hprof
+/.idea/deploymentTargetDropDown.xml
