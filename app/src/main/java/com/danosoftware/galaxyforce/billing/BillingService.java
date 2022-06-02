@@ -1,8 +1,13 @@
 package com.danosoftware.galaxyforce.billing;
 
-import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.ProductDetails;
 
 public interface BillingService {
+
+  /**
+   * Query any purchases already owned.
+   */
+  void queryPurchasesAsync();
 
   /**
    * Return the current state of full-game purchase.
@@ -10,21 +15,21 @@ public interface BillingService {
   PurchaseState getFullGamePurchaseState();
 
   /**
-   * Asynchronously query the full game's Sku Details. Call the supplied listener when the Sku
-   * Details are available.
+   * Asynchronously query the full game's Product Details. Call the supplied listener when the
+   * Product Details are available.
    *
-   * @param listener - listener to receive/process Sku Details
+   * @param listener - listener to receive/process Product Details
    */
-  void queryFullGameSkuDetailsAsync(SkuDetailsListener listener);
+  void queryFullGameProductDetailsAsync(ProductDetailsListener listener);
 
   /**
-   * Purchase the Full Game using the supplied Sku Details.
+   * Purchase the Full Game using the supplied Product Details.
    * <p>
-   * Implementations must check the Sku Details are valid and represent a Full Game purchase.
+   * Implementations must check the Product Details are valid and represent a Full Game purchase.
    *
-   * @param details - Sku Details for a full game purchase
+   * @param details - Product Details for a full game purchase
    */
-  void purchaseFullGame(SkuDetails details);
+  void purchaseFullGame(ProductDetails details);
 
   /**
    * Register observer for any purchase state changes.
@@ -35,4 +40,9 @@ public interface BillingService {
    * Unregister observer for any purchase state changes.
    */
   void unregisterPurchasesObserver(BillingObserver billingObserver);
+
+  /**
+   * Destroy billing service on application close.
+   */
+  void destroy();
 }

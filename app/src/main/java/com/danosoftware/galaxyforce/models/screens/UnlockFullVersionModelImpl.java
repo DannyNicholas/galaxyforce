@@ -3,11 +3,12 @@ package com.danosoftware.galaxyforce.models.screens;
 import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 import android.util.Log;
-import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.ProductDetails.OneTimePurchaseOfferDetails;
 import com.danosoftware.galaxyforce.billing.BillingObserver;
 import com.danosoftware.galaxyforce.billing.BillingService;
+import com.danosoftware.galaxyforce.billing.ProductDetailsListener;
 import com.danosoftware.galaxyforce.billing.PurchaseState;
-import com.danosoftware.galaxyforce.billing.SkuDetailsListener;
 import com.danosoftware.galaxyforce.buttons.sprite_text_button.SpriteTextButton;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -35,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class UnlockFullVersionModelImpl implements Model, BillingObserver, ButtonModel,
-    SkuDetailsListener, TextChangeListener {
+    ProductDetailsListener, TextChangeListener {
 
   /* logger tag */
   private static final String LOCAL_TAG = "UnlockFullVersionModel";
@@ -56,7 +57,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
   private boolean updateSprites;
   private ModelState modelState;
   // details of the full game unlock purchase
-  private volatile SkuDetails skuDetails;
+  private volatile ProductDetails productDetails;
   /*
    * Should we rebuild the screen sprites?
    * Normally triggered by a change in state from a billing thread.
@@ -105,20 +106,21 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
      * if the full version has NOT been purchased then add the upgrade
      * button and text
      */
-    if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED) {
+    final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
+    if (fullGamePurchaseState == PurchaseState.NOT_PURCHASED) {
       prepareUpgradeFullVersion(showButtons);
     }
     /*
      * if the full version has been purchased then display successful
      * upgrade text
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.PURCHASED) {
+    else if (fullGamePurchaseState == PurchaseState.PURCHASED) {
       prepareUpgradeFullVersionSuccess();
     }
     /*
      * Purchase is pending - may succeed or fail at this stage.
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.PENDING) {
+    else if (fullGamePurchaseState == PurchaseState.PENDING) {
       preparePendingPurchaseState();
     }
     /*
@@ -126,7 +128,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
      * This state should rarely/never occur. if so, should hopefully only be a
      * temporary state until purchases are returned asynchronously.
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_READY) {
+    else if (fullGamePurchaseState == PurchaseState.NOT_READY) {
       prepareUnknownPurchaseState();
     }
 
@@ -160,7 +162,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
             TextPositionX.CENTRE,
             450));
 
-    if (skuDetails != null) {
+    if (productDetails != null) {
+      OneTimePurchaseOfferDetails purchaseDetails = productDetails.getOneTimePurchaseOfferDetails();
       messages.add(
           Text.newTextRelativePositionX(
               "PRICE",
@@ -168,7 +171,9 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
               300 + 50));
       messages.add(
           Text.newUntrustedTextRelativePositionX(
-              skuDetails.getPrice(),
+              purchaseDetails.getPriceCurrencyCode() // GBP
+                  + " " +
+                  purchaseDetails.getFormattedPrice(), // e.g. £0.78
               TextPositionX.CENTRE,
               300));
 
@@ -377,9 +382,9 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
   @Override
   public void resume() {
-    // query upgrade price by requesting the full-game purchase SKU details asynchronously.
-    // onSkuDetailsRetrieved() will be invoked when SKU details are available.
-    billingService.queryFullGameSkuDetailsAsync(this);
+    // query upgrade price by requesting the full-game purchase product details asynchronously.
+    // onProductDetailsRetrieved() will be called when product details are available.
+    billingService.queryFullGameProductDetailsAsync(this);
   }
 
   @Override
@@ -410,7 +415,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
         reBuildSprites(false);
 
         // purchase product
-        billingService.purchaseFullGame(skuDetails);
+        billingService.purchaseFullGame(productDetails);
 
         break;
 
@@ -429,14 +434,22 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     this.modelState = ModelState.GO_BACK;
   }
 
+  /**
+   * Implementation of {@link ProductDetailsListener}
+   * <p>
+   * This method will be called-back with the details of any available product details that can be
+   * purchased.
+   *
+   * @param productDetails - product details retrieved
+   */
   @Override
-  public void onSkuDetailsRetrieved(SkuDetails skuDetails) {
-    if (skuDetails != null) {
-      this.skuDetails = skuDetails;
+  public void onProductDetailsRetrieved(ProductDetails productDetails) {
+    if (productDetails != null) {
+      this.productDetails = productDetails;
       this.reBuildSprites = true;
-      Log.d(LOCAL_TAG, "Retrieved SkuDetails: " + skuDetails);
+      Log.d(LOCAL_TAG, "Retrieved Product Details: " + productDetails);
     } else {
-      Log.w(GameConstants.LOG_TAG, "Null skuDetails received.");
+      Log.w(GameConstants.LOG_TAG, "Null Product Details received.");
     }
   }
 

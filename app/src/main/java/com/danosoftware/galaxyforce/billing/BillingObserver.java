@@ -9,5 +9,4 @@ public interface BillingObserver {
    * @param state - latest state of full game purchase product
    */
   void onFullGamePurchaseStateChange(PurchaseState state);
-
 }

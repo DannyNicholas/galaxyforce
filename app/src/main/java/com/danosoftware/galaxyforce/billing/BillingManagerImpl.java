@@ -7,109 +7,286 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClient.SkuType;
+import com.android.billingclient.api.BillingClient.ProductType;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.ConsumeParams;
-import com.android.billingclient.api.ConsumeResponseListener;
+import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.Purchase.PurchasesResult;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.android.billingclient.api.QueryProductDetailsParams;
+import com.android.billingclient.api.QueryProductDetailsParams.Product;
+import com.android.billingclient.api.QueryPurchasesParams;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * Handles all the interactions with Play Store (via Billing library), maintains connection to it
  * through BillingClient and caches temporary states/data if needed
  */
-public class BillingManagerImpl implements PurchasesUpdatedListener, BillingManager {
+public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListener {
 
   private static final String TAG = "BillingManager";
+
   /*
    * BASE_64_ENCODED_PUBLIC_KEY is the APPLICATION'S PUBLIC KEY
    * (from the Google Play developer console). This is not a
-   * developer public key, it's the *app-specific* public key.
+   * developer public key, it's the app-specific public key.
    */
   private static final String BASE_64_ENCODED_PUBLIC_KEY = getPublicKey();
-  private final BillingUpdatesListener mBillingUpdatesListener;
+
+  private enum BillingClientState {
+    PENDING, CONNECTED, DISCONNECTED, CLOSED
+  }
+
+  private final List<BillingUpdatesListener> billingUpdateListeners;
   private final Activity mActivity;
-  private final List<Purchase> mPurchases = new ArrayList<>();
-  private BillingClient mBillingClient;
-  private boolean mIsServiceConnected;
-  private Set<String> mTokensToBeConsumed;
+
+  // organise purchases by order id.
+  // in the case of a pending purchase that upgrades to a full purchase we only want the latest purchase.
+  // we use a map to replace any previous purchases with the same order id.
+  private final Map<String, Purchase> mPurchases = new HashMap<>();
+
+  private final BillingClient mBillingClient;
+  private BillingClientState clientState;
+  private final BillingClientQueue taskQueue;
 
   public BillingManagerImpl(
-      final Activity activity,
-      final BillingUpdatesListener updatesListener) {
-    Log.d(TAG, "Creating Billing client.");
+      final Activity activity) {
     this.mActivity = activity;
-    this.mBillingUpdatesListener = updatesListener;
+    this.billingUpdateListeners = new ArrayList<>();
+    this.taskQueue = new BillingClientQueue();
+
+    Log.d(TAG, "Creating Billing client.");
     this.mBillingClient = BillingClient
         .newBuilder(mActivity)
         .setListener(this)
         .enablePendingPurchases()
         .build();
+    clientSetUpAsync();
+  }
+
+  /**
+   * Start connection to client and handle call-backs following connection or disconnection.
+   */
+  private void clientSetUpAsync() {
     Log.d(TAG, "Connecting to Billing Client.");
-    final BillingManager billingManager = this;
+    this.clientState = BillingClientState.PENDING;
     mBillingClient.startConnection(new BillingClientStateListener() {
       @Override
       public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-          mBillingUpdatesListener.onBillingClientSetupFinished(billingManager);
-          Log.d(TAG, "Billing Setup successful. Querying inventory.");
-          queryPurchases();
+        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+            && mBillingClient.isReady()) {
+          clientState = BillingClientState.CONNECTED;
+          Log.d(TAG, "Billing Client connected.");
+          taskQueue.releaseTasks();
+        } else {
+          Log.d(TAG,
+              "Billing Client connection failed with code: " + billingResult.getResponseCode());
+          clientState = BillingClientState.DISCONNECTED;
+          taskQueue.delayTasks();
         }
       }
 
       @Override
       public void onBillingServiceDisconnected() {
+        clientState = BillingClientState.DISCONNECTED;
         Log.d(TAG, "Billing Service Disconnected.");
+        taskQueue.delayTasks();
       }
     });
   }
 
+  private void executeWhenClientReady(Runnable task) {
+    switch (clientState) {
+      case CONNECTED:
+        // client is connected, execute task immediately.
+        task.run();
+        break;
+      case PENDING:
+        // client is still connecting, delay task until connected.
+        taskQueue.delay(task);
+        break;
+      case DISCONNECTED:
+        // client is disconnected, add task to queue and attempt client connection.
+        // task will be run once client is connected.
+        Log.d(TAG, "Billing Client is unavailable. Will re-attempt connection...");
+        taskQueue.delay(task);
+        clientSetUpAsync();
+        break;
+      default:
+        Log.e(TAG, "Unexpected client state: " + clientState);
+        break;
+    }
+  }
+
+  @Override
+  public void queryProductDetailsAsync(
+      final List<Product> products,
+      final ProductsQueriedListener listener) {
+
+    executeWhenClientReady(() -> {
+      Log.d(TAG, "Querying product details for products: " + products);
+
+      mBillingClient.queryProductDetailsAsync(
+          QueryProductDetailsParams
+              .newBuilder()
+              .setProductList(products)
+              .build(),
+          (billingResult, productDetails) -> {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+              listener.onProductsQueried(productDetails);
+            } else {
+              Log.w(TAG,
+                  "Unsuccessful Product Details query. Error code: "
+                      + billingResult.getResponseCode());
+            }
+          });
+    });
+  }
+
   /**
-   * Handle a callback that purchases were updated from the Billing library
+   * Start a new purchase for the supplied product.
+   * <p>
+   * Once completed, will call-back to onPurchasesUpdated()
+   *
+   * @param productDetails - wanted product
+   */
+  @Override
+  public void initiatePurchaseFlowAsync(final ProductDetails productDetails) {
+
+    executeWhenClientReady(() -> {
+      Log.d(TAG, "Launching in-app purchase flow for: " + productDetails.getProductId());
+
+      mBillingClient.launchBillingFlow(
+          mActivity,
+          BillingFlowParams
+              .newBuilder()
+              .setProductDetailsParamsList(
+                  Collections.singletonList(
+                      ProductDetailsParams
+                          .newBuilder()
+                          .setProductDetails(productDetails)
+                          .build()))
+              .build());
+    });
+  }
+
+  /**
+   * Implementation of {@link PurchasesUpdatedListener}
+   * <p>
+   * On a successful purchase (triggered by launchBillingFlow()), the billing library will call-back
+   * to this method.
+   * <p>
+   * Verify the purchases and then notify the purchase listeners.
    */
   @Override
   public void onPurchasesUpdated(
       @NonNull BillingResult billingResult,
       @Nullable List<Purchase> purchases) {
-    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+
+    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+        && purchases != null) {
+
+      // verify and acknowledge purchases
       for (Purchase purchase : purchases) {
         handlePurchase(purchase);
       }
-      mBillingUpdatesListener.onPurchasesUpdated(mPurchases);
+
+      // notify listeners of updated purchases
+      notifyPurchaseListeners();
+
     } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-      Log.i(TAG, "onPurchasesUpdated() - user cancelled the purchase flow - skipping");
+      Log.i(TAG, "Purchase cancelled by user");
     } else {
-      Log.w(TAG, "onPurchasesUpdated() got unknown resultCode: " + billingResult.getResponseCode());
+      Log.w(TAG, "Purchase failed with error code: " + billingResult.getResponseCode());
     }
   }
 
   /**
-   * Start a purchase
+   * Query purchases asynchronously and then notify purchase listeners.
    */
   @Override
-  public void initiatePurchaseFlow(final SkuDetails skuDetails) {
-    Runnable purchaseFlowRequest = () -> {
-      Log.d(TAG, "Launching in-app purchase flow for: " + skuDetails.getSku());
-      BillingFlowParams purchaseParams = BillingFlowParams
-          .newBuilder()
-          .setSkuDetails(skuDetails)
-          .build();
-      mBillingClient.launchBillingFlow(mActivity, purchaseParams);
-    };
-    executeRetryableBillingRequest(purchaseFlowRequest);
+  public void queryPurchasesAsync() {
+
+    executeWhenClientReady(() -> {
+      Log.d(TAG, "Querying existing purchases");
+
+      mBillingClient.queryPurchasesAsync(
+          QueryPurchasesParams
+              .newBuilder()
+              .setProductType(ProductType.INAPP)
+              .build(),
+          (billingResult, purchases) -> {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+
+              Log.d(TAG,
+                  "Purchases queried successfully. " + purchases.size() + " purchase/s found.");
+
+              // refresh list of all valid purchases
+              mPurchases.clear();
+              for (Purchase purchase : purchases) {
+                handlePurchase(purchase);
+              }
+
+              // notify listeners of updated purchases
+              notifyPurchaseListeners();
+
+            } else {
+              Log.w(TAG,
+                  "Purchase query failed with billing response: "
+                      + billingResult.getResponseCode());
+            }
+          }
+      );
+    });
+  }
+
+  /**
+   * Consume purchase asynchronously and then notify purchase listeners.
+   *
+   * @param purchase - purchase to be consumed
+   */
+  @Override
+  public void consumePurchaseAsync(final Purchase purchase) {
+
+    executeWhenClientReady(() -> {
+      Log.d(TAG, "Consuming purchase: " + purchase);
+
+      mBillingClient.consumeAsync(
+          ConsumeParams
+              .newBuilder()
+              .setPurchaseToken(purchase.getPurchaseToken())
+              .build(),
+          (billingResult, purchaseTkn) -> {
+            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+              Log.i(TAG, "Successfully consumed purchase token: " + purchaseTkn);
+
+              // remove purchase
+              mPurchases.remove(purchase.getOrderId());
+
+              // notify purchase listeners
+              notifyPurchaseListeners();
+            } else {
+              Log.e(TAG, "Failed to consume purchase token: " + purchaseTkn + ". Billing result: "
+                  + billingResult
+                  .getResponseCode());
+            }
+          });
+    });
+  }
+
+  private void notifyPurchaseListeners() {
+    for (BillingUpdatesListener listeners : billingUpdateListeners) {
+      listeners.onPurchasesUpdated(new ArrayList<>(mPurchases.values()));
+    }
   }
 
   /**
@@ -118,187 +295,57 @@ public class BillingManagerImpl implements PurchasesUpdatedListener, BillingMana
   @Override
   public void destroy() {
     Log.d(TAG, "Destroying the Billing Manager.");
-    if (mBillingClient != null && mBillingClient.isReady()) {
+    if (mBillingClient.isReady()) {
       mBillingClient.endConnection();
-      mBillingClient = null;
+      clientState = BillingClientState.CLOSED;
     }
-  }
-
-  @Override
-  public void querySkuDetailsAsync(
-      @SkuType final String itemType,
-      final List<String> skuList,
-      final SkuDetailsResponseListener listener) {
-    // Creating a runnable from the request to use it inside our connection retry policy below
-    Runnable queryRequest = () -> {
-      // Query the purchase async
-      SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-      params.setSkusList(skuList).setType(itemType);
-      mBillingClient.querySkuDetailsAsync(params.build(),
-          new SkuDetailsResponseListener() {
-            @Override
-            public void onSkuDetailsResponse(
-                @NonNull BillingResult billingResult,
-                @Nullable List<SkuDetails> skuDetailsList) {
-              listener.onSkuDetailsResponse(billingResult, skuDetailsList);
-            }
-          });
-    };
-    executeRetryableBillingRequest(queryRequest);
-  }
-
-  @Override
-  public void consumeAsync(final String purchaseToken) {
-    // If we've already scheduled to consume this token - no action is needed (this could happen
-    // if you received the token when querying purchases inside onReceive() and later from
-    // onActivityResult()
-    if (mTokensToBeConsumed == null) {
-      mTokensToBeConsumed = new HashSet<>();
-    } else if (mTokensToBeConsumed.contains(purchaseToken)) {
-      Log.i(TAG, "Token was already scheduled to be consumed - skipping...");
-      return;
-    }
-    mTokensToBeConsumed.add(purchaseToken);
-
-    // Generating Consume Response listener
-    final ConsumeResponseListener onConsumeListener = (billingResult, purchaseTkn) ->
-        mBillingUpdatesListener.onConsumeFinished(purchaseTkn, billingResult);
-
-    // Creating a runnable from the request to use it inside our connection retry policy below
-    Runnable consumeRequest = () -> {
-      // Consume the purchase async
-      ConsumeParams consumeParams =
-          ConsumeParams
-              .newBuilder()
-              .setPurchaseToken(purchaseToken)
-              .build();
-      mBillingClient.consumeAsync(consumeParams, onConsumeListener);
-    };
-
-    executeRetryableBillingRequest(consumeRequest);
   }
 
   /**
-   * Handles the purchase
-   * <p>Note: Notice that for each purchase, we check if signature is valid on the client.
-   * It's recommended to move this check into your backend. See {@link
-   * Security#verifyPurchase(String, String, String)}
-   * </p>
+   * Handles a purchase:
+   * <p>
+   * 1) Verifies the signature.
+   * <p>
+   * 2) Checks the purchase state.
+   * <p>
+   * 3) Adds to collection of purchases.
+   * <p>
+   * 4) Acknowledges the purchase (if needed).
    *
    * @param purchase Purchase to be handled
    */
   private void handlePurchase(final Purchase purchase) {
     if (!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-      Log.i(TAG, "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
+      Log.w(TAG, "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
       return;
     }
 
-    Log.d(TAG, "Got a verified purchase: " + purchase);
-
-    // we must acknowledge a purchase or it will be automatically cancelled
-    AcknowledgePurchaseResponseListener acknowledgePurchaseResponseListener = billingResult -> {
-      if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-        Log.i(TAG, "Acknowledged purchase: " + purchase);
-      } else {
-        Log.w(TAG, "Failed to acknowledge purchase: " + purchase);
-      }
-    };
     if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+      Log.d(TAG, "Got a verified purchase: " + purchase);
+      mPurchases.put(purchase.getOrderId(), purchase);
+
+      // we must acknowledge a purchase (async) or it will be automatically cancelled
       if (!purchase.isAcknowledged()) {
-        AcknowledgePurchaseParams acknowledgePurchaseParams =
-            AcknowledgePurchaseParams.newBuilder()
-                .setPurchaseToken(purchase.getPurchaseToken())
-                .build();
         mBillingClient.acknowledgePurchase(
-            acknowledgePurchaseParams,
-            acknowledgePurchaseResponseListener);
+            AcknowledgePurchaseParams
+                .newBuilder()
+                .setPurchaseToken(purchase.getPurchaseToken())
+                .build(),
+            billingResult -> {
+              if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                Log.i(TAG, "Acknowledged purchase: " + purchase);
+              } else {
+                Log.w(TAG, "Failed to acknowledge purchase: " + purchase);
+              }
+            });
       }
-    }
-
-    mPurchases.add(purchase);
-  }
-
-  /**
-   * Handle a result from querying of purchases and report an updated list to the listener
-   */
-  private void onQueryPurchasesFinished(PurchasesResult result) {
-    // Have we been disposed of in the meantime? If so, or bad result code, then quit
-    if (mBillingClient == null
-        || result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
-      Log.w(
-          TAG,
-          "Billing client was null or result code ("
-              + result.getResponseCode()
-              + ") was bad - quitting");
-      return;
-    }
-
-    Log.d(TAG, "Query inventory was successful.");
-
-    // Update the UI and purchases inventory with new list of purchases
-    mPurchases.clear();
-    onPurchasesUpdated(
-        BillingResult
-            .newBuilder()
-            .setResponseCode(BillingClient.BillingResponseCode.OK)
-            .build(),
-        result.getPurchasesList());
-  }
-
-  /**
-   * Query purchases across various use cases and deliver the result in a formalized way through a
-   * listener
-   */
-  @Override
-  public void queryPurchases() {
-    Runnable queryToExecute = () -> {
-      long time = System.currentTimeMillis();
-      PurchasesResult purchasesResult = mBillingClient.queryPurchases(SkuType.INAPP);
-      Log.i(TAG, "Querying purchases elapsed time: " + (System.currentTimeMillis() - time)
-          + "ms");
-      if (purchasesResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-        Log.i(TAG, "queryPurchases() was successful");
-      } else {
-        Log.w(TAG, "queryPurchases() got an error response code: "
-            + purchasesResult.getResponseCode());
-      }
-      onQueryPurchasesFinished(purchasesResult);
-    };
-    executeRetryableBillingRequest(queryToExecute);
-  }
-
-  private void startServiceConnection(final Runnable executeOnSuccess) {
-    mBillingClient.startConnection(new BillingClientStateListener() {
-      @Override
-      public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-        Log.i(TAG, "Setup finished. Response code: " + billingResult);
-
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-          mIsServiceConnected = true;
-          if (executeOnSuccess != null) {
-            executeOnSuccess.run();
-          }
-        }
-      }
-
-      @Override
-      public void onBillingServiceDisconnected() {
-        mIsServiceConnected = false;
-      }
-    });
-  }
-
-  @Override
-  public boolean isConnected() {
-    return mIsServiceConnected;
-  }
-
-  private void executeRetryableBillingRequest(Runnable runnable) {
-    if (mIsServiceConnected) {
-      runnable.run();
+    } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
+      // a pending purchase may take some time to approve
+      Log.d(TAG, "Got a verified pending purchase: " + purchase);
+      mPurchases.put(purchase.getOrderId(), purchase);
     } else {
-      // If billing service was disconnected, we try to reconnect 1 time.
-      startServiceConnection(runnable);
+      Log.w(TAG, "Purchase " + purchase + " is not purchased. Purchase state: "
+          + purchase.getPurchaseState());
     }
   }
 
@@ -315,6 +362,18 @@ public class BillingManagerImpl implements PurchasesUpdatedListener, BillingMana
       Log.e(TAG, "Got an exception trying to validate a purchase: " + e);
       return false;
     }
+  }
+
+  @Override
+  public synchronized void registerPurchasesListener(BillingUpdatesListener listener) {
+    Log.d(TAG, "Register Billing Listener '" + listener + "'.");
+    billingUpdateListeners.add(listener);
+  }
+
+  @Override
+  public synchronized void unregisterPurchasesListener(BillingUpdatesListener listener) {
+    Log.d(TAG, "Unregister Billing Listener '" + listener + "'.");
+    billingUpdateListeners.remove(listener);
   }
 }
 
