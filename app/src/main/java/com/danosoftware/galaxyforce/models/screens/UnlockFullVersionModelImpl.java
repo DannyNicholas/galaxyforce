@@ -4,6 +4,7 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKG
 
 import android.util.Log;
 import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.ProductDetails.OneTimePurchaseOfferDetails;
 import com.danosoftware.galaxyforce.billing.BillingObserver;
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.billing.ProductDetailsListener;
@@ -105,20 +106,21 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
      * if the full version has NOT been purchased then add the upgrade
      * button and text
      */
-    if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED) {
+    final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
+    if (fullGamePurchaseState == PurchaseState.NOT_PURCHASED) {
       prepareUpgradeFullVersion(showButtons);
     }
     /*
      * if the full version has been purchased then display successful
      * upgrade text
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.PURCHASED) {
+    else if (fullGamePurchaseState == PurchaseState.PURCHASED) {
       prepareUpgradeFullVersionSuccess();
     }
     /*
      * Purchase is pending - may succeed or fail at this stage.
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.PENDING) {
+    else if (fullGamePurchaseState == PurchaseState.PENDING) {
       preparePendingPurchaseState();
     }
     /*
@@ -126,7 +128,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
      * This state should rarely/never occur. if so, should hopefully only be a
      * temporary state until purchases are returned asynchronously.
      */
-    else if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_READY) {
+    else if (fullGamePurchaseState == PurchaseState.NOT_READY) {
       prepareUnknownPurchaseState();
     }
 
@@ -161,6 +163,7 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
             450));
 
     if (productDetails != null) {
+      OneTimePurchaseOfferDetails purchaseDetails = productDetails.getOneTimePurchaseOfferDetails();
       messages.add(
           Text.newTextRelativePositionX(
               "PRICE",
@@ -168,7 +171,9 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
               300 + 50));
       messages.add(
           Text.newUntrustedTextRelativePositionX(
-              productDetails.getOneTimePurchaseOfferDetails().getFormattedPrice(),
+              purchaseDetails.getPriceCurrencyCode() // GBP
+                  + " " +
+                  purchaseDetails.getFormattedPrice(), // e.g. £0.78
               TextPositionX.CENTRE,
               300));
 
@@ -377,8 +382,8 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
 
   @Override
   public void resume() {
-    // query upgrade price by requesting the full-game purchase SKU details asynchronously.
-    // onSkuDetailsRetrieved() will be invoked when SKU details are available.
+    // query upgrade price by requesting the full-game purchase product details asynchronously.
+    // onProductDetailsRetrieved() will be called when product details are available.
     billingService.queryFullGameProductDetailsAsync(this);
   }
 
@@ -429,14 +434,22 @@ public class UnlockFullVersionModelImpl implements Model, BillingObserver, Butto
     this.modelState = ModelState.GO_BACK;
   }
 
+  /**
+   * Implementation of {@link ProductDetailsListener}
+   * <p>
+   * This method will be called-back with the details of any available product details that can be
+   * purchased.
+   *
+   * @param productDetails - product details retrieved
+   */
   @Override
   public void onProductDetailsRetrieved(ProductDetails productDetails) {
     if (productDetails != null) {
       this.productDetails = productDetails;
       this.reBuildSprites = true;
-      Log.d(LOCAL_TAG, "Retrieved SkuDetails: " + productDetails);
+      Log.d(LOCAL_TAG, "Retrieved Product Details: " + productDetails);
     } else {
-      Log.w(GameConstants.LOG_TAG, "Null skuDetails received.");
+      Log.w(GameConstants.LOG_TAG, "Null Product Details received.");
     }
   }
 

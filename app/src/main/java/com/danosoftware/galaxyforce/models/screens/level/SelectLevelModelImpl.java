@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.models.screens.level;
 import static com.danosoftware.galaxyforce.constants.GameConstants.DEFAULT_BACKGROUND_COLOUR;
 
 import android.util.Log;
-
 import com.danosoftware.galaxyforce.billing.BillingObserver;
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.billing.PurchaseState;
@@ -29,7 +28,6 @@ import com.danosoftware.galaxyforce.sprites.providers.SpriteProvider;
 import com.danosoftware.galaxyforce.text.ScrollableTextProvider;
 import com.danosoftware.galaxyforce.text.Text;
 import com.danosoftware.galaxyforce.text.TextProvider;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -297,9 +295,10 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
 
   @Override
   public void setLevel(int level) {
+    final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
     if (level > GameConstants.MAX_FREE_WAVE
-        && (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED
-        || billingService.getFullGamePurchaseState() == PurchaseState.PENDING)) {
+        && (fullGamePurchaseState == PurchaseState.NOT_PURCHASED
+        || fullGamePurchaseState == PurchaseState.PENDING)) {
       Log.i(LOCAL_TAG, "Exceeded maximum free wave. Must upgrade.");
       game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
     } else {

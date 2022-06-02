@@ -122,7 +122,9 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
      * if the full version has NOT been purchased then add the upgrade
      * button
      */
-    if (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED) {
+    final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
+    if (fullGamePurchaseState == PurchaseState.NOT_PURCHASED ||
+        fullGamePurchaseState == PurchaseState.PENDING) {
       addNewMenuButton(1, "UPGRADE", ButtonType.UPGRADE);
     }
   }

@@ -409,10 +409,11 @@ public class GamePlayModelImpl implements Model, GameModel, TextChangeListener {
       );
 
       // check user is allowed to play next wave
+      final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
       if (wave >= GameConstants.MAX_FREE_WAVE
-          && (billingService.getFullGamePurchaseState() == PurchaseState.NOT_PURCHASED
-          || billingService.getFullGamePurchaseState() == PurchaseState.NOT_READY
-          || billingService.getFullGamePurchaseState() == PurchaseState.PENDING)) {
+          && (fullGamePurchaseState == PurchaseState.NOT_PURCHASED
+          || fullGamePurchaseState == PurchaseState.NOT_READY
+          || fullGamePurchaseState == PurchaseState.PENDING)) {
 
         Log.i(TAG, "Exceeded maximum free zone. Must upgrade.");
         this.modelState = ModelState.UPGRADING;

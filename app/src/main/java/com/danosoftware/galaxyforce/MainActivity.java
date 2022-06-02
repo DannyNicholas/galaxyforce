@@ -27,7 +27,6 @@ import com.danosoftware.galaxyforce.billing.BillingManager;
 import com.danosoftware.galaxyforce.billing.BillingManagerImpl;
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.billing.BillingServiceImpl;
-import com.danosoftware.galaxyforce.billing.BillingUpdatesListener;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.games.Game;
 import com.danosoftware.galaxyforce.games.GameImpl;
@@ -64,8 +63,8 @@ public class MainActivity extends Activity {
     /* GL Surface View reference */
     private GLSurfaceView glView;
 
-    /* Billing Manager for In-App Billing Requests */
-    private BillingManager mBillingManager;
+    /* Billing Service for In-App Billing Requests */
+    private BillingService billingService;
 
     private final TaskService taskService = new TaskService();
 
@@ -82,10 +81,9 @@ public class MainActivity extends Activity {
         setContentView(glView);
         GLGraphics glGraphics = new GLGraphics(glView);
 
-        // Create and initialize billing
-        BillingService billingService = new BillingServiceImpl();
-        BillingUpdatesListener billingListener = (BillingUpdatesListener) billingService;
-        this.mBillingManager = new BillingManagerImpl(this, billingListener);
+        // Create billing service
+        BillingManager billingMgr = new BillingManagerImpl(this);
+        billingService = new BillingServiceImpl(billingMgr);
 
         // set-up configuration service that uses shared preferences
         // for persisting configuration
@@ -130,8 +128,8 @@ public class MainActivity extends Activity {
         // is inactive. For example, this can happen if the activity is destroyed during the
         // purchase flow. This ensures that when the activity is resumed it reflects the user's
         // current purchases.
-        if (mBillingManager != null && mBillingManager.isConnected()) {
-            mBillingManager.queryPurchases();
+        if (billingService != null) {
+            billingService.queryPurchasesAsync();
         }
     }
 
@@ -172,10 +170,11 @@ public class MainActivity extends Activity {
 
         taskService.dispose();
 
-        Log.i(ACTIVITY_TAG, "Destroying Billing Manager.");
-        if (mBillingManager != null) {
-            mBillingManager.destroy();
+        Log.i(ACTIVITY_TAG, "Destroying Billing Service.");
+        if (billingService != null) {
+            billingService.destroy();
         }
+
         Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Application Destroyed");
     }
 
@@ -185,7 +184,7 @@ public class MainActivity extends Activity {
             Log.i(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Back Button Pressed");
 
             // if back button is handled internally then don't use normal
-            // superclass's method
+            // super-class's method
             if (game.handleBackButton()) {
                 return true;
             }
@@ -304,7 +303,7 @@ public class MainActivity extends Activity {
             // Disable depth testing -- we're 2D only.
             GLES20.glDisable(GLES20.GL_DEPTH_TEST);
 
-            // Don't need backface culling.
+            // Don't need back-face culling.
             GLES20.glDisable(GLES20.GL_CULL_FACE);
 
             synchronized (stateChanged) {
