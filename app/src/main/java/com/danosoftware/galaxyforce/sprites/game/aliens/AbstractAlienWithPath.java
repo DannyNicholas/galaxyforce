@@ -9,7 +9,6 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
-import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import java.util.List;
 
@@ -43,7 +42,7 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
 
     protected AbstractAlienWithPath(
             AlienCharacter character,
-            Animation animation,
+//            Animation animation,
             FireBehaviour fireBehaviour,
             PowerUpBehaviour powerUpBehaviour,
             SpawnBehaviour spawnBehaviour,
@@ -59,7 +58,6 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
         // position
         super(
                 character,
-                animation,
                 alienPath.get(0).getX(),
                 alienPath.get(0).getY(),
                 energy,

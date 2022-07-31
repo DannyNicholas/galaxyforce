@@ -14,6 +14,30 @@ public enum GameSpriteIdentifier {
   FOXY_TALL_HIT(SpriteDetails.FOXY_TALL_HIT, "foxy02Hit", 8),
   FOXY_WIDE_HIT(SpriteDetails.FOXY_WIDE_HIT, "foxy03Hit", 8),
 
+  // Foxy Small
+  FOXY_SMALL(SpriteDetails.FOXY_SMALL, "foxy01-small", 2),
+  FOXY_TALL_SMALL(SpriteDetails.FOXY_TALL_SMALL, "foxy02-small", 2),
+  FOXY_WIDE_SMALL(SpriteDetails.FOXY_WIDE_SMALL, "foxy03-small", 2),
+  FOXY_HIT_SMALL(SpriteDetails.FOXY_HIT_SMALL, "foxy01Hit-small", 2),
+  FOXY_TALL_HIT_SMALL(SpriteDetails.FOXY_TALL_HIT_SMALL, "foxy02Hit-small", 2),
+  FOXY_WIDE_HIT_SMALL(SpriteDetails.FOXY_WIDE_HIT_SMALL, "foxy03Hit-small", 2),
+
+  // Foxy Medium
+  FOXY_MEDIUM(SpriteDetails.FOXY_MEDIUM, "foxy01-medium", 8),
+  FOXY_TALL_MEDIUM(SpriteDetails.FOXY_TALL_MEDIUM, "foxy02-medium", 8),
+  FOXY_WIDE_MEDIUM(SpriteDetails.FOXY_WIDE_MEDIUM, "foxy03-medium", 8),
+  FOXY_HIT_MEDIUM(SpriteDetails.FOXY_HIT_MEDIUM, "foxy01Hit-medium", 8),
+  FOXY_TALL_HIT_MEDIUM(SpriteDetails.FOXY_TALL_HIT_MEDIUM, "foxy02Hit-medium", 8),
+  FOXY_WIDE_HIT_MEDIUM(SpriteDetails.FOXY_WIDE_HIT_MEDIUM, "foxy03Hit-medium", 8),
+
+  // Foxy Large
+  FOXY_LARGE(SpriteDetails.FOXY_LARGE, "foxy01-large", 8),
+  FOXY_TALL_LARGE(SpriteDetails.FOXY_TALL_LARGE, "foxy02-large", 8),
+  FOXY_WIDE_LARGE(SpriteDetails.FOXY_WIDE_LARGE, "foxy03-large", 8),
+  FOXY_HIT_LARGE(SpriteDetails.FOXY_HIT_LARGE, "foxy01Hit-large", 8),
+  FOXY_TALL_HIT_LARGE(SpriteDetails.FOXY_TALL_HIT_LARGE, "foxy02Hit-large", 8),
+  FOXY_WIDE_HIT_LARGE(SpriteDetails.FOXY_WIDE_HIT_LARGE, "foxy03Hit-large", 8),
+
   // Cyclone
   CYCLONE_01(SpriteDetails.CYCLONE_01, "cyclone01", 8),
   CYCLONE_02(SpriteDetails.CYCLONE_02, "cyclone02", 8),

@@ -46,9 +46,6 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     /* state time used to help select the current animation frame */
     private float stateTime;
 
-    /* animation sprites */
-    private final Animation animation;
-
     // current energy level
     private int energy;
 
@@ -56,11 +53,10 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
     AlienState state;
 
     // alien character
-    private final AlienCharacter character;
+    private AlienCharacter character;
 
     protected AbstractAlien(
         AlienCharacter character,
-        Animation animation,
         float x,
         float y,
         int energy,
@@ -72,7 +68,7 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         SpinningBehaviour spinningBehaviour) {
 
       super(
-          animation.getKeyFrame(
+          character.getAnimation().getKeyFrame(
               0,
               Animation.ANIMATION_LOOPING),
           x,
@@ -86,7 +82,6 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         this.spawnBehaviour = spawnBehaviour;
         this.hitBehaviour = hitBehaviour;
         this.spinningBehaviour = spinningBehaviour;
-        this.animation = animation;
         this.stateTime = 0f;
     }
 
@@ -149,6 +144,10 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         return (state == WAITING);
     }
 
+    protected void changeCharacter(AlienCharacter character) {
+        this.character = character;
+    }
+
     @Override
     public void animate(float deltaTime) {
 
@@ -174,10 +173,11 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
 
             // if hit then continue hit animation
             if (hitBehaviour.isHit()) {
-                changeType(hitBehaviour.getHit(deltaTime));
+                changeType(hitBehaviour.getHit(character.getHitAnimation(), deltaTime));
             } else {
                 // set base sprite using animation loop and time through animation
-                changeType(animation.getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
+                changeType(
+                    character.getAnimation().getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
             }
         }
 

@@ -6,6 +6,7 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_X;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SCREEN_MID_Y;
 import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.alienConfig;
 import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.alienRowConfig;
+import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.changingConfig;
 import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.directionalAlienConfig;
 import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.explodingAlienConfig;
 import static com.danosoftware.galaxyforce.waves.utilities.AlienConfigBuilder.followableHunterConfig;
@@ -64,6 +65,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.utilities.Reversed;
 import com.danosoftware.galaxyforce.utilities.WaveUtilities;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.ChangingAlienCharacter;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
@@ -2739,6 +2741,25 @@ public class WaveFactory {
         break;
 
       case 39:
+
+        subWaves.add(
+            createSubWave(
+                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                new SubWavePathConfig(
+                    waveWithGaps(
+                        Path.SPACE_INVADER_EASY,
+                        PathSpeed.SLIGHTLY_FAST,
+                        1,
+                        0.3f,
+                        3,
+                        0.3f * 7,
+                        null),
+                    changingConfig(
+                        ChangingAlienCharacter.FOXY),
+                    Collections.singletonList(PowerUpType.SHIELD)
+                )
+            )
+        );
 
         // space invader style attack with aliens in a batch.
         // A timing-delay gap is inserted between each batch.

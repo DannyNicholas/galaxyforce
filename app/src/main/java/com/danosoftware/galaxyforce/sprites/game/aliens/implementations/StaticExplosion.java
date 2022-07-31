@@ -33,15 +33,13 @@ public class StaticExplosion extends AbstractAlien {
 
       super(
           AlienCharacter.NULL,
-          alienConfig.getAlienCharacter().getAnimation(),
           x,
           y,
           0,
           fireFactory.createFireBehaviour(null),
           powerUpFactory.createPowerUpBehaviour(null),
           spawnFactory.createSpawnBehaviour(null),
-          hitFactory.createHitBehaviour(
-              alienConfig.getAlienCharacter().getHitAnimation()),
+          hitFactory.createHitBehaviour(),
           explosionFactory.createExplosionBehaviour(
               alienConfig.getExplosionConfig(),
               alienConfig.getAlienCharacter()),

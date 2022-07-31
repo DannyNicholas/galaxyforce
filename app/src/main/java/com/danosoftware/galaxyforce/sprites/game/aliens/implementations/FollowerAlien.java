@@ -38,7 +38,6 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
 
       super(
           alienConfig.getAlienCharacter(),
-          alienConfig.getAlienCharacter().getAnimation(),
           xStart,
           yStart,
           alienConfig.getEnergy(),
@@ -48,17 +47,16 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
               powerUpType),
           spawnFactory.createSpawnBehaviour(
               alienConfig.getSpawnConfig()),
-          hitFactory.createHitBehaviour(
-              alienConfig.getAlienCharacter().getHitAnimation()),
+          hitFactory.createHitBehaviour(),
           explosionFactory.createExplosionBehaviour(
               alienConfig.getExplosionConfig(),
               alienConfig.getAlienCharacter()),
           spinningFactory.createSpinningBehaviour(
               alienConfig.getSpinningConfig(),
-                        alienConfig.getSpeed()),
-                alienConfig
-                        .getSpeed()
-                        .getSpeedInPixelsPerSeconds(),
-                MIN_DISTANCE);
+              alienConfig.getSpeed()),
+          alienConfig
+              .getSpeed()
+              .getSpeedInPixelsPerSeconds(),
+          MIN_DISTANCE);
     }
 }

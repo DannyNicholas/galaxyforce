@@ -8,7 +8,6 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.hit.HitBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviour;
-import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 
 /**
@@ -18,7 +17,6 @@ public abstract class AbstractResettableAlien extends AbstractAlien implements I
 
     protected AbstractResettableAlien(
         final AlienCharacter character,
-        final Animation animation,
         final float x,
         final float y,
         final int energy,
@@ -31,7 +29,6 @@ public abstract class AbstractResettableAlien extends AbstractAlien implements I
 
       super(
           character,
-          animation,
           x,
           y,
           energy,
