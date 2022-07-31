@@ -20,7 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import com.danosoftware.galaxyforce.billing.BillingManager;
@@ -211,13 +211,11 @@ public class MainActivity extends Activity {
 
     private void hideSystemUI() {
         // See https://developer.android.com/training/system-ui/immersive
-        View decorView = getWindow().getDecorView();
+        final Window window = getWindow();
+        final View decorView = window.getDecorView();
 
         WindowInsetsControllerCompat windowInsetsController =
-            ViewCompat.getWindowInsetsController(decorView);
-        if (windowInsetsController == null) {
-            return;
-        }
+            WindowCompat.getInsetsController(window, decorView);
 
         // Configure the behavior of the hidden system bars
         windowInsetsController.setSystemBarsBehavior(
