@@ -42,7 +42,6 @@ public abstract class AbstractAlienWithPath extends AbstractAlien implements IRe
 
     protected AbstractAlienWithPath(
             AlienCharacter character,
-//            Animation animation,
             FireBehaviour fireBehaviour,
             PowerUpBehaviour powerUpBehaviour,
             SpawnBehaviour spawnBehaviour,

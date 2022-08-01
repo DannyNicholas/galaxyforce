@@ -67,15 +67,15 @@ public abstract class AbstractAlien extends AbstractCollidingSprite implements I
         ExplodeBehaviour explodeBehaviour,
         SpinningBehaviour spinningBehaviour) {
 
-      super(
-          character.getAnimation().getKeyFrame(
-              0,
-              Animation.ANIMATION_LOOPING),
-          x,
-          y);
-      this.character = character;
-      state = ACTIVE;
-      this.energy = energy;
+        super(
+            character.getAnimation().getKeyFrame(
+                0,
+                Animation.ANIMATION_LOOPING),
+            x,
+            y);
+        this.character = character;
+        state = ACTIVE;
+        this.energy = energy;
         this.explodeBehaviour = explodeBehaviour;
         this.fireBehaviour = fireBehaviour;
         this.powerUpBehaviour = powerUpBehaviour;

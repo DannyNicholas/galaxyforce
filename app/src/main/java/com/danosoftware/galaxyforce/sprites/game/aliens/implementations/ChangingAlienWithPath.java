@@ -10,7 +10,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
-import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.AlienCharacterWithEnergy;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ChangingConfig;
 import java.util.List;
 import java.util.ListIterator;
@@ -22,8 +22,8 @@ import lombok.NonNull;
  */
 public class ChangingAlienWithPath extends AbstractAlienWithPath {
 
-  private final ListIterator<AlienCharacter> characters;
-  private int timesHit;
+  private final ListIterator<AlienCharacterWithEnergy> characters;
+  private int energyBeforeChange = 0;
 
   @Builder
   public ChangingAlienWithPath(
@@ -39,7 +39,7 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
       @NonNull final Float delayStartTime,
       @NonNull final Boolean restartImmediately) {
     super(
-        alienConfig.getAlienCharacter(),
+        alienConfig.getFirstCharacter(),
         fireFactory.createFireBehaviour(
             alienConfig.getMissileConfig()),
         powerUpFactory.createPowerUpBehaviour(
@@ -49,7 +49,7 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
         hitFactory.createHitBehaviour(),
         explosionFactory.createExplosionBehaviour(
             alienConfig.getExplosionConfig(),
-            alienConfig.getAlienCharacter()),
+            alienConfig.getFirstCharacter()),
         spinningFactory.createSpinningBehaviour(
             alienConfig.getSpinningConfig()),
         alienPath,
@@ -60,10 +60,10 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
 
     this.characters = alienConfig.getAlienCharacters().listIterator();
     if (characters.hasNext()) {
-      AlienCharacter character = characters.next();
-      changeCharacter(character);
+      AlienCharacterWithEnergy character = characters.next();
+      changeCharacter(character.getAlienCharacter());
+      energyBeforeChange = character.getEnergy();
     }
-    timesHit = 0;
   }
 
   /**
@@ -71,11 +71,11 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
    */
   @Override
   public void onHitBy(IBaseMissile baseMissile) {
-    timesHit++;
-    if (characters.hasNext() && timesHit >= 2) {
-      AlienCharacter character = characters.next();
-      changeCharacter(character);
-      timesHit = 0;
+    energyBeforeChange--;
+    if (characters.hasNext() && energyBeforeChange <= 0) {
+      AlienCharacterWithEnergy character = characters.next();
+      changeCharacter(character.getAlienCharacter());
+      energyBeforeChange = character.getEnergy();
     }
 
     super.onHitBy(baseMissile);

@@ -2,8 +2,9 @@ package com.danosoftware.galaxyforce.waves.config.aliens.types;
 
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.AlienCharacterWithEnergy;
 import com.danosoftware.galaxyforce.waves.AlienType;
-import com.danosoftware.galaxyforce.waves.config.aliens.BasicAlienConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
@@ -14,33 +15,40 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-public class ChangingConfig extends BasicAlienConfig {
+public class ChangingConfig extends AlienConfig {
 
   private final Boolean angledToPath;
-  private final List<AlienCharacter> alienCharacters;
+  private final List<AlienCharacterWithEnergy> alienCharacters;
+  private final int energy;
+  private final SpawnConfig spawnConfig;
+  private final MissileConfig missileConfig;
+  private final SpinningConfig spinningConfig;
+  private final ExplosionConfig explosionConfig;
 
   @Builder
   public ChangingConfig(
-      @NonNull final List<AlienCharacter> alienCharacters,
+      @NonNull final List<AlienCharacterWithEnergy> alienCharacters,
       @NonNull final Integer energy,
       final MissileConfig missileConfig,
       final SpawnConfig spawnConfig,
       final SpinningConfig spinningConfig,
       final ExplosionConfig explosionConfig,
       final Boolean angledToPath) {
-    super(
-        AlienType.CHANGING,
-        !alienCharacters.isEmpty() ? alienCharacters.get(0) : AlienCharacter.NULL,
-        energy,
-        missileConfig,
-        spawnConfig,
-        spinningConfig,
-        explosionConfig);
-    this.angledToPath = angledToPath != null ? angledToPath : false;
+    super(AlienType.CHANGING);
     this.alienCharacters = alienCharacters;
+    this.energy = energy;
+    this.missileConfig = missileConfig;
+    this.spawnConfig = spawnConfig;
+    this.spinningConfig = spinningConfig;
+    this.explosionConfig = explosionConfig;
+    this.angledToPath = angledToPath != null ? angledToPath : false;
 
     if (alienCharacters.isEmpty()) {
       throw new GalaxyForceException("Changing Config has no alien characters");
     }
+  }
+
+  public AlienCharacter getFirstCharacter() {
+    return alienCharacters.get(0).getAlienCharacter();
   }
 }

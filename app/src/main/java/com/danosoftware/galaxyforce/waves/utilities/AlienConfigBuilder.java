@@ -12,6 +12,7 @@ import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.AlienCharacterWithEnergy;
 import com.danosoftware.galaxyforce.waves.ChangingAlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.DelayedFollowerExplosionConfig;
@@ -42,6 +43,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -459,21 +461,25 @@ public class AlienConfigBuilder {
 
     final List<AlienCharacter> characters = changingCharacter.getCharacters();
 
-    Integer energy = 0;
+    int totalEnergy = 0;
+    List<AlienCharacterWithEnergy> charactersWithEnergy = new ArrayList<>();
     for (AlienCharacter character : characters) {
-      energy += energy(character);
+      int characterEnergy = energy(character);
+      charactersWithEnergy.add(new AlienCharacterWithEnergy(
+          character,
+          characterEnergy));
+      totalEnergy += characterEnergy;
     }
 
     final AlienCharacter character = characters.get(0);
-    //final Integer energy = energy(character);
     final Boolean isAngledToPath = isAngledToPath(character);
     final ExplosionConfig explosionConfig = explosionConfig(character);
     final SpinningConfig spinningConfig = spinningConfigFixed(character);
 
     return ChangingConfig
         .builder()
-        .alienCharacters(characters)
-        .energy(energy)
+        .alienCharacters(charactersWithEnergy)
+        .energy(totalEnergy)
         .angledToPath(isAngledToPath)
         .explosionConfig(explosionConfig)
         .spinningConfig(spinningConfig);
