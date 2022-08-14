@@ -1,6 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.behaviours.hit;
 
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
+import com.danosoftware.galaxyforce.view.Animation;
 
 /**
  * Interface that handles behaviour following a sprite being hit.
@@ -30,5 +31,5 @@ public interface HitBehaviour {
   /**
    * Get the current hit sprite.
    */
-  SpriteDetails getHit(float deltaTime);
+  SpriteDetails getHit(Animation hitAnimation, float deltaTime);
 }

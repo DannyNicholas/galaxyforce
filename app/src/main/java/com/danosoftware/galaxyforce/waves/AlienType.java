@@ -11,6 +11,9 @@ public enum AlienType {
   // alien that follows a pre-determined path
   PATH,
 
+  // alien that changes following each hit
+  CHANGING,
+
   // alien that hunts the base
   HUNTER,
 

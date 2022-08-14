@@ -331,6 +331,48 @@ public enum AlienCharacter {
       0.25f
   ),
 
+  FOXY_SMALL(
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_SMALL,
+          SpriteDetails.FOXY_TALL_SMALL,
+          SpriteDetails.FOXY_SMALL,
+          SpriteDetails.FOXY_WIDE_SMALL},
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_HIT_SMALL,
+          SpriteDetails.FOXY_TALL_HIT_SMALL,
+          SpriteDetails.FOXY_HIT_SMALL,
+          SpriteDetails.FOXY_WIDE_HIT_SMALL},
+      0.25f
+  ),
+
+  FOXY_MEDIUM(
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_MEDIUM,
+          SpriteDetails.FOXY_TALL_MEDIUM,
+          SpriteDetails.FOXY_MEDIUM,
+          SpriteDetails.FOXY_WIDE_MEDIUM},
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_HIT_MEDIUM,
+          SpriteDetails.FOXY_TALL_HIT_MEDIUM,
+          SpriteDetails.FOXY_HIT_MEDIUM,
+          SpriteDetails.FOXY_WIDE_HIT_MEDIUM},
+      0.25f
+  ),
+
+  FOXY_LARGE(
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_LARGE,
+          SpriteDetails.FOXY_TALL_LARGE,
+          SpriteDetails.FOXY_LARGE,
+          SpriteDetails.FOXY_WIDE_LARGE},
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_HIT_LARGE,
+          SpriteDetails.FOXY_TALL_HIT_LARGE,
+          SpriteDetails.FOXY_HIT_LARGE,
+          SpriteDetails.FOXY_WIDE_HIT_LARGE},
+      0.25f
+  ),
+
   FIGHTER(
       new SpriteDetails[]{
           SpriteDetails.FIGHTER,

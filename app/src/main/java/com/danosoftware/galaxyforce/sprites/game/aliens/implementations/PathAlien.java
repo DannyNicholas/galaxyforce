@@ -33,25 +33,23 @@ public class PathAlien extends AbstractAlienWithPath {
             @NonNull final Float delayStartTime,
             @NonNull final Boolean restartImmediately) {
         super(
-                alienConfig.getAlienCharacter(),
-                alienConfig.getAlienCharacter().getAnimation(),
-                fireFactory.createFireBehaviour(
-                        alienConfig.getMissileConfig()),
-                powerUpFactory.createPowerUpBehaviour(
-                        powerUpType),
-                spawnFactory.createSpawnBehaviour(
-                        alienConfig.getSpawnConfig()),
-                hitFactory.createHitBehaviour(
-                        alienConfig.getAlienCharacter().getHitAnimation()),
-                explosionFactory.createExplosionBehaviour(
-                        alienConfig.getExplosionConfig(),
-                        alienConfig.getAlienCharacter()),
-                spinningFactory.createSpinningBehaviour(
-                        alienConfig.getSpinningConfig()),
-                alienPath,
-                delayStartTime,
-                alienConfig.getEnergy(),
-                restartImmediately,
-                alienConfig.getAngledToPath());
+            alienConfig.getAlienCharacter(),
+            fireFactory.createFireBehaviour(
+                alienConfig.getMissileConfig()),
+            powerUpFactory.createPowerUpBehaviour(
+                powerUpType),
+            spawnFactory.createSpawnBehaviour(
+                alienConfig.getSpawnConfig()),
+            hitFactory.createHitBehaviour(),
+            explosionFactory.createExplosionBehaviour(
+                alienConfig.getExplosionConfig(),
+                alienConfig.getAlienCharacter()),
+            spinningFactory.createSpinningBehaviour(
+                alienConfig.getSpinningConfig()),
+            alienPath,
+            delayStartTime,
+            alienConfig.getEnergy(),
+            restartImmediately,
+            alienConfig.getAngledToPath());
     }
 }

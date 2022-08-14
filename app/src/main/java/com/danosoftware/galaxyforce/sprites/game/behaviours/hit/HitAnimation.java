@@ -21,9 +21,6 @@ public class HitAnimation implements HitBehaviour {
     // max time to display hit
     private static final float HIT_TIME_SECONDS = 0.2f;
 
-    // hit animation
-    private final Animation hitAnimation;
-
     // reference to sound player
     private final SoundPlayerService sounds;
 
@@ -37,15 +34,13 @@ public class HitAnimation implements HitBehaviour {
     private float timeSinceHit;
 
     public HitAnimation(
-            SoundPlayerService sounds,
-            VibrationService vibrator,
-            Animation hitAnimation) {
-        this.sounds = sounds;
-        this.vibrator = vibrator;
-        this.hitAnimation = hitAnimation;
-        this.stateTime = 0f;
-        this.hit = false;
-        this.timeSinceHit = 0f;
+        SoundPlayerService sounds,
+        VibrationService vibrator) {
+      this.sounds = sounds;
+      this.vibrator = vibrator;
+      this.stateTime = 0f;
+      this.hit = false;
+      this.timeSinceHit = 0f;
     }
 
     private void initialiseHit(float stateTime) {
@@ -75,7 +70,7 @@ public class HitAnimation implements HitBehaviour {
   }
 
   @Override
-  public SpriteDetails getHit(float deltaTime) {
+  public SpriteDetails getHit(Animation hitAnimation, float deltaTime) {
     stateTime += deltaTime;
     timeSinceHit += deltaTime;
     if (timeSinceHit > HIT_TIME_SECONDS) {

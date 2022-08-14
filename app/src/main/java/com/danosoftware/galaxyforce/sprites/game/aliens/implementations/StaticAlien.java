@@ -32,7 +32,6 @@ public class StaticAlien extends AbstractAlien {
 
       super(
           alienConfig.getAlienCharacter(),
-          alienConfig.getAlienCharacter().getAnimation(),
           xStart,
           yStart,
           alienConfig.getEnergy(),
@@ -42,8 +41,7 @@ public class StaticAlien extends AbstractAlien {
               powerUpType),
           spawnFactory.createSpawnBehaviour(
               alienConfig.getSpawnConfig()),
-          hitFactory.createHitBehaviour(
-              alienConfig.getAlienCharacter().getHitAnimation()),
+          hitFactory.createHitBehaviour(),
           explosionFactory.createExplosionBehaviour(
               alienConfig.getExplosionConfig(),
               alienConfig.getAlienCharacter()),

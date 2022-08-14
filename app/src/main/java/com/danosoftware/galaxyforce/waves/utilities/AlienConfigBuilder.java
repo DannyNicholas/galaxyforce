@@ -12,6 +12,8 @@ import com.danosoftware.galaxyforce.enumerations.AlienSpeed;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
+import com.danosoftware.galaxyforce.waves.AlienCharacterWithEnergy;
+import com.danosoftware.galaxyforce.waves.ChangingAlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.aliens.AlienConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.DelayedFollowerExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
@@ -29,6 +31,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningBySpeed
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAngularConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.BoundariesConfig;
+import com.danosoftware.galaxyforce.waves.config.aliens.types.ChangingConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalResettableConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
@@ -40,6 +43,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -136,6 +140,9 @@ public class AlienConfigBuilder {
       // rotated downwards laser missile (will not fire upwards)
       case GHOST:
       case FOXY:
+      case FOXY_SMALL:
+      case FOXY_MEDIUM:
+      case FOXY_LARGE:
       case CHARLIE:
       case DEVIL:
         return MissileFiringConfig
@@ -392,6 +399,9 @@ public class AlienConfigBuilder {
       case SPINNER_GREEN:
       case SPINNER_PULSE_GREEN:
       case FOXY:
+      case FOXY_SMALL:
+      case FOXY_MEDIUM:
+      case FOXY_LARGE:
       case BABY_DRAGON_HEAD:
       case CHARLIE:
       case SQUASHER:
@@ -436,6 +446,59 @@ public class AlienConfigBuilder {
         return false;
     }
 
+  }
+
+  /**
+   * Create changing alien config builder for character without missiles
+   */
+  public static ChangingConfig changingConfig(ChangingAlienCharacter changingCharacter) {
+    return changingConfigBuilder(changingCharacter)
+        .build();
+  }
+
+  /**
+   * Create changing alien config for character with missiles
+   */
+  public static ChangingConfig changingConfig(
+      ChangingAlienCharacter changingCharacter,
+      AlienMissileSpeed speed,
+      Float missileFrequency) {
+
+    final List<AlienCharacter> characters = changingCharacter.getCharacters();
+    final MissileConfig missileConfig = missileConfig(characters.get(0), speed, missileFrequency);
+
+    return changingConfigBuilder(changingCharacter)
+        .missileConfig(missileConfig)
+        .build();
+  }
+
+  private static ChangingConfig.ChangingConfigBuilder changingConfigBuilder(
+      ChangingAlienCharacter changingCharacter) {
+
+    final List<AlienCharacter> characters = changingCharacter.getCharacters();
+
+    int totalEnergy = 0;
+    List<AlienCharacterWithEnergy> charactersWithEnergy = new ArrayList<>();
+    for (AlienCharacter character : characters) {
+      int characterEnergy = energy(character);
+      charactersWithEnergy.add(new AlienCharacterWithEnergy(
+          character,
+          characterEnergy));
+      totalEnergy += characterEnergy;
+    }
+
+    final AlienCharacter character = characters.get(0);
+    final Boolean isAngledToPath = isAngledToPath(character);
+    final ExplosionConfig explosionConfig = explosionConfig(character);
+    final SpinningConfig spinningConfig = spinningConfigFixed(character);
+
+    return ChangingConfig
+        .builder()
+        .alienCharacters(charactersWithEnergy)
+        .energy(totalEnergy)
+        .angledToPath(isAngledToPath)
+        .explosionConfig(explosionConfig)
+        .spinningConfig(spinningConfig);
   }
 
   /**

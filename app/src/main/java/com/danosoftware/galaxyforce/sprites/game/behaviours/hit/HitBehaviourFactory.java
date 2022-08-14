@@ -2,7 +2,6 @@ package com.danosoftware.galaxyforce.sprites.game.behaviours.hit;
 
 import com.danosoftware.galaxyforce.services.sound.SoundPlayerService;
 import com.danosoftware.galaxyforce.services.vibration.VibrationService;
-import com.danosoftware.galaxyforce.view.Animation;
 
 public class HitBehaviourFactory {
 
@@ -16,10 +15,9 @@ public class HitBehaviourFactory {
         this.vibrator = vibrator;
     }
 
-    public HitBehaviour createHitBehaviour(final Animation hitAnimation) {
+    public HitBehaviour createHitBehaviour() {
         return new HitAnimation(
-                sounds,
-                vibrator,
-                hitAnimation);
+            sounds,
+            vibrator);
     }
 }

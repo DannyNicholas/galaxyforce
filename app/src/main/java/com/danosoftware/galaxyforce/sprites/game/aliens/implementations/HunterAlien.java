@@ -63,24 +63,22 @@ public class HunterAlien extends AbstractAlien {
 
       super(
           alienConfig.getAlienCharacter(),
-          alienConfig.getAlienCharacter().getAnimation(),
           xStart,
           yStart,
           alienConfig.getEnergy(),
           fireFactory.createFireBehaviour(
               alienConfig.getMissileConfig()),
           powerUpFactory.createPowerUpBehaviour(
-                        powerUpType),
-                spawnFactory.createSpawnBehaviour(
-                        alienConfig.getSpawnConfig()),
-                hitFactory.createHitBehaviour(
-                        alienConfig.getAlienCharacter().getHitAnimation()),
-                explosionFactory.createExplosionBehaviour(
-                        alienConfig.getExplosionConfig(),
-                        alienConfig.getAlienCharacter()),
-                spinningFactory.createSpinningBehaviour(
-                        alienConfig.getSpinningConfig(),
-                        alienConfig.getSpeed()));
+              powerUpType),
+          spawnFactory.createSpawnBehaviour(
+              alienConfig.getSpawnConfig()),
+          hitFactory.createHitBehaviour(),
+          explosionFactory.createExplosionBehaviour(
+              alienConfig.getExplosionConfig(),
+              alienConfig.getAlienCharacter()),
+          spinningFactory.createSpinningBehaviour(
+              alienConfig.getSpinningConfig(),
+              alienConfig.getSpeed()));
 
         this.boundariesChecker = new BoundariesChecker(
                 this,
