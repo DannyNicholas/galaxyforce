@@ -105,7 +105,6 @@ public class AlienConfigBuilder {
       case BOUNCER:
       case DROOPY:
       case BAD_CAT:
-      case SMOKEY:
       case TELLY:
       case HELMET:
       case EGG:
@@ -183,6 +182,15 @@ public class AlienConfigBuilder {
             .builder()
             .missileType(AlienMissileType.SPRAY)
             .missileCharacter(AlienMissileCharacter.LASER)
+            .missileSpeed(speed)
+            .missileFrequency(missileFrequency)
+            .build();
+      // guided missiles
+      case SMOKEY:
+        return MissileFiringConfig
+            .builder()
+            .missileType(AlienMissileType.GUIDED)
+            .missileCharacter(AlienMissileCharacter.FIREBALL)
             .missileSpeed(speed)
             .missileFrequency(missileFrequency)
             .build();
@@ -373,7 +381,6 @@ public class AlienConfigBuilder {
       case BOUNCER:
       case DROOPY:
       case BAD_CAT:
-      case SMOKEY:
       case TELLY:
       case HELMET:
       case EGG:
@@ -412,6 +419,7 @@ public class AlienConfigBuilder {
         return 3;
       case DEVIL:
       case WHIRLPOOL:
+      case SMOKEY:
         return 5;
       case INSECT_MOTHERSHIP:
       case BATTY:

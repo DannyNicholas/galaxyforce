@@ -2754,6 +2754,27 @@ public class WaveFactory {
                         3,
                         0.3f * 7,
                         null),
+                    alienConfig(
+                        AlienCharacter.SMOKEY,
+                        AlienMissileSpeed.FAST,
+                        2f
+                    ),
+                    Collections.singletonList(PowerUpType.SHIELD)
+                )
+            )
+        );
+        subWaves.add(
+            createSubWave(
+                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                new SubWavePathConfig(
+                    waveWithGaps(
+                        Path.SPACE_INVADER_EASY,
+                        PathSpeed.SLIGHTLY_FAST,
+                        1,
+                        0.3f,
+                        3,
+                        0.3f * 7,
+                        null),
                     changingConfig(
                         ChangingAlienCharacter.FOXY),
                     Collections.singletonList(PowerUpType.SHIELD)
