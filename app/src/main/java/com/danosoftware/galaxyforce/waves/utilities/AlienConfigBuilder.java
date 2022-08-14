@@ -448,14 +448,30 @@ public class AlienConfigBuilder {
 
   }
 
+  /**
+   * Create changing alien config builder for character without missiles
+   */
   public static ChangingConfig changingConfig(ChangingAlienCharacter changingCharacter) {
     return changingConfigBuilder(changingCharacter)
         .build();
   }
 
   /**
-   * Create alien config builder for character without missiles
+   * Create changing alien config for character with missiles
    */
+  public static ChangingConfig changingConfig(
+      ChangingAlienCharacter changingCharacter,
+      AlienMissileSpeed speed,
+      Float missileFrequency) {
+
+    final List<AlienCharacter> characters = changingCharacter.getCharacters();
+    final MissileConfig missileConfig = missileConfig(characters.get(0), speed, missileFrequency);
+
+    return changingConfigBuilder(changingCharacter)
+        .missileConfig(missileConfig)
+        .build();
+  }
+
   private static ChangingConfig.ChangingConfigBuilder changingConfigBuilder(
       ChangingAlienCharacter changingCharacter) {
 
