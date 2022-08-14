@@ -36,16 +36,16 @@ public class BaseMissileBlast extends AbstractBaseMissile {
     this.yDelta = missileSpeed.getSpeed() * (float) Math.sin(angle);
   }
 
-    @Override
-    public void animate(float deltaTime) {
-      // move missile by calculated deltas
-      moveByDelta(
-          xDelta * deltaTime,
-          yDelta * deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    // move missile by calculated deltas
+    moveByDelta(
+        xDelta * deltaTime,
+        yDelta * deltaTime);
 
-      // if missile is now off screen then destroy it
-      if (offScreenAnySide(this)) {
-        destroy();
-      }
+    // if missile is now off screen then destroy it
+    if (offScreenAnySide(this)) {
+      destroy();
     }
+  }
 }

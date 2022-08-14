@@ -23,12 +23,12 @@ public class Text {
 
   // private constructor as static factories are used
   private Text(
-          String text,
-          int x,
-          int y,
-          TextPositionX textPositionX,
-          TextPositionY textPositionY,
-          boolean trustedText) {
+      String text,
+      int x,
+      int y,
+      TextPositionX textPositionX,
+      TextPositionY textPositionY,
+      boolean trustedText) {
     this.text = trustedText ? text : removeInvalidCharacters(text);
     this.x = x;
     this.y = y;
@@ -38,25 +38,25 @@ public class Text {
 
   // static factory for text in absolute position
   public static Text newTextAbsolutePosition(
-          String text,
-          int x,
-          int y) {
+      String text,
+      int x,
+      int y) {
     return new Text(text, x, y, null, null, true);
   }
 
   // static factory for text using relative position enum
   public static Text newTextRelativePositionBoth(
-          String text,
-          TextPositionX textPositionX,
-          TextPositionY textPositionY) {
+      String text,
+      TextPositionX textPositionX,
+      TextPositionY textPositionY) {
     return new Text(text, 0, 0, textPositionX, textPositionY, true);
   }
 
   // static factory for text using relative position enum
   public static Text newTextRelativePositionX(
-          String text,
-          TextPositionX textPositionX,
-          int y) {
+      String text,
+      TextPositionX textPositionX,
+      int y) {
     return new Text(text, 0, y, textPositionX, null, true);
   }
 
@@ -65,9 +65,9 @@ public class Text {
   // e.g. price of upgrade or game version number.
   // in these cases, we want to remove any unsupported characters from the text.
   public static Text newUntrustedTextRelativePositionX(
-          String text,
-          TextPositionX textPositionX,
-          int y) {
+      String text,
+      TextPositionX textPositionX,
+      int y) {
     return new Text(text, 0, y, textPositionX, null, false);
   }
 
@@ -101,7 +101,7 @@ public class Text {
     final String validCharacters = GameConstants.FONT_CHARACTER_MAP;
 
     final int strLength = text.length();
-    for (int i = 0; i < strLength; i++){
+    for (int i = 0; i < strLength; i++) {
       char c = text.charAt(i);
       if (validCharacters.indexOf(c) != -1) {
         validStr.append(c);

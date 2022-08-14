@@ -4,7 +4,6 @@ import static com.danosoftware.galaxyforce.constants.GameConstants.BACKGROUND_AL
 
 import android.opengl.GLES20;
 import android.util.Log;
-
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
 import com.danosoftware.galaxyforce.models.screens.Model;

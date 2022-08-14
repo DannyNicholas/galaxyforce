@@ -7,11 +7,11 @@ import java.util.List;
 
 interface IBaseHelper extends IBase {
 
-    BaseMissilesDto fire(BaseMissileType baseMissileType);
+  BaseMissilesDto fire(BaseMissileType baseMissileType);
 
-    void addSynchronisedShield(float syncTime);
+  void addSynchronisedShield(float syncTime);
 
-    void removeShield();
+  void removeShield();
 
-    List<ISprite> allSprites();
+  List<ISprite> allSprites();
 }

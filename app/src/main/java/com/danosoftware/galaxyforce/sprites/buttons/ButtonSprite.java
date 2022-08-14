@@ -6,14 +6,14 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 public class ButtonSprite extends AbstractSprite implements IButtonSprite {
 
-    // sprite bounds for button
-    private Rectangle bounds;
+  // sprite bounds for button
+  private Rectangle bounds;
 
-    // buffer increases the clickable area of button
-    private final int buffer;
+  // buffer increases the clickable area of button
+  private final int buffer;
 
-    // are bounds cached?
-    private boolean boundsCached;
+  // are bounds cached?
+  private boolean boundsCached;
 
   public ButtonSprite(
       SpriteDetails spriteId,
@@ -32,28 +32,28 @@ public class ButtonSprite extends AbstractSprite implements IButtonSprite {
     this.boundsCached = false;
   }
 
-    @Override
-    public Rectangle getBounds() {
-        if (boundsCached) {
-            return bounds;
-        }
-        return bounds();
+  @Override
+  public Rectangle getBounds() {
+    if (boundsCached) {
+      return bounds;
     }
+    return bounds();
+  }
 
-    // create and return bounds.
-    private Rectangle bounds() {
+  // create and return bounds.
+  private Rectangle bounds() {
 
-      Rectangle tmpBounds = new Rectangle(
-          x,
-          y,
-          halfWidth() + buffer,
-          halfHeight() + buffer);
+    Rectangle tmpBounds = new Rectangle(
+        x,
+        y,
+        halfWidth() + buffer,
+        halfHeight() + buffer);
 
-      // only cache if dimensions available
-      if (width() > 0 && height() > 0) {
-        bounds = tmpBounds;
-        boundsCached = true;
-      }
-      return tmpBounds;
+    // only cache if dimensions available
+    if (width() > 0 && height() > 0) {
+      bounds = tmpBounds;
+      boundsCached = true;
     }
+    return tmpBounds;
+  }
 }

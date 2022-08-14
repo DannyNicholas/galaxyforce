@@ -58,73 +58,72 @@ public class AlienMissileGuided extends AbstractAlienMissile {
 
     // initial angle (i.e. straight down)
     this.angle = (float) Math.atan2(-1, 0);
-        this.speed = missileSpeed.getSpeed();
-        calculateMovements();
+    this.speed = missileSpeed.getSpeed();
+    calculateMovements();
 
-        // reset timer since last missile direction change
-        timeSinceMissileDirectionChange = 0f;
-    }
+    // reset timer since last missile direction change
+    timeSinceMissileDirectionChange = 0f;
+  }
 
-    @Override
-    public void animate(float deltaTime) {
-        super.animate(deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    super.animate(deltaTime);
 
-        /*
-         * Guide missile every x seconds so the missile changes direction to
-         * follow any changes in the base's position.
-         */
-      timeSinceMissileDirectionChange += deltaTime;
-      if (timeSinceMissileDirectionChange > MISSILE_DIRECTION_CHANGE_DELAY) {
-        targetBase();
-        timeSinceMissileDirectionChange = 0f;
-      }
-
-      // move missile by calculated deltas
-      moveByDelta(
-          xDelta * deltaTime,
-          yDelta * deltaTime);
-
-      // if missile is now off screen then destroy it
-      if (offScreenAnySide(this)) {
-        destroy();
-      }
-    }
-
-    /**
-     * Calculate angle and x and y deltas required to fire missile at base's
-     * current position. May be called several times to ensure missile remains
-     * targeted as base moves.
+    /*
+     * Guide missile every x seconds so the missile changes direction to
+     * follow any changes in the base's position.
      */
-    private void targetBase() {
-        /*
-         * only re-target if we have a current base. if we have no base then
-         * don't change missile direction.
-         */
-        if (base != null) {
-            // calculate angle from missile position to base
-            final AlienMissileRotateCalculation calculation = calculateAngle(this, base);
-            final float newAngle = calculation.getAngle();
-
-            // don't allow sudden changes of direction. limit to MAX radians
-            if ((newAngle - angle) > MAX_DIRECTION_CHANGE_ANGLE) {
-                angle += MAX_DIRECTION_CHANGE_ANGLE;
-            } else if ((newAngle - angle) < MAX_DIRECTION_CHANGE_ANGLE) {
-                angle -= MAX_DIRECTION_CHANGE_ANGLE;
-            } else {
-                this.angle = newAngle;
-            }
-
-            // recalculate rotation and movement delta based on new angle
-            calculateMovements();
-        }
+    timeSinceMissileDirectionChange += deltaTime;
+    if (timeSinceMissileDirectionChange > MISSILE_DIRECTION_CHANGE_DELAY) {
+      targetBase();
+      timeSinceMissileDirectionChange = 0f;
     }
 
-    private void calculateMovements() {
-      // calculate sprite rotation for wanted angle
-      rotate((calculateRotation(angle)));
+    // move missile by calculated deltas
+    moveByDelta(
+        xDelta * deltaTime,
+        yDelta * deltaTime);
 
-      // calculate the deltas to be applied each move
-      this.xDelta = this.speed * (float) Math.cos(angle);
-      this.yDelta = this.speed * (float) Math.sin(angle);
+    // if missile is now off screen then destroy it
+    if (offScreenAnySide(this)) {
+      destroy();
     }
+  }
+
+  /**
+   * Calculate angle and x and y deltas required to fire missile at base's current position. May be
+   * called several times to ensure missile remains targeted as base moves.
+   */
+  private void targetBase() {
+    /*
+     * only re-target if we have a current base. if we have no base then
+     * don't change missile direction.
+     */
+    if (base != null) {
+      // calculate angle from missile position to base
+      final AlienMissileRotateCalculation calculation = calculateAngle(this, base);
+      final float newAngle = calculation.getAngle();
+
+      // don't allow sudden changes of direction. limit to MAX radians
+      if ((newAngle - angle) > MAX_DIRECTION_CHANGE_ANGLE) {
+        angle += MAX_DIRECTION_CHANGE_ANGLE;
+      } else if ((newAngle - angle) < MAX_DIRECTION_CHANGE_ANGLE) {
+        angle -= MAX_DIRECTION_CHANGE_ANGLE;
+      } else {
+        this.angle = newAngle;
+      }
+
+      // recalculate rotation and movement delta based on new angle
+      calculateMovements();
+    }
+  }
+
+  private void calculateMovements() {
+    // calculate sprite rotation for wanted angle
+    rotate((calculateRotation(angle)));
+
+    // calculate the deltas to be applied each move
+    this.xDelta = this.speed * (float) Math.cos(angle);
+    this.yDelta = this.speed * (float) Math.sin(angle);
+  }
 }

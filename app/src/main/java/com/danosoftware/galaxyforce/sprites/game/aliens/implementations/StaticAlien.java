@@ -17,35 +17,35 @@ import lombok.NonNull;
  */
 public class StaticAlien extends AbstractAlien {
 
-    @Builder
-    public StaticAlien(
-        @NonNull final ExplosionBehaviourFactory explosionFactory,
-        @NonNull final SpawnBehaviourFactory spawnFactory,
-        @NonNull final SpinningBehaviourFactory spinningFactory,
-        @NonNull final PowerUpBehaviourFactory powerUpFactory,
-        @NonNull final FireBehaviourFactory fireFactory,
-        @NonNull final HitBehaviourFactory hitFactory,
-        @NonNull final StaticConfig alienConfig,
-        final PowerUpType powerUpType,
-        @NonNull final Float xStart,
-        @NonNull final Float yStart) {
+  @Builder
+  public StaticAlien(
+      @NonNull final ExplosionBehaviourFactory explosionFactory,
+      @NonNull final SpawnBehaviourFactory spawnFactory,
+      @NonNull final SpinningBehaviourFactory spinningFactory,
+      @NonNull final PowerUpBehaviourFactory powerUpFactory,
+      @NonNull final FireBehaviourFactory fireFactory,
+      @NonNull final HitBehaviourFactory hitFactory,
+      @NonNull final StaticConfig alienConfig,
+      final PowerUpType powerUpType,
+      @NonNull final Float xStart,
+      @NonNull final Float yStart) {
 
-      super(
-          alienConfig.getAlienCharacter(),
-          xStart,
-          yStart,
-          alienConfig.getEnergy(),
-          fireFactory.createFireBehaviour(
-              alienConfig.getMissileConfig()),
-          powerUpFactory.createPowerUpBehaviour(
-              powerUpType),
-          spawnFactory.createSpawnBehaviour(
-              alienConfig.getSpawnConfig()),
-          hitFactory.createHitBehaviour(),
-          explosionFactory.createExplosionBehaviour(
-              alienConfig.getExplosionConfig(),
-              alienConfig.getAlienCharacter()),
-          spinningFactory.createSpinningBehaviour(
-              alienConfig.getSpinningConfig()));
-    }
+    super(
+        alienConfig.getAlienCharacter(),
+        xStart,
+        yStart,
+        alienConfig.getEnergy(),
+        fireFactory.createFireBehaviour(
+            alienConfig.getMissileConfig()),
+        powerUpFactory.createPowerUpBehaviour(
+            powerUpType),
+        spawnFactory.createSpawnBehaviour(
+            alienConfig.getSpawnConfig()),
+        hitFactory.createHitBehaviour(),
+        explosionFactory.createExplosionBehaviour(
+            alienConfig.getExplosionConfig(),
+            alienConfig.getAlienCharacter()),
+        spinningFactory.createSpinningBehaviour(
+            alienConfig.getSpinningConfig()));
+  }
 }

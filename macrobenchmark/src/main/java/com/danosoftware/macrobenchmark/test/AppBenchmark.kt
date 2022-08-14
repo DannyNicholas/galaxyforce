@@ -27,15 +27,15 @@ class AppBenchmark {
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-            packageName = PACKAGE,
-            metrics = listOf(StartupTimingMetric()),
-            iterations = 5,
-            startupMode = StartupMode.COLD
+        packageName = PACKAGE,
+        metrics = listOf(StartupTimingMetric()),
+        iterations = 5,
+        startupMode = StartupMode.COLD
     ) {
         pressHome()
         val intent = Intent()
         intent.setPackage(PACKAGE)
-        intent.setAction("$PACKAGE.BENCHMARK")
+        intent.action = "$PACKAGE.BENCHMARK"
         startActivityAndWait(intent)
     }
 
@@ -52,7 +52,7 @@ class AppBenchmark {
             pressHome()
             val intent = Intent()
             intent.setPackage(PACKAGE)
-            intent.setAction("$PACKAGE.BENCHMARK")
+            intent.action = "$PACKAGE.BENCHMARK"
             startActivityAndWait(intent)
 
             // wait for splash screen to transition to main menu
@@ -130,29 +130,32 @@ class AppBenchmark {
     // wait for supplied time in milliseconds on supplied device
     // UiDevice does not support unconditional wait so we wait for an object that will never appear
     fun wait(device: UiDevice, timeDelayMs: Long) = device.wait(
-            Until.findObject(By.text("foo")),
-            timeDelayMs)
+        Until.findObject(By.text("foo")),
+        timeDelayMs
+    )
 
     // click point on device screen
     fun click(device: UiDevice, x: Int, y: Int) =
-            device.click(
-                    xPos(device, x),
-                    yPos(device, y))
+        device.click(
+            xPos(device, x),
+            yPos(device, y)
+        )
 
     fun swipe(device: UiDevice, x1: Int, y1: Int, x2: Int, y2: Int) =
-            device.swipe(
-                    xPos(device, x1),
-                    yPos(device, y1),
-                    xPos(device, x2),
-                    yPos(device, y2),
-                    100)
+        device.swipe(
+            xPos(device, x1),
+            yPos(device, y1),
+            xPos(device, x2),
+            yPos(device, y2),
+            100
+        )
 
     // convert x-position on screen to x-position on device
     fun xPos(device: UiDevice, x: Int) =
-            ((device.displayWidth.toDouble() / GAME_WIDTH) * x).toInt()
+        ((device.displayWidth.toDouble() / GAME_WIDTH) * x).toInt()
 
     // convert y-position on screen to y-position on device
     fun yPos(device: UiDevice, y: Int) =
-            ((device.displayHeight.toDouble() / GAME_HEIGHT) * (GAME_HEIGHT - y)).toInt() + 242
+        ((device.displayHeight.toDouble() / GAME_HEIGHT) * (GAME_HEIGHT - y)).toInt() + 242
 
 }

@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Test that power-up allocator behaves as expected when allocating a list of power-ups
- * across a wave of aliens.
+ * Test that power-up allocator behaves as expected when allocating a list of power-ups across a
+ * wave of aliens.
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Log.class)
@@ -58,173 +58,177 @@ public class PowerUpAllocatorTest {
     shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
   }
 
-    /**
-     * Allocate power-ups across twice as many aliens.
-     */
-    @Test
-    public void shouldAllocateAllPowerUpsAcrossManyAliens() {
+  /**
+   * Allocate power-ups across twice as many aliens.
+   */
+  @Test
+  public void shouldAllocateAllPowerUpsAcrossManyAliens() {
 
-        // create twice as many aliens as power-ups
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
-        int numberOfAliens = powerUpTypes.size() * 2;
-        powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
+    // create twice as many aliens as power-ups
+    List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL,
+        PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+    int numberOfAliens = powerUpTypes.size() * 2;
+    powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
 
-        shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
+    shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
+  }
+
+  /**
+   * Attempt to allocate an empty list of power-ups. Should not allocate any power-ups.
+   */
+  @Test
+  public void shouldNotAllocateAnyPowerUps() {
+
+    // create empty list of power-ups
+    List<PowerUpType> powerUpTypes = new ArrayList<>();
+    int numberOfAliens = 10;
+    powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
+
+    shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
+  }
+
+  /**
+   * Throw exception if attempting to add more power-ups than aliens.
+   */
+  @Test(expected = GalaxyForceException.class)
+  public void shouldThrowExceptionWhenMorePowerUpsThanAliens() {
+
+    // should fail when trying to allocate 5 power-ups across 4 aliens
+    List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL,
+        PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+    new PowerUpAllocator(powerUpTypes, 4, 3);
+  }
+
+  /**
+   * Always return null if attempting to call allocate() even after all aliens have been allocated.
+   */
+  @Test
+  public void shouldReturnNullWhenAllocateCalledTooManyTimes() {
+
+    // create one alien per power-up
+    List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL,
+        PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
+    int numberOfAliens = powerUpTypes.size();
+    powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
+
+    shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
+
+    // attempt to allocate more power-ups - should return null
+    for (int i = 0; i < 20; i++) {
+      PowerUpType powerUp = powerUpAllocator.allocate();
+      assertThat(powerUp, nullValue());
     }
-
-    /**
-     * Attempt to allocate an empty list of power-ups.
-     * Should not allocate any power-ups.
-     */
-    @Test
-    public void shouldNotAllocateAnyPowerUps() {
-
-        // create empty list of power-ups
-        List<PowerUpType> powerUpTypes = new ArrayList<>();
-        int numberOfAliens = 10;
-        powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
-
-        shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
-    }
-
-    /**
-     * Throw exception if attempting to add more power-ups than aliens.
-     */
-    @Test(expected = GalaxyForceException.class)
-    public void shouldThrowExceptionWhenMorePowerUpsThanAliens() {
-
-        // should fail when trying to allocate 5 power-ups across 4 aliens
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
-        new PowerUpAllocator(powerUpTypes, 4, 3);
-    }
-
-    /**
-     * Always return null if attempting to call allocate() even after all aliens have been allocated.
-     */
-    @Test
-    public void shouldReturnNullWhenAllocateCalledTooManyTimes() {
-
-        // create one alien per power-up
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL, PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
-        int numberOfAliens = powerUpTypes.size();
-        powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
-
-        shouldAllocateExpectedPowerUps(numberOfAliens, powerUpTypes);
-
-        // attempt to allocate more power-ups - should return null
-        for (int i = 0; i < 20; i++) {
-            PowerUpType powerUp = powerUpAllocator.allocate();
-            assertThat(powerUp, nullValue());
-        }
-    }
+  }
 
   /**
    * Should only allocate lives up to a maximum
    */
-    @Test
-    public void shouldOnlyAllocateUpToMaximumLives() {
+  @Test
+  public void shouldOnlyAllocateUpToMaximumLives() {
 
-        // create one alien per power-up
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE);
-        int numberOfAliens = powerUpTypes.size();
-        powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
+    // create one alien per power-up
+    List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.LIFE, PowerUpType.LIFE,
+        PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE);
+    int numberOfAliens = powerUpTypes.size();
+    powerUpAllocator = new PowerUpAllocator(powerUpTypes, numberOfAliens, 3);
 
-        // allocate power-ups to aliens
-        List<PowerUpType> allAllocatedPowerUps = new ArrayList<>();
-        for (int i = 0; i < numberOfAliens; i++) {
-            PowerUpType powerUp = powerUpAllocator.allocate();
-            if (powerUp != null) {
-                allAllocatedPowerUps.add(powerUp);
-                assertThat(powerUp, equalTo(PowerUpType.LIFE));
-            }
-        }
-        assertThat(allAllocatedPowerUps.size(), equalTo(3));
+    // allocate power-ups to aliens
+    List<PowerUpType> allAllocatedPowerUps = new ArrayList<>();
+    for (int i = 0; i < numberOfAliens; i++) {
+      PowerUpType powerUp = powerUpAllocator.allocate();
+      if (powerUp != null) {
+        allAllocatedPowerUps.add(powerUp);
+        assertThat(powerUp, equalTo(PowerUpType.LIFE));
+      }
+    }
+    assertThat(allAllocatedPowerUps.size(), equalTo(3));
+  }
+
+  /**
+   * Check that all supplied power-ups were allocated to the aliens in the wave.
+   *
+   * @param numberOfAliens - number of aliens in wave
+   * @param powerUpTypes   - list of power-ups to be allocated across aliens
+   */
+  private void shouldAllocateExpectedPowerUps(
+      final int numberOfAliens,
+      final List<PowerUpType> powerUpTypes) {
+
+    // count of each different power-up supplied
+    final Map<PowerUpType, Integer> powerUpCount = createPowerUpMap(powerUpTypes);
+
+    // allocate power-ups to aliens
+    List<PowerUpType> allAllocatedPowerUps = new ArrayList<>();
+    for (int i = 0; i < numberOfAliens; i++) {
+      PowerUpType powerUp = powerUpAllocator.allocate();
+      if (powerUp != null) {
+        allAllocatedPowerUps.add(powerUp);
+      }
     }
 
-    /**
-     * Check that all supplied power-ups were allocated to the aliens in the wave.
-     *
-     * @param numberOfAliens - number of aliens in wave
-     * @param powerUpTypes   - list of power-ups to be allocated across aliens
-     */
-    private void shouldAllocateExpectedPowerUps(
-            final int numberOfAliens,
-            final List<PowerUpType> powerUpTypes) {
+    // create a count of each power-up allocated
+    Map<PowerUpType, Integer> foundPowerUpCount = createPowerUpMap(allAllocatedPowerUps);
 
-        // count of each different power-up supplied
-        final Map<PowerUpType, Integer> powerUpCount = createPowerUpMap(powerUpTypes);
+    logger.info(allAllocatedPowerUps.toString());
+    assertThat(allAllocatedPowerUps.size(), equalTo(powerUpTypes.size()));
+    assertThat(foundPowerUpCount, equalTo(powerUpCount));
+  }
 
-        // allocate power-ups to aliens
-        List<PowerUpType> allAllocatedPowerUps = new ArrayList<>();
-        for (int i = 0; i < numberOfAliens; i++) {
-            PowerUpType powerUp = powerUpAllocator.allocate();
-            if (powerUp != null) {
-                allAllocatedPowerUps.add(powerUp);
-            }
-        }
-
-        // create a count of each power-up allocated
-        Map<PowerUpType, Integer> foundPowerUpCount = createPowerUpMap(allAllocatedPowerUps);
-
-        logger.info(allAllocatedPowerUps.toString());
-        assertThat(allAllocatedPowerUps.size(), equalTo(powerUpTypes.size()));
-        assertThat(foundPowerUpCount, equalTo(powerUpCount));
+  /**
+   * Create a map of power-ups and instance counts.
+   */
+  private Map<PowerUpType, Integer> createPowerUpMap(List<PowerUpType> powerUpTypes) {
+    Map<PowerUpType, Integer> powerUpCount = new HashMap<>();
+    for (PowerUpType powerUp : powerUpTypes) {
+      int count = powerUpCount.getOrDefault(powerUp, 0);
+      powerUpCount.put(powerUp, count + 1);
     }
 
-    /**
-     * Create a map of power-ups and instance counts.
-     */
-    private Map<PowerUpType, Integer> createPowerUpMap(List<PowerUpType> powerUpTypes) {
-        Map<PowerUpType, Integer> powerUpCount = new HashMap<>();
-        for (PowerUpType powerUp : powerUpTypes) {
-            int count = powerUpCount.getOrDefault(powerUp, 0);
-            powerUpCount.put(powerUp, count + 1);
-        }
+    return powerUpCount;
+  }
 
-        return powerUpCount;
+  /**
+   * Should only allocate lives up to a maximum across multiple allocators
+   */
+  @Test
+  public void allocatorFactoryShouldOnlyAllocateUpToMaximumLives() {
+
+    GameModel model = mock(GameModel.class);
+    when(model.getLives()).thenReturn(1);   // should allow 3 extra lives to be allocated
+    PowerUpAllocatorFactory factory = new PowerUpAllocatorFactory(model);
+    factory.newWave();
+
+    // create one alien per power-up
+    List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.LIFE, PowerUpType.LIFE,
+        PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE);
+    int numberOfAliens = powerUpTypes.size();
+
+    // try to allocate power-ups with first allocator
+    powerUpAllocator = factory.createAllocator(powerUpTypes, numberOfAliens);
+
+    // allocate power-ups to aliens - should allocate 3 (up to max allowed)
+    List<PowerUpType> allAllocatedPowerUps1 = new ArrayList<>();
+    for (int i = 0; i < numberOfAliens; i++) {
+      PowerUpType powerUp = powerUpAllocator.allocate();
+      if (powerUp != null) {
+        allAllocatedPowerUps1.add(powerUp);
+        assertThat(powerUp, equalTo(PowerUpType.LIFE));
+      }
     }
+    assertThat(allAllocatedPowerUps1.size(), equalTo(3));
 
-    /**
-     * Should only allocate lives up to a maximum across multiple allocators
-     */
-    @Test
-    public void allocatorFactoryShouldOnlyAllocateUpToMaximumLives() {
+    // try to allocate power-ups with second allocator
+    powerUpAllocator = factory.createAllocator(powerUpTypes, numberOfAliens);
 
-        GameModel model = mock(GameModel.class);
-        when(model.getLives()).thenReturn(1);   // should allow 3 extra lives to be allocated
-        PowerUpAllocatorFactory factory = new PowerUpAllocatorFactory(model);
-        factory.newWave();
-
-        // create one alien per power-up
-        List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.LIFE);
-        int numberOfAliens = powerUpTypes.size();
-
-        // try to allocate power-ups with first allocator
-        powerUpAllocator = factory.createAllocator(powerUpTypes, numberOfAliens);
-
-        // allocate power-ups to aliens - should allocate 3 (up to max allowed)
-        List<PowerUpType> allAllocatedPowerUps1 = new ArrayList<>();
-        for (int i = 0; i < numberOfAliens; i++) {
-            PowerUpType powerUp = powerUpAllocator.allocate();
-            if (powerUp != null) {
-                allAllocatedPowerUps1.add(powerUp);
-                assertThat(powerUp, equalTo(PowerUpType.LIFE));
-            }
-        }
-        assertThat(allAllocatedPowerUps1.size(), equalTo(3));
-
-        // try to allocate power-ups with second allocator
-        powerUpAllocator = factory.createAllocator(powerUpTypes, numberOfAliens);
-
-        // allocate power-ups to aliens - should allocate 0 (max live power-ups already allocated)
-        List<PowerUpType> allAllocatedPowerUps2 = new ArrayList<>();
-        for (int i = 0; i < numberOfAliens; i++) {
-            PowerUpType powerUp = powerUpAllocator.allocate();
-            if (powerUp != null) {
-                allAllocatedPowerUps2.add(powerUp);
-                assertThat(powerUp, equalTo(PowerUpType.LIFE));
-            }
-        }
-        assertThat(allAllocatedPowerUps2.size(), equalTo(0));
+    // allocate power-ups to aliens - should allocate 0 (max live power-ups already allocated)
+    List<PowerUpType> allAllocatedPowerUps2 = new ArrayList<>();
+    for (int i = 0; i < numberOfAliens; i++) {
+      PowerUpType powerUp = powerUpAllocator.allocate();
+      if (powerUp != null) {
+        allAllocatedPowerUps2.add(powerUp);
+        assertThat(powerUp, equalTo(PowerUpType.LIFE));
+      }
     }
+    assertThat(allAllocatedPowerUps2.size(), equalTo(0));
+  }
 }

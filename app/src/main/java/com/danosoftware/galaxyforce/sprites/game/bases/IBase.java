@@ -7,11 +7,11 @@ import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 
 public interface IBase extends ICollidingSprite {
 
-    void onHitBy(IAlien alien);
+  void onHitBy(IAlien alien);
 
-    void onHitBy(IAlienMissile missile);
+  void onHitBy(IAlienMissile missile);
 
-    void collectPowerUp(IPowerUp powerUp);
+  void collectPowerUp(IPowerUp powerUp);
 
-    boolean isActive();
+  boolean isActive();
 }

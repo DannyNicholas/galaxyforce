@@ -424,14 +424,14 @@ public class GamePlayModelImpl implements Model, GameModel, TextChangeListener {
          * when the next wave is set-up but if the user does not
          * upgrade, this set-up will never be called.
          */
-          final int unlockedWave = wave + 1;
-          int maxLevelUnlocked = savedGame.getGameLevel();
-          if (unlockedWave > maxLevelUnlocked) {
-            savedGame.saveGameLevel(unlockedWave);
-          }
+        final int unlockedWave = wave + 1;
+        int maxLevelUnlocked = savedGame.getGameLevel();
+        if (unlockedWave > maxLevelUnlocked) {
+          savedGame.saveGameLevel(unlockedWave);
+        }
 
-          transitioningToUpgradeScreen = true;
-          game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
+        transitioningToUpgradeScreen = true;
+        game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
 
         /*
          * must return at this point to prevent next wave being

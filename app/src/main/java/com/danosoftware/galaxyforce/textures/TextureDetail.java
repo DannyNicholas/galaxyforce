@@ -12,52 +12,53 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
  */
 public class TextureDetail {
 
-    private final String name;
-    private final int xPos;
-    private final int yPos;
-    private final int width;
-    private final int height;
+  private final String name;
+  private final int xPos;
+  private final int yPos;
+  private final int width;
+  private final int height;
 
-    public TextureDetail(String name, String xPos, String yPos, String width, String height) {
-        this.name = name;
-        this.xPos = convertNumeric(xPos);
-        this.yPos = convertNumeric(yPos);
-        this.width = convertNumeric(width);
-        this.height = convertNumeric(height);
+  public TextureDetail(String name, String xPos, String yPos, String width, String height) {
+    this.name = name;
+    this.xPos = convertNumeric(xPos);
+    this.yPos = convertNumeric(yPos);
+    this.width = convertNumeric(width);
+    this.height = convertNumeric(height);
+  }
+
+  // converts string to int
+  // returns 0 if NumberFormatException is thrown
+  private static int convertNumeric(String str) {
+    int num;
+
+    try {
+      num = Integer.parseInt(str);
+    } catch (NumberFormatException nfe) {
+      Log.e(GameConstants.LOG_TAG,
+          "Unable to convert Texture Region value '" + str + "' to a numeric value.", nfe);
+      return 0;
     }
 
-    // converts string to int
-    // returns 0 if NumberFormatException is thrown
-    private static int convertNumeric(String str) {
-        int num;
+    return num;
+  }
 
-        try {
-            num = Integer.parseInt(str);
-        } catch (NumberFormatException nfe) {
-            Log.e(GameConstants.LOG_TAG, "Unable to convert Texture Region value '" + str + "' to a numeric value.", nfe);
-            return 0;
-        }
+  public String getName() {
+    return name;
+  }
 
-        return num;
-    }
+  public int getXPos() {
+    return xPos;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public int getYPos() {
+    return yPos;
+  }
 
-    public int getXPos() {
-        return xPos;
-    }
+  public int getWidth() {
+    return width;
+  }
 
-    public int getYPos() {
-        return yPos;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
+  public int getHeight() {
+    return height;
+  }
 }

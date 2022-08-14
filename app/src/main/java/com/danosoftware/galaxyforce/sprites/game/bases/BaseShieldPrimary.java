@@ -41,78 +41,78 @@ public class BaseShieldPrimary extends AbstractMovingSprite implements IBaseShie
   // state time used to help select the current animation frame
   private float stateTime;
 
-    // reference to sound player
-    private final SoundPlayerService sounds;
+  // reference to sound player
+  private final SoundPlayerService sounds;
 
-    // reference to vibrator
-    private final VibrationService vibrator;
+  // reference to vibrator
+  private final VibrationService vibrator;
 
-    public BaseShieldPrimary(
-        IBasePrimary base,
-        final SoundPlayerService sounds,
-        final VibrationService vibrator,
-        float xStart,
-        float yStart,
-        float syncTime) {
+  public BaseShieldPrimary(
+      IBasePrimary base,
+      final SoundPlayerService sounds,
+      final VibrationService vibrator,
+      float xStart,
+      float yStart,
+      float syncTime) {
 
-      super(
-          getShieldAnimation(base)
-              .getKeyFrame(syncTime, Animation.ANIMATION_LOOPING),
-          xStart,
-          yStart);
-      this.base = base;
-      this.stateTime = syncTime;
-      this.sounds = sounds;
-      this.vibrator = vibrator;
+    super(
+        getShieldAnimation(base)
+            .getKeyFrame(syncTime, Animation.ANIMATION_LOOPING),
+        xStart,
+        yStart);
+    this.base = base;
+    this.stateTime = syncTime;
+    this.sounds = sounds;
+    this.vibrator = vibrator;
+  }
+
+  @Override
+  public void animate(float deltaTime) {
+    // increase state time by delta
+    stateTime += deltaTime;
+
+    // set base sprite using animation loop and time through animation
+    changeType(
+        getShieldAnimation(base)
+            .getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
+
+    // play shield pulse effects if not started playing or
+    // repeat after set number of seconds.
+    timeSinceLastPulse += deltaTime;
+    if (!effectsPlaying || timeSinceLastPulse > SHIELD_PULSE_FREQUENCY_IN_SECONDS) {
+      sounds.play(SoundEffect.SHIELD_PULSE);
+      vibrator.vibrate(VibrateTime.LONG);
+      effectsPlaying = true;
+      timeSinceLastPulse %= SHIELD_PULSE_FREQUENCY_IN_SECONDS;
     }
+  }
 
-    @Override
-    public void animate(float deltaTime) {
-        // increase state time by delta
-        stateTime += deltaTime;
+  /**
+   * Shields can be added at different times. A base with a shield may gain some shielded helpers.
+   * In order to keep all shields animating in sync, it should be possible to share the state time
+   * used for synchronisation.
+   * <p>
+   * Normally the helper bases will be synchronised to the primary base.
+   *
+   * @return synchronisation timing
+   */
+  @Override
+  public float getSynchronisation() {
+    return stateTime;
+  }
 
-        // set base sprite using animation loop and time through animation
-        changeType(
-                getShieldAnimation(base)
-                        .getKeyFrame(stateTime, Animation.ANIMATION_LOOPING));
-
-        // play shield pulse effects if not started playing or
-        // repeat after set number of seconds.
-        timeSinceLastPulse += deltaTime;
-        if (!effectsPlaying || timeSinceLastPulse > SHIELD_PULSE_FREQUENCY_IN_SECONDS) {
-            sounds.play(SoundEffect.SHIELD_PULSE);
-            vibrator.vibrate(VibrateTime.LONG);
-            effectsPlaying = true;
-            timeSinceLastPulse %= SHIELD_PULSE_FREQUENCY_IN_SECONDS;
-        }
+  /**
+   * Return shield animation for current base lean
+   */
+  private static Animation getShieldAnimation(IBasePrimary base) {
+    switch (base.getLean()) {
+      case LEFT:
+        return LEFT_LEAN_SHIELD_PULSE;
+      case RIGHT:
+        return RIGHT_LEAN_SHIELD_PULSE;
+      case NONE:
+        return SHIELD_PULSE;
     }
-
-    /**
-     * Shields can be added at different times. A base with a shield may gain
-     * some shielded helpers. In order to keep all shields animating in sync, it
-     * should be possible to share the state time used for synchronisation.
-     * <p>
-     * Normally the helper bases will be synchronised to the primary base.
-     *
-     * @return synchronisation timing
-     */
-    @Override
-    public float getSynchronisation() {
-        return stateTime;
-    }
-
-    /**
-     * Return shield animation for current base lean
-     */
-    private static Animation getShieldAnimation(IBasePrimary base) {
-        switch (base.getLean()) {
-            case LEFT:
-                return LEFT_LEAN_SHIELD_PULSE;
-            case RIGHT:
-                return RIGHT_LEAN_SHIELD_PULSE;
-            case NONE:
-                return SHIELD_PULSE;
-        }
-        throw new GalaxyForceException("Unknown Base Lean: " + base.getLean());
-    }
+    throw new GalaxyForceException("Unknown Base Lean: " + base.getLean());
+  }
 }

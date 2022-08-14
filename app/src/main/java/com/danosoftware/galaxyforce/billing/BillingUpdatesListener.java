@@ -7,5 +7,6 @@ import java.util.List;
  * Listener to the updates that happen when purchases list is updated.
  */
 public interface BillingUpdatesListener {
+
   void onPurchasesUpdated(List<Purchase> purchases);
 }

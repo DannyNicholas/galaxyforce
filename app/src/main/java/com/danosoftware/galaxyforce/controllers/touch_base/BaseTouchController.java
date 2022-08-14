@@ -5,5 +5,5 @@ import com.danosoftware.galaxyforce.controllers.touch.TouchController;
 
 public interface BaseTouchController extends TouchController {
 
-    void setBaseController(TouchBaseControllerModel baseModel);
+  void setBaseController(TouchBaseControllerModel baseModel);
 }

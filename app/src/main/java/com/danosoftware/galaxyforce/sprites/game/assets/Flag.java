@@ -45,42 +45,41 @@ public class Flag extends AbstractSprite {
   }
 
   /**
-   * Creates a map of used to illustrate the level using a set of flags. The
-   * map key is the flag number and the map value contains the number of flags
-   * needed of this type.
+   * Creates a map of used to illustrate the level using a set of flags. The map key is the flag
+   * number and the map value contains the number of flags needed of this type.
    * <p>
    * Flags used are 100, 50, 10, 5 and 1.
    * <p>
-   * Example: Level 276 would be represented by 2 x 100 flags, 1 x 50 flag, 2
-   * x 10 flags, 1 x 5 flag and 1 x 1 flag.
-     */
-    public static List<Flag> getFlagList(int levelNumber) {
-        List<Flag> flags = new ArrayList<>();
+   * Example: Level 276 would be represented by 2 x 100 flags, 1 x 50 flag, 2 x 10 flags, 1 x 5 flag
+   * and 1 x 1 flag.
+   */
+  public static List<Flag> getFlagList(int levelNumber) {
+    List<Flag> flags = new ArrayList<>();
 
-        int remainder = levelNumber;
-        int flagXPosition = FLAGS_START_X;
+    int remainder = levelNumber;
+    int flagXPosition = FLAGS_START_X;
 
-        // get keys as sorted list so it can be iterated through in reverse
-        // order
-        List<Integer> flagKeysAsList = new ArrayList<>(flagMap.keySet());
-        Collections.sort(flagKeysAsList);
+    // get keys as sorted list so it can be iterated through in reverse
+    // order
+    List<Integer> flagKeysAsList = new ArrayList<>(flagMap.keySet());
+    Collections.sort(flagKeysAsList);
 
-        // calculate how many flags of each flag type are needed
-        for (int flag : Reversed.reversed(flagKeysAsList)) {
-            int numberOfFlags = remainder / flag;
-            remainder = remainder - (numberOfFlags * flag);
+    // calculate how many flags of each flag type are needed
+    for (int flag : Reversed.reversed(flagKeysAsList)) {
+      int numberOfFlags = remainder / flag;
+      remainder = remainder - (numberOfFlags * flag);
 
-            Log.d(TAG, "Flag: " + flag + ". Number Of: " + numberOfFlags);
+      Log.d(TAG, "Flag: " + flag + ". Number Of: " + numberOfFlags);
 
-          SpriteDetails flagSprite = flagMap.get(flag);
+      SpriteDetails flagSprite = flagMap.get(flag);
 
-            // add the number of flags needed to the list
-            for (int i = 0; i < numberOfFlags; i++) {
-                flags.add(new Flag(flagSprite, flagXPosition, FLAGS_START_Y));
-                flagXPosition += FLAGS_WIDTH;
-            }
-        }
-
-        return flags;
+      // add the number of flags needed to the list
+      for (int i = 0; i < numberOfFlags; i++) {
+        flags.add(new Flag(flagSprite, flagXPosition, FLAGS_START_Y));
+        flagXPosition += FLAGS_WIDTH;
+      }
     }
+
+    return flags;
+  }
 }

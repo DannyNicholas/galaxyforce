@@ -15,33 +15,34 @@ import java.util.ListIterator;
  */
 
 public class Reversed<T> implements Iterable<T> {
-    private final List<T> original;
 
-    private Reversed(List<T> original) {
-        this.original = original;
-    }
+  private final List<T> original;
 
-    @NonNull
-    public Iterator<T> iterator() {
-        final ListIterator<T> i = original.listIterator(original.size());
+  private Reversed(List<T> original) {
+    this.original = original;
+  }
 
-        return new Iterator<T>() {
-            public boolean hasNext() {
-                return i.hasPrevious();
-            }
+  @NonNull
+  public Iterator<T> iterator() {
+    final ListIterator<T> i = original.listIterator(original.size());
 
-            public T next() {
-                return i.previous();
-            }
+    return new Iterator<T>() {
+      public boolean hasNext() {
+        return i.hasPrevious();
+      }
 
-            public void remove() {
-                i.remove();
-            }
-        };
-    }
+      public T next() {
+        return i.previous();
+      }
 
-    public static <T> Reversed<T> reversed(List<T> original) {
-        return new Reversed<>(original);
-    }
+      public void remove() {
+        i.remove();
+      }
+    };
+  }
+
+  public static <T> Reversed<T> reversed(List<T> original) {
+    return new Reversed<>(original);
+  }
 
 }

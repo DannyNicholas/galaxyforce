@@ -28,11 +28,11 @@ public class Life extends AbstractSprite {
     int flagXPosition = LIVES_START_X;
 
     // add the number of energy bars needed to the list
-        for (int i = 0; i < lives; i++) {
-          livesList.add(new Life(flagXPosition, LIVES_START_Y, SpriteDetails.LIVES));
-          flagXPosition += LIVES_WIDTH;
-        }
+    for (int i = 0; i < lives; i++) {
+      livesList.add(new Life(flagXPosition, LIVES_START_Y, SpriteDetails.LIVES));
+      flagXPosition += LIVES_WIDTH;
+    }
 
     return livesList;
-    }
+  }
 }

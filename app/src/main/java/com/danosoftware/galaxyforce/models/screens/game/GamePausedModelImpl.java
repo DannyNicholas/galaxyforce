@@ -85,7 +85,7 @@ public class GamePausedModelImpl implements Model, ButtonModel, TextChangeListen
     this.flashingPausedText = new FlashingTextImpl(
         Collections.singletonList(pausedText),
         0.5f,
-            this);
+        this);
 
     this.updateText = true;
     this.updateSprites = true;

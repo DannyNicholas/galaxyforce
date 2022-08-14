@@ -35,82 +35,84 @@ import org.junit.Test;
 
 public class PathConfigTest {
 
-    private final AlienFactory factory = new AlienFactory(
-            mock(GameModel.class),
-            mock(PowerUpAllocatorFactory.class),
-            mock(SoundPlayerService.class),
-            mock(VibrationService.class)
-    );
+  private final AlienFactory factory = new AlienFactory(
+      mock(GameModel.class),
+      mock(PowerUpAllocatorFactory.class),
+      mock(SoundPlayerService.class),
+      mock(VibrationService.class)
+  );
 
-    @Test
-    public void shouldCreateBasicConfiguredPathAlien() {
-        PathConfig config = PathConfig
-                .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .build();
+  @Test
+  public void shouldCreateBasicConfiguredPathAlien() {
+    PathConfig config = PathConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .build();
 
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAlienType(), equalTo(AlienType.PATH));
-        assertThat(config.getSpawnConfig(), nullValue());
-        assertThat(config.getMissileConfig(), nullValue());
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAlienType(), equalTo(AlienType.PATH));
+    assertThat(config.getSpawnConfig(), nullValue());
+    assertThat(config.getMissileConfig(), nullValue());
 
-        List<PathPoint> points = new ArrayList<>();
-        points.add(new PathPoint(0, 0, 0));
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                points,
-                2f,
-                false);
+    List<PathPoint> points = new ArrayList<>();
+    points.add(new PathPoint(0, 0, 0));
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        points,
+        2f,
+        false);
 
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof PathAlien, is(true));
-    }
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof PathAlien, is(true));
+  }
 
-    @Test
-    public void shouldCreateFullyConfiguredPathAlien() {
-        PathConfig config = PathConfig
-                .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .spawnConfig(new SpawningAlienConfig(
-                    mock(AlienConfig.class),
-                    new ArrayList<>(),
-                    0f,
-                    0f))
-                .missileConfig(new MissileFiringConfig(
-                        AlienMissileType.DOWNWARDS,
-                        AlienMissileSpeed.MEDIUM,
-                        AlienMissileCharacter.LASER,
-                        0f))
-                .spinningConfig(new SpinningFixedAngularConfig(
-                        10))
-                .build();
+  @Test
+  public void shouldCreateFullyConfiguredPathAlien() {
+    PathConfig config = PathConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .spawnConfig(new SpawningAlienConfig(
+            mock(AlienConfig.class),
+            new ArrayList<>(),
+            0f,
+            0f))
+        .missileConfig(new MissileFiringConfig(
+            AlienMissileType.DOWNWARDS,
+            AlienMissileSpeed.MEDIUM,
+            AlienMissileCharacter.LASER,
+            0f))
+        .spinningConfig(new SpinningFixedAngularConfig(
+            10))
+        .build();
 
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAlienType(), equalTo(AlienType.PATH));
-        assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
-        assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
-        assertThat(config.getMissileConfig().getType(), equalTo(MissileConfig.MissileConfigType.MISSILE));
-        assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
-        assertThat(config.getSpinningConfig().getType(), equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
-        assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAlienType(), equalTo(AlienType.PATH));
+    assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
+    assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
+    assertThat(config.getMissileConfig().getType(),
+        equalTo(MissileConfig.MissileConfigType.MISSILE));
+    assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
+    assertThat(config.getSpinningConfig().getType(),
+        equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
+    assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
 
-        List<PathPoint> points = new ArrayList<>();
-        points.add(new PathPoint(0, 0, 0));
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                points,
-                2f,
-                false);
+    List<PathPoint> points = new ArrayList<>();
+    points.add(new PathPoint(0, 0, 0));
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        points,
+        2f,
+        false);
 
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof PathAlien, is(true));
-    }
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof PathAlien, is(true));
+  }
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface IBaseMultiExploder extends IBaseExploder {
 
-    /**
-     * Get the supporting multi-explosion sprites.
-     */
-    List<IBaseExplosion> getMultiExplosion();
+  /**
+   * Get the supporting multi-explosion sprites.
+   */
+  List<IBaseExplosion> getMultiExplosion();
 }

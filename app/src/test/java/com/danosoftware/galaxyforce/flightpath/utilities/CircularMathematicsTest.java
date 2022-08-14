@@ -14,30 +14,30 @@ import org.junit.Test;
  */
 public class CircularMathematicsTest {
 
-    @Test
-    public void shouldCalculateCircularPath() {
+  @Test
+  public void shouldCalculateCircularPath() {
 
-        // create circular control points
-        final double piMultiplier = 1;
-        final DoublePoint centre = new DoublePoint(0, 0);
+    // create circular control points
+    final double piMultiplier = 1;
+    final DoublePoint centre = new DoublePoint(0, 0);
 
-        // create a linear path from control points
-        final List<DoublePoint> linearPoints = createCircularPath(
-                centre,
-                piMultiplier,
-                PathSpeed.NORMAL);
+    // create a linear path from control points
+    final List<DoublePoint> linearPoints = createCircularPath(
+        centre,
+        piMultiplier,
+        PathSpeed.NORMAL);
 
-        // assert path length
-        final int pathLength = linearPoints.size();
-        assertThat(pathLength, is(210));
+    // assert path length
+    final int pathLength = linearPoints.size();
+    assertThat(pathLength, is(210));
 
-        // assert start/end path points match provided control points
-        assertThat(linearPoints.get(0).getX(), is(centre.getX() + 300));
-        assertThat(linearPoints.get(0).getY(), is(centre.getY()));
-        assertThat(
-                Math.round(linearPoints.get(pathLength - 1).getX()),
-                is(Math.round(centre.getX() - 195)));
-        assertThat(Math.round(linearPoints.get(pathLength - 1).getY()),
-                is(Math.round(centre.getY() - 1)));
-    }
+    // assert start/end path points match provided control points
+    assertThat(linearPoints.get(0).getX(), is(centre.getX() + 300));
+    assertThat(linearPoints.get(0).getY(), is(centre.getY()));
+    assertThat(
+        Math.round(linearPoints.get(pathLength - 1).getX()),
+        is(Math.round(centre.getX() - 195)));
+    assertThat(Math.round(linearPoints.get(pathLength - 1).getY()),
+        is(Math.round(centre.getY() - 1)));
+  }
 }

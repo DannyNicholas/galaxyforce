@@ -82,58 +82,56 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
   }
 
-    @Override
-    public void animate(float deltaTime) {
-        super.animate(deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    super.animate(deltaTime);
 
-        if (isActive()) {
-          if (isTravellingOffScreen(this, xDelta, yDelta)) {
-            if (restartImmediately) {
-              reset(originalTimeDelayStart);
-            } else {
-              endOfPass();
-            }
-          }
-          moveByDelta(
-              xDelta * deltaTime,
-              yDelta * deltaTime);
-        } else if (isWaiting()) {
-            // countdown until activation time
-            timeDelayStart -= deltaTime;
-
-            // activate alien. can only happen once!
-            if (timeDelayStart <= 0) {
-                activate();
-                animate(0 - timeDelayStart);
-            }
+    if (isActive()) {
+      if (isTravellingOffScreen(this, xDelta, yDelta)) {
+        if (restartImmediately) {
+          reset(originalTimeDelayStart);
+        } else {
+          endOfPass();
         }
-    }
+      }
+      moveByDelta(
+          xDelta * deltaTime,
+          yDelta * deltaTime);
+    } else if (isWaiting()) {
+      // countdown until activation time
+      timeDelayStart -= deltaTime;
 
-    /**
-     * Resets alien if the alien has gone off-screen without being destroyed and
-     * sub-wave needs to be repeated.
-     * <p>
-     * Reduce original delay by supplied offset in case alien needs to start
-     * earlier.
+      // activate alien. can only happen once!
+      if (timeDelayStart <= 0) {
+        activate();
+        animate(0 - timeDelayStart);
+      }
+    }
+  }
+
+  /**
+   * Resets alien if the alien has gone off-screen without being destroyed and sub-wave needs to be
+   * repeated.
+   * <p>
+   * Reduce original delay by supplied offset in case alien needs to start earlier.
+   */
+  @Override
+  public void reset(float offset) {
+    timeDelayStart = originalTimeDelayStart - offset;
+    waiting();
+
+    /*
+     * reset back at start position - will be made visible and active before
+     * recalculating it's position.
      */
-    @Override
-    public void reset(float offset) {
-        timeDelayStart = originalTimeDelayStart - offset;
-        waiting();
+    move(startingX, startingY);
+  }
 
-        /*
-         * reset back at start position - will be made visible and active before
-         * recalculating it's position.
-         */
-        move(startingX, startingY);
-    }
-
-    /**
-     * Get the original time delay. Can be used to calculate a corrected time
-     * delay offset.
-     */
-    @Override
-    public float getTimeDelay() {
-        return originalTimeDelayStart;
-    }
+  /**
+   * Get the original time delay. Can be used to calculate a corrected time delay offset.
+   */
+  @Override
+  public float getTimeDelay() {
+    return originalTimeDelayStart;
+  }
 }

@@ -55,25 +55,25 @@ public class MenuButton implements SpriteTextButton {
   public void buttonUp() {
     buttonSprite.changeType(spriteButtonUp);
     model.processButton(buttonType);
-    }
+  }
 
-    @Override
-    public void buttonDown() {
-        buttonSprite.changeType(spriteButtonDown);
-    }
+  @Override
+  public void buttonDown() {
+    buttonSprite.changeType(spriteButtonDown);
+  }
 
-    @Override
-    public void buttonReleased() {
-        buttonSprite.changeType(spriteButtonUp);
-    }
+  @Override
+  public void buttonReleased() {
+    buttonSprite.changeType(spriteButtonUp);
+  }
 
-    @Override
-    public IButtonSprite getSprite() {
-        return buttonSprite;
-    }
+  @Override
+  public IButtonSprite getSprite() {
+    return buttonSprite;
+  }
 
-    @Override
-    public Text getText() {
-        return text;
-    }
+  @Override
+  public Text getText() {
+    return text;
+  }
 }

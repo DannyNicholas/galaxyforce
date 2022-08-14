@@ -4,15 +4,15 @@ import com.danosoftware.galaxyforce.utilities.Rectangle;
 
 public interface ICollidingSprite extends IMovingSprite {
 
-    Rectangle getBounds();
+  Rectangle getBounds();
 
-    /**
-     * Destroy the sprite
-     */
-    void destroy();
+  /**
+   * Destroy the sprite
+   */
+  void destroy();
 
-    /**
-     * Is sprite destroyed (and can be removed)?
-     */
-    boolean isDestroyed();
+  /**
+   * Is sprite destroyed (and can be removed)?
+   */
+  boolean isDestroyed();
 }

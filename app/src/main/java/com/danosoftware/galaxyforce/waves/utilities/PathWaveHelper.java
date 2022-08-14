@@ -55,8 +55,8 @@ public class PathWaveHelper {
    * The aliens are offset meaning they keep their positions in relation to each other. The aliens
    * starting position is calculated so that all aliens start off the top of the screen edge.
    * <p>
-   * Aliens are always centred horizontally. However, setting fillSpace allows the aliens to also
-   * be spaced to fill the row space available.
+   * Aliens are always centred horizontally. However, setting fillSpace allows the aliens to also be
+   * spaced to fill the row space available.
    *
    * @param path               - path aliens will follow.
    * @param pathSpeed          - speed of aliens.

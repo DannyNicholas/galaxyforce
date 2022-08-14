@@ -11,16 +11,16 @@ import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 
 public class PowerUpFactory {
 
-    /**
-     * Return any random power-up.
-     */
-    public static PowerUpsDto generateRandomPowerUp(float x, float y) {
-      // create array of possible power-ups
-      PowerUpType[] powerUps = PowerUpType.values();
+  /**
+   * Return any random power-up.
+   */
+  public static PowerUpsDto generateRandomPowerUp(float x, float y) {
+    // create array of possible power-ups
+    PowerUpType[] powerUps = PowerUpType.values();
 
-      // use method requiring a power-up type array to generate powerup
-      return generateRandomPowerUp(x, y, powerUps);
-    }
+    // use method requiring a power-up type array to generate powerup
+    return generateRandomPowerUp(x, y, powerUps);
+  }
 
   /**
    * Return a random power-up from the supplied array of power-up types.
@@ -58,21 +58,21 @@ public class PowerUpFactory {
       case MISSILE_LASER:
         spriteId = SpriteDetails.POWERUP_MISSILE_LASER;
         break;
-            case MISSILE_PARALLEL:
-              spriteId = SpriteDetails.POWERUP_MISSILE_PARALLEL;
-                break;
-            case MISSILE_SPRAY:
-              spriteId = SpriteDetails.POWERUP_MISSILE_SPRAY;
-                break;
-            case SHIELD:
-              spriteId = SpriteDetails.POWERUP_SHIELD;
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported PowerUpType: '" + powerUpType + "'.");
-        }
-
-        IPowerUp powerUp = new PowerUp(spriteId, x, y, powerUpType);
-
-        return new PowerUpsDto(powerUp, SoundEffect.POWER_UP_SPAWN);
+      case MISSILE_PARALLEL:
+        spriteId = SpriteDetails.POWERUP_MISSILE_PARALLEL;
+        break;
+      case MISSILE_SPRAY:
+        spriteId = SpriteDetails.POWERUP_MISSILE_SPRAY;
+        break;
+      case SHIELD:
+        spriteId = SpriteDetails.POWERUP_SHIELD;
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported PowerUpType: '" + powerUpType + "'.");
     }
+
+    IPowerUp powerUp = new PowerUp(spriteId, x, y, powerUpType);
+
+    return new PowerUpsDto(powerUp, SoundEffect.POWER_UP_SPAWN);
+  }
 }

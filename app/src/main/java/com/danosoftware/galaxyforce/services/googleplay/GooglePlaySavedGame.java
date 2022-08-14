@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GooglePlaySavedGame {
 
-    private final Integer highestWaveReached;
+  private final Integer highestWaveReached;
 
-    @JsonCreator
-    public GooglePlaySavedGame(
-            @JsonProperty("highestWaveReached") Integer highestWaveReached) {
+  @JsonCreator
+  public GooglePlaySavedGame(
+      @JsonProperty("highestWaveReached") Integer highestWaveReached) {
 
-        this.highestWaveReached = highestWaveReached;
-    }
+    this.highestWaveReached = highestWaveReached;
+  }
 
-    public Integer getHighestWaveReached() {
-        return highestWaveReached;
-    }
+  public Integer getHighestWaveReached() {
+    return highestWaveReached;
+  }
 }

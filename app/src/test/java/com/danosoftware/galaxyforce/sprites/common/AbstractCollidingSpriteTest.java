@@ -87,91 +87,91 @@ public class AbstractCollidingSpriteTest {
     verify(dimensions, times(0)).getWidth();
   }
 
-    @Test
-    public void shouldReturnExpectedBoundsWhenSpriteLoaded() {
+  @Test
+  public void shouldReturnExpectedBoundsWhenSpriteLoaded() {
 
-      // choose sprite with dimensions
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId);
+    // choose sprite with dimensions
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId);
 
-      Rectangle bounds = sprite.getBounds();
-      verifyRectangle(bounds, EXPECTED_BOUNDS);
+    Rectangle bounds = sprite.getBounds();
+    verifyRectangle(bounds, EXPECTED_BOUNDS);
 
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
-    }
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
+  }
 
-    @Test
-    public void shouldOnlyCallPropsOnceForBounds() {
+  @Test
+  public void shouldOnlyCallPropsOnceForBounds() {
 
-      // choose sprite with dimensions
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId);
+    // choose sprite with dimensions
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId);
 
-      Rectangle bounds = sprite.getBounds();
+    Rectangle bounds = sprite.getBounds();
 
-      // multiple unnecessary calls - should all be cached
-      sprite.getBounds();
-      sprite.getBounds();
-      sprite.getBounds();
-      sprite.getBounds();
+    // multiple unnecessary calls - should all be cached
+    sprite.getBounds();
+    sprite.getBounds();
+    sprite.getBounds();
+    sprite.getBounds();
 
-      verifyRectangle(bounds, EXPECTED_BOUNDS);
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
-    }
+    verifyRectangle(bounds, EXPECTED_BOUNDS);
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
+  }
 
-    @Test
-    public void shouldClearBoundsCacheAfterSpriteChange() {
+  @Test
+  public void shouldClearBoundsCacheAfterSpriteChange() {
 
-      // choose sprite with dimensions
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId);
+    // choose sprite with dimensions
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId);
 
-      // confirm initial behaviour
-      Rectangle bounds = sprite.getBounds();
-      verifyRectangle(bounds, EXPECTED_BOUNDS);
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
+    // confirm initial behaviour
+    Rectangle bounds = sprite.getBounds();
+    verifyRectangle(bounds, EXPECTED_BOUNDS);
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
 
-      // change sprite to one without dimensions
-      sprite.changeType(SpriteDetails.HELPER);
+    // change sprite to one without dimensions
+    sprite.changeType(SpriteDetails.HELPER);
 
-      // confirm new sprite results in additional calls to props and different dimensions
-      verifyRectangle(sprite.getBounds(), EXPECTED_EMPTY_BOUNDS);
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
-    }
+    // confirm new sprite results in additional calls to props and different dimensions
+    verifyRectangle(sprite.getBounds(), EXPECTED_EMPTY_BOUNDS);
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
+  }
 
-    @Test
-    public void shouldMoveBoundsAfterSpriteMove() {
+  @Test
+  public void shouldMoveBoundsAfterSpriteMove() {
 
-      // choose sprite with dimensions
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId);
+    // choose sprite with dimensions
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId);
 
-      // confirm initial behaviour
-      Rectangle bounds = sprite.getBounds();
-      verifyRectangle(bounds, EXPECTED_BOUNDS);
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
+    // confirm initial behaviour
+    Rectangle bounds = sprite.getBounds();
+    verifyRectangle(bounds, EXPECTED_BOUNDS);
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
 
-      // move sprite
-      sprite.move(MOVED_X, MOVED_Y);
+    // move sprite
+    sprite.move(MOVED_X, MOVED_Y);
 
-      // confirm new sprite results in additional call to props and different dimensions
-      verifyRectangle(sprite.getBounds(), MOVED_BOUNDS);
+    // confirm new sprite results in additional call to props and different dimensions
+    verifyRectangle(sprite.getBounds(), MOVED_BOUNDS);
 
-      // should not any make extra call to check dimensions
-      verify(dimensions, times(1)).getWidth();
-      verify(dimensions, times(1)).getHeight();
-    }
+    // should not any make extra call to check dimensions
+    verify(dimensions, times(1)).getWidth();
+    verify(dimensions, times(1)).getHeight();
+  }
 
 
-    private void verifyRectangle(Rectangle bounds, Rectangle expected) {
-      assertThat(bounds.top, equalTo(expected.top));
-      assertThat(bounds.right, equalTo(expected.right));
-      assertThat(bounds.left, equalTo(expected.left));
-      assertThat(bounds.bottom, equalTo(expected.bottom));
-    }
+  private void verifyRectangle(Rectangle bounds, Rectangle expected) {
+    assertThat(bounds.top, equalTo(expected.top));
+    assertThat(bounds.right, equalTo(expected.right));
+    assertThat(bounds.left, equalTo(expected.left));
+    assertThat(bounds.bottom, equalTo(expected.bottom));
+  }
 }

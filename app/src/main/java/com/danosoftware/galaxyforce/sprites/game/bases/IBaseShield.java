@@ -4,5 +4,5 @@ import com.danosoftware.galaxyforce.sprites.common.IMovingSprite;
 
 interface IBaseShield extends IMovingSprite {
 
-    float getSynchronisation();
+  float getSynchronisation();
 }

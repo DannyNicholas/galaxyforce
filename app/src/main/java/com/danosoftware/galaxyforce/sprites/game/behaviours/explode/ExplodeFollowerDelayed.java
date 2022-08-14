@@ -19,76 +19,76 @@ import com.danosoftware.galaxyforce.waves.AlienCharacter;
  */
 public class ExplodeFollowerDelayed implements ExplodeBehaviour {
 
-    // explosion animation
-    private final Animation animation;
+  // explosion animation
+  private final Animation animation;
 
-    // reference to sound player
-    private final SoundPlayerService sounds;
+  // reference to sound player
+  private final SoundPlayerService sounds;
 
-    // reference to vibrator
-    private final VibrationService vibrator;
+  // reference to vibrator
+  private final VibrationService vibrator;
 
-    private SpriteDetails spriteToExplode;
-    private boolean startedExplosion;
+  private SpriteDetails spriteToExplode;
+  private boolean startedExplosion;
 
-    // delayed time when explosion should start
-    private final float explosionStartTime;
+  // delayed time when explosion should start
+  private final float explosionStartTime;
 
-    private float totalTimeElapsed;
+  private float totalTimeElapsed;
 
-    // time since explosion actually started
-    private float timeSinceExplosionStarted;
+  // time since explosion actually started
+  private float timeSinceExplosionStarted;
 
-    public ExplodeFollowerDelayed(
-            final SoundPlayerService sounds,
-            final VibrationService vibrator,
-            final AlienCharacter character,
-            final float explosionStartTime) {
-        this.animation = character.getExplosionAnimation();
-        this.sounds = sounds;
-        this.vibrator = vibrator;
-        this.explosionStartTime = explosionStartTime;
+  public ExplodeFollowerDelayed(
+      final SoundPlayerService sounds,
+      final VibrationService vibrator,
+      final AlienCharacter character,
+      final float explosionStartTime) {
+    this.animation = character.getExplosionAnimation();
+    this.sounds = sounds;
+    this.vibrator = vibrator;
+    this.explosionStartTime = explosionStartTime;
+  }
+
+  // this method is called if the follower is directly hit.
+  // we want the explosion to start immediately.
+  @Override
+  public void startExplosion(IAlien alien) {
+    startedExplosion = true;
+    sounds.play(SoundEffect.EXPLOSION);
+    vibrator.vibrate(VibrateTime.TINY);
+  }
+
+  // this method is called is the head is hit.
+  // we want the explosion to be delayed to sync with the head.
+  @Override
+  public void startExplosionFollower(IAlienFollower alien) {
+    totalTimeElapsed = 0f;
+    timeSinceExplosionStarted = 0f;
+    startedExplosion = false;
+    spriteToExplode = alien.spriteDetails();
+  }
+
+  @Override
+  public SpriteDetails getExplosion(float deltaTime) {
+    totalTimeElapsed += deltaTime;
+
+    // the explosion will only start once time has been exceeded
+    if (!startedExplosion && totalTimeElapsed >= explosionStartTime) {
+      startedExplosion = true;
     }
 
-    // this method is called if the follower is directly hit.
-    // we want the explosion to start immediately.
-    @Override
-    public void startExplosion(IAlien alien) {
-        startedExplosion = true;
-        sounds.play(SoundEffect.EXPLOSION);
-        vibrator.vibrate(VibrateTime.TINY);
+    if (startedExplosion) {
+      timeSinceExplosionStarted += deltaTime;
+      return animation.getKeyFrame(timeSinceExplosionStarted, Animation.ANIMATION_NONLOOPING);
     }
 
-    // this method is called is the head is hit.
-    // we want the explosion to be delayed to sync with the head.
-    @Override
-    public void startExplosionFollower(IAlienFollower alien) {
-        totalTimeElapsed = 0f;
-        timeSinceExplosionStarted = 0f;
-        startedExplosion = false;
-        spriteToExplode = alien.spriteDetails();
-    }
+    // if we haven't started the explosion, show the original frozen alien sprite
+    return spriteToExplode;
+  }
 
-    @Override
-    public SpriteDetails getExplosion(float deltaTime) {
-        totalTimeElapsed += deltaTime;
-
-        // the explosion will only start once time has been exceeded
-        if (!startedExplosion && totalTimeElapsed >= explosionStartTime) {
-            startedExplosion = true;
-        }
-
-        if (startedExplosion) {
-            timeSinceExplosionStarted += deltaTime;
-            return animation.getKeyFrame(timeSinceExplosionStarted, Animation.ANIMATION_NONLOOPING);
-        }
-
-        // if we haven't started the explosion, show the original frozen alien sprite
-        return spriteToExplode;
-    }
-
-    @Override
-    public boolean finishedExploding() {
-        return animation.isAnimationComplete();
-    }
+  @Override
+  public boolean finishedExploding() {
+    return animation.isAnimationComplete();
+  }
 }

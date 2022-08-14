@@ -8,24 +8,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PausePathDTO extends PathDTO {
 
-    private final PointDTO position;
-    private final Float pauseTime;
+  private final PointDTO position;
+  private final Float pauseTime;
 
-    @JsonCreator
-    public PausePathDTO(
-            @JsonProperty("pauseTime") Float pauseTime,
-            @JsonProperty("position") PointDTO position) {
+  @JsonCreator
+  public PausePathDTO(
+      @JsonProperty("pauseTime") Float pauseTime,
+      @JsonProperty("position") PointDTO position) {
 
-        super(PathType.PAUSE);
-        this.pauseTime = pauseTime;
-        this.position = position;
-    }
+    super(PathType.PAUSE);
+    this.pauseTime = pauseTime;
+    this.position = position;
+  }
 
-    public PointDTO getPosition() {
-        return position;
-    }
+  public PointDTO getPosition() {
+    return position;
+  }
 
-    public Float getPauseTime() {
-        return pauseTime;
-    }
+  public Float getPauseTime() {
+    return pauseTime;
+  }
 }

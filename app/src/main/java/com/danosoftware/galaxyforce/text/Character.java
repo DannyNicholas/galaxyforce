@@ -7,27 +7,27 @@ import com.danosoftware.galaxyforce.textures.TextureRegion;
  */
 public class Character {
 
-    private final float x, y;
-    private final TextureRegion region;
+  private final float x, y;
+  private final TextureRegion region;
 
-    public Character(
-        float x,
-        float y,
-        TextureRegion region) {
-        this.x = x;
-        this.y = y;
-        this.region = region;
-    }
+  public Character(
+      float x,
+      float y,
+      TextureRegion region) {
+    this.x = x;
+    this.y = y;
+    this.region = region;
+  }
 
-    public float getX() {
-        return x;
-    }
+  public float getX() {
+    return x;
+  }
 
-    public float getY() {
-        return y;
-    }
+  public float getY() {
+    return y;
+  }
 
-    public TextureRegion getRegion() {
-        return region;
-    }
+  public TextureRegion getRegion() {
+    return region;
+  }
 }

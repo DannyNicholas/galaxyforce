@@ -3,7 +3,6 @@ package com.danosoftware.galaxyforce.screen.factories;
 import static com.danosoftware.galaxyforce.constants.GameConstants.SHOW_FPS;
 
 import android.content.res.AssetManager;
-
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.controllers.common.Controller;
@@ -47,7 +46,6 @@ import com.danosoftware.galaxyforce.view.Camera2D;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
 import com.danosoftware.galaxyforce.view.StarBatcher;
-
 import java.util.List;
 
 public class ScreenFactory {
@@ -117,7 +115,7 @@ public class ScreenFactory {
       case SPLASH:
       case MAIN_MENU:
         return new ExitingScreen(
-                constructModel(screenType, controller),
+            constructModel(screenType, controller),
             controller,
             textureService,
             TextureMap.MENU,
@@ -131,7 +129,7 @@ public class ScreenFactory {
       case UPGRADE_FULL_VERSION:
       case GAME_COMPLETE:
         return new Screen(
-                constructModel(screenType, controller),
+            constructModel(screenType, controller),
             controller,
             textureService,
             TextureMap.MENU,
@@ -144,7 +142,7 @@ public class ScreenFactory {
       case SELECT_LEVEL:
         this.music.load(Music.MAIN_TITLE);
         return new SelectLevelScreen(
-                constructLevelModel(screenType, controller),
+            constructLevelModel(screenType, controller),
             controller,
             textureService,
             TextureMap.MENU,
@@ -163,7 +161,7 @@ public class ScreenFactory {
     this.music.load(Music.GAME_LOOP);
     Controller controller = new ControllerImpl(input, camera);
     return new Screen(
-            createGameModel(controller, startingWave),
+        createGameModel(controller, startingWave),
         controller,
         textureService,
         TextureMap.GAME,
@@ -177,7 +175,7 @@ public class ScreenFactory {
   public IScreen newPausedGameScreen(List<ISprite> pausedSprites, RgbColour backgroundColour) {
     Controller controller = new ControllerImpl(input, camera);
     return new Screen(
-            createGamePausedModel(controller, pausedSprites, backgroundColour),
+        createGamePausedModel(controller, pausedSprites, backgroundColour),
         controller,
         textureService,
         TextureMap.GAME,
@@ -191,7 +189,7 @@ public class ScreenFactory {
   public IScreen newGameOverScreen(int previousWave) {
     Controller controller = new ControllerImpl(input, camera);
     return new Screen(
-            createGameOverModel(controller, previousWave),
+        createGameOverModel(controller, previousWave),
         controller,
         textureService,
         TextureMap.GAME,
@@ -208,16 +206,16 @@ public class ScreenFactory {
   private Model createGameModel(Controller controller, int startingWave) {
     final AchievementService achievements = new AchievementService(playService);
     GamePlayModelImpl gameModel = new GamePlayModelImpl(
-            game,
-            controller,
-            startingWave,
-            billingService,
-            sounds,
-            vibrator,
-            savedGame,
-            achievements,
-            assets,
-            taskService);
+        game,
+        controller,
+        startingWave,
+        billingService,
+        sounds,
+        vibrator,
+        savedGame,
+        achievements,
+        assets,
+        taskService);
 
     if (SHOW_FPS) {
       return new GamePlayModelFrameRateDecorator(gameModel);
@@ -230,10 +228,11 @@ public class ScreenFactory {
    * Returns a paused game model.
    */
   private Model createGamePausedModel(
-          Controller controller,
-          List<ISprite> pausedSprites,
-          RgbColour backgroundColour) {
-    Model gamePausedModel = new GamePausedModelImpl(game, controller, pausedSprites, backgroundColour);
+      Controller controller,
+      List<ISprite> pausedSprites,
+      RgbColour backgroundColour) {
+    Model gamePausedModel = new GamePausedModelImpl(game, controller, pausedSprites,
+        backgroundColour);
 
     if (SHOW_FPS) {
       return new ModelFrameRateDecorator(gamePausedModel);
@@ -246,8 +245,8 @@ public class ScreenFactory {
    * Returns a game over model.
    */
   private Model createGameOverModel(
-          Controller controller,
-          int previousWave) {
+      Controller controller,
+      int previousWave) {
     Model gameOverModel = new GameOverModelImpl(game, controller, previousWave);
 
     if (SHOW_FPS) {
@@ -261,8 +260,8 @@ public class ScreenFactory {
    * Create model for screen type.
    */
   private Model constructModel(
-          ScreenType type,
-          Controller controller) {
+      ScreenType type,
+      Controller controller) {
 
     final Model model;
     switch (type) {
@@ -273,7 +272,8 @@ public class ScreenFactory {
         model = new MainMenuModelImpl(game, controller, billingService);
         break;
       case OPTIONS:
-        model = new OptionsModelImpl(game, controller, configurationService, sounds, music, vibrator, playService);
+        model = new OptionsModelImpl(game, controller, configurationService, sounds, music,
+            vibrator, playService);
         break;
       case UPGRADE_FULL_VERSION:
         model = new UnlockFullVersionModelImpl(game, controller, billingService);
@@ -293,8 +293,8 @@ public class ScreenFactory {
   }
 
   private LevelModel constructLevelModel(
-          ScreenType type,
-          Controller controller) {
+      ScreenType type,
+      Controller controller) {
 
     final LevelModel model;
     switch (type) {

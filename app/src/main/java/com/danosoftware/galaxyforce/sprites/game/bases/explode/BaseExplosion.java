@@ -26,23 +26,23 @@ public class BaseExplosion extends AbstractSprite implements IBaseExplosion {
         ANIMATION.getKeyFrame(
             0,
             Animation.ANIMATION_LOOPING),
-          x,
-          y);
-      this.exploder = new BaseExploderSimple(sounds, vibrator, ANIMATION);
-    }
+        x,
+        y);
+    this.exploder = new BaseExploderSimple(sounds, vibrator, ANIMATION);
+  }
 
-    @Override
-    public void startExplosion() {
-        this.exploder.startExplosion();
-    }
+  @Override
+  public void startExplosion() {
+    this.exploder.startExplosion();
+  }
 
-    @Override
-    public void animate(float deltaTime) {
-        changeType(exploder.getExplosion(deltaTime));
-    }
+  @Override
+  public void animate(float deltaTime) {
+    changeType(exploder.getExplosion(deltaTime));
+  }
 
-    @Override
-    public boolean isFinished() {
-        return exploder.finishedExploding();
-    }
+  @Override
+  public boolean isFinished() {
+    return exploder.finishedExploding();
+  }
 }

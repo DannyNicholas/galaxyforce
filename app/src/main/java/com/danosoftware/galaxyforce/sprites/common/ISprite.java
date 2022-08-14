@@ -4,13 +4,13 @@ import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 
 public interface ISprite {
 
-    void changeType(SpriteDetails type);
+  void changeType(SpriteDetails type);
 
-    int width();
+  int width();
 
-    int height();
+  int height();
 
-    int halfWidth();
+  int halfWidth();
 
   int halfHeight();
 

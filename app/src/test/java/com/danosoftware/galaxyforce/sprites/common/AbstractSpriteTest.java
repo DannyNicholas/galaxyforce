@@ -66,80 +66,80 @@ public class AbstractSpriteTest {
     verify(dimensions, times(0)).getWidth();
   }
 
-    @Test
-    public void shouldReturnWidthAndHeightWhenSpriteLoaded() {
+  @Test
+  public void shouldReturnWidthAndHeightWhenSpriteLoaded() {
 
-      // sprite now has properties
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId, 0, 0, 0);
+    // sprite now has properties
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId, 0, 0, 0);
 
-      int height = sprite.height();
-      int width = sprite.width();
-      int halfHeight = sprite.halfHeight();
-      int halfWidth = sprite.halfWidth();
+    int height = sprite.height();
+    int width = sprite.width();
+    int halfHeight = sprite.halfHeight();
+    int halfWidth = sprite.halfWidth();
 
-      assertThat(height, equalTo(HEIGHT));
-      assertThat(width, equalTo(WIDTH));
-      assertThat(halfHeight, equalTo(HALF_HEIGHT));
-      assertThat(halfWidth, equalTo(HALF_WIDTH));
-      verify(dimensions, times(1)).getHeight();
-      verify(dimensions, times(1)).getWidth();
-    }
+    assertThat(height, equalTo(HEIGHT));
+    assertThat(width, equalTo(WIDTH));
+    assertThat(halfHeight, equalTo(HALF_HEIGHT));
+    assertThat(halfWidth, equalTo(HALF_WIDTH));
+    verify(dimensions, times(1)).getHeight();
+    verify(dimensions, times(1)).getWidth();
+  }
 
-    @Test
-    public void shouldOnlyCallPropsOnceForWidthAndHeight() {
+  @Test
+  public void shouldOnlyCallPropsOnceForWidthAndHeight() {
 
-      // sprite now has properties
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId, 0, 0, 0);
+    // sprite now has properties
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId, 0, 0, 0);
 
-      int height = sprite.height();
-      int width = sprite.width();
-      int halfHeight = sprite.halfHeight();
-      int halfWidth = sprite.halfWidth();
+    int height = sprite.height();
+    int width = sprite.width();
+    int halfHeight = sprite.halfHeight();
+    int halfWidth = sprite.halfWidth();
 
-      // multiple unnecessary calls - should all be cached
-      sprite.height();
-      sprite.width();
-      sprite.halfHeight();
-      sprite.halfWidth();
-      sprite.height();
-      sprite.width();
-      sprite.halfHeight();
-      sprite.halfWidth();
+    // multiple unnecessary calls - should all be cached
+    sprite.height();
+    sprite.width();
+    sprite.halfHeight();
+    sprite.halfWidth();
+    sprite.height();
+    sprite.width();
+    sprite.halfHeight();
+    sprite.halfWidth();
 
-      assertThat(height, equalTo(HEIGHT));
-      assertThat(width, equalTo(WIDTH));
-      assertThat(halfHeight, equalTo(HALF_HEIGHT));
-      assertThat(halfWidth, equalTo(HALF_WIDTH));
-      verify(dimensions, times(1)).getHeight();
-      verify(dimensions, times(1)).getWidth();
-    }
+    assertThat(height, equalTo(HEIGHT));
+    assertThat(width, equalTo(WIDTH));
+    assertThat(halfHeight, equalTo(HALF_HEIGHT));
+    assertThat(halfWidth, equalTo(HALF_WIDTH));
+    verify(dimensions, times(1)).getHeight();
+    verify(dimensions, times(1)).getWidth();
+  }
 
-    @Test
-    public void shouldClearDimensionsCacheAfterSpriteChange() {
+  @Test
+  public void shouldClearDimensionsCacheAfterSpriteChange() {
 
-      // sprite now has properties
-      spriteId = SpriteDetails.BASE;
-      sprite = new TestSprite(spriteId, 0, 0, 0);
+    // sprite now has properties
+    spriteId = SpriteDetails.BASE;
+    sprite = new TestSprite(spriteId, 0, 0, 0);
 
-      // confirm initial behaviour
-      assertThat(sprite.height(), equalTo(HEIGHT));
-      assertThat(sprite.width(), equalTo(WIDTH));
-      assertThat(sprite.halfHeight(), equalTo(HALF_HEIGHT));
-      assertThat(sprite.halfWidth(), equalTo(HALF_WIDTH));
-      verify(dimensions, times(1)).getHeight();
-      verify(dimensions, times(1)).getWidth();
+    // confirm initial behaviour
+    assertThat(sprite.height(), equalTo(HEIGHT));
+    assertThat(sprite.width(), equalTo(WIDTH));
+    assertThat(sprite.halfHeight(), equalTo(HALF_HEIGHT));
+    assertThat(sprite.halfWidth(), equalTo(HALF_WIDTH));
+    verify(dimensions, times(1)).getHeight();
+    verify(dimensions, times(1)).getWidth();
 
-      // change sprite Id
-      sprite.changeType(SpriteDetails.HELPER);
+    // change sprite Id
+    sprite.changeType(SpriteDetails.HELPER);
 
-      // confirm new sprite results in additional call to props and different dimensions
-      assertThat(sprite.height(), equalTo(0));
-      assertThat(sprite.width(), equalTo(0));
-      assertThat(sprite.halfHeight(), equalTo(0));
-      assertThat(sprite.halfWidth(), equalTo(0));
-      verify(dimensions, times(1)).getHeight();
-      verify(dimensions, times(1)).getWidth();
-    }
+    // confirm new sprite results in additional call to props and different dimensions
+    assertThat(sprite.height(), equalTo(0));
+    assertThat(sprite.width(), equalTo(0));
+    assertThat(sprite.halfHeight(), equalTo(0));
+    assertThat(sprite.halfWidth(), equalTo(0));
+    verify(dimensions, times(1)).getHeight();
+    verify(dimensions, times(1)).getWidth();
+  }
 }
