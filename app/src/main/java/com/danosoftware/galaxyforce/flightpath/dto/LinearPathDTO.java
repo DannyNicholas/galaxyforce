@@ -8,31 +8,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LinearPathDTO extends PathDTO {
 
-    private final Integer pathPoints;
-    private final PointDTO start;
-    private final PointDTO finish;
+  private final Integer pathPoints;
+  private final PointDTO start;
+  private final PointDTO finish;
 
-    @JsonCreator
-    public LinearPathDTO(
-            @JsonProperty("pathPoints") Integer pathPoints,
-            @JsonProperty("start") PointDTO start,
-            @JsonProperty("finish") PointDTO finish) {
+  @JsonCreator
+  public LinearPathDTO(
+      @JsonProperty("pathPoints") Integer pathPoints,
+      @JsonProperty("start") PointDTO start,
+      @JsonProperty("finish") PointDTO finish) {
 
-        super(PathType.LINEAR);
-        this.pathPoints = pathPoints;
-        this.start = start;
-        this.finish = finish;
-    }
+    super(PathType.LINEAR);
+    this.pathPoints = pathPoints;
+    this.start = start;
+    this.finish = finish;
+  }
 
-    public Integer getPathPoints() {
-        return pathPoints;
-    }
+  public Integer getPathPoints() {
+    return pathPoints;
+  }
 
-    public PointDTO getStart() {
-        return start;
-    }
+  public PointDTO getStart() {
+    return start;
+  }
 
-    public PointDTO getFinish() {
-        return finish;
-    }
+  public PointDTO getFinish() {
+    return finish;
+  }
 }

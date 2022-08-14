@@ -10,14 +10,13 @@ import com.danosoftware.galaxyforce.view.Animation;
 /**
  * Alien missile that targets the supplied base.
  * <p>
- * The missile will calculate it's direction on construction and will continue
- * to move in that direction until off the screen.
+ * The missile will calculate it's direction on construction and will continue to move in that
+ * direction until off the screen.
  * <p>
- * This missile will not change direction once fired even if the targeted base
- * moves.
+ * This missile will not change direction once fired even if the targeted base moves.
  * <p>
- * This missile will not fire upwards. If the missile starts below the base,
- * the missile will fire directly downwards instead.
+ * This missile will not fire upwards. If the missile starts below the base, the missile will fire
+ * directly downwards instead.
  */
 public class AlienMissileDownwardsRotated extends AbstractAlienMissile {
 
@@ -57,18 +56,18 @@ public class AlienMissileDownwardsRotated extends AbstractAlienMissile {
     this.yDelta = missileSpeed.getSpeed() * (float) Math.sin(angle);
   }
 
-    @Override
-    public void animate(float deltaTime) {
-      super.animate(deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    super.animate(deltaTime);
 
-      // move missile by calculated deltas
-      moveByDelta(
-          xDelta * deltaTime,
-          yDelta * deltaTime);
+    // move missile by calculated deltas
+    moveByDelta(
+        xDelta * deltaTime,
+        yDelta * deltaTime);
 
-      // if missile is now off screen then destroy it
-      if (offScreenAnySide(this)) {
-        destroy();
-      }
+    // if missile is now off screen then destroy it
+    if (offScreenAnySide(this)) {
+      destroy();
     }
+  }
 }

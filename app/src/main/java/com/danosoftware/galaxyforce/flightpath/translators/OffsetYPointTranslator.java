@@ -7,15 +7,15 @@ import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
  */
 public class OffsetYPointTranslator implements PointTranslator {
 
-    // offset in y dimension
-    private final int yOffset;
+  // offset in y dimension
+  private final int yOffset;
 
-    public OffsetYPointTranslator(int yOffset) {
-        this.yOffset = yOffset;
-    }
+  public OffsetYPointTranslator(int yOffset) {
+    this.yOffset = yOffset;
+  }
 
-    @Override
-    public DoublePoint convert(DoublePoint point) {
-        return new DoublePoint(point.getX(), point.getY() + yOffset);
-    }
+  @Override
+  public DoublePoint convert(DoublePoint point) {
+    return new DoublePoint(point.getX(), point.getY() + yOffset);
+  }
 }

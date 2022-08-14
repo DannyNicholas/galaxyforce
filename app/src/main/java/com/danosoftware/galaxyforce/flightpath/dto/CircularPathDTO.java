@@ -8,24 +8,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CircularPathDTO extends PathDTO {
 
-    private final PointDTO centre;
-    private final Double piMultiplier;
+  private final PointDTO centre;
+  private final Double piMultiplier;
 
-    @JsonCreator
-    public CircularPathDTO(
-            @JsonProperty("centre") PointDTO centre,
-            @JsonProperty("piMultiplier") Double piMultiplier) {
+  @JsonCreator
+  public CircularPathDTO(
+      @JsonProperty("centre") PointDTO centre,
+      @JsonProperty("piMultiplier") Double piMultiplier) {
 
-        super(PathType.CIRCULAR);
-        this.centre = centre;
-        this.piMultiplier = piMultiplier;
-    }
+    super(PathType.CIRCULAR);
+    this.centre = centre;
+    this.piMultiplier = piMultiplier;
+  }
 
-    public PointDTO getCentre() {
-        return centre;
-    }
+  public PointDTO getCentre() {
+    return centre;
+  }
 
-    public Double getPiMultiplier() {
-        return piMultiplier;
-    }
+  public Double getPiMultiplier() {
+    return piMultiplier;
+  }
 }

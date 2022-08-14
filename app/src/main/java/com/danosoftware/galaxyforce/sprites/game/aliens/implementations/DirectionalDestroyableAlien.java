@@ -78,30 +78,30 @@ public class DirectionalDestroyableAlien extends AbstractAlien {
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
   }
 
-    @Override
-    public void animate(float deltaTime) {
-        super.animate(deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    super.animate(deltaTime);
 
-        if (isActive()) {
-          if (isTravellingOffScreen(this, xDelta, yDelta)) {
-            if (restartImmediately) {
-              move(startingX, startingY);
-            } else {
-              destroy();
-            }
-          }
-          moveByDelta(
-              xDelta * deltaTime,
-              yDelta * deltaTime);
-        } else if (isWaiting()) {
-            // countdown until activation time
-            timeDelayStart -= deltaTime;
-
-            // activate alien. can only happen once!
-            if (timeDelayStart <= 0) {
-                activate();
-                animate(0 - timeDelayStart);
-            }
+    if (isActive()) {
+      if (isTravellingOffScreen(this, xDelta, yDelta)) {
+        if (restartImmediately) {
+          move(startingX, startingY);
+        } else {
+          destroy();
         }
+      }
+      moveByDelta(
+          xDelta * deltaTime,
+          yDelta * deltaTime);
+    } else if (isWaiting()) {
+      // countdown until activation time
+      timeDelayStart -= deltaTime;
+
+      // activate alien. can only happen once!
+      if (timeDelayStart <= 0) {
+        activate();
+        animate(0 - timeDelayStart);
+      }
     }
+  }
 }

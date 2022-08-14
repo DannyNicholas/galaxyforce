@@ -154,7 +154,8 @@ public class MainActivity extends Activity {
                     stateChanged.wait(250);
                     break;
                 } catch (InterruptedException e) {
-                    Log.w(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Unexpected InterruptedException", e);
+                    Log.w(GameConstants.LOG_TAG, ACTIVITY_TAG + ": Unexpected InterruptedException",
+                        e);
                 }
             }
         }

@@ -19,7 +19,7 @@ import lombok.Value;
  */
 public class GameLoopTest extends GameImpl {
 
-  private boolean hasSwitched = false;
+  private final boolean hasSwitched = false;
   private float timeElasped = 0f;
   private final Activity activity;
   private final List<ActionItem> sequence;

@@ -58,104 +58,102 @@ public class BaseMissileGuided extends AbstractBaseMissile {
     // initial angle (i.e. straight up)
     this.angle = PI_BY_TWO;
 
-        // calculate rotation and movement delta based on angle
-        calculateMovements();
+    // calculate rotation and movement delta based on angle
+    calculateMovements();
 
-        // reset timer since last missile direction change
-        timeSinceMissileDirectionChange = 0f;
-    }
+    // reset timer since last missile direction change
+    timeSinceMissileDirectionChange = 0f;
+  }
 
-    @Override
-    public void animate(float deltaTime) {
+  @Override
+  public void animate(float deltaTime) {
 
-        timeSinceMissileDirectionChange += deltaTime;
+    timeSinceMissileDirectionChange += deltaTime;
 
-        /*
-         * Guide missile every x seconds so the missile changes direction to
-         * follow any changes in the alien's position.
-         */
-        if (timeSinceMissileDirectionChange > MISSILE_DIRECTION_CHANGE_DELAY) {
-            /*
-             * if no alien selected or alien no longer active then choose a new
-             * target.
-             */
-            if (alien == null || !alien.isActive()) {
-                chooseActiveAlien();
-            }
-
-          // re-target alien based on current position
-          targetAlien();
-
-          // reset timer since last missile direction change
-          timeSinceMissileDirectionChange = 0f;
-        }
-
-      // move missile by calculated deltas
-      moveByDelta(
-          xDelta * deltaTime,
-          yDelta * deltaTime);
-
-      // if missile is now off screen then destroy it
-      if (offScreenAnySide(this)) {
-        destroy();
+    /*
+     * Guide missile every x seconds so the missile changes direction to
+     * follow any changes in the alien's position.
+     */
+    if (timeSinceMissileDirectionChange > MISSILE_DIRECTION_CHANGE_DELAY) {
+      /*
+       * if no alien selected or alien no longer active then choose a new
+       * target.
+       */
+      if (alien == null || !alien.isActive()) {
+        chooseActiveAlien();
       }
 
+      // re-target alien based on current position
+      targetAlien();
+
+      // reset timer since last missile direction change
+      timeSinceMissileDirectionChange = 0f;
     }
 
-    /**
-     * Choose an active alien for the missile's next target. Called when picking
-     * the original alien target or if alien is destroyed before missile hits
-     * it.
+    // move missile by calculated deltas
+    moveByDelta(
+        xDelta * deltaTime,
+        yDelta * deltaTime);
+
+    // if missile is now off screen then destroy it
+    if (offScreenAnySide(this)) {
+      destroy();
+    }
+
+  }
+
+  /**
+   * Choose an active alien for the missile's next target. Called when picking the original alien
+   * target or if alien is destroyed before missile hits it.
+   */
+  private void chooseActiveAlien() {
+    // choose a random active alien
+    alien = model.chooseActiveAlien();
+  }
+
+  /**
+   * Calculate angle and x and y deltas required to fire missile at alien's current position. May be
+   * called several times to ensure missile remains targeted as alien moves.
+   */
+  private void targetAlien() {
+    /*
+     * only re-target if we have a current alien. if we have no alien then
+     * don't change missile direction.
      */
-    private void chooseActiveAlien() {
-        // choose a random active alien
-        alien = model.chooseActiveAlien();
+    if (alien != null) {
+      // calculate angle from missile position to alien
+      float newAngle = (float) Math.atan2(
+          alien.y() - this.y(),
+          alien.x() - this.x());
+
+      // adjust angle so that a result more negative than PI/2
+      // becomes a positive value. Gives missile a more direct
+      // route to target (otherwise goes the long-way around).
+      if (newAngle < -PI_BY_TWO) {
+        newAngle += TWO_PI;
+      }
+
+      // don't allow sudden changes of direction. limit to MAX radians
+      if ((newAngle - angle) > MAX_DIRECTION_CHANGE_ANGLE) {
+        angle += MAX_DIRECTION_CHANGE_ANGLE;
+      } else if ((newAngle - angle) < MAX_DIRECTION_CHANGE_ANGLE) {
+        angle -= MAX_DIRECTION_CHANGE_ANGLE;
+      } else {
+        this.angle = newAngle;
+      }
+
+      // recalculate rotation and movement delta based on new angle
+      calculateMovements();
     }
+  }
 
-    /**
-     * Calculate angle and x and y deltas required to fire missile at alien's
-     * current position. May be called several times to ensure missile remains
-     * targeted as alien moves.
-     */
-    private void targetAlien() {
-        /*
-         * only re-target if we have a current alien. if we have no alien then
-         * don't change missile direction.
-         */
-        if (alien != null) {
-            // calculate angle from missile position to alien
-            float newAngle = (float) Math.atan2(
-                    alien.y() - this.y(),
-                    alien.x() - this.x());
+  private void calculateMovements() {
+    // convert angle to degrees for sprite rotation.
+    // needs to be adjusted by 90 deg for correct rotation.
+    rotate((angle - PI_BY_TWO) * DEGREES_PER_PI);
 
-            // adjust angle so that a result more negative than PI/2
-            // becomes a positive value. Gives missile a more direct
-            // route to target (otherwise goes the long-way around).
-            if (newAngle < -PI_BY_TWO) {
-                newAngle += TWO_PI;
-            }
-
-            // don't allow sudden changes of direction. limit to MAX radians
-            if ((newAngle - angle) > MAX_DIRECTION_CHANGE_ANGLE) {
-                angle += MAX_DIRECTION_CHANGE_ANGLE;
-            } else if ((newAngle - angle) < MAX_DIRECTION_CHANGE_ANGLE) {
-                angle -= MAX_DIRECTION_CHANGE_ANGLE;
-            } else {
-                this.angle = newAngle;
-            }
-
-            // recalculate rotation and movement delta based on new angle
-            calculateMovements();
-        }
-    }
-
-    private void calculateMovements() {
-      // convert angle to degrees for sprite rotation.
-      // needs to be adjusted by 90 deg for correct rotation.
-      rotate((angle - PI_BY_TWO) * DEGREES_PER_PI);
-
-      // calculate the deltas to be applied each move
-      this.xDelta = missileSpeed * (float) Math.cos(angle);
-      this.yDelta = missileSpeed * (float) Math.sin(angle);
-    }
+    // calculate the deltas to be applied each move
+    this.xDelta = missileSpeed * (float) Math.cos(angle);
+    this.yDelta = missileSpeed * (float) Math.sin(angle);
+  }
 }

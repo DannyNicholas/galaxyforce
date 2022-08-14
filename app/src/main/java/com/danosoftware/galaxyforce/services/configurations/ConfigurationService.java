@@ -6,17 +6,17 @@ import com.danosoftware.galaxyforce.options.OptionVibration;
 
 public interface ConfigurationService {
 
-    OptionSound getSoundOption();
+  OptionSound getSoundOption();
 
-    void setSoundOption(OptionSound soundOption);
+  void setSoundOption(OptionSound soundOption);
 
-    OptionMusic getMusicOption();
+  OptionMusic getMusicOption();
 
-    void setMusicOption(OptionMusic musicOption);
+  void setMusicOption(OptionMusic musicOption);
 
-    OptionVibration getVibrationOption();
+  OptionVibration getVibrationOption();
 
-    void setVibrationOption(OptionVibration vibrationOption);
+  void setVibrationOption(OptionVibration vibrationOption);
 
-    void persistConfigurations();
+  void persistConfigurations();
 }

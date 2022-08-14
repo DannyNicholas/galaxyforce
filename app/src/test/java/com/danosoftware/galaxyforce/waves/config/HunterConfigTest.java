@@ -38,107 +38,107 @@ import org.junit.Test;
 
 public class HunterConfigTest {
 
-    private final AlienFactory factory = new AlienFactory(
-            mock(GameModel.class),
-            mock(PowerUpAllocatorFactory.class),
-            mock(SoundPlayerService.class),
-            mock(VibrationService.class)
-    );
+  private final AlienFactory factory = new AlienFactory(
+      mock(GameModel.class),
+      mock(PowerUpAllocatorFactory.class),
+      mock(SoundPlayerService.class),
+      mock(VibrationService.class)
+  );
 
-    @Test
-    public void shouldCreateBasicConfiguredHunter() {
-        HunterConfig config = HunterConfig
+  @Test
+  public void shouldCreateBasicConfiguredHunter() {
+    HunterConfig config = HunterConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .speed(AlienSpeed.SLOW)
+        .boundaries(BoundariesConfig.builder().build())
+        .build();
+
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAlienType(), equalTo(AlienType.HUNTER));
+    assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
+    assertThat(config.getSpawnConfig(), nullValue());
+    assertThat(config.getMissileConfig(), nullValue());
+    assertThat(config.getBoundaries().getMinX(), equalTo(0));
+    assertThat(config.getBoundaries().getMaxX(), equalTo(GAME_WIDTH));
+    assertThat(config.getBoundaries().getMinY(), equalTo(0));
+    assertThat(config.getBoundaries().getMaxY(), equalTo(GAME_HEIGHT));
+
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        false,
+        false,
+        0,
+        0,
+        0f,
+        false);
+
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof HunterAlien, is(true));
+  }
+
+  @Test
+  public void shouldCreateFullyConfiguredHunter() {
+    HunterConfig config = HunterConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .speed(AlienSpeed.SLOW)
+        .boundaries(
+            BoundariesConfig
                 .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .speed(AlienSpeed.SLOW)
-                .boundaries(BoundariesConfig.builder().build())
-                .build();
+                .minX(100)
+                .maxX(400)
+                .minY(50)
+                .maxY(250)
+                .build())
+        .spawnConfig(new SpawningAlienConfig(
+            mock(AlienConfig.class),
+            new ArrayList<>(),
+            0f,
+            0f))
+        .missileConfig(new MissileFiringConfig(
+            AlienMissileType.DOWNWARDS,
+            AlienMissileSpeed.MEDIUM,
+            AlienMissileCharacter.LASER,
+            0f))
+        .spinningConfig(new SpinningFixedAngularConfig(
+            10))
+        .build();
 
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAlienType(), equalTo(AlienType.HUNTER));
-        assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
-        assertThat(config.getSpawnConfig(), nullValue());
-        assertThat(config.getMissileConfig(), nullValue());
-        assertThat(config.getBoundaries().getMinX(), equalTo(0));
-        assertThat(config.getBoundaries().getMaxX(), equalTo(GAME_WIDTH));
-        assertThat(config.getBoundaries().getMinY(), equalTo(0));
-        assertThat(config.getBoundaries().getMaxY(), equalTo(GAME_HEIGHT));
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAlienType(), equalTo(AlienType.HUNTER));
+    assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
+    assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
+    assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
+    assertThat(config.getMissileConfig().getType(),
+        equalTo(MissileConfig.MissileConfigType.MISSILE));
+    assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
+    assertThat(config.getSpinningConfig().getType(),
+        equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
+    assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
+    assertThat(config.getBoundaries().getMinX(), equalTo(100));
+    assertThat(config.getBoundaries().getMaxX(), equalTo(400));
+    assertThat(config.getBoundaries().getMinY(), equalTo(50));
+    assertThat(config.getBoundaries().getMaxY(), equalTo(250));
 
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        false,
+        false,
+        0,
+        0,
+        0f,
+        false);
 
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                false,
-                false,
-                0,
-                0,
-                0f,
-                false);
-
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof HunterAlien, is(true));
-    }
-
-    @Test
-    public void shouldCreateFullyConfiguredHunter() {
-        HunterConfig config = HunterConfig
-                .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .speed(AlienSpeed.SLOW)
-                .boundaries(
-                        BoundariesConfig
-                                .builder()
-                                .minX(100)
-                                .maxX(400)
-                                .minY(50)
-                                .maxY(250)
-                                .build())
-                .spawnConfig(new SpawningAlienConfig(
-                    mock(AlienConfig.class),
-                    new ArrayList<>(),
-                    0f,
-                    0f))
-                .missileConfig(new MissileFiringConfig(
-                        AlienMissileType.DOWNWARDS,
-                        AlienMissileSpeed.MEDIUM,
-                        AlienMissileCharacter.LASER,
-                        0f))
-                .spinningConfig(new SpinningFixedAngularConfig(
-                        10))
-                .build();
-
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAlienType(), equalTo(AlienType.HUNTER));
-        assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
-        assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
-        assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
-        assertThat(config.getMissileConfig().getType(), equalTo(MissileConfig.MissileConfigType.MISSILE));
-        assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
-        assertThat(config.getSpinningConfig().getType(), equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
-        assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
-        assertThat(config.getBoundaries().getMinX(), equalTo(100));
-        assertThat(config.getBoundaries().getMaxX(), equalTo(400));
-        assertThat(config.getBoundaries().getMinY(), equalTo(50));
-        assertThat(config.getBoundaries().getMaxY(), equalTo(250));
-
-
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                false,
-                false,
-                0,
-                0,
-                0f,
-                false);
-
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof HunterAlien, is(true));
-    }
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof HunterAlien, is(true));
+  }
 }

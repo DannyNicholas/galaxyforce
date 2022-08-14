@@ -19,37 +19,37 @@ import lombok.NonNull;
  */
 public class PathAlien extends AbstractAlienWithPath {
 
-    @Builder
-    public PathAlien(
-            @NonNull final ExplosionBehaviourFactory explosionFactory,
-            @NonNull final SpawnBehaviourFactory spawnFactory,
-            @NonNull final SpinningBehaviourFactory spinningFactory,
-            @NonNull final PowerUpBehaviourFactory powerUpFactory,
-            @NonNull final FireBehaviourFactory fireFactory,
-            @NonNull final HitBehaviourFactory hitFactory,
-            @NonNull final PathConfig alienConfig,
-            final PowerUpType powerUpType,
-            @NonNull final List<PathPoint> alienPath,
-            @NonNull final Float delayStartTime,
-            @NonNull final Boolean restartImmediately) {
-        super(
-            alienConfig.getAlienCharacter(),
-            fireFactory.createFireBehaviour(
-                alienConfig.getMissileConfig()),
-            powerUpFactory.createPowerUpBehaviour(
-                powerUpType),
-            spawnFactory.createSpawnBehaviour(
-                alienConfig.getSpawnConfig()),
-            hitFactory.createHitBehaviour(),
-            explosionFactory.createExplosionBehaviour(
-                alienConfig.getExplosionConfig(),
-                alienConfig.getAlienCharacter()),
-            spinningFactory.createSpinningBehaviour(
-                alienConfig.getSpinningConfig()),
-            alienPath,
-            delayStartTime,
-            alienConfig.getEnergy(),
-            restartImmediately,
-            alienConfig.getAngledToPath());
-    }
+  @Builder
+  public PathAlien(
+      @NonNull final ExplosionBehaviourFactory explosionFactory,
+      @NonNull final SpawnBehaviourFactory spawnFactory,
+      @NonNull final SpinningBehaviourFactory spinningFactory,
+      @NonNull final PowerUpBehaviourFactory powerUpFactory,
+      @NonNull final FireBehaviourFactory fireFactory,
+      @NonNull final HitBehaviourFactory hitFactory,
+      @NonNull final PathConfig alienConfig,
+      final PowerUpType powerUpType,
+      @NonNull final List<PathPoint> alienPath,
+      @NonNull final Float delayStartTime,
+      @NonNull final Boolean restartImmediately) {
+    super(
+        alienConfig.getAlienCharacter(),
+        fireFactory.createFireBehaviour(
+            alienConfig.getMissileConfig()),
+        powerUpFactory.createPowerUpBehaviour(
+            powerUpType),
+        spawnFactory.createSpawnBehaviour(
+            alienConfig.getSpawnConfig()),
+        hitFactory.createHitBehaviour(),
+        explosionFactory.createExplosionBehaviour(
+            alienConfig.getExplosionConfig(),
+            alienConfig.getAlienCharacter()),
+        spinningFactory.createSpinningBehaviour(
+            alienConfig.getSpinningConfig()),
+        alienPath,
+        delayStartTime,
+        alienConfig.getEnergy(),
+        restartImmediately,
+        alienConfig.getAngledToPath());
+  }
 }

@@ -5,8 +5,8 @@ import com.danosoftware.galaxyforce.sprites.common.ICollidingSprite;
 
 public interface IPowerUp extends ICollidingSprite {
 
-    /**
-     * Return the power-up type for this power-up
-     */
-    PowerUpType getPowerUpType();
+  /**
+   * Return the power-up type for this power-up
+   */
+  PowerUpType getPowerUpType();
 }

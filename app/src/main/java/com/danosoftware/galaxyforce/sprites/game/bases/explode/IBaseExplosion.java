@@ -4,9 +4,9 @@ import com.danosoftware.galaxyforce.sprites.common.ISprite;
 
 public interface IBaseExplosion extends ISprite {
 
-    void startExplosion();
+  void startExplosion();
 
-    void animate(float deltaTime);
+  void animate(float deltaTime);
 
-    boolean isFinished();
+  boolean isFinished();
 }

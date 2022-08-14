@@ -51,28 +51,28 @@ public abstract class AbstractSprite implements ISprite {
   }
 
   @Override
-    public int width() {
-        if (dimensionsCached) {
-            return width;
-        }
-        return cacheWidth();
+  public int width() {
+    if (dimensionsCached) {
+      return width;
     }
+    return cacheWidth();
+  }
 
-    @Override
-    public int height() {
-        if (dimensionsCached) {
-            return height;
-        }
-        return cacheHeight();
+  @Override
+  public int height() {
+    if (dimensionsCached) {
+      return height;
     }
+    return cacheHeight();
+  }
 
-    @Override
-    public int halfWidth() {
-        if (dimensionsCached) {
-            return halfWidth;
-        }
-        return cacheHalfWidth();
+  @Override
+  public int halfWidth() {
+    if (dimensionsCached) {
+      return halfWidth;
     }
+    return cacheHalfWidth();
+  }
 
   @Override
   public int halfHeight() {
@@ -112,15 +112,15 @@ public abstract class AbstractSprite implements ISprite {
     return 0;
   }
 
-    // cache and return height from sprite properties if available
-    private int cacheHeight() {
-      SpriteDimensions dimensions = spriteDetails.getDimensions();
-      if (dimensions != null) {
-        cacheDimensions(dimensions);
-        return height;
-      }
-      return 0;
+  // cache and return height from sprite properties if available
+  private int cacheHeight() {
+    SpriteDimensions dimensions = spriteDetails.getDimensions();
+    if (dimensions != null) {
+      cacheDimensions(dimensions);
+      return height;
     }
+    return 0;
+  }
 
   // cache and return half-width from sprite properties if available
   private int cacheHalfWidth() {

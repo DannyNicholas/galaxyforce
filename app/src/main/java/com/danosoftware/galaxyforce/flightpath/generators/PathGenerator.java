@@ -10,8 +10,8 @@ import java.util.List;
  */
 public interface PathGenerator {
 
-    /**
-     * returns a list of path points for the current path.
-     */
-    List<DoublePoint> path();
+  /**
+   * returns a list of path points for the current path.
+   */
+  List<DoublePoint> path();
 }

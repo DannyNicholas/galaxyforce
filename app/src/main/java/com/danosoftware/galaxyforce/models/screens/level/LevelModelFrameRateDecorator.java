@@ -44,9 +44,10 @@ public class LevelModelFrameRateDecorator implements LevelModel, TextChangeListe
     // Use absolute x,y for text to allow camera offsets to work correctly
     String text = "FPS " + fpsCounter.getValue();
     return Text.newTextAbsolutePosition(
-            text,
-            (GameConstants.GAME_WIDTH + (GameConstants.GAME_WIDTH - text.length()) / 2) + HALF_GLYPH_WIDTH,
-            GameConstants.GAME_HEIGHT - HALF_GLYPH_HEIGHT);
+        text,
+        (GameConstants.GAME_WIDTH + (GameConstants.GAME_WIDTH - text.length()) / 2)
+            + HALF_GLYPH_WIDTH,
+        GameConstants.GAME_HEIGHT - HALF_GLYPH_HEIGHT);
   }
 
   @Override

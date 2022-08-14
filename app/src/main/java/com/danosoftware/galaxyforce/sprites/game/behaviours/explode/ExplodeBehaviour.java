@@ -6,10 +6,10 @@ import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 
 public interface ExplodeBehaviour {
 
-    /**
-     * Initialise start of explosion
-     */
-    void startExplosion(IAlien alien);
+  /**
+   * Initialise start of explosion
+   */
+  void startExplosion(IAlien alien);
 
   /**
    * Initialise start of explosion for follower.

@@ -12,112 +12,112 @@ import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 
 public class SpawnBehaviourFactory {
 
-    private final GameModel model;
-    private final AlienFactory alienFactory;
-    private final PowerUpAllocatorFactory powerUpAllocatorFactory;
+  private final GameModel model;
+  private final AlienFactory alienFactory;
+  private final PowerUpAllocatorFactory powerUpAllocatorFactory;
 
-    public SpawnBehaviourFactory(
-            final GameModel model,
-            final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory) {
-        this.model = model;
-        this.alienFactory = alienFactory;
-        this.powerUpAllocatorFactory = powerUpAllocatorFactory;
+  public SpawnBehaviourFactory(
+      final GameModel model,
+      final AlienFactory alienFactory,
+      final PowerUpAllocatorFactory powerUpAllocatorFactory) {
+    this.model = model;
+    this.alienFactory = alienFactory;
+    this.powerUpAllocatorFactory = powerUpAllocatorFactory;
+  }
+
+  /**
+   * Create spawn behaviour based on the supplied alien config.
+   */
+  public SpawnBehaviour createSpawnBehaviour(
+      final SpawnConfig spawnConfig) {
+
+    if (spawnConfig != null
+        && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN
+        && spawnConfig instanceof SpawningAlienConfig) {
+
+      final SpawningAlienConfig spawningConfig = ((SpawningAlienConfig) spawnConfig);
+
+      // behaviour that spawns aliens using spawnedAlienConfig
+      return new SpawnRandomDelay(
+          alienFactory,
+          powerUpAllocatorFactory,
+          model,
+          spawningConfig.getSpawnedAlienConfig(),
+          spawningConfig.getSpawnedPowerUpTypes(),
+          spawningConfig.getMinimumSpawnDelayTime(),
+          spawningConfig.getMaximumAdditionalRandomSpawnDelayTime());
     }
 
-    /**
-     * Create spawn behaviour based on the supplied alien config.
-     */
-    public SpawnBehaviour createSpawnBehaviour(
-            final SpawnConfig spawnConfig) {
+    if (spawnConfig != null
+        && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_LIMITED
+        && spawnConfig instanceof SpawningLimitedAlienConfig) {
 
-        if (spawnConfig != null
-                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN
-                && spawnConfig instanceof SpawningAlienConfig) {
+      final SpawningLimitedAlienConfig spawningConfig = ((SpawningLimitedAlienConfig) spawnConfig);
 
-            final SpawningAlienConfig spawningConfig = ((SpawningAlienConfig) spawnConfig);
-
-            // behaviour that spawns aliens using spawnedAlienConfig
-            return new SpawnRandomDelay(
-                alienFactory,
-                powerUpAllocatorFactory,
-                model,
-                spawningConfig.getSpawnedAlienConfig(),
-                spawningConfig.getSpawnedPowerUpTypes(),
-                spawningConfig.getMinimumSpawnDelayTime(),
-                spawningConfig.getMaximumAdditionalRandomSpawnDelayTime());
-        }
-
-        if (spawnConfig != null
-                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_LIMITED
-                && spawnConfig instanceof SpawningLimitedAlienConfig) {
-
-            final SpawningLimitedAlienConfig spawningConfig = ((SpawningLimitedAlienConfig) spawnConfig);
-
-            // behaviour that spawns aliens using a limited spawnedAlienConfig
-            return new SpawnRandomDelayLimiter(
-                alienFactory,
-                powerUpAllocatorFactory,
-                model,
-                spawningConfig.getSpawnedAlienConfig(),
-                spawningConfig.getSpawnedPowerUpTypes(),
-                spawningConfig.getMinimumSpawnDelayTime(),
-                spawningConfig.getMaximumAdditionalRandomSpawnDelayTime(),
-                spawningConfig.getMaximumActiveSpawnedAliens(),
-                spawningConfig.getLimitedCharacter());
-        }
-
-        if (spawnConfig != null
-                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_LIMITED_ACTIVE_ALIEN
-                && spawnConfig instanceof SpawningLimitedActiveAlienConfig) {
-
-            final SpawningLimitedActiveAlienConfig spawningConfig = ((SpawningLimitedActiveAlienConfig) spawnConfig);
-
-            // behaviour that spawns aliens using a limited spawnedAlienConfig
-            return new SpawnRandomDelayActiveAlienLimiter(
-                alienFactory,
-                powerUpAllocatorFactory,
-                model,
-                spawningConfig.getSpawnedAlienConfig(),
-                spawningConfig.getSpawnedPowerUpTypes(),
-                spawningConfig.getMinimumSpawnDelayTime(),
-                spawningConfig.getMaximumAdditionalRandomSpawnDelayTime(),
-                spawningConfig.getMaximumActiveSpawnedAliens(),
-                spawningConfig.getLimitedCharacter());
-        }
-
-        if (spawnConfig != null
-                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_AND_EXPLODE
-                && spawnConfig instanceof SpawningAndExplodingAlienConfig) {
-
-            final SpawningAndExplodingAlienConfig spawningConfig = ((SpawningAndExplodingAlienConfig) spawnConfig);
-
-            // behaviour that spawns a single alien and then explodes
-            return new SpawnAndExplode(
-                    alienFactory,
-                    powerUpAllocatorFactory,
-                    model,
-                    spawningConfig.getSpawnedAlienConfig(),
-                    spawningConfig.getSpawnedPowerUpType(),
-                    spawningConfig.getSpawnDelayTime());
-        }
-
-        if (spawnConfig != null
-                && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_ON_DEMAND
-                && spawnConfig instanceof SpawnOnDemandConfig) {
-
-            final SpawnOnDemandConfig spawningConfig = ((SpawnOnDemandConfig) spawnConfig);
-
-            // behaviour that spawns on  request
-            return new SpawnOnDemand(
-                    alienFactory,
-                    powerUpAllocatorFactory,
-                    model,
-                    spawningConfig.getSpawnedAlienConfig(),
-                    spawningConfig.getSpawnedPowerUpTypes());
-        }
-
-        // behaviour that disables spawning
-        return new SpawnDisabled();
+      // behaviour that spawns aliens using a limited spawnedAlienConfig
+      return new SpawnRandomDelayLimiter(
+          alienFactory,
+          powerUpAllocatorFactory,
+          model,
+          spawningConfig.getSpawnedAlienConfig(),
+          spawningConfig.getSpawnedPowerUpTypes(),
+          spawningConfig.getMinimumSpawnDelayTime(),
+          spawningConfig.getMaximumAdditionalRandomSpawnDelayTime(),
+          spawningConfig.getMaximumActiveSpawnedAliens(),
+          spawningConfig.getLimitedCharacter());
     }
+
+    if (spawnConfig != null
+        && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_LIMITED_ACTIVE_ALIEN
+        && spawnConfig instanceof SpawningLimitedActiveAlienConfig) {
+
+      final SpawningLimitedActiveAlienConfig spawningConfig = ((SpawningLimitedActiveAlienConfig) spawnConfig);
+
+      // behaviour that spawns aliens using a limited spawnedAlienConfig
+      return new SpawnRandomDelayActiveAlienLimiter(
+          alienFactory,
+          powerUpAllocatorFactory,
+          model,
+          spawningConfig.getSpawnedAlienConfig(),
+          spawningConfig.getSpawnedPowerUpTypes(),
+          spawningConfig.getMinimumSpawnDelayTime(),
+          spawningConfig.getMaximumAdditionalRandomSpawnDelayTime(),
+          spawningConfig.getMaximumActiveSpawnedAliens(),
+          spawningConfig.getLimitedCharacter());
+    }
+
+    if (spawnConfig != null
+        && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_AND_EXPLODE
+        && spawnConfig instanceof SpawningAndExplodingAlienConfig) {
+
+      final SpawningAndExplodingAlienConfig spawningConfig = ((SpawningAndExplodingAlienConfig) spawnConfig);
+
+      // behaviour that spawns a single alien and then explodes
+      return new SpawnAndExplode(
+          alienFactory,
+          powerUpAllocatorFactory,
+          model,
+          spawningConfig.getSpawnedAlienConfig(),
+          spawningConfig.getSpawnedPowerUpType(),
+          spawningConfig.getSpawnDelayTime());
+    }
+
+    if (spawnConfig != null
+        && spawnConfig.getType() == SpawnConfig.SpawnType.SPAWN_ON_DEMAND
+        && spawnConfig instanceof SpawnOnDemandConfig) {
+
+      final SpawnOnDemandConfig spawningConfig = ((SpawnOnDemandConfig) spawnConfig);
+
+      // behaviour that spawns on  request
+      return new SpawnOnDemand(
+          alienFactory,
+          powerUpAllocatorFactory,
+          model,
+          spawningConfig.getSpawnedAlienConfig(),
+          spawningConfig.getSpawnedPowerUpTypes());
+    }
+
+    // behaviour that disables spawning
+    return new SpawnDisabled();
+  }
 }

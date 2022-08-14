@@ -83,7 +83,7 @@ public class GameOverModelImpl implements Model, ButtonModel, TextChangeListener
     this.flashingGameOverText = new FlashingTextImpl(
         Collections.singletonList(gameOver),
         0.5f,
-            this);
+        this);
     this.updateText = true;
     this.updateSprites = true;
   }

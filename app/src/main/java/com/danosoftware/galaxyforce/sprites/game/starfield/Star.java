@@ -6,17 +6,17 @@ package com.danosoftware.galaxyforce.sprites.game.starfield;
  */
 public class Star {
 
-    // star's position and colour
-    // allow public access for improved drawing performance
-    public float x, y;
-    public StarColour colour;
+  // star's position and colour
+  // allow public access for improved drawing performance
+  public float x, y;
+  public StarColour colour;
 
-    public Star(
-        float x,
-        float y,
-        StarColour colour) {
-        this.x = x;
-        this.y = y;
-        this.colour = colour;
-    }
+  public Star(
+      float x,
+      float y,
+      StarColour colour) {
+    this.x = x;
+    this.y = y;
+    this.colour = colour;
+  }
 }

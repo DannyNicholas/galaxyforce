@@ -21,151 +21,151 @@ public class MusicPlayerServiceImpl implements
     MediaPlayer.OnCompletionListener,
     MediaPlayer.OnErrorListener {
 
-    private MediaPlayer mediaPlayer;
+  private MediaPlayer mediaPlayer;
 
-    // is player prepared for playing (prepares asynchronously)
-    private boolean isPrepared;
+  // is player prepared for playing (prepares asynchronously)
+  private boolean isPrepared;
 
-    // is music player enabled?
-    private boolean musicEnabled;
+  // is music player enabled?
+  private boolean musicEnabled;
 
-    // currently playing music
-    private Music currentlyLoaded;
+  // currently playing music
+  private Music currentlyLoaded;
 
-    private final AssetManager assets;
+  private final AssetManager assets;
 
-    public MusicPlayerServiceImpl(Context context, boolean musicEnabled) {
-        this.musicEnabled = musicEnabled;
-        this.assets = context.getAssets();
-        this.currentlyLoaded = null;
+  public MusicPlayerServiceImpl(Context context, boolean musicEnabled) {
+    this.musicEnabled = musicEnabled;
+    this.assets = context.getAssets();
+    this.currentlyLoaded = null;
 
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            // allows audio stream to have volume controlled by hardware buttons
-            activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        }
+    if (context instanceof Activity) {
+      Activity activity = (Activity) context;
+      // allows audio stream to have volume controlled by hardware buttons
+      activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+  }
+
+  /**
+   * Load music (if different from currently loaded music) and prepare asynchronously.
+   */
+  @Override
+  public synchronized void load(Music music) {
+
+    // no action if wanted music is already loaded
+    if (currentlyLoaded == music) {
+      return;
     }
 
-    /**
-     * Load music (if different from currently loaded music) and prepare asynchronously.
-     */
-    @Override
-    public synchronized void load(Music music) {
-
-        // no action if wanted music is already loaded
-        if (currentlyLoaded == music) {
-            return;
-        }
-
-        // create or reset media player
-        if (this.mediaPlayer != null) {
-            this.mediaPlayer.reset();
-        } else {
-            this.mediaPlayer = createMediaPlayer();
-        }
-
-        Log.i(GameConstants.LOG_TAG, "Load Music");
-
-        // set file as music source
-        try (AssetFileDescriptor assetDescriptor = assets.openFd("music/" + music.getFileName())) {
-            mediaPlayer.setDataSource(
-                assetDescriptor.getFileDescriptor(),
-                assetDescriptor.getStartOffset(),
-                assetDescriptor.getLength());
-        } catch (IOException | IllegalArgumentException e) {
-            throw new GalaxyForceException("Couldn't load music: " + music.getFileName(), e);
-        }
-
-        currentlyLoaded = music;
-        mediaPlayer.setLooping(true);
-        mediaPlayer.setVolume(1f, 1f);
-
-        isPrepared = false;
-        mediaPlayer.setOnPreparedListener(this);
-        mediaPlayer.prepareAsync();
+    // create or reset media player
+    if (this.mediaPlayer != null) {
+      this.mediaPlayer.reset();
+    } else {
+      this.mediaPlayer = createMediaPlayer();
     }
 
-    @SuppressWarnings("deprecation")
-    public static MediaPlayer createMediaPlayer() {
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            return createModernMediaPlayer();
-        }
+    Log.i(GameConstants.LOG_TAG, "Load Music");
 
-        // return legacy media player
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        return mediaPlayer;
+    // set file as music source
+    try (AssetFileDescriptor assetDescriptor = assets.openFd("music/" + music.getFileName())) {
+      mediaPlayer.setDataSource(
+          assetDescriptor.getFileDescriptor(),
+          assetDescriptor.getStartOffset(),
+          assetDescriptor.getLength());
+    } catch (IOException | IllegalArgumentException e) {
+      throw new GalaxyForceException("Couldn't load music: " + music.getFileName(), e);
     }
 
-    @Override
-    public synchronized void play() {
-        // if not prepared then exit
-        // will play automatically once prepared
-        if (!isPrepared || mediaPlayer == null) {
-            return;
-        }
+    currentlyLoaded = music;
+    mediaPlayer.setLooping(true);
+    mediaPlayer.setVolume(1f, 1f);
 
-        Log.i(GameConstants.LOG_TAG, "Play Music");
+    isPrepared = false;
+    mediaPlayer.setOnPreparedListener(this);
+    mediaPlayer.prepareAsync();
+  }
 
-        // no action if already playing or disabled
-        if (mediaPlayer.isPlaying() || !musicEnabled) {
-            return;
-        }
-
-        // otherwise start playing
-        mediaPlayer.start();
+  @SuppressWarnings("deprecation")
+  public static MediaPlayer createMediaPlayer() {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      return createModernMediaPlayer();
     }
 
-    @Override
-    public synchronized void pause() {
-        Log.i(GameConstants.LOG_TAG, "Pause Music");
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-        }
+    // return legacy media player
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+    return mediaPlayer;
+  }
+
+  @Override
+  public synchronized void play() {
+    // if not prepared then exit
+    // will play automatically once prepared
+    if (!isPrepared || mediaPlayer == null) {
+      return;
     }
 
-    @Override
-    public void setMusicEnabled(boolean enableMusic) {
-        this.musicEnabled = enableMusic;
+    Log.i(GameConstants.LOG_TAG, "Play Music");
+
+    // no action if already playing or disabled
+    if (mediaPlayer.isPlaying() || !musicEnabled) {
+      return;
     }
 
-    @Override
-    public synchronized void dispose() {
-        Log.i(GameConstants.LOG_TAG, "Dispose Music");
-        isPrepared = false;
-        currentlyLoaded = null;
+    // otherwise start playing
+    mediaPlayer.start();
+  }
 
-        if (mediaPlayer == null) {
-            return;
-        }
+  @Override
+  public synchronized void pause() {
+    Log.i(GameConstants.LOG_TAG, "Pause Music");
+    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+      mediaPlayer.pause();
+    }
+  }
 
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
-        }
-        mediaPlayer.release();
-        mediaPlayer = null;
+  @Override
+  public void setMusicEnabled(boolean enableMusic) {
+    this.musicEnabled = enableMusic;
+  }
+
+  @Override
+  public synchronized void dispose() {
+    Log.i(GameConstants.LOG_TAG, "Dispose Music");
+    isPrepared = false;
+    currentlyLoaded = null;
+
+    if (mediaPlayer == null) {
+      return;
     }
 
-    // music is now prepared - so we can play it.
-    @Override
-    public void onPrepared(MediaPlayer player) {
-        Log.i(GameConstants.LOG_TAG, "Music Prepared");
-        isPrepared = true;
-        play();
+    if (mediaPlayer.isPlaying()) {
+      mediaPlayer.stop();
     }
+    mediaPlayer.release();
+    mediaPlayer = null;
+  }
 
-    // called if media player encounters an error
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        Log.e(GameConstants.LOG_TAG,
-            String.format("Music exception. type: %d. code: %d", what, extra));
-        return false;
-    }
+  // music is now prepared - so we can play it.
+  @Override
+  public void onPrepared(MediaPlayer player) {
+    Log.i(GameConstants.LOG_TAG, "Music Prepared");
+    isPrepared = true;
+    play();
+  }
 
-    // ideally this should not be called as our music loops.
-    // may occur in exceptions and clear-up is needed.
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        dispose();
-    }
+  // called if media player encounters an error
+  @Override
+  public boolean onError(MediaPlayer mp, int what, int extra) {
+    Log.e(GameConstants.LOG_TAG,
+        String.format("Music exception. type: %d. code: %d", what, extra));
+    return false;
+  }
+
+  // ideally this should not be called as our music loops.
+  // may occur in exceptions and clear-up is needed.
+  @Override
+  public void onCompletion(MediaPlayer mp) {
+    dispose();
+  }
 }

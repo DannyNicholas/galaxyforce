@@ -9,17 +9,17 @@ import java.io.InputStream;
 
 public class TextureLoader {
 
-    private final AssetManager assets;
+  private final AssetManager assets;
 
-    public TextureLoader(AssetManager assets) {
-        this.assets = assets;
-    }
+  public TextureLoader(AssetManager assets) {
+    this.assets = assets;
+  }
 
-    public Bitmap load(String fileName) {
-        try (InputStream in = assets.open("textures/" + fileName)) {
-            return BitmapFactory.decodeStream(in);
-        } catch (IOException e) {
-            throw new GalaxyForceException("Couldn't load texture '" + fileName + "'", e);
-        }
+  public Bitmap load(String fileName) {
+    try (InputStream in = assets.open("textures/" + fileName)) {
+      return BitmapFactory.decodeStream(in);
+    } catch (IOException e) {
+      throw new GalaxyForceException("Couldn't load texture '" + fileName + "'", e);
     }
+  }
 }

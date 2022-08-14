@@ -10,30 +10,30 @@ import com.danosoftware.galaxyforce.view.Animation;
  */
 public class BaseMissileUpwards extends AbstractBaseMissile {
 
-    /* distance missile can move per second */
-    private final int missileSpeed;
+  /* distance missile can move per second */
+  private final int missileSpeed;
 
-    public BaseMissileUpwards(
-        final float xStart,
-        final float yStart,
-        final Animation animation,
-        final BaseMissileSpeed baseMissileSpeed) {
-      super(
-          animation,
-          xStart,
-          yStart,
-          animation.getKeyFrame(0, Animation.ANIMATION_LOOPING));
-      this.missileSpeed = baseMissileSpeed.getSpeed();
+  public BaseMissileUpwards(
+      final float xStart,
+      final float yStart,
+      final Animation animation,
+      final BaseMissileSpeed baseMissileSpeed) {
+    super(
+        animation,
+        xStart,
+        yStart,
+        animation.getKeyFrame(0, Animation.ANIMATION_LOOPING));
+    this.missileSpeed = baseMissileSpeed.getSpeed();
+  }
+
+  @Override
+  public void animate(float deltaTime) {
+
+    moveYByDelta(missileSpeed * deltaTime);
+
+    // if missile is now off screen then destroy it
+    if (offScreenTop(this)) {
+      destroy();
     }
-
-    @Override
-    public void animate(float deltaTime) {
-
-      moveYByDelta(missileSpeed * deltaTime);
-
-        // if missile is now off screen then destroy it
-        if (offScreenTop(this)) {
-            destroy();
-        }
-    }
+  }
 }

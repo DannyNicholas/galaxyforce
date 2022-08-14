@@ -25,11 +25,11 @@ public enum TextureMap {
     this.textureXml = textureXml;
   }
 
-    public String getTextureImage() {
-        return textureImage;
-    }
+  public String getTextureImage() {
+    return textureImage;
+  }
 
-    public String getTextureXml() {
-        return textureXml;
-    }
+  public String getTextureXml() {
+    return textureXml;
+  }
 }

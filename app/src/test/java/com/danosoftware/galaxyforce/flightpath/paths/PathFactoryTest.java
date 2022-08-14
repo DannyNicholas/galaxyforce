@@ -32,59 +32,59 @@ import org.slf4j.LoggerFactory;
 @PrepareForTest({Log.class})
 public class PathFactoryTest {
 
-    private final static Logger logger = LoggerFactory.getLogger(PathFactoryTest.class);
+  private final static Logger logger = LoggerFactory.getLogger(PathFactoryTest.class);
 
-    @Before
-    public void setup() {
-        // mock any static android logging
-        mockStatic(Log.class);
+  @Before
+  public void setup() {
+    // mock any static android logging
+    mockStatic(Log.class);
+  }
+
+  @Test
+  public void shouldCreateAllPaths() throws IOException {
+
+    final PointTranslatorChain emptyTranslators = new PointTranslatorChain();
+
+    for (Path path : Path.values()) {
+      logger.info("Creating path : '{}'.", path.name());
+
+      // The PathFactory uses a PathLoader to load path data from a JSON file.
+      // We can't use the real PathLoader to load JSON files using the context/assets
+      // as they are not available from unit tests.
+      //
+      // Instead we mock the PathLoader static method and give it the path data
+      // it would have loaded for the current path.
+      PathListDTO pathListDTO = loadPathDTO(path);
+      PathLoader loader = mock(PathLoader.class);
+      when(loader.loadPaths(any(Path.class))).thenReturn(pathListDTO);
+
+      PathFactory pathFactory = new PathFactory(loader);
+      List<PathPoint> points = pathFactory.createPath(path, emptyTranslators, PathSpeed.NORMAL);
+      checkPoints(points);
     }
+    logger.info("All paths created.");
+  }
 
-    @Test
-    public void shouldCreateAllPaths() throws IOException {
+  // verify points
+  private void checkPoints(List<PathPoint> points) {
 
-        final PointTranslatorChain emptyTranslators = new PointTranslatorChain();
+    logger.info("Path size : '{}'.", points.size());
 
-        for (Path path : Path.values()) {
-            logger.info("Creating path : '{}'.", path.name());
+    assertThat(points, is(notNullValue()));
+    assertThat(points.size() > 0, is(true));
 
-            // The PathFactory uses a PathLoader to load path data from a JSON file.
-            // We can't use the real PathLoader to load JSON files using the context/assets
-            // as they are not available from unit tests.
-            //
-            // Instead we mock the PathLoader static method and give it the path data
-            // it would have loaded for the current path.
-            PathListDTO pathListDTO = loadPathDTO(path);
-            PathLoader loader = mock(PathLoader.class);
-            when(loader.loadPaths(any(Path.class))).thenReturn(pathListDTO);
-
-            PathFactory pathFactory = new PathFactory(loader);
-            List<PathPoint> points = pathFactory.createPath(path, emptyTranslators, PathSpeed.NORMAL);
-            checkPoints(points);
-        }
-        logger.info("All paths created.");
+    for (PathPoint point : points) {
+      assertThat(point, is(notNullValue()));
+      assertThat(point.getX(), is(notNullValue()));
+      assertThat(point.getY(), is(notNullValue()));
+      assertThat(point.getAngle(), is(notNullValue()));
     }
+  }
 
-    // verify points
-    private void checkPoints(List<PathPoint> points) {
-
-        logger.info("Path size : '{}'.", points.size());
-
-        assertThat(points, is(notNullValue()));
-        assertThat(points.size() > 0, is(true));
-
-        for (PathPoint point : points) {
-            assertThat(point, is(notNullValue()));
-            assertThat(point.getX(), is(notNullValue()));
-            assertThat(point.getY(), is(notNullValue()));
-            assertThat(point.getAngle(), is(notNullValue()));
-        }
-    }
-
-    // load path data for the supplied data
-    private PathListDTO loadPathDTO(Path path) throws IOException {
-        File file = pathAsset(path.getPathFile());
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(file, PathListDTO.class);
-    }
+  // load path data for the supplied data
+  private PathListDTO loadPathDTO(Path path) throws IOException {
+    File file = pathAsset(path.getPathFile());
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readValue(file, PathListDTO.class);
+  }
 }

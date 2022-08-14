@@ -15,38 +15,38 @@ import com.danosoftware.galaxyforce.waves.AlienCharacter;
  */
 public abstract class AbstractResettableAlien extends AbstractAlien implements IResettableAlien {
 
-    protected AbstractResettableAlien(
-        final AlienCharacter character,
-        final float x,
-        final float y,
-        final int energy,
-        final FireBehaviour fireBehaviour,
-        final PowerUpBehaviour powerUpBehaviour,
-        final SpawnBehaviour spawnBehaviour,
-        final HitBehaviour hitBehaviour,
-        final ExplodeBehaviour explodeBehaviour,
-        final SpinningBehaviour spinningBehaviour) {
+  protected AbstractResettableAlien(
+      final AlienCharacter character,
+      final float x,
+      final float y,
+      final int energy,
+      final FireBehaviour fireBehaviour,
+      final PowerUpBehaviour powerUpBehaviour,
+      final SpawnBehaviour spawnBehaviour,
+      final HitBehaviour hitBehaviour,
+      final ExplodeBehaviour explodeBehaviour,
+      final SpinningBehaviour spinningBehaviour) {
 
-      super(
-          character,
-          x,
-          y,
-          energy,
-          fireBehaviour,
-          powerUpBehaviour,
-          spawnBehaviour,
-                hitBehaviour,
-                explodeBehaviour,
-                spinningBehaviour);
-    }
+    super(
+        character,
+        x,
+        y,
+        energy,
+        fireBehaviour,
+        powerUpBehaviour,
+        spawnBehaviour,
+        hitBehaviour,
+        explodeBehaviour,
+        spinningBehaviour);
+  }
 
-    @Override
-    public boolean isEndOfPass() {
-        return state == FINISHED_PASS;
-    }
+  @Override
+  public boolean isEndOfPass() {
+    return state == FINISHED_PASS;
+  }
 
-    @Override
-    public void endOfPass() {
-        state = FINISHED_PASS;
-    }
+  @Override
+  public void endOfPass() {
+    state = FINISHED_PASS;
+  }
 }

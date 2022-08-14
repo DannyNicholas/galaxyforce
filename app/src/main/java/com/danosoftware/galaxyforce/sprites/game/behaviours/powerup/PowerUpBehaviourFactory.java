@@ -5,15 +5,15 @@ import com.danosoftware.galaxyforce.models.screens.game.GameModel;
 
 public class PowerUpBehaviourFactory {
 
-    private final GameModel model;
+  private final GameModel model;
 
-    public PowerUpBehaviourFactory(final GameModel model) {
-        this.model = model;
-    }
+  public PowerUpBehaviourFactory(final GameModel model) {
+    this.model = model;
+  }
 
-    public PowerUpBehaviour createPowerUpBehaviour(final PowerUpType powerUpType) {
-        return new PowerUpSingle(
-                model,
-                powerUpType);
-    }
+  public PowerUpBehaviour createPowerUpBehaviour(final PowerUpType powerUpType) {
+    return new PowerUpSingle(
+        model,
+        powerUpType);
+  }
 }

@@ -132,7 +132,8 @@ public class TextureService {
   public Font getOrCreateFont(TextureMap textureMap) {
 
     if (!texturesLoaded) {
-      throw new GalaxyForceException("Textures not loaded. Can not create font for texture map: " + textureMap.name());
+      throw new GalaxyForceException(
+          "Textures not loaded. Can not create font for texture map: " + textureMap.name());
     }
 
     if (!fontsLoaded) {
@@ -189,8 +190,8 @@ public class TextureService {
   }
 
   /**
-   * create each sprite's texture regions/dimensions. must be created after a texture is
-   * loaded and before sprites can be displayed.
+   * create each sprite's texture regions/dimensions. must be created after a texture is loaded and
+   * before sprites can be displayed.
    */
   private void createTextureRegionsAndDimensions() {
 
@@ -220,7 +221,7 @@ public class TextureService {
   /**
    * Create a texture region for a specific image within the texture map.
    *
-   * @param texture   - loaded texture
+   * @param texture       - loaded texture
    * @param textureDetail - sprite's texture details
    * @return texture region
    */
@@ -278,7 +279,7 @@ public class TextureService {
   /**
    * Create font from texture and font image name
    *
-   * @param texture - texture holding font
+   * @param texture   - texture holding font
    * @param imageName - name of font in texture
    * @return font
    */

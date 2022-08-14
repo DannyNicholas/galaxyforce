@@ -15,102 +15,102 @@ import com.danosoftware.galaxyforce.waves.config.aliens.exploding.SpawningExplos
 
 public class ExplosionBehaviourFactory {
 
-    private final GameModel model;
-    private final AlienFactory alienFactory;
-    private final SoundPlayerService sounds;
-    private final VibrationService vibrator;
-    private final SpawnBehaviourFactory spawnFactory;
+  private final GameModel model;
+  private final AlienFactory alienFactory;
+  private final SoundPlayerService sounds;
+  private final VibrationService vibrator;
+  private final SpawnBehaviourFactory spawnFactory;
 
-    public ExplosionBehaviourFactory(
-            final GameModel model,
-            final AlienFactory alienFactory,
-            final SpawnBehaviourFactory spawnFactory,
-            final SoundPlayerService sounds,
-            final VibrationService vibrator) {
-        this.model = model;
-        this.alienFactory = alienFactory;
-        this.spawnFactory = spawnFactory;
-        this.sounds = sounds;
-        this.vibrator = vibrator;
+  public ExplosionBehaviourFactory(
+      final GameModel model,
+      final AlienFactory alienFactory,
+      final SpawnBehaviourFactory spawnFactory,
+      final SoundPlayerService sounds,
+      final VibrationService vibrator) {
+    this.model = model;
+    this.alienFactory = alienFactory;
+    this.spawnFactory = spawnFactory;
+    this.sounds = sounds;
+    this.vibrator = vibrator;
+  }
+
+  /**
+   * Create explosion behaviour based on the supplied  alien config.
+   */
+  public ExplodeBehaviour createExplosionBehaviour(
+      final ExplosionConfig explosionConfig,
+      final AlienCharacter character) {
+
+    if (explosionConfig != null
+        && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL
+        && explosionConfig instanceof NormalExplosionConfig) {
+
+      final NormalExplosionConfig normalExplosionConfig = (NormalExplosionConfig) explosionConfig;
+
+      // normal explosion behaviour
+      return new ExplodeSimple(
+          sounds,
+          vibrator,
+          character.getExplosionAnimation());
     }
 
-    /**
-     * Create explosion behaviour based on the supplied  alien config.
-     */
-    public ExplodeBehaviour createExplosionBehaviour(
-            final ExplosionConfig explosionConfig,
-            final AlienCharacter character) {
+    if (explosionConfig != null
+        && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.MULTI_EXPLOSION
+        && explosionConfig instanceof MultiExplosionConfig) {
 
-        if (explosionConfig != null
-                && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL
-                && explosionConfig instanceof NormalExplosionConfig) {
+      final MultiExplosionConfig multiExplosionConfig = (MultiExplosionConfig) explosionConfig;
 
-            final NormalExplosionConfig normalExplosionConfig = (NormalExplosionConfig) explosionConfig;
-
-            // normal explosion behaviour
-            return new ExplodeSimple(
-                    sounds,
-                    vibrator,
-                    character.getExplosionAnimation());
-        }
-
-        if (explosionConfig != null
-                && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.MULTI_EXPLOSION
-                && explosionConfig instanceof MultiExplosionConfig) {
-
-            final MultiExplosionConfig multiExplosionConfig = (MultiExplosionConfig) explosionConfig;
-
-            // multi-explosion behaviour
-            return new ExplodeMultiple(
-                    alienFactory,
-                    model,
-                    sounds,
-                    vibrator,
-                    character,
-                    multiExplosionConfig.getNumberOfExplosions(),
-                    multiExplosionConfig.getMaximumExplosionStartTime(),
-                    multiExplosionConfig.getExplosionConfig());
-        }
-
-        if (explosionConfig != null
-                && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL_AND_SPAWN
-                && explosionConfig instanceof SpawningExplosionConfig) {
-
-            // behaviour that spawns aliens on explosion
-            final SpawningExplosionConfig spawningExplosionConfig = (SpawningExplosionConfig) explosionConfig;
-            final SpawnBehaviour spawner = spawnFactory.createSpawnBehaviour(
-                    spawningExplosionConfig.getSpawnConfig());
-
-            // create explode behaviour that wraps a normal explosion
-            return new ExplodeAndSpawn(
-                    new ExplodeSimple(
-                            sounds,
-                            vibrator,
-                            character.getExplosionAnimation()),
-                    spawner
-            );
-        }
-
-        if (explosionConfig != null
-                && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.FOLLOWER_DELAYED
-                && explosionConfig instanceof DelayedFollowerExplosionConfig) {
-
-            // behaviour that delays follower to sync with head followable alien
-            final DelayedFollowerExplosionConfig delayedFollowerExplosionConfig = (DelayedFollowerExplosionConfig) explosionConfig;
-
-            // create delayed explode behaviour
-            return new ExplodeFollowerDelayed(
-                    sounds,
-                    vibrator,
-                    character,
-                    delayedFollowerExplosionConfig.getDelayTime()
-            );
-        }
-
-        // default explosion if none specified
-        return new ExplodeSimple(
-                sounds,
-                vibrator,
-                character.getExplosionAnimation());
+      // multi-explosion behaviour
+      return new ExplodeMultiple(
+          alienFactory,
+          model,
+          sounds,
+          vibrator,
+          character,
+          multiExplosionConfig.getNumberOfExplosions(),
+          multiExplosionConfig.getMaximumExplosionStartTime(),
+          multiExplosionConfig.getExplosionConfig());
     }
+
+    if (explosionConfig != null
+        && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.NORMAL_AND_SPAWN
+        && explosionConfig instanceof SpawningExplosionConfig) {
+
+      // behaviour that spawns aliens on explosion
+      final SpawningExplosionConfig spawningExplosionConfig = (SpawningExplosionConfig) explosionConfig;
+      final SpawnBehaviour spawner = spawnFactory.createSpawnBehaviour(
+          spawningExplosionConfig.getSpawnConfig());
+
+      // create explode behaviour that wraps a normal explosion
+      return new ExplodeAndSpawn(
+          new ExplodeSimple(
+              sounds,
+              vibrator,
+              character.getExplosionAnimation()),
+          spawner
+      );
+    }
+
+    if (explosionConfig != null
+        && explosionConfig.getType() == ExplosionConfig.ExplosionConfigType.FOLLOWER_DELAYED
+        && explosionConfig instanceof DelayedFollowerExplosionConfig) {
+
+      // behaviour that delays follower to sync with head followable alien
+      final DelayedFollowerExplosionConfig delayedFollowerExplosionConfig = (DelayedFollowerExplosionConfig) explosionConfig;
+
+      // create delayed explode behaviour
+      return new ExplodeFollowerDelayed(
+          sounds,
+          vibrator,
+          character,
+          delayedFollowerExplosionConfig.getDelayTime()
+      );
+    }
+
+    // default explosion if none specified
+    return new ExplodeSimple(
+        sounds,
+        vibrator,
+        character.getExplosionAnimation());
+  }
 }

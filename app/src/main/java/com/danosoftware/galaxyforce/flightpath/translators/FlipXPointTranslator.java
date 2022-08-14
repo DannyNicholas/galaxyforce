@@ -7,15 +7,15 @@ import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
  */
 public class FlipXPointTranslator implements PointTranslator {
 
-    // width of x dimension
-    private final int width;
+  // width of x dimension
+  private final int width;
 
-    public FlipXPointTranslator(int width) {
-        this.width = width;
-    }
+  public FlipXPointTranslator(int width) {
+    this.width = width;
+  }
 
-    @Override
-    public DoublePoint convert(DoublePoint point) {
-        return new DoublePoint(width - point.getX(), point.getY());
-    }
+  @Override
+  public DoublePoint convert(DoublePoint point) {
+    return new DoublePoint(width - point.getX(), point.getY());
+  }
 }

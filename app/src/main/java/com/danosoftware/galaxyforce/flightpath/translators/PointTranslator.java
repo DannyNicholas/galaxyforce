@@ -7,8 +7,8 @@ import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
  */
 interface PointTranslator {
 
-    /**
-     * Return a converted version of the supplied point
-     */
-    DoublePoint convert(final DoublePoint point);
+  /**
+   * Return a converted version of the supplied point
+   */
+  DoublePoint convert(final DoublePoint point);
 }

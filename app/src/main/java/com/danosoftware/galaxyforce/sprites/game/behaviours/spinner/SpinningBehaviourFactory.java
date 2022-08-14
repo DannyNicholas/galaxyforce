@@ -7,38 +7,39 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAn
 
 public class SpinningBehaviourFactory {
 
-    public SpinningBehaviour createSpinningBehaviour(
-            final SpinningConfig spinningConfig,
-            final AlienSpeed speed) {
+  public SpinningBehaviour createSpinningBehaviour(
+      final SpinningConfig spinningConfig,
+      final AlienSpeed speed) {
 
-        if (spinningConfig != null
-                && spinningConfig.getType() == SpinningConfig.SpinningConfigType.SPEED_BASED_ANGULAR_ROTATION
-                && spinningConfig instanceof SpinningBySpeedConfig) {
+    if (spinningConfig != null
+        && spinningConfig.getType()
+        == SpinningConfig.SpinningConfigType.SPEED_BASED_ANGULAR_ROTATION
+        && spinningConfig instanceof SpinningBySpeedConfig) {
 
-            // behaviour that spins alien depending on supplied alien speed
-            return new SpinningByFixedAngularRotation(
-                    speed);
-        }
-
-        // create spinning behaviour based on non-speed based factory method
-        return createSpinningBehaviour(spinningConfig);
+      // behaviour that spins alien depending on supplied alien speed
+      return new SpinningByFixedAngularRotation(
+          speed);
     }
 
-    public SpinningBehaviour createSpinningBehaviour(
-            final SpinningConfig spinningConfig) {
+    // create spinning behaviour based on non-speed based factory method
+    return createSpinningBehaviour(spinningConfig);
+  }
 
-        if (spinningConfig != null
-                && spinningConfig.getType() == SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION
-                && spinningConfig instanceof SpinningFixedAngularConfig) {
+  public SpinningBehaviour createSpinningBehaviour(
+      final SpinningConfig spinningConfig) {
 
-            final SpinningFixedAngularConfig spinningFixedAngularConfig = (SpinningFixedAngularConfig) spinningConfig;
+    if (spinningConfig != null
+        && spinningConfig.getType() == SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION
+        && spinningConfig instanceof SpinningFixedAngularConfig) {
 
-            // behaviour that spins alien depending on fixed angular speed
-            return new SpinningByFixedAngularRotation(
-                    spinningFixedAngularConfig.getAngularSpeed());
-        }
+      final SpinningFixedAngularConfig spinningFixedAngularConfig = (SpinningFixedAngularConfig) spinningConfig;
 
-        // behaviour that does not spin alien
-        return new SpinningDisabled();
+      // behaviour that spins alien depending on fixed angular speed
+      return new SpinningByFixedAngularRotation(
+          spinningFixedAngularConfig.getAngularSpeed());
     }
+
+    // behaviour that does not spin alien
+    return new SpinningDisabled();
+  }
 }

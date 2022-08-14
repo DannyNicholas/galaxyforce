@@ -4,7 +4,6 @@ import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.textures.Texture;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
 import com.danosoftware.galaxyforce.view.SpriteBatcher;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

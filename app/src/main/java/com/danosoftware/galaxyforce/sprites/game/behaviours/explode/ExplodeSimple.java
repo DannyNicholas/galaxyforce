@@ -11,33 +11,33 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 public class ExplodeSimple implements ExplodeBehaviour {
 
-    // explosion animation
-    private final Animation animation;
+  // explosion animation
+  private final Animation animation;
 
-    // reference to sound player
-    private final SoundPlayerService sounds;
+  // reference to sound player
+  private final SoundPlayerService sounds;
 
-    // reference to vibrator
-    private final VibrationService vibrator;
+  // reference to vibrator
+  private final VibrationService vibrator;
 
-    // time since explosion started
-    private float explosionTime;
+  // time since explosion started
+  private float explosionTime;
 
-    public ExplodeSimple(
-            SoundPlayerService sounds,
-            VibrationService vibrator,
-            Animation animation) {
-        this.animation = animation;
-        this.sounds = sounds;
-        this.vibrator = vibrator;
-    }
+  public ExplodeSimple(
+      SoundPlayerService sounds,
+      VibrationService vibrator,
+      Animation animation) {
+    this.animation = animation;
+    this.sounds = sounds;
+    this.vibrator = vibrator;
+  }
 
-    @Override
-    public void startExplosion(IAlien alien) {
-        explosionTime = 0f;
-        sounds.play(SoundEffect.EXPLOSION);
-      vibrator.vibrate(VibrateTime.TINY);
-    }
+  @Override
+  public void startExplosion(IAlien alien) {
+    explosionTime = 0f;
+    sounds.play(SoundEffect.EXPLOSION);
+    vibrator.vibrate(VibrateTime.TINY);
+  }
 
   @Override
   public void startExplosionFollower(IAlienFollower alien) {

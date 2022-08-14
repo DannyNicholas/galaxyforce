@@ -9,10 +9,10 @@ import com.danosoftware.galaxyforce.view.Animation;
  */
 public class HitDisabled implements HitBehaviour {
 
-    @Override
-    public void startHit(float stateTime) {
-        // no action - no hit behaviour
-    }
+  @Override
+  public void startHit(float stateTime) {
+    // no action - no hit behaviour
+  }
 
   @Override
   public void startHitFollower(float stateTime) {

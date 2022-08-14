@@ -35,92 +35,94 @@ import org.junit.Test;
 
 public class DirectionalDestroyableConfigTest {
 
-    private final AlienFactory factory = new AlienFactory(
-            mock(GameModel.class),
-            mock(PowerUpAllocatorFactory.class),
-            mock(SoundPlayerService.class),
-            mock(VibrationService.class)
-    );
+  private final AlienFactory factory = new AlienFactory(
+      mock(GameModel.class),
+      mock(PowerUpAllocatorFactory.class),
+      mock(SoundPlayerService.class),
+      mock(VibrationService.class)
+  );
 
-    @Test
-    public void shouldCreateBasicConfiguredDirectional() {
-        DirectionalDestroyableConfig config = DirectionalDestroyableConfig
-                .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .angle(23f)
-                .speed(AlienSpeed.SLOW)
-                .build();
+  @Test
+  public void shouldCreateBasicConfiguredDirectional() {
+    DirectionalDestroyableConfig config = DirectionalDestroyableConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .angle(23f)
+        .speed(AlienSpeed.SLOW)
+        .build();
 
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAngle(), equalTo(23f));
-        assertThat(config.getAlienType(), equalTo(AlienType.DIRECTIONAL_DESTROYABLE));
-        assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
-        assertThat(config.getSpawnConfig(), nullValue());
-        assertThat(config.getMissileConfig(), nullValue());
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAngle(), equalTo(23f));
+    assertThat(config.getAlienType(), equalTo(AlienType.DIRECTIONAL_DESTROYABLE));
+    assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
+    assertThat(config.getSpawnConfig(), nullValue());
+    assertThat(config.getMissileConfig(), nullValue());
 
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                false,
-                false,
-                0,
-                0,
-                0f,
-                false);
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        false,
+        false,
+        0,
+        0,
+        0f,
+        false);
 
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof DirectionalDestroyableAlien, is(true));
-    }
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof DirectionalDestroyableAlien, is(true));
+  }
 
-    @Test
-    public void shouldCreateFullyConfiguredDirectional() {
-        DirectionalDestroyableConfig config = DirectionalDestroyableConfig
-                .builder()
-                .alienCharacter(AlienCharacter.OCTOPUS)
-                .energy(10)
-                .angle(23f)
-                .speed(AlienSpeed.SLOW)
-                .spawnConfig(new SpawningAlienConfig(
-                    mock(AlienConfig.class),
-                    new ArrayList<>(),
-                    0f,
-                    0f))
-                .missileConfig(new MissileFiringConfig(
-                        AlienMissileType.DOWNWARDS,
-                        AlienMissileSpeed.MEDIUM,
-                        AlienMissileCharacter.LASER,
-                        0f))
-                .spinningConfig(new SpinningFixedAngularConfig(
-                        10))
-                .build();
+  @Test
+  public void shouldCreateFullyConfiguredDirectional() {
+    DirectionalDestroyableConfig config = DirectionalDestroyableConfig
+        .builder()
+        .alienCharacter(AlienCharacter.OCTOPUS)
+        .energy(10)
+        .angle(23f)
+        .speed(AlienSpeed.SLOW)
+        .spawnConfig(new SpawningAlienConfig(
+            mock(AlienConfig.class),
+            new ArrayList<>(),
+            0f,
+            0f))
+        .missileConfig(new MissileFiringConfig(
+            AlienMissileType.DOWNWARDS,
+            AlienMissileSpeed.MEDIUM,
+            AlienMissileCharacter.LASER,
+            0f))
+        .spinningConfig(new SpinningFixedAngularConfig(
+            10))
+        .build();
 
-        assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
-        assertThat(config.getEnergy(), equalTo(10));
-        assertThat(config.getAngle(), equalTo(23f));
-        assertThat(config.getAlienType(), equalTo(AlienType.DIRECTIONAL_DESTROYABLE));
-        assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
-        assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
-        assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
-        assertThat(config.getMissileConfig().getType(), equalTo(MissileConfig.MissileConfigType.MISSILE));
-        assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
-        assertThat(config.getSpinningConfig().getType(), equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
-        assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
+    assertThat(config.getAlienCharacter(), equalTo(AlienCharacter.OCTOPUS));
+    assertThat(config.getEnergy(), equalTo(10));
+    assertThat(config.getAngle(), equalTo(23f));
+    assertThat(config.getAlienType(), equalTo(AlienType.DIRECTIONAL_DESTROYABLE));
+    assertThat(config.getSpeed(), equalTo(AlienSpeed.SLOW));
+    assertThat(config.getSpawnConfig().getType(), equalTo(SpawnConfig.SpawnType.SPAWN));
+    assertThat(config.getSpawnConfig() instanceof SpawningAlienConfig, is(true));
+    assertThat(config.getMissileConfig().getType(),
+        equalTo(MissileConfig.MissileConfigType.MISSILE));
+    assertThat(config.getMissileConfig() instanceof MissileFiringConfig, is(true));
+    assertThat(config.getSpinningConfig().getType(),
+        equalTo(SpinningConfig.SpinningConfigType.FIXED_ANGULAR_ROTATION));
+    assertThat(config.getSpinningConfig() instanceof SpinningFixedAngularConfig, is(true));
 
-        List<IAlien> aliens = factory.createAlien(
-                config,
-                PowerUpType.LIFE,
-                false,
-                false,
-                0,
-                0,
-                0f,
-                false);
+    List<IAlien> aliens = factory.createAlien(
+        config,
+        PowerUpType.LIFE,
+        false,
+        false,
+        0,
+        0,
+        0f,
+        false);
 
-        assertThat(aliens, not(nullValue()));
-        assertThat(aliens.size(), equalTo(1));
-        assertThat(aliens.get(0) instanceof DirectionalDestroyableAlien, is(true));
-    }
+    assertThat(aliens, not(nullValue()));
+    assertThat(aliens.size(), equalTo(1));
+    assertThat(aliens.get(0) instanceof DirectionalDestroyableAlien, is(true));
+  }
 }

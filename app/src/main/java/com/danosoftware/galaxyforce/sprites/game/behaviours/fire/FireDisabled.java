@@ -8,14 +8,15 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
  * Used to switch off missile firing.
  */
 public class FireDisabled implements FireBehaviour {
-    @Override
-    public boolean readyToFire(float deltaTime) {
-        // alien is never ready to fire
-        return false;
-    }
 
-    @Override
-    public void fire(IAlien alien) {
-        // no implementation
-    }
+  @Override
+  public boolean readyToFire(float deltaTime) {
+    // alien is never ready to fire
+    return false;
+  }
+
+  @Override
+  public void fire(IAlien alien) {
+    // no implementation
+  }
 }

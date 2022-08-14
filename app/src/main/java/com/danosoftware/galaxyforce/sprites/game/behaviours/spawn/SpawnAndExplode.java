@@ -16,83 +16,83 @@ import java.util.List;
  * Spawn behaviour where an alien spawns and then destroys itself.
  */
 public class SpawnAndExplode implements SpawnBehaviour {
-    /*
-     * ******************************************************
-     * PRIVATE INSTANCE VARIABLES
-     * ******************************************************
-     */
+  /*
+   * ******************************************************
+   * PRIVATE INSTANCE VARIABLES
+   * ******************************************************
+   */
 
-    /* reference to game model */
-    private final GameModel model;
+  /* reference to game model */
+  private final GameModel model;
 
-    /*
-     * maximum random time after minimum delay before next alien will spawn.
-     * actual delay = MIN_DELAY + (DELAY_BUFFER * (0 - 1))
-     */
-    private float delayUntilSpawn;
+  /*
+   * maximum random time after minimum delay before next alien will spawn.
+   * actual delay = MIN_DELAY + (DELAY_BUFFER * (0 - 1))
+   */
+  private float delayUntilSpawn;
 
-    /* alien config of alien to spawn */
-    private final AlienConfig alienConfig;
+  /* alien config of alien to spawn */
+  private final AlienConfig alienConfig;
 
-    // allocate power-ups to spawned aliens
-    private final PowerUpAllocator powerUpAllocator;
+  // allocate power-ups to spawned aliens
+  private final PowerUpAllocator powerUpAllocator;
 
-    private final AlienFactory alienFactory;
+  private final AlienFactory alienFactory;
 
-    /**
-     * @param alienFactory            - factory to create aliens
-     * @param powerUpAllocatorFactory - factory to create power-up allocators
-     * @param model                   - model to receive aliens
-     * @param alienConfig             - config of alien to spawn
-     * @param powerUpType             - allocated power-up (can be null)
-     * @param delayUntilSpawn         - time before spawns
-     */
-    SpawnAndExplode(
-            final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
-            final GameModel model,
-            final AlienConfig alienConfig,
-            final PowerUpType powerUpType,
-            final float delayUntilSpawn) {
+  /**
+   * @param alienFactory            - factory to create aliens
+   * @param powerUpAllocatorFactory - factory to create power-up allocators
+   * @param model                   - model to receive aliens
+   * @param alienConfig             - config of alien to spawn
+   * @param powerUpType             - allocated power-up (can be null)
+   * @param delayUntilSpawn         - time before spawns
+   */
+  SpawnAndExplode(
+      final AlienFactory alienFactory,
+      final PowerUpAllocatorFactory powerUpAllocatorFactory,
+      final GameModel model,
+      final AlienConfig alienConfig,
+      final PowerUpType powerUpType,
+      final float delayUntilSpawn) {
 
-        this.delayUntilSpawn = delayUntilSpawn;
-        this.alienFactory = alienFactory;
-        this.model = model;
-        this.alienConfig = alienConfig;
+    this.delayUntilSpawn = delayUntilSpawn;
+    this.alienFactory = alienFactory;
+    this.model = model;
+    this.alienConfig = alienConfig;
 
-        final List<PowerUpType> powerUps;
-        if (powerUpType != null) {
-            powerUps = Collections.singletonList(powerUpType);
-        } else {
-            powerUps = new ArrayList<>();
-        }
-        this.powerUpAllocator = powerUpAllocatorFactory.createAllocator(
-                powerUps,
-                1);
+    final List<PowerUpType> powerUps;
+    if (powerUpType != null) {
+      powerUps = Collections.singletonList(powerUpType);
+    } else {
+      powerUps = new ArrayList<>();
     }
+    this.powerUpAllocator = powerUpAllocatorFactory.createAllocator(
+        powerUps,
+        1);
+  }
 
-    @Override
-    public boolean readyToSpawn(float deltaTime) {
+  @Override
+  public boolean readyToSpawn(float deltaTime) {
 
-        // countdown until alien spawns
-        delayUntilSpawn -= deltaTime;
+    // countdown until alien spawns
+    delayUntilSpawn -= deltaTime;
 
-        // if timer has reached zero, then we're ready to spawn
-        return (delayUntilSpawn <= 0);
-    }
+    // if timer has reached zero, then we're ready to spawn
+    return (delayUntilSpawn <= 0);
+  }
 
-    @Override
-    public void spawn(IAlien alien) {
-        // create and send new alien bean
-        SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
-                alienConfig,
-                powerUpAllocator.allocate(),
-                alien.x(),
-                alien.y());
+  @Override
+  public void spawn(IAlien alien) {
+    // create and send new alien bean
+    SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
+        alienConfig,
+        powerUpAllocator.allocate(),
+        alien.x(),
+        alien.y());
 
-        model.spawnAliens(aliens);
+    model.spawnAliens(aliens);
 
-        // destroy our alien
-        alien.explode();
-    }
+    // destroy our alien
+    alien.explode();
+  }
 }

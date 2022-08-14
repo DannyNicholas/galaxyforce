@@ -7,5 +7,5 @@ package com.danosoftware.galaxyforce.text;
  */
 public interface TextChangeListener {
 
-    void onTextChange();
+  void onTextChange();
 }

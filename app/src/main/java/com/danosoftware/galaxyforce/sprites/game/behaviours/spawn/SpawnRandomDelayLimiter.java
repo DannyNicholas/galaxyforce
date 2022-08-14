@@ -15,139 +15,138 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Behaves like a random spawner but where the number of active spawned
- * aliens is limited. If the maximum number of spawned aliens are still
- * active, no more can be spawned.
+ * Behaves like a random spawner but where the number of active spawned aliens is limited. If the
+ * maximum number of spawned aliens are still active, no more can be spawned.
  */
 public class SpawnRandomDelayLimiter implements SpawnBehaviour {
+  /*
+   * ******************************************************
+   * PRIVATE INSTANCE VARIABLES
+   * ******************************************************
+   */
+
+  /* reference to game model */
+  private final GameModel model;
+
+  /* minimum delay between alien spawning in seconds */
+  private final float minSpawnDelay;
+
+  /*
+   * maximum random time after minimum delay before next alien will spawn.
+   * actual delay = MIN_DELAY + (DELAY_BUFFER * (0 - 1))
+   */
+  private final float spawnDelayRandom;
+
+  /* alien config of alien to spawn */
+  private final AlienConfig alienConfig;
+
+  /* variable to store actual delay before alien can spawn */
+  private double delayUntilNextSpawn;
+
+  /* variable to store time passed since last spawn */
+  private float timeSinceLastSpawn;
+
+  // allocate power-ups to spawned aliens
+  private final PowerUpAllocator powerUpAllocator;
+
+  // since we don't know how many aliens will be spawned, use
+  // a multiplier to guess the number of aliens for power-up allocation
+  // A value of 10 indicates 1 power-up for every 10 aliens spawned
+  private final static int POWER_UP_MULTIPLIER = 10;
+
+  private final AlienFactory alienFactory;
+
+  // list of all spawned aliens
+  private final List<SpawnedAliensDto> spawnedAliens;
+  private final int maxActiveSpawnedAliens;
+
+  // optional alien character to limit on.
+  // if not provided, will base count on all spawned aliens
+  private final AlienCharacter limitedCharacter;
+
+  /**
+   * @param alienFactory            - factory to create aliens
+   * @param powerUpAllocatorFactory - factory to create power-up allocators
+   * @param model                   - model to receive aliens
+   * @param alienConfig             - config of alien to spawn
+   * @param minSpawnDelay           - minimum delay between spawns
+   * @param spawnDelayRandom        - additional maximum random time before spawns
+   * @param maxActiveSpawnedAliens  - max allowed active spawned aliens
+   */
+  SpawnRandomDelayLimiter(
+      final AlienFactory alienFactory,
+      final PowerUpAllocatorFactory powerUpAllocatorFactory,
+      final GameModel model,
+      final AlienConfig alienConfig,
+      final List<PowerUpType> powerUpTypes,
+      final float minSpawnDelay,
+      final float spawnDelayRandom,
+      final int maxActiveSpawnedAliens,
+      final AlienCharacter limitedCharacter) {
+
+    this.spawnedAliens = new ArrayList<>();
+    this.maxActiveSpawnedAliens = maxActiveSpawnedAliens;
+    this.limitedCharacter = limitedCharacter;
+    this.alienFactory = alienFactory;
+    this.model = model;
+    this.alienConfig = alienConfig;
+    this.minSpawnDelay = minSpawnDelay;
+    this.spawnDelayRandom = spawnDelayRandom;
+
+    /* reset time delay until alien can spawn */
+    delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * random());
+
     /*
-     * ******************************************************
-     * PRIVATE INSTANCE VARIABLES
-     * ******************************************************
+     * reset time since missile last fired to random value. initialise with
+     * random delay to further randomise each alien's firing delay
      */
+    timeSinceLastSpawn = (float) (delayUntilNextSpawn * random());
 
-    /* reference to game model */
-    private final GameModel model;
+    this.powerUpAllocator = powerUpAllocatorFactory.createAllocator(
+        powerUpTypes,
+        powerUpTypes.size() * POWER_UP_MULTIPLIER);
+  }
 
-    /* minimum delay between alien spawning in seconds */
-    private final float minSpawnDelay;
+  @Override
+  public boolean readyToSpawn(float deltaTime) {
+    // increment timer referencing time since alien last spawned
+    timeSinceLastSpawn = timeSinceLastSpawn + deltaTime;
 
-    /*
-     * maximum random time after minimum delay before next alien will spawn.
-     * actual delay = MIN_DELAY + (DELAY_BUFFER * (0 - 1))
-     */
-    private final float spawnDelayRandom;
+    // if timer has exceeded delay time and is active then ready to spawn
+    return (timeSinceLastSpawn > delayUntilNextSpawn);
+  }
 
-    /* alien config of alien to spawn */
-    private final AlienConfig alienConfig;
+  @Override
+  public void spawn(IAlien alien) {
+    /* reset time since base last spawned */
+    timeSinceLastSpawn = 0f;
 
-    /* variable to store actual delay before alien can spawn */
-    private double delayUntilNextSpawn;
+    /* reset time delay until alien can spawn */
+    delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * random());
 
-    /* variable to store time passed since last spawn */
-    private float timeSinceLastSpawn;
-
-    // allocate power-ups to spawned aliens
-    private final PowerUpAllocator powerUpAllocator;
-
-    // since we don't know how many aliens will be spawned, use
-    // a multiplier to guess the number of aliens for power-up allocation
-    // A value of 10 indicates 1 power-up for every 10 aliens spawned
-    private final static int POWER_UP_MULTIPLIER = 10;
-
-    private final AlienFactory alienFactory;
-
-    // list of all spawned aliens
-    private final List<SpawnedAliensDto> spawnedAliens;
-    private final int maxActiveSpawnedAliens;
-
-    // optional alien character to limit on.
-    // if not provided, will base count on all spawned aliens
-    private final AlienCharacter limitedCharacter;
-
-    /**
-     * @param alienFactory            - factory to create aliens
-     * @param powerUpAllocatorFactory - factory to create power-up allocators
-     * @param model                   - model to receive aliens
-     * @param alienConfig             - config of alien to spawn
-     * @param minSpawnDelay           - minimum delay between spawns
-     * @param spawnDelayRandom        - additional maximum random time before spawns
-     * @param maxActiveSpawnedAliens  - max allowed active spawned aliens
-     */
-    SpawnRandomDelayLimiter(
-            final AlienFactory alienFactory,
-            final PowerUpAllocatorFactory powerUpAllocatorFactory,
-            final GameModel model,
-            final AlienConfig alienConfig,
-            final List<PowerUpType> powerUpTypes,
-            final float minSpawnDelay,
-            final float spawnDelayRandom,
-            final int maxActiveSpawnedAliens,
-            final AlienCharacter limitedCharacter) {
-
-        this.spawnedAliens = new ArrayList<>();
-        this.maxActiveSpawnedAliens = maxActiveSpawnedAliens;
-        this.limitedCharacter = limitedCharacter;
-        this.alienFactory = alienFactory;
-        this.model = model;
-        this.alienConfig = alienConfig;
-        this.minSpawnDelay = minSpawnDelay;
-        this.spawnDelayRandom = spawnDelayRandom;
-
-        /* reset time delay until alien can spawn */
-        delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * random());
-
-        /*
-         * reset time since missile last fired to random value. initialise with
-         * random delay to further randomise each alien's firing delay
-         */
-        timeSinceLastSpawn = (float) (delayUntilNextSpawn * random());
-
-        this.powerUpAllocator = powerUpAllocatorFactory.createAllocator(
-                powerUpTypes,
-                powerUpTypes.size() * POWER_UP_MULTIPLIER);
+    if (countSpawnedAliens() < maxActiveSpawnedAliens) {
+      // create and send new alien bean
+      SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
+          alienConfig,
+          powerUpAllocator.allocate(),
+          alien.x(),
+          alien.y());
+      spawnedAliens.add(aliens);
+      model.spawnAliens(aliens);
     }
+  }
 
-    @Override
-    public boolean readyToSpawn(float deltaTime) {
-        // increment timer referencing time since alien last spawned
-        timeSinceLastSpawn = timeSinceLastSpawn + deltaTime;
-
-        // if timer has exceeded delay time and is active then ready to spawn
-        return (timeSinceLastSpawn > delayUntilNextSpawn);
-    }
-
-    @Override
-    public void spawn(IAlien alien) {
-        /* reset time since base last spawned */
-        timeSinceLastSpawn = 0f;
-
-        /* reset time delay until alien can spawn */
-        delayUntilNextSpawn = minSpawnDelay + (spawnDelayRandom * random());
-
-        if (countSpawnedAliens() < maxActiveSpawnedAliens) {
-            // create and send new alien bean
-            SpawnedAliensDto aliens = alienFactory.createSpawnedAlien(
-                    alienConfig,
-                    powerUpAllocator.allocate(),
-                    alien.x(),
-                    alien.y());
-            spawnedAliens.add(aliens);
-            model.spawnAliens(aliens);
-        }
-    }
-
-    // how many spawned aliens are still active
-    private int countSpawnedAliens() {
-      int count = 0;
-      for (SpawnedAliensDto spawnedAliensDto : spawnedAliens) {
-        for (IAlien alien : spawnedAliensDto.getAliens()) {
-          if (alien.isActive() && (limitedCharacter == null || limitedCharacter == alien
-              .character())) {
-            count++;
-          }
+  // how many spawned aliens are still active
+  private int countSpawnedAliens() {
+    int count = 0;
+    for (SpawnedAliensDto spawnedAliensDto : spawnedAliens) {
+      for (IAlien alien : spawnedAliensDto.getAliens()) {
+        if (alien.isActive() && (limitedCharacter == null || limitedCharacter == alien
+            .character())) {
+          count++;
         }
       }
-      return count;
     }
+    return count;
+  }
 }

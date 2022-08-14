@@ -14,27 +14,26 @@ import java.util.List;
  */
 public class CircularGenerator implements PathGenerator {
 
-    private final DoublePoint centre;
-    private final Double piMultiplier;
-    private final PathSpeed pathSpeed;
+  private final DoublePoint centre;
+  private final Double piMultiplier;
+  private final PathSpeed pathSpeed;
 
-    /**
-     * Instantiate generator by extracting and converting the circular data points
-     * and then translating them to their new positions based on the provided
-     * translators (e.g. x-axis flip).
-     */
-    public CircularGenerator(
-            final CircularPathDTO circularData,
-            final PointTranslatorChain translators,
-            final PathSpeed pathSpeed) {
-        this.centre = convertAndTranslatePoint(circularData.getCentre(), translators);
-        this.piMultiplier = circularData.getPiMultiplier();
-        this.pathSpeed = pathSpeed;
-    }
+  /**
+   * Instantiate generator by extracting and converting the circular data points and then
+   * translating them to their new positions based on the provided translators (e.g. x-axis flip).
+   */
+  public CircularGenerator(
+      final CircularPathDTO circularData,
+      final PointTranslatorChain translators,
+      final PathSpeed pathSpeed) {
+    this.centre = convertAndTranslatePoint(circularData.getCentre(), translators);
+    this.piMultiplier = circularData.getPiMultiplier();
+    this.pathSpeed = pathSpeed;
+  }
 
 
-    @Override
-    public List<DoublePoint> path() {
-        return createCircularPath(centre, piMultiplier, pathSpeed);
-    }
+  @Override
+  public List<DoublePoint> path() {
+    return createCircularPath(centre, piMultiplier, pathSpeed);
+  }
 }

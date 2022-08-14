@@ -78,42 +78,42 @@ public class DriftingAlien extends AbstractAlien {
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
   }
 
-    @Override
-    public void animate(float deltaTime) {
-        super.animate(deltaTime);
+  @Override
+  public void animate(float deltaTime) {
+    super.animate(deltaTime);
 
-        /* if active then alien can move */
-        if (isActive()) {
+    /* if active then alien can move */
+    if (isActive()) {
 
-          // move alien by calculated deltas
-          moveByDelta(
-              xDelta * deltaTime,
-              yDelta * deltaTime);
+      // move alien by calculated deltas
+      moveByDelta(
+          xDelta * deltaTime,
+          yDelta * deltaTime);
 
-          // test if alien is off the screen and is continuing to move
-          // away. In that case, shift aline to the opposite side of screen
-          // so it will re-appear on the opposite side.
-          if (offScreenLeft(this) && xDelta < 0) {
-            moveXByDelta(GAME_WIDTH - x() + halfWidth());
-          }
-          if (offScreenRight(this) && xDelta > 0) {
-            moveXByDelta(-GAME_WIDTH - ((x() + halfWidth()) % GAME_WIDTH));
-          }
-            if (offScreenBottom(this) && yDelta < 0) {
-                moveYByDelta(GAME_HEIGHT - y() + halfHeight());
-            }
-            if (offScreenTop(this) && yDelta > 0) {
-                moveYByDelta(-GAME_HEIGHT - ((y() + halfHeight()) % GAME_HEIGHT));
-            }
-        } else if (isWaiting()) {
-            // countdown until activation time
-            timeDelayStart -= deltaTime;
+      // test if alien is off the screen and is continuing to move
+      // away. In that case, shift aline to the opposite side of screen
+      // so it will re-appear on the opposite side.
+      if (offScreenLeft(this) && xDelta < 0) {
+        moveXByDelta(GAME_WIDTH - x() + halfWidth());
+      }
+      if (offScreenRight(this) && xDelta > 0) {
+        moveXByDelta(-GAME_WIDTH - ((x() + halfWidth()) % GAME_WIDTH));
+      }
+      if (offScreenBottom(this) && yDelta < 0) {
+        moveYByDelta(GAME_HEIGHT - y() + halfHeight());
+      }
+      if (offScreenTop(this) && yDelta > 0) {
+        moveYByDelta(-GAME_HEIGHT - ((y() + halfHeight()) % GAME_HEIGHT));
+      }
+    } else if (isWaiting()) {
+      // countdown until activation time
+      timeDelayStart -= deltaTime;
 
-            // activate alien. can only happen once!
-            if (timeDelayStart <= 0) {
-                activate();
-                animate(0 - timeDelayStart);
-            }
-        }
+      // activate alien. can only happen once!
+      if (timeDelayStart <= 0) {
+        activate();
+        animate(0 - timeDelayStart);
+      }
     }
+  }
 }

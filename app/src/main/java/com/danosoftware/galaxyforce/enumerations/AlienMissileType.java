@@ -12,158 +12,158 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Enumerations for missile types along with factories for creating
- * instances of missiles and sound effects.
+ * Enumerations for missile types along with factories for creating instances of missiles and sound
+ * effects.
  */
 public enum AlienMissileType {
 
-    DOWNWARDS(
-            new MissileFactory() {
-                @Override
-                public List<IAlienMissile> createMissiles(
-                    float x,
-                    float y,
-                    int offset,
-                    AlienMissileCharacter missileCharacter,
-                    AlienMissileSpeed missileSpeed,
-                    IBasePrimary base) {
+  DOWNWARDS(
+      new MissileFactory() {
+        @Override
+        public List<IAlienMissile> createMissiles(
+            float x,
+            float y,
+            int offset,
+            AlienMissileCharacter missileCharacter,
+            AlienMissileSpeed missileSpeed,
+            IBasePrimary base) {
 
-                  return Collections.singletonList(
-                      new AlienMissileDownwards(
-                          x,
-                          y - offset,
-                          missileCharacter.getAnimation(),
-                          missileSpeed));
-                }
+          return Collections.singletonList(
+              new AlienMissileDownwards(
+                  x,
+                  y - offset,
+                  missileCharacter.getAnimation(),
+                  missileSpeed));
+        }
 
-                @Override
-                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
-                    return missileCharacter.getSound();
-                }
-            }
-    ),
+        @Override
+        public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+          return missileCharacter.getSound();
+        }
+      }
+  ),
 
-    ROTATED(
-            new MissileFactory() {
-              @Override
-              public List<IAlienMissile> createMissiles(
-                  float x,
-                  float y,
-                  int offset,
-                  AlienMissileCharacter missileCharacter,
-                  AlienMissileSpeed missileSpeed,
-                  IBasePrimary base) {
-                return Collections.singletonList(
-                    new AlienMissileRotated(
-                        x,
-                        y - offset,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        base));
-              }
+  ROTATED(
+      new MissileFactory() {
+        @Override
+        public List<IAlienMissile> createMissiles(
+            float x,
+            float y,
+            int offset,
+            AlienMissileCharacter missileCharacter,
+            AlienMissileSpeed missileSpeed,
+            IBasePrimary base) {
+          return Collections.singletonList(
+              new AlienMissileRotated(
+                  x,
+                  y - offset,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  base));
+        }
 
-                @Override
-                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
-                    return missileCharacter.getSound();
-                }
-            }
-    ),
+        @Override
+        public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+          return missileCharacter.getSound();
+        }
+      }
+  ),
 
-    ROTATED_DOWNWARDS(
-            new MissileFactory() {
-              @Override
-              public List<IAlienMissile> createMissiles(
-                  float x,
-                  float y,
-                  int offset,
-                  AlienMissileCharacter missileCharacter,
-                  AlienMissileSpeed missileSpeed,
-                  IBasePrimary base) {
-                return Collections.singletonList(
-                    new AlienMissileDownwardsRotated(
-                        x,
-                        y - offset,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        base));
-              }
+  ROTATED_DOWNWARDS(
+      new MissileFactory() {
+        @Override
+        public List<IAlienMissile> createMissiles(
+            float x,
+            float y,
+            int offset,
+            AlienMissileCharacter missileCharacter,
+            AlienMissileSpeed missileSpeed,
+            IBasePrimary base) {
+          return Collections.singletonList(
+              new AlienMissileDownwardsRotated(
+                  x,
+                  y - offset,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  base));
+        }
 
-                @Override
-                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
-                    return missileCharacter.getSound();
-                }
-            }
-    ),
+        @Override
+        public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+          return missileCharacter.getSound();
+        }
+      }
+  ),
 
-    GUIDED(
-            new MissileFactory() {
-              @Override
-              public List<IAlienMissile> createMissiles(
-                  float x,
-                  float y,
-                  int offset,
-                  AlienMissileCharacter missileCharacter,
-                  AlienMissileSpeed missileSpeed,
-                  IBasePrimary base) {
-                return Collections.singletonList(
-                    new AlienMissileGuided(
-                        x,
-                        y - offset,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        base));
-              }
+  GUIDED(
+      new MissileFactory() {
+        @Override
+        public List<IAlienMissile> createMissiles(
+            float x,
+            float y,
+            int offset,
+            AlienMissileCharacter missileCharacter,
+            AlienMissileSpeed missileSpeed,
+            IBasePrimary base) {
+          return Collections.singletonList(
+              new AlienMissileGuided(
+                  x,
+                  y - offset,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  base));
+        }
 
-                @Override
-                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
-                    return missileCharacter.getSound();
-                }
-            }
-    ),
+        @Override
+        public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+          return missileCharacter.getSound();
+        }
+      }
+  ),
 
-    SPRAY(
-            new MissileFactory() {
-              @Override
-              public List<IAlienMissile> createMissiles(
-                  float x,
-                  float y,
-                  int offset,
-                  AlienMissileCharacter missileCharacter,
-                  AlienMissileSpeed missileSpeed,
-                  IBasePrimary base) {
-                return Arrays.asList(
-                    new AlienMissileRotated(
-                        x,
-                        y,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        (float) Math.atan2(-1, -1)),
-                    new AlienMissileRotated(
-                        x,
-                        y,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        (float) Math.atan2(-1, 1)),
-                    new AlienMissileRotated(
-                        x,
-                        y,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        (float) Math.atan2(1, -1)),
-                    new AlienMissileRotated(
-                        x,
-                        y,
-                        missileCharacter.getAnimation(),
-                        missileSpeed,
-                        (float) Math.atan2(1, 1)));
-                }
+  SPRAY(
+      new MissileFactory() {
+        @Override
+        public List<IAlienMissile> createMissiles(
+            float x,
+            float y,
+            int offset,
+            AlienMissileCharacter missileCharacter,
+            AlienMissileSpeed missileSpeed,
+            IBasePrimary base) {
+          return Arrays.asList(
+              new AlienMissileRotated(
+                  x,
+                  y,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  (float) Math.atan2(-1, -1)),
+              new AlienMissileRotated(
+                  x,
+                  y,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  (float) Math.atan2(-1, 1)),
+              new AlienMissileRotated(
+                  x,
+                  y,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  (float) Math.atan2(1, -1)),
+              new AlienMissileRotated(
+                  x,
+                  y,
+                  missileCharacter.getAnimation(),
+                  missileSpeed,
+                  (float) Math.atan2(1, 1)));
+        }
 
-                @Override
-                public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
-                    return missileCharacter.getSound();
-                }
-            }
-    );
+        @Override
+        public SoundEffect getSoundEffect(AlienMissileCharacter missileCharacter) {
+          return missileCharacter.getSound();
+        }
+      }
+  );
 
   // holds a factory capable of creating missiles.
   // each enum has it's own specific factory.
@@ -209,11 +209,11 @@ public enum AlienMissileType {
         AlienMissileSpeed missileSpeed,
         IBasePrimary base);
 
-        /**
-         * Create sound effects for missile type
-         */
-        SoundEffect getSoundEffect(
-                AlienMissileCharacter missileCharacter
-        );
-    }
+    /**
+     * Create sound effects for missile type
+     */
+    SoundEffect getSoundEffect(
+        AlienMissileCharacter missileCharacter
+    );
+  }
 }

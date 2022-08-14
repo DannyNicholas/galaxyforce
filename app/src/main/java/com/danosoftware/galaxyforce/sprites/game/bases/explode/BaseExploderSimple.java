@@ -9,26 +9,26 @@ import com.danosoftware.galaxyforce.view.Animation;
 
 public class BaseExploderSimple implements IBaseExploder {
 
-    // explosion animation
-    private final Animation animation;
+  // explosion animation
+  private final Animation animation;
 
-    // reference to sound player
-    private final SoundPlayerService sounds;
+  // reference to sound player
+  private final SoundPlayerService sounds;
 
-    // reference to vibrator
-    private final VibrationService vibrator;
+  // reference to vibrator
+  private final VibrationService vibrator;
 
-    // time since explosion started
-    private float explosionTime;
+  // time since explosion started
+  private float explosionTime;
 
-    public BaseExploderSimple(
-            SoundPlayerService sounds,
-            VibrationService vibrator,
-            Animation animation) {
-        this.animation = animation;
-        this.sounds = sounds;
-      this.vibrator = vibrator;
-    }
+  public BaseExploderSimple(
+      SoundPlayerService sounds,
+      VibrationService vibrator,
+      Animation animation) {
+    this.animation = animation;
+    this.sounds = sounds;
+    this.vibrator = vibrator;
+  }
 
   @Override
   public void startExplosion() {
