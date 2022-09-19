@@ -141,6 +141,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'com.danosoftware.galaxyforce'
 }
 
 /**
