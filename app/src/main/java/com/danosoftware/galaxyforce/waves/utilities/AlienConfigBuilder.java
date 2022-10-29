@@ -120,6 +120,17 @@ public class AlienConfigBuilder {
       case CONFUSER:
       case SAUCER:
       case JUMPER:
+      case BUBBLE:
+      case BUSHEY:
+      case CHOPPY:
+      case CLOWN:
+      case CROSSER:
+      case FROG_KING:
+      case GREEN_BOY:
+      case JELLYFISH:
+      case SPIRAL:
+      case SWEEP:
+      case ZOOM:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.DOWNWARDS)
@@ -390,6 +401,17 @@ public class AlienConfigBuilder {
       case SPECTATOR:
       case TINY_DANCER:
       case WILD_STYLE:
+      case BUBBLE:
+      case BUSHEY:
+      case CHOPPY:
+      case CLOWN:
+      case CROSSER:
+      case FROG_KING:
+      case GREEN_BOY:
+      case JELLYFISH:
+      case SPIRAL:
+      case SWEEP:
+      case ZOOM:
         return 1;
       case CIRCUIT:
       case PILOT:
