@@ -156,7 +156,7 @@ public class WaveFactory {
                 new SubWavePathConfig(
                     SubWavePathRule.WAVEY_LINE,
                     alienConfig(
-                        AlienCharacter.BUSHEY,
+                        AlienCharacter.PAD,
                         AlienMissileSpeed.MEDIUM,
                         15f),
                     NO_POWER_UPS
