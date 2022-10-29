@@ -1052,13 +1052,13 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.CHOPPY_01,
           SpriteDetails.CHOPPY_02,
-          SpriteDetails.CHOPPY_03,
-          SpriteDetails.CHOPPY_02},
+          SpriteDetails.CHOPPY_01,
+          SpriteDetails.CHOPPY_03},
       new SpriteDetails[]{
           SpriteDetails.CHOPPY_01_HIT,
           SpriteDetails.CHOPPY_02_HIT,
-          SpriteDetails.CHOPPY_03_HIT,
-          SpriteDetails.CHOPPY_02_HIT},
+          SpriteDetails.CHOPPY_01_HIT,
+          SpriteDetails.CHOPPY_03_HIT},
       0.20f
   ),
 
@@ -1066,13 +1066,13 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.CLOWN_01,
           SpriteDetails.CLOWN_02,
-          SpriteDetails.CLOWN_03,
-          SpriteDetails.CLOWN_02},
+          SpriteDetails.CLOWN_01,
+          SpriteDetails.CLOWN_03},
       new SpriteDetails[]{
           SpriteDetails.CLOWN_01_HIT,
           SpriteDetails.CLOWN_02_HIT,
-          SpriteDetails.CLOWN_03_HIT,
-          SpriteDetails.CLOWN_02_HIT},
+          SpriteDetails.CLOWN_01_HIT,
+          SpriteDetails.CLOWN_03_HIT},
       0.20f
   ),
 
@@ -1080,13 +1080,13 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.CROSSER_01,
           SpriteDetails.CROSSER_02,
-          SpriteDetails.CROSSER_03,
-          SpriteDetails.CROSSER_02},
+          SpriteDetails.CROSSER_01,
+          SpriteDetails.CROSSER_03},
       new SpriteDetails[]{
           SpriteDetails.CROSSER_01_HIT,
           SpriteDetails.CROSSER_02_HIT,
-          SpriteDetails.CROSSER_03_HIT,
-          SpriteDetails.CROSSER_02_HIT},
+          SpriteDetails.CROSSER_01_HIT,
+          SpriteDetails.CROSSER_03_HIT},
       0.20f
   ),
 
@@ -1094,13 +1094,13 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.FROG_KING_01,
           SpriteDetails.FROG_KING_02,
-          SpriteDetails.FROG_KING_03,
-          SpriteDetails.FROG_KING_02},
+          SpriteDetails.FROG_KING_01,
+          SpriteDetails.FROG_KING_03},
       new SpriteDetails[]{
           SpriteDetails.FROG_KING_01_HIT,
           SpriteDetails.FROG_KING_02_HIT,
-          SpriteDetails.FROG_KING_03_HIT,
-          SpriteDetails.FROG_KING_02_HIT},
+          SpriteDetails.FROG_KING_01_HIT,
+          SpriteDetails.FROG_KING_03_HIT},
       0.20f
   ),
 
@@ -1108,27 +1108,23 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.GREEN_BOY_01,
           SpriteDetails.GREEN_BOY_02,
-          SpriteDetails.GREEN_BOY_03,
-          SpriteDetails.GREEN_BOY_02},
+          SpriteDetails.GREEN_BOY_01,
+          SpriteDetails.GREEN_BOY_03},
       new SpriteDetails[]{
           SpriteDetails.GREEN_BOY_01_HIT,
           SpriteDetails.GREEN_BOY_02_HIT,
-          SpriteDetails.GREEN_BOY_03_HIT,
-          SpriteDetails.GREEN_BOY_02_HIT},
+          SpriteDetails.GREEN_BOY_01_HIT,
+          SpriteDetails.GREEN_BOY_03_HIT},
       0.20f
   ),
 
   JELLYFISH(
       new SpriteDetails[]{
-          SpriteDetails.JELLYFISH_01,
           SpriteDetails.JELLYFISH_02,
-          SpriteDetails.JELLYFISH_03,
-          SpriteDetails.JELLYFISH_02},
+          SpriteDetails.JELLYFISH_03},
       new SpriteDetails[]{
-          SpriteDetails.JELLYFISH_01_HIT,
           SpriteDetails.JELLYFISH_02_HIT,
-          SpriteDetails.JELLYFISH_03_HIT,
-          SpriteDetails.JELLYFISH_02_HIT},
+          SpriteDetails.JELLYFISH_03_HIT},
       0.20f
   ),
 
@@ -1150,15 +1146,11 @@ public enum AlienCharacter {
 
   SWEEP(
       new SpriteDetails[]{
-          SpriteDetails.SWEEP_01,
           SpriteDetails.SWEEP_02,
-          SpriteDetails.SWEEP_03,
-          SpriteDetails.SWEEP_02},
+          SpriteDetails.SWEEP_03},
       new SpriteDetails[]{
-          SpriteDetails.SWEEP_01_HIT,
           SpriteDetails.SWEEP_02_HIT,
-          SpriteDetails.SWEEP_03_HIT,
-          SpriteDetails.SWEEP_02_HIT},
+          SpriteDetails.SWEEP_03_HIT},
       0.20f
   ),
 
@@ -1166,13 +1158,13 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.ZOOM_01,
           SpriteDetails.ZOOM_02,
-          SpriteDetails.ZOOM_03,
-          SpriteDetails.ZOOM_02},
+          SpriteDetails.ZOOM_01,
+          SpriteDetails.ZOOM_03},
       new SpriteDetails[]{
           SpriteDetails.ZOOM_01_HIT,
           SpriteDetails.ZOOM_02_HIT,
-          SpriteDetails.ZOOM_03_HIT,
-          SpriteDetails.ZOOM_02_HIT},
+          SpriteDetails.ZOOM_01_HIT,
+          SpriteDetails.ZOOM_03_HIT},
       0.20f
   );
 

@@ -652,13 +652,13 @@ public enum GameSpriteIdentifier {
   SPIRAL_01(SpriteDetails.SPIRAL_01, "spiral01", 8),
   SPIRAL_02(SpriteDetails.SPIRAL_02, "spiral02", 8),
   SPIRAL_03(SpriteDetails.SPIRAL_03, "spiral03", 8),
-  SPIRAL_04(SpriteDetails.SPIRAL_03, "spiral03", 8),
-  SPIRAL_05(SpriteDetails.SPIRAL_03, "spiral03", 8),
+  SPIRAL_04(SpriteDetails.SPIRAL_04, "spiral04", 8),
+  SPIRAL_05(SpriteDetails.SPIRAL_05, "spiral05", 8),
   SPIRAL_01_HIT(SpriteDetails.SPIRAL_01_HIT, "spiral01Hit", 8),
   SPIRAL_02_HIT(SpriteDetails.SPIRAL_02_HIT, "spiral02Hit", 8),
   SPIRAL_03_HIT(SpriteDetails.SPIRAL_03_HIT, "spiral03Hit", 8),
-  SPIRAL_04_HIT(SpriteDetails.SPIRAL_03_HIT, "spiral03Hit", 8),
-  SPIRAL_05_HIT(SpriteDetails.SPIRAL_03_HIT, "spiral03Hit", 8),
+  SPIRAL_04_HIT(SpriteDetails.SPIRAL_04_HIT, "spiral04Hit", 8),
+  SPIRAL_05_HIT(SpriteDetails.SPIRAL_05_HIT, "spiral05Hit", 8),
 
   // Sweep
   SWEEP_01(SpriteDetails.SWEEP_01, "sweep01", 8),
