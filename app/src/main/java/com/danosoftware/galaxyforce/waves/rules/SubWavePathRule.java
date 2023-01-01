@@ -785,64 +785,6 @@ public enum SubWavePathRule {
           new PointTranslatorChain()
               .add(new FlipXPointTranslator(GAME_WIDTH)))
   ),
-  SLIDE_FORMATION_LEFT_RIGHT(
-      new SubWavePathRuleProperties(
-          Path.SLIDE_LEFT,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0.25f,
-          true,
-          new PointTranslatorChain()
-              .add(new FlipXPointTranslator(GAME_WIDTH))
-      ),
-      new SubWavePathRuleProperties(
-          Path.SLIDE_CENTRE,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0f,
-          true,
-          new PointTranslatorChain()
-              .add(new FlipXPointTranslator(GAME_WIDTH))
-      ),
-      new SubWavePathRuleProperties(
-          Path.SLIDE_RIGHT,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0.25f,
-          true,
-          new PointTranslatorChain()
-              .add(new FlipXPointTranslator(GAME_WIDTH))
-      )
-  ),
-  SLIDE_FORMATION_RIGHT_LEFT(
-      new SubWavePathRuleProperties(
-          Path.SLIDE_LEFT,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0.25f,
-          true
-      ),
-      new SubWavePathRuleProperties(
-          Path.SLIDE_CENTRE,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0f,
-          true
-      ),
-      new SubWavePathRuleProperties(
-          Path.SLIDE_RIGHT,
-          PathSpeed.SLOW,
-          1,
-          0,
-          0.25f,
-          true
-      )
-  ),
 
   /**
    * Aliens follow diagonal path from top-left

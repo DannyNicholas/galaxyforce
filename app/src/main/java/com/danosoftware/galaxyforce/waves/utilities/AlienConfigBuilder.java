@@ -128,9 +128,7 @@ public class AlienConfigBuilder {
       case FROG_KING:
       case GREEN_BOY:
       case JELLYFISH:
-      case SPIRAL:
       case SWEEP:
-      case ZOOM:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.DOWNWARDS)
@@ -155,6 +153,7 @@ public class AlienConfigBuilder {
       case FOXY_LARGE:
       case CHARLIE:
       case DEVIL:
+      case ZOOM:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.ROTATED_DOWNWARDS)
@@ -187,8 +186,9 @@ public class AlienConfigBuilder {
             .missileSpeed(speed)
             .missileFrequency(missileFrequency)
             .build();
-      // spray downwards missiles
+      // spray missiles
       case LADY_BIRD:
+      case SPIRAL:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.SPRAY)
@@ -409,7 +409,6 @@ public class AlienConfigBuilder {
       case FROG_KING:
       case GREEN_BOY:
       case JELLYFISH:
-      case SPIRAL:
       case SWEEP:
       case ZOOM:
         return 1;
@@ -435,6 +434,7 @@ public class AlienConfigBuilder {
       case CHARLIE:
       case SQUASHER:
       case SPACE_STATION:
+      case SPIRAL:
         return 2;
       case PINCER:
       case CONFUSER:
@@ -471,6 +471,7 @@ public class AlienConfigBuilder {
       case LADY_BIRD:
       case FIGHTER:
       case MINION:
+      case ZOOM:
         return true;
       default:
         return false;

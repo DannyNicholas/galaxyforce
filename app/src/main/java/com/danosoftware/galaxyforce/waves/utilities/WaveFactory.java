@@ -34,6 +34,8 @@ import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.create
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createLeftToRightOffsetRowSubWave;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createRowDroppers;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSideDroppers;
+import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSlideLeftToRight;
+import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSlideRightToLeft;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createStaggeredDroppers;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStart;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStartImmediateRestart;
@@ -2640,46 +2642,42 @@ public class WaveFactory {
                     createCentralDroppers(
                         Path.SPIRAL,
                         PathSpeed.FAST,
-                        1,
+                        2,
                         0f,
-                        0f,
-                        false
+                        1.75f,
+                        true
                     ),
-                    PathConfig
-                        .builder()
-                        .alienCharacter(AlienCharacter.WHIRLPOOL)
-                        .energy(20)
-                        .spawnConfig(
-                            SpawningAlienConfig
-                                .builder()
-                                .maximumAdditionalRandomSpawnDelayTime(1f)
-                                .minimumSpawnDelayTime(0.5f)
-                                .spawnedPowerUpTypes(Arrays.asList(
-                                    PowerUpType.MISSILE_LASER,
-                                    PowerUpType.SHIELD,
-                                    PowerUpType.MISSILE_SPRAY))
-                                .spawnedAlienConfig(
-                                    SplitterConfig
-                                        .builder()
-                                        .alienConfigs(
-                                            Arrays.asList(
-                                                directionalAlienConfig(
-                                                    AlienCharacter.BEAR,
-                                                    -HALF_PI - QUARTER_PI,
-                                                    AlienSpeed.FAST,
-                                                    AlienMissileSpeed.SLOW,
-                                                    4f),
-                                                directionalAlienConfig(
-                                                    AlienCharacter.JOKER,
-                                                    -HALF_PI + QUARTER_PI,
-                                                    AlienSpeed.FAST,
-                                                    AlienMissileSpeed.SLOW,
-                                                    4f)
-                                            )
+                    spawningPathAlienConfig(
+                        AlienCharacter.WHIRLPOOL,
+                        SpawningAlienConfig
+                            .builder()
+                            .maximumAdditionalRandomSpawnDelayTime(1f)
+                            .minimumSpawnDelayTime(0.5f)
+                            .spawnedPowerUpTypes(Arrays.asList(
+                                PowerUpType.MISSILE_LASER,
+                                PowerUpType.SHIELD))
+                            .spawnedAlienConfig(
+                                SplitterConfig
+                                    .builder()
+                                    .alienConfigs(
+                                        Arrays.asList(
+                                            directionalAlienConfig(
+                                                AlienCharacter.BEAR,
+                                                -HALF_PI - QUARTER_PI,
+                                                AlienSpeed.FAST,
+                                                AlienMissileSpeed.SLOW,
+                                                4f),
+                                            directionalAlienConfig(
+                                                AlienCharacter.JOKER,
+                                                -HALF_PI + QUARTER_PI,
+                                                AlienSpeed.FAST,
+                                                AlienMissileSpeed.SLOW,
+                                                4f)
                                         )
-                                        .build())
-                                .build())
-                        .build(),
+                                    )
+                                    .build())
+
+                            .build()),
                     Collections.singletonList(PowerUpType.MISSILE_GUIDED)
                 )
             )
@@ -2700,15 +2698,15 @@ public class WaveFactory {
                     alienConfig(
                         AlienCharacter.INSECT_MOTHERSHIP,
                         AlienMissileSpeed.VERY_FAST,
-                        1f
+                        2f
                     ),
                     Collections.singletonList(PowerUpType.MISSILE_SPRAY)
                 ),
                 new SubWavePathConfig(
                     SubWavePathRule.CROSSOVER_EXIT_ATTACK_REVERSE,
                     alienConfig(
-                        AlienCharacter.LADY_BIRD,
-                        AlienMissileSpeed.FAST,
+                        AlienCharacter.SPIRAL,
+                        AlienMissileSpeed.MEDIUM,
                         6.5f
                     ),
                     Collections.singletonList(PowerUpType.HELPER_BASES)
@@ -2723,14 +2721,14 @@ public class WaveFactory {
                     alienConfig(
                         AlienCharacter.INSECT_MOTHERSHIP,
                         AlienMissileSpeed.VERY_FAST,
-                        1f
+                        2f
                     ),
                     Collections.singletonList(PowerUpType.MISSILE_LASER)
                 ),
                 new SubWavePathConfig(
                     SubWavePathRule.CROSSOVER_EXIT_ATTACK,
                     alienConfig(
-                        AlienCharacter.LADY_BIRD,
+                        AlienCharacter.SPIRAL,
                         AlienMissileSpeed.FAST,
                         6.5f
                     ),
@@ -2966,54 +2964,111 @@ public class WaveFactory {
       case 43:
       case 44:
 
+        /*
+         * Descending double-row of aliens with sliding aliens that
+         * drop from left-to-right and then right-to-left.
+         */
         subWaves.add(
             createSubWave(
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                 new SubWavePathConfig(
-                    SubWavePathRule.SLIDE_FORMATION_LEFT_RIGHT,
-                    alienConfig(
-                        AlienCharacter.MINION,
-                        AlienMissileSpeed.MEDIUM,
-                        6.5f
+                    createSlideLeftToRight(
+                        PathSpeed.SLOW,
+                        1,
+                        3f,
+                        0f,
+                        false
                     ),
-                    Collections.singletonList(PowerUpType.LIFE)
-                )
-            )
-        );
-        subWaves.add(
-            createSubWave(
-                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
-                new SubWavePathConfig(
-                    SubWavePathRule.SLIDE_FORMATION_RIGHT_LEFT,
                     alienConfig(
-                        AlienCharacter.MINION,
-                        AlienMissileSpeed.MEDIUM,
-                        6.5f
+                        AlienCharacter.ZOOM,
+                        AlienMissileSpeed.VERY_FAST,
+                        2f
                     ),
-                    Collections.singletonList(PowerUpType.LIFE)
-                )
-            )
-        );
-        subWaves.add(
-            createSubWave(
-                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
-                new SubWavePathConfig(
-                    SubWavePathRule.SLIDE_FORMATION_LEFT_RIGHT,
-                    alienConfig(
-                        AlienCharacter.MINION,
-                        AlienMissileSpeed.MEDIUM,
-                        6.5f
-                    ),
-                    Collections.singletonList(PowerUpType.LIFE)
+                    Collections.singletonList(PowerUpType.MISSILE_FAST)
                 ),
                 new SubWavePathConfig(
-                    SubWavePathRule.SLIDE_FORMATION_RIGHT_LEFT,
-                    alienConfig(
-                        AlienCharacter.MINION,
-                        AlienMissileSpeed.MEDIUM,
-                        6.5f
+                    createSlideRightToLeft(
+                        PathSpeed.SLOW,
+                        1,
+                        6f,
+                        0f,
+                        false
                     ),
-                    Collections.singletonList(PowerUpType.LIFE)
+                    alienConfig(
+                        AlienCharacter.ZOOM,
+                        AlienMissileSpeed.VERY_FAST,
+                        2f
+                    ),
+                    NO_POWER_UPS
+                ),
+                new SubWavePathConfig(
+                    createDoubleDroppers(
+                        Path.STRAIGHT_DOWN,
+                        PathSpeed.SLOW,
+                        4,
+                        0f,
+                        0.5f,
+                        false
+                    ),
+                    alienConfig(
+                        AlienCharacter.PAD,
+                        AlienMissileSpeed.FAST,
+                        4f),
+                    NO_POWER_UPS
+                )
+            )
+        );
+        /*
+         * Descending double-row of aliens with sliding aliens that
+         * drop from left-to-right and right-to-left at same time.
+         */
+        subWaves.add(
+            createSubWave(
+                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                new SubWavePathConfig(
+                    createSlideLeftToRight(
+                        PathSpeed.SLOW,
+                        2,
+                        2f,
+                        2f,
+                        false
+                    ),
+                    alienConfig(
+                        AlienCharacter.ZOOM,
+                        AlienMissileSpeed.VERY_FAST,
+                        2f
+                    ),
+                    NO_POWER_UPS
+                ),
+                new SubWavePathConfig(
+                    createSlideRightToLeft(
+                        PathSpeed.SLOW,
+                        2,
+                        2f,
+                        2f,
+                        false
+                    ),
+                    alienConfig(
+                        AlienCharacter.ZOOM,
+                        AlienMissileSpeed.VERY_FAST,
+                        2f
+                    ),
+                    NO_POWER_UPS
+                ),
+                new SubWavePathConfig(
+                    createDoubleDroppers(
+                        Path.STRAIGHT_DOWN,
+                        PathSpeed.SLOW,
+                        4,
+                        0f,
+                        0.5f,
+                        false
+                    ),
+                    alienConfig(
+                        AlienCharacter.PAD,
+                        AlienMissileSpeed.FAST,
+                        4f),
+                    NO_POWER_UPS
                 )
             )
         );

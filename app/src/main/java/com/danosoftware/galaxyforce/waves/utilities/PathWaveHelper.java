@@ -9,6 +9,7 @@ import static com.danosoftware.galaxyforce.flightpath.translators.PointTranslato
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.flightpath.paths.Path;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
+import com.danosoftware.galaxyforce.flightpath.translators.FlipXPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.OffsetXPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.OffsetYPointTranslator;
 import com.danosoftware.galaxyforce.flightpath.translators.PointTranslatorChain;
@@ -920,6 +921,92 @@ public class PathWaveHelper {
       );
       batchDelay += (delayBetweenAliens * aliensInBatch) + delayBetweenBatches;
     }
+
+    return subWaves;
+  }
+
+  /**
+   * Creates an attack of aliens that slide from left to right in curved-arc.
+   */
+  public static List<SubWavePathRuleProperties> createSlideLeftToRight(
+      final PathSpeed speed,
+      final int numberOfAliens,
+      final float delayStart,
+      final float delayBetweenAliens,
+      final boolean restartImmediately) {
+
+    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
+
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_LEFT,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart + 0.25f,
+        restartImmediately,
+        new PointTranslatorChain()
+            .add(new FlipXPointTranslator(GAME_WIDTH))
+    ));
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_CENTRE,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart,
+        restartImmediately,
+        new PointTranslatorChain()
+            .add(new FlipXPointTranslator(GAME_WIDTH))
+    ));
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_RIGHT,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart + 0.25f,
+        restartImmediately,
+        new PointTranslatorChain()
+            .add(new FlipXPointTranslator(GAME_WIDTH))
+    ));
+
+    return subWaves;
+  }
+
+  /**
+   * Creates an attack of aliens that slide from left to right in curved-arc.
+   */
+  public static List<SubWavePathRuleProperties> createSlideRightToLeft(
+      final PathSpeed speed,
+      final int numberOfAliens,
+      final float delayStart,
+      final float delayBetweenAliens,
+      final boolean restartImmediately) {
+
+    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
+
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_LEFT,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart + 0.25f,
+        restartImmediately
+    ));
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_CENTRE,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart,
+        restartImmediately
+    ));
+    subWaves.add(new SubWavePathRuleProperties(
+        Path.SLIDE_RIGHT,
+        speed,
+        numberOfAliens,
+        speed.getMultiplier() * delayBetweenAliens,
+        delayStart + 0.25f,
+        restartImmediately
+    ));
 
     return subWaves;
   }
