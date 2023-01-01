@@ -43,6 +43,63 @@ public class PathWaveHelper {
   // multiplier to be used to calculate delays between rows
   private static final float VERTICAL_DELAY_MULTIPLIER = 0.3f;
 
+
+  /**
+   * Basic path follower
+   */
+  public static List<SubWavePathRuleProperties> pathFollower(
+      final Path path,
+      final PathSpeed speed,
+      final int numberOfAliens,
+      final float delayBetweenAliens,
+      final float delayStart,
+      final boolean restartImmediately) {
+
+    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
+
+    subWaves.add(
+        new SubWavePathRuleProperties(
+            path,
+            speed,
+            numberOfAliens,
+            delayBetweenAliens,
+            delayStart,
+            restartImmediately
+        )
+    );
+
+    return subWaves;
+  }
+
+  /**
+   * Basic path follower with point translator
+   */
+  public static List<SubWavePathRuleProperties> pathFollower(
+      final Path path,
+      final PathSpeed speed,
+      final int numberOfAliens,
+      final float delayBetweenAliens,
+      final float delayStart,
+      final boolean restartImmediately,
+      final PointTranslatorChain pointTranslatorChain) {
+
+    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
+
+    subWaves.add(
+        new SubWavePathRuleProperties(
+            path,
+            speed,
+            numberOfAliens,
+            delayBetweenAliens,
+            delayStart,
+            restartImmediately,
+            pointTranslatorChain
+        )
+    );
+
+    return subWaves;
+  }
+
   //
   // ******************************************
   // OFFSET SUB-WAVES

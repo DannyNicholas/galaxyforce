@@ -110,7 +110,13 @@ public enum Path {
   /*
    * Diagonal path from top-left to bottom-right
    */
-  DIAGONAL("diagonal.json");
+  DIAGONAL("diagonal.json"),
+
+  /*
+   * Incomplete square path around screen edge from bottom-left,
+   * top-left, top-right, finishing at bottom-right
+   */
+  EDGE_CREEPER("edgeCreeper.json");
 
 
   // file name holding path data
