@@ -3123,7 +3123,6 @@ public class WaveFactory {
                 )
             )
         );
-
         break;
 
       case 45:
