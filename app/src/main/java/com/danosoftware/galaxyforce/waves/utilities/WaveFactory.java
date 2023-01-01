@@ -37,6 +37,7 @@ import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.create
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSlideLeftToRight;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSlideRightToLeft;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createStaggeredDroppers;
+import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.path;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.pathFollower;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStart;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStartImmediateRestart;
@@ -3078,13 +3079,15 @@ public class WaveFactory {
             createSubWave(
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                 new SubWavePathConfig(
-                    pathFollower(
-                        Path.EDGE_CREEPER,
-                        PathSpeed.FAST,
-                        10,
-                        0.25f,
-                        0f,
-                        false
+                    path(
+                        pathFollower(
+                            Path.EDGE_CREEPER,
+                            PathSpeed.FAST,
+                            10,
+                            0.25f,
+                            0f,
+                            false
+                        )
                     ),
                     alienConfig(
                         AlienCharacter.ZOOM,
@@ -3099,15 +3102,17 @@ public class WaveFactory {
             createSubWave(
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                 new SubWavePathConfig(
-                    pathFollower(
-                        Path.EDGE_CREEPER,
-                        PathSpeed.FAST,
-                        10,
-                        0.25f,
-                        0f,
-                        false,
-                        new PointTranslatorChain()
-                            .add(new FlipYPointTranslator(GAME_HEIGHT))
+                    path(
+                        pathFollower(
+                            Path.EDGE_CREEPER,
+                            PathSpeed.FAST,
+                            10,
+                            0.25f,
+                            0f,
+                            false,
+                            new PointTranslatorChain()
+                                .add(new FlipYPointTranslator(GAME_HEIGHT))
+                        )
                     ),
                     alienConfig(
                         AlienCharacter.ZOOM,

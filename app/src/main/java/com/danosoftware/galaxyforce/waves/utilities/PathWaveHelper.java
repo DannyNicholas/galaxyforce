@@ -43,11 +43,19 @@ public class PathWaveHelper {
   // multiplier to be used to calculate delays between rows
   private static final float VERTICAL_DELAY_MULTIPLIER = 0.3f;
 
+  /**
+   * Create list of path rules
+   */
+  public static List<SubWavePathRuleProperties> path(
+      SubWavePathRuleProperties... subWaveProps
+  ) {
+    return Arrays.asList(subWaveProps);
+  }
 
   /**
    * Basic path follower
    */
-  public static List<SubWavePathRuleProperties> pathFollower(
+  public static SubWavePathRuleProperties pathFollower(
       final Path path,
       final PathSpeed speed,
       final int numberOfAliens,
@@ -55,9 +63,7 @@ public class PathWaveHelper {
       final float delayStart,
       final boolean restartImmediately) {
 
-    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
-
-    subWaves.add(
+    return
         new SubWavePathRuleProperties(
             path,
             speed,
@@ -65,16 +71,13 @@ public class PathWaveHelper {
             delayBetweenAliens,
             delayStart,
             restartImmediately
-        )
-    );
-
-    return subWaves;
+        );
   }
 
   /**
    * Basic path follower with point translator
    */
-  public static List<SubWavePathRuleProperties> pathFollower(
+  public static SubWavePathRuleProperties pathFollower(
       final Path path,
       final PathSpeed speed,
       final int numberOfAliens,
@@ -83,9 +86,7 @@ public class PathWaveHelper {
       final boolean restartImmediately,
       final PointTranslatorChain pointTranslatorChain) {
 
-    List<SubWavePathRuleProperties> subWaves = new ArrayList<>();
-
-    subWaves.add(
+    return
         new SubWavePathRuleProperties(
             path,
             speed,
@@ -94,10 +95,7 @@ public class PathWaveHelper {
             delayStart,
             restartImmediately,
             pointTranslatorChain
-        )
-    );
-
-    return subWaves;
+        );
   }
 
   //
