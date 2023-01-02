@@ -38,7 +38,6 @@ import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.create
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createSlideRightToLeft;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.createStaggeredDroppers;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.path;
-import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.pathFollower;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStart;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.scatteredTopStartImmediateRestart;
 import static com.danosoftware.galaxyforce.waves.utilities.PathWaveHelper.waveWithGaps;
@@ -3080,7 +3079,7 @@ public class WaveFactory {
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                 new SubWavePathConfig(
                     path(
-                        pathFollower(
+                        new SubWavePathRuleProperties(
                             Path.EDGE_CREEPER,
                             PathSpeed.FAST,
                             10,
@@ -3103,7 +3102,7 @@ public class WaveFactory {
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
                 new SubWavePathConfig(
                     path(
-                        pathFollower(
+                        new SubWavePathRuleProperties(
                             Path.EDGE_CREEPER,
                             PathSpeed.FAST,
                             10,

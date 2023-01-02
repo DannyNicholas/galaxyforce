@@ -52,52 +52,6 @@ public class PathWaveHelper {
     return Arrays.asList(subWaveProps);
   }
 
-  /**
-   * Basic path follower
-   */
-  public static SubWavePathRuleProperties pathFollower(
-      final Path path,
-      final PathSpeed speed,
-      final int numberOfAliens,
-      final float delayBetweenAliens,
-      final float delayStart,
-      final boolean restartImmediately) {
-
-    return
-        new SubWavePathRuleProperties(
-            path,
-            speed,
-            numberOfAliens,
-            delayBetweenAliens,
-            delayStart,
-            restartImmediately
-        );
-  }
-
-  /**
-   * Basic path follower with point translator
-   */
-  public static SubWavePathRuleProperties pathFollower(
-      final Path path,
-      final PathSpeed speed,
-      final int numberOfAliens,
-      final float delayBetweenAliens,
-      final float delayStart,
-      final boolean restartImmediately,
-      final PointTranslatorChain pointTranslatorChain) {
-
-    return
-        new SubWavePathRuleProperties(
-            path,
-            speed,
-            numberOfAliens,
-            delayBetweenAliens,
-            delayStart,
-            restartImmediately,
-            pointTranslatorChain
-        );
-  }
-
   //
   // ******************************************
   // OFFSET SUB-WAVES
