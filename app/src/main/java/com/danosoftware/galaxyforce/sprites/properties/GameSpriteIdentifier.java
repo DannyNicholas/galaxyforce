@@ -3,8 +3,8 @@ package com.danosoftware.galaxyforce.sprites.properties;
 public enum GameSpriteIdentifier {
 
   // Block
-  BLOCK_01(SpriteDetails.BLOCK_01, "block01", 2),
-  BLOCK_02(SpriteDetails.BLOCK_02, "block02", 2),
+  BLOCK_01(SpriteDetails.BLOCK_01, "block01", 6),
+  BLOCK_02(SpriteDetails.BLOCK_02, "block02", 6),
 
   // Foxy
   FOXY(SpriteDetails.FOXY, "foxy01", 8),

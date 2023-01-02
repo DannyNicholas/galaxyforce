@@ -24,7 +24,7 @@ public enum AlienCharacter {
       new SpriteDetails[]{
           SpriteDetails.BLOCK_01,
           SpriteDetails.BLOCK_02},
-      0.5f
+      1f
   ),
 
   FROGGER(

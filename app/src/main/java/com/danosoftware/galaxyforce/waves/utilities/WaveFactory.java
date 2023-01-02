@@ -2889,6 +2889,7 @@ public class WaveFactory {
             )
         );
         break;
+
       case 41:
         subWaves.add(
             createSubWave(
@@ -2931,6 +2932,8 @@ public class WaveFactory {
                     NO_POWER_UPS)
             )
         );
+        break;
+
       case 42:
 
         /*
