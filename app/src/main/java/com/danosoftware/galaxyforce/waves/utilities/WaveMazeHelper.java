@@ -30,6 +30,10 @@ public class WaveMazeHelper {
   private static final int ASTEROIDS_PER_ROW = 6;
   private static final int ASTEROIDS_SPRITE_WIDTH = 64;
 
+  // maze block options
+  private static final int BLOCKS_PER_ROW = 7;
+  private static final int BLOCKS_SPRITE_WIDTH = 64;
+
   /**
    * Descending rows of asteroids with no gaps
    */
@@ -72,7 +76,7 @@ public class WaveMazeHelper {
       final List<PowerUpType> powerUps) {
 
     // create random gaps in maze - 1 gap per row
-    List<Integer> mazeGaps = mazeGaps(totalRows, ASTEROIDS_PER_ROW);
+    List<Integer> mazeGaps = mazePositions(totalRows, ASTEROIDS_PER_ROW);
 
     return new SubWaveConfig[]{
         new SubWaveNoPathConfig(
@@ -106,7 +110,7 @@ public class WaveMazeHelper {
       final float delayBetweenRows) {
 
     // create random gaps in maze - 1 gap per row
-    List<Integer> mazeGaps = mazeGaps(totalRows, BARRIERS_PER_ROW);
+    List<Integer> mazeGaps = mazePositions(totalRows, BARRIERS_PER_ROW);
 
     return new SubWaveConfig[]{
         new SubWaveNoPathConfig(
@@ -134,7 +138,7 @@ public class WaveMazeHelper {
       final List<PowerUpType> powerUps) {
 
     // create random gaps in maze - 1 gap per row
-    List<Integer> mazeGaps = mazeGaps(totalRows, BARRIERS_PER_ROW);
+    List<Integer> mazeGaps = mazePositions(totalRows, BARRIERS_PER_ROW);
 
     return new SubWaveConfig[]{
         new SubWaveNoPathConfig(
@@ -222,10 +226,10 @@ public class WaveMazeHelper {
   }
 
   /**
-   * Creates a list of random positions. Each position represents where the maze gap exists for each
-   * row.
+   * Creates a list of random positions. Each position can represent where the maze gap or block
+   * exists for each row.
    */
-  private static List<Integer> mazeGaps(
+  private static List<Integer> mazePositions(
       int totalRows,
       int columnsPerRow) {
 
@@ -259,6 +263,58 @@ public class WaveMazeHelper {
         final int xPos = minX + (col * distanceBetweenAliens);
         subWaves.add(createAlienSubWaveProperty(row, xPos, delayBetweenRows));
       }
+    }
+    return subWaves;
+  }
+
+  /**
+   * Create maze dropping down from top with random blocks (1 per row).
+   */
+  public static SubWaveConfig[] createRandomBlockMaze(
+      final int totalRows,
+      final AlienSpeed speed,
+      final float delayBetweenRows) {
+
+    // create random blocks in maze - 1 block per row
+    List<Integer> mazeBlocks = mazePositions(totalRows, BLOCKS_PER_ROW);
+
+    return new SubWaveConfig[]{
+        new SubWaveNoPathConfig(
+            mazeBlockSubWave(
+                mazeBlocks,
+                delayBetweenRows,
+                BLOCKS_PER_ROW,
+                BLOCKS_SPRITE_WIDTH),
+            directionalAlienConfig(
+                AlienCharacter.BLOCK,
+                DOWNWARDS,
+                speed),
+            NO_POWER_UPS)
+    };
+  }
+
+  /**
+   * Creates a maze of multiple rows where one block exists in each row.
+   */
+  private static List<SubWaveRuleProperties> mazeBlockSubWave(
+      List<Integer> mazeBlocks,
+      float delayBetweenRows,
+      int columnsPerRow,
+      int alienWidth) {
+
+    List<SubWaveRuleProperties> subWaves = new ArrayList<>();
+
+    // calculates min/max x positions for aliens per row
+    final int minX = alienWidth / 2;
+    final int maxX = GAME_WIDTH - (alienWidth / 2);
+
+    final int distanceBetweenAliens = (maxX - minX) / (columnsPerRow - 1);
+
+    int row = 0;
+    for (int blockPosition : mazeBlocks) {
+      final int xPos = minX + (blockPosition * distanceBetweenAliens);
+      subWaves.add(createAlienSubWaveProperty(row, xPos, delayBetweenRows));
+      row++;
     }
     return subWaves;
   }

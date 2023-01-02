@@ -48,9 +48,11 @@ import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.HAL
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.NO_POWER_UPS;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.QUARTER_PI;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.flatten;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveFactoryHelper.multipleDelayedStartFromTop;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveMazeHelper.asteroidHorizontalRows;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveMazeHelper.createBarrierMaze;
 import static com.danosoftware.galaxyforce.waves.utilities.WaveMazeHelper.createBarrierMazeWithGuards;
+import static com.danosoftware.galaxyforce.waves.utilities.WaveMazeHelper.createRandomBlockMaze;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
 import com.danosoftware.galaxyforce.enumerations.AlienMissileSpeed;
@@ -2888,6 +2890,34 @@ public class WaveFactory {
         );
         break;
       case 41:
+        subWaves.add(
+            createSubWave(
+                SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
+                flatten(
+                    // multiple hunters separated by set delay
+                    new SubWaveNoPathConfig[]{
+                        new SubWaveNoPathConfig(
+                            multipleDelayedStartFromTop(
+                                20,
+                                2f,
+                                0.5f),
+                            hunterAlienConfig(
+                                AlienCharacter.CRAB,
+                                AlienSpeed.VERY_FAST,
+                                BoundariesConfig
+                                    .builder()
+                                    .build()),
+                            Collections.singletonList(PowerUpType.MISSILE_GUIDED)
+                        )
+                    },
+                    // multiple maze blocks separated by set delay
+                    createRandomBlockMaze(
+                        40,
+                        AlienSpeed.VERY_FAST,
+                        1)
+                )
+            )
+        );
         subWaves.add(
             createSubWave(
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
