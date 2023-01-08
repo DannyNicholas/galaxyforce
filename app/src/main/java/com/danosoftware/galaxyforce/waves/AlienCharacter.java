@@ -20,11 +20,17 @@ public enum AlienCharacter {
   BLOCK(
       new SpriteDetails[]{
           SpriteDetails.BLOCK_01,
-          SpriteDetails.BLOCK_02},
+          SpriteDetails.BLOCK_02,
+          SpriteDetails.BLOCK_03,
+          SpriteDetails.BLOCK_04,
+          SpriteDetails.BLOCK_05},
       new SpriteDetails[]{
           SpriteDetails.BLOCK_01,
-          SpriteDetails.BLOCK_02},
-      1f
+          SpriteDetails.BLOCK_02,
+          SpriteDetails.BLOCK_03,
+          SpriteDetails.BLOCK_04,
+          SpriteDetails.BLOCK_05},
+      0.2f
   ),
 
   FROGGER(

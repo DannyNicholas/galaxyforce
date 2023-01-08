@@ -8,6 +8,9 @@ public enum SpriteDetails {
   // Block
   BLOCK_01,
   BLOCK_02,
+  BLOCK_03,
+  BLOCK_04,
+  BLOCK_05,
 
   // Foxy
   FOXY,

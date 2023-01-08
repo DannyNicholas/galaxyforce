@@ -5,6 +5,9 @@ public enum GameSpriteIdentifier {
   // Block
   BLOCK_01(SpriteDetails.BLOCK_01, "block01", 6),
   BLOCK_02(SpriteDetails.BLOCK_02, "block02", 6),
+  BLOCK_03(SpriteDetails.BLOCK_03, "block03", 6),
+  BLOCK_04(SpriteDetails.BLOCK_04, "block04", 6),
+  BLOCK_05(SpriteDetails.BLOCK_05, "block05", 6),
 
   // Foxy
   FOXY(SpriteDetails.FOXY, "foxy01", 8),
