@@ -46,7 +46,7 @@ android {
      * compile your app. This means your app can use the API features included in
      * this API level and lower.
      */
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     /**
      * The defaultConfig block encapsulates default settings and entries for all
@@ -67,7 +67,7 @@ android {
         minSdkVersion 19
 
         // Specifies the API level used to test the app.
-        targetSdkVersion 32
+        targetSdkVersion 33
 
         // Defines the version number of your app.
         versionCode 62
@@ -166,8 +166,8 @@ dependencies {
     // lombok needed as compileOnly and annotationProcessor
     // see: https://projectlombok.org/setup/android
     //noinspection AnnotationProcessorOnCompilePath
-    compileOnly 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
