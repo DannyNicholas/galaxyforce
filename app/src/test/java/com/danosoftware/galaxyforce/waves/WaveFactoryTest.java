@@ -7,10 +7,8 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
-import android.util.Log;
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
@@ -22,8 +20,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,8 +29,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Also tries to create waves that are not yet supported.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class})
+@RunWith(MockitoJUnitRunner.class)
 public class WaveFactoryTest {
 
   private final static Logger logger = LoggerFactory.getLogger(WaveFactoryTest.class);
@@ -42,9 +38,6 @@ public class WaveFactoryTest {
 
   @Before
   public void setup() {
-    // mock any static android logging
-    mockStatic(Log.class);
-
     IAlien alien = mock(IAlien.class);
     List<IAlien> createdAliens = Collections.singletonList(alien);
     creationUtils = mock(WaveCreationUtils.class);
