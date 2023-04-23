@@ -10,7 +10,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import android.util.Log;
 import com.danosoftware.galaxyforce.constants.GameConstants;
@@ -23,16 +22,17 @@ import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class})
+@RunWith(MockitoJUnitRunner.class)
 public class AlienManagerTest {
 
   private AlienManager alienMgr;
@@ -45,10 +45,12 @@ public class AlienManagerTest {
   @Captor
   private ArgumentCaptor<List<IAlien>> argumentCaptor;
 
+  private MockedStatic<Log> mockStatic;
+
   @Before
   public void setUp() {
     // mock any static android logging
-    mockStatic(Log.class);
+    mockStatic = Mockito.mockStatic(Log.class);
 
     mockAlien = mock(IResettableAlien.class);
     when(mockAlien.isActive()).thenReturn(true);
@@ -79,6 +81,11 @@ public class AlienManagerTest {
 
     alienMgr = new AlienManager(mockWaveMgr, achievements, spriteprovider);
     alienMgr.isWaveReady();
+  }
+
+  @After
+  public void after() {
+    mockStatic.close();
   }
 
   @Test
@@ -136,7 +143,6 @@ public class AlienManagerTest {
   @Test
   public void shouldResetAliensAtEndOfPass() {
     when(mockAlien.isEndOfPass()).thenReturn(true);
-    when(mockWaveMgr.hasNext()).thenReturn(false);
     alienMgr.animate(0);
     verify(mockAlien, times(ALIEN_COUNT)).reset(any(float.class));
   }

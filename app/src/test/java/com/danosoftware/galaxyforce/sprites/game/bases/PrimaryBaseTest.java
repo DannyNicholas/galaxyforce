@@ -19,8 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
@@ -37,20 +36,20 @@ import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.sprites.providers.GamePlaySpriteProvider;
-import com.danosoftware.galaxyforce.textures.TextureService;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextureService.class})
+@RunWith(MockitoJUnitRunner.class)
 public class PrimaryBaseTest {
 
   private IBasePrimary primaryBase;
@@ -64,10 +63,12 @@ public class PrimaryBaseTest {
   @Captor
   private ArgumentCaptor<List<ISprite>> argumentCaptor;
 
+  private MockedStatic<Log> mockStatic;
+
   @Before
   public void setUp() {
     // mock any static android logging
-    mockStatic(Log.class);
+    mockStatic = Mockito.mockStatic(Log.class);
 
     // pre-populate sprite details
     setUpSpriteDetailsForTests();
@@ -82,6 +83,10 @@ public class PrimaryBaseTest {
     rightHelper = mock(IBaseHelper.class);
   }
 
+  @After
+  public void after() {
+    mockStatic.close();
+  }
 
   @Test
   public void baseShouldBeActive() {
