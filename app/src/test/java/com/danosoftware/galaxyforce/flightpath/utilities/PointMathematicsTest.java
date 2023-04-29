@@ -4,10 +4,10 @@ import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics
 import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics.multiply;
 import static com.danosoftware.galaxyforce.flightpath.utilities.PointMathematics.subtraction;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Point Mathematics Utility Methods

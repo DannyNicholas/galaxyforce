@@ -2,12 +2,12 @@ package com.danosoftware.galaxyforce.flightpath.utilities;
 
 import static com.danosoftware.galaxyforce.flightpath.utilities.CircularMathematics.createCircularPath;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import com.danosoftware.galaxyforce.flightpath.paths.PathSpeed;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Circular Mathematics Utility

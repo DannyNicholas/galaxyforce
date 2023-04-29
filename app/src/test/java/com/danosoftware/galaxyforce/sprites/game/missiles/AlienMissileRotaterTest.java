@@ -2,15 +2,15 @@ package com.danosoftware.galaxyforce.sprites.game.missiles;
 
 import static com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotater.calculateAngle;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.AlienMissileRotateCalculation;
 import com.danosoftware.galaxyforce.sprites.game.missiles.aliens.IAlienMissile;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Verifies angles calculated from missile position to base position.
@@ -22,7 +22,7 @@ public class AlienMissileRotaterTest {
   private final IAlienMissile missile = mock(IAlienMissile.class);
   private final static float TWO_PI = (float) (2f * Math.PI);
 
-  @Before
+  @BeforeEach
   public void setUp() {
     when(missile.x()).thenReturn(MISSILE_X);
     when(missile.y()).thenReturn(MISSILE_Y);

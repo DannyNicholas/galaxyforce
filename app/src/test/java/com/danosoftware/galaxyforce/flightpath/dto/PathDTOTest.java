@@ -3,7 +3,7 @@ package com.danosoftware.galaxyforce.flightpath.dto;
 import static com.danosoftware.galaxyforce.helpers.AssetHelpers.pathAsset;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import androidx.annotation.NonNull;
 import com.danosoftware.galaxyforce.flightpath.paths.Path;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

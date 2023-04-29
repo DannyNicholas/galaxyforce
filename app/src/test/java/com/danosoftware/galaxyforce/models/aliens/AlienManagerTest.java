@@ -22,17 +22,17 @@ import com.danosoftware.galaxyforce.waves.managers.WaveManager;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AlienManagerTest {
 
   private AlienManager alienMgr;
@@ -47,7 +47,7 @@ public class AlienManagerTest {
 
   private MockedStatic<Log> mockStatic;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // mock any static android logging
     mockStatic = Mockito.mockStatic(Log.class);
@@ -55,8 +55,6 @@ public class AlienManagerTest {
     mockAlien = mock(IResettableAlien.class);
     when(mockAlien.isActive()).thenReturn(true);
     when(mockAlien.isVisible()).thenReturn(true);
-    when(mockAlien.isDestroyed()).thenReturn(false);
-    when(mockAlien.isEndOfPass()).thenReturn(false);
     when(mockAlien.x()).thenReturn((float) GameConstants.SCREEN_MID_X);
     when(mockAlien.y()).thenReturn((float) GameConstants.SCREEN_MID_Y);
     when(mockAlien.halfHeight()).thenReturn(50);
@@ -83,7 +81,7 @@ public class AlienManagerTest {
     alienMgr.isWaveReady();
   }
 
-  @After
+  @AfterEach
   public void after() {
     mockStatic.close();
   }

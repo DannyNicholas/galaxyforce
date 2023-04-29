@@ -11,8 +11,8 @@ import static org.mockito.Mockito.when;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDimensions;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AbstractSpriteTest {
 
@@ -33,7 +33,7 @@ public class AbstractSpriteTest {
   private SpriteDetails spriteId;
   private ISprite sprite;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // pre-populate sprite details - only BASE has dimensions
     TextureRegion mockTextureRegion = mock(TextureRegion.class);

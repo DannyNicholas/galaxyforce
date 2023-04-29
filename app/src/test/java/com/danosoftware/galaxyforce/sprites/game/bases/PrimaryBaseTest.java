@@ -9,9 +9,9 @@ import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EX
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsIterableContaining.hasItem;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -39,17 +39,17 @@ import com.danosoftware.galaxyforce.sprites.providers.GamePlaySpriteProvider;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PrimaryBaseTest {
 
   private IBasePrimary primaryBase;
@@ -65,7 +65,7 @@ public class PrimaryBaseTest {
 
   private MockedStatic<Log> mockStatic;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // mock any static android logging
     mockStatic = Mockito.mockStatic(Log.class);
@@ -83,7 +83,7 @@ public class PrimaryBaseTest {
     rightHelper = mock(IBaseHelper.class);
   }
 
-  @After
+  @AfterEach
   public void after() {
     mockStatic.close();
   }

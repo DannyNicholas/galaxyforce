@@ -3,10 +3,10 @@ package com.danosoftware.galaxyforce.flightpath.translators;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_HEIGHT;
 import static com.danosoftware.galaxyforce.constants.GameConstants.GAME_WIDTH;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Checks that a chain of point translators correctly converts an example point

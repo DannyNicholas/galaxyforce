@@ -17,10 +17,10 @@ import com.danosoftware.galaxyforce.waves.utilities.WaveCreationUtils;
 import com.danosoftware.galaxyforce.waves.utilities.WaveFactory;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,14 +29,14 @@ import org.slf4j.LoggerFactory;
  * <p>
  * Also tries to create waves that are not yet supported.
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WaveFactoryTest {
 
   private final static Logger logger = LoggerFactory.getLogger(WaveFactoryTest.class);
 
   private WaveCreationUtils creationUtils;
 
-  @Before
+  @BeforeEach
   public void setup() {
     IAlien alien = mock(IAlien.class);
     List<IAlien> createdAliens = Collections.singletonList(alien);

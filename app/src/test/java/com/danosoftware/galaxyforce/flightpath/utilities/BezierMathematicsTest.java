@@ -2,11 +2,11 @@ package com.danosoftware.galaxyforce.flightpath.utilities;
 
 import static com.danosoftware.galaxyforce.flightpath.utilities.BezierMathematics.createBezierPath;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Bezier Mathematics Utility
