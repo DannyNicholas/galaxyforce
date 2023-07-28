@@ -337,7 +337,21 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_SMALL(
+  FOXY_SHRINKING_NORMAL(
+      new SpriteDetails[]{
+          SpriteDetails.FOXY,
+          SpriteDetails.FOXY_TALL,
+          SpriteDetails.FOXY,
+          SpriteDetails.FOXY_WIDE},
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_HIT,
+          SpriteDetails.FOXY_TALL_HIT,
+          SpriteDetails.FOXY_HIT,
+          SpriteDetails.FOXY_WIDE_HIT},
+      0.25f
+  ),
+
+  FOXY_SHRINKING_SMALL(
       new SpriteDetails[]{
           SpriteDetails.FOXY_SMALL,
           SpriteDetails.FOXY_TALL_SMALL,
@@ -351,7 +365,7 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_MEDIUM(
+  FOXY_SHRINKING_MEDIUM(
       new SpriteDetails[]{
           SpriteDetails.FOXY_MEDIUM,
           SpriteDetails.FOXY_TALL_MEDIUM,
@@ -365,7 +379,7 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_LARGE(
+  FOXY_SHRINKING_LARGE(
       new SpriteDetails[]{
           SpriteDetails.FOXY_LARGE,
           SpriteDetails.FOXY_TALL_LARGE,

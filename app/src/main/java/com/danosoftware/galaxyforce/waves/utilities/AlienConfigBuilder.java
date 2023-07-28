@@ -148,9 +148,10 @@ public class AlienConfigBuilder {
       // rotated downwards laser missile (will not fire upwards)
       case GHOST:
       case FOXY:
-      case FOXY_SMALL:
-      case FOXY_MEDIUM:
-      case FOXY_LARGE:
+      case FOXY_SHRINKING_LARGE:
+      case FOXY_SHRINKING_MEDIUM:
+      case FOXY_SHRINKING_NORMAL:
+      case FOXY_SHRINKING_SMALL:
       case CHARLIE:
       case DEVIL:
       case ZOOM:
@@ -411,6 +412,10 @@ public class AlienConfigBuilder {
       case JELLYFISH:
       case SWEEP:
       case ZOOM:
+      case FOXY_SHRINKING_LARGE:
+      case FOXY_SHRINKING_MEDIUM:
+      case FOXY_SHRINKING_NORMAL:
+      case FOXY_SHRINKING_SMALL:
         return 1;
       case CIRCUIT:
       case PILOT:
@@ -427,9 +432,6 @@ public class AlienConfigBuilder {
       case SPINNER_GREEN:
       case SPINNER_PULSE_GREEN:
       case FOXY:
-      case FOXY_SMALL:
-      case FOXY_MEDIUM:
-      case FOXY_LARGE:
       case BABY_DRAGON_HEAD:
       case CHARLIE:
       case SQUASHER:
