@@ -1,10 +1,12 @@
 package com.danosoftware.galaxyforce.waves;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Value
-public class AlienCharacterWithEnergy {
+@Getter
+@AllArgsConstructor
+public final class AlienCharacterWithEnergy {
 
-  AlienCharacter alienCharacter;
-  int energy;
+  private final AlienCharacter alienCharacter;
+  private final int energy;
 }

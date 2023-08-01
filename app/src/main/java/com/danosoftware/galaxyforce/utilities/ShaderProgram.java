@@ -1,14 +1,13 @@
 package com.danosoftware.galaxyforce.utilities;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
 @Builder
-@Value
-public class ShaderProgram {
+@Getter
+public final class ShaderProgram {
 
-  int programHandle;
-  int vertexShader;
-  int fragmentShader;
-
+  private final int programHandle;
+  private final int vertexShader;
+  private final int fragmentShader;
 }

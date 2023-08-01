@@ -11,7 +11,8 @@ import com.danosoftware.galaxyforce.tasks.TaskService;
 import com.danosoftware.galaxyforce.view.GLGraphics;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Runs a game loop test that cycles through different sections of the game automatically. Used for
@@ -93,10 +94,11 @@ public class GameLoopTest extends GameImpl {
   }
 
   // represents an action to perform at a set time duration
-  @Value
-  private static class ActionItem {
+  @Getter
+  @AllArgsConstructor
+  private static final class ActionItem {
 
-    Float time;
-    Runnable action;
+    private final Float time;
+    private final Runnable action;
   }
 }
