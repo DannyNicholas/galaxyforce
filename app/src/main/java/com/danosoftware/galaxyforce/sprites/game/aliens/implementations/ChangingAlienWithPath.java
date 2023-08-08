@@ -12,9 +12,10 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBeha
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.waves.AlienCharacterWithEnergy;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ChangingConfig;
+
 import java.util.List;
 import java.util.ListIterator;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -25,7 +26,6 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
   private final ListIterator<AlienCharacterWithEnergy> characters;
   private int energyBeforeChange = 0;
 
-  @Builder
   public ChangingAlienWithPath(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -66,6 +66,10 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
     }
   }
 
+  public static ChangingAlienWithPathBuilder builder() {
+    return new ChangingAlienWithPathBuilder();
+  }
+
   /**
    * If hit, switch to next animation. Used to change alien appearance each time it is hit.
    */
@@ -79,5 +83,81 @@ public class ChangingAlienWithPath extends AbstractAlienWithPath {
     }
 
     super.onHitBy(baseMissile);
+  }
+
+  public static class ChangingAlienWithPathBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull ChangingConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull List<PathPoint> alienPath;
+    private @NonNull Float delayStartTime;
+    private @NonNull Boolean restartImmediately;
+
+    ChangingAlienWithPathBuilder() {
+    }
+
+    public ChangingAlienWithPathBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder alienConfig(@NonNull ChangingConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder alienPath(@NonNull List<PathPoint> alienPath) {
+      this.alienPath = alienPath;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder delayStartTime(@NonNull Float delayStartTime) {
+      this.delayStartTime = delayStartTime;
+      return this;
+    }
+
+    public ChangingAlienWithPathBuilder restartImmediately(@NonNull Boolean restartImmediately) {
+      this.restartImmediately = restartImmediately;
+      return this;
+    }
+
+    public ChangingAlienWithPath build() {
+      return new ChangingAlienWithPath(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, alienPath, delayStartTime, restartImmediately);
+    }
   }
 }

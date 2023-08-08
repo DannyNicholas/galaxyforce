@@ -11,7 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalDestroyableConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -31,7 +31,6 @@ public class DirectionalDestroyableAlien extends AbstractAlien {
   private final float xDelta;
   private final float yDelta;
 
-  @Builder
   public DirectionalDestroyableAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -78,6 +77,10 @@ public class DirectionalDestroyableAlien extends AbstractAlien {
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
   }
 
+  public static DirectionalDestroyableAlienBuilder builder() {
+    return new DirectionalDestroyableAlienBuilder();
+  }
+
   @Override
   public void animate(float deltaTime) {
     super.animate(deltaTime);
@@ -102,6 +105,88 @@ public class DirectionalDestroyableAlien extends AbstractAlien {
         activate();
         animate(0 - timeDelayStart);
       }
+    }
+  }
+
+  public static class DirectionalDestroyableAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull DirectionalDestroyableConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+    private @NonNull Float timeDelayStart;
+    private @NonNull Boolean restartImmediately;
+
+    DirectionalDestroyableAlienBuilder() {
+    }
+
+    public DirectionalDestroyableAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder alienConfig(@NonNull DirectionalDestroyableConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder timeDelayStart(@NonNull Float timeDelayStart) {
+      this.timeDelayStart = timeDelayStart;
+      return this;
+    }
+
+    public DirectionalDestroyableAlienBuilder restartImmediately(@NonNull Boolean restartImmediately) {
+      this.restartImmediately = restartImmediately;
+      return this;
+    }
+
+    public DirectionalDestroyableAlien build() {
+      return new DirectionalDestroyableAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, xStart, yStart, timeDelayStart, restartImmediately);
     }
   }
 }

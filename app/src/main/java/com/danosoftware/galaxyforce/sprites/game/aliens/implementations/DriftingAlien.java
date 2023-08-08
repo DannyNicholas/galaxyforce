@@ -16,7 +16,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DriftingConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -32,7 +32,6 @@ public class DriftingAlien extends AbstractAlien {
   /* how many seconds to delay before alien starts */
   private float timeDelayStart;
 
-  @Builder
   public DriftingAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -78,6 +77,10 @@ public class DriftingAlien extends AbstractAlien {
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
   }
 
+  public static DriftingAlienBuilder builder() {
+    return new DriftingAlienBuilder();
+  }
+
   @Override
   public void animate(float deltaTime) {
     super.animate(deltaTime);
@@ -114,6 +117,82 @@ public class DriftingAlien extends AbstractAlien {
         activate();
         animate(0 - timeDelayStart);
       }
+    }
+  }
+
+  public static class DriftingAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull DriftingConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+    private @NonNull Float timeDelayStart;
+
+    DriftingAlienBuilder() {
+    }
+
+    public DriftingAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public DriftingAlienBuilder alienConfig(@NonNull DriftingConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public DriftingAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public DriftingAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public DriftingAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public DriftingAlienBuilder timeDelayStart(@NonNull Float timeDelayStart) {
+      this.timeDelayStart = timeDelayStart;
+      return this;
+    }
+
+    public DriftingAlien build() {
+      return new DriftingAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, xStart, yStart, timeDelayStart);
     }
   }
 }
