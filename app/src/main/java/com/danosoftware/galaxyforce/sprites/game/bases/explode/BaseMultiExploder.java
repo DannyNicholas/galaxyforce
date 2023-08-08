@@ -7,11 +7,11 @@ import com.danosoftware.galaxyforce.services.vibration.VibrationService;
 import com.danosoftware.galaxyforce.sprites.game.bases.IBasePrimary;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.view.Animation;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import lombok.Getter;
 
 public class BaseMultiExploder implements IBaseMultiExploder {
 
@@ -91,7 +91,7 @@ public class BaseMultiExploder implements IBaseMultiExploder {
     Iterator<TimedExplosion> iterator = timedExplosions.iterator();
     while (iterator.hasNext()) {
       TimedExplosion timedExplosion = iterator.next();
-      if (explosionTime >= timedExplosion.explodeTime) {
+      if (explosionTime >= timedExplosion.getExplodeTime()) {
         iterator.remove();
 
         final IBaseExplosion explosion = new BaseExplosion(
@@ -134,7 +134,6 @@ public class BaseMultiExploder implements IBaseMultiExploder {
     return explodingBases;
   }
 
-  @Getter
   private static class TimedExplosion {
 
     private final float x;
@@ -148,6 +147,18 @@ public class BaseMultiExploder implements IBaseMultiExploder {
       this.x = x;
       this.y = y;
       this.explodeTime = explodeTime;
+    }
+
+    public float getX() {
+      return this.x;
+    }
+
+    public float getY() {
+      return this.y;
+    }
+
+    public float getExplodeTime() {
+      return this.explodeTime;
     }
   }
 }

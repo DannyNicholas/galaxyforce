@@ -1,9 +1,7 @@
 package com.danosoftware.galaxyforce.waves.config.aliens.spawning;
 
-import lombok.Getter;
 import lombok.NonNull;
 
-@Getter
 public abstract class SpawnConfig {
 
   private final SpawnType type;
@@ -11,6 +9,10 @@ public abstract class SpawnConfig {
   public SpawnConfig(
       @NonNull SpawnType type) {
     this.type = type;
+  }
+
+  public SpawnType getType() {
+    return this.type;
   }
 
   public enum SpawnType {

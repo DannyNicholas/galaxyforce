@@ -14,11 +14,11 @@ import com.danosoftware.galaxyforce.view.Animation;
 import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticExplosionConfig;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import lombok.Getter;
 
 /**
  * Implementation of explosion behaviour that will trigger multiple explosions to coincide with the
@@ -132,7 +132,7 @@ public class ExplodeMultiple implements ExplodeBehaviour {
     Iterator<TimedExplosion> iterator = timedExplosions.iterator();
     while (iterator.hasNext()) {
       TimedExplosion timedExplosion = iterator.next();
-      if (explosionTime >= timedExplosion.explodeTime) {
+      if (explosionTime >= timedExplosion.getExplodeTime()) {
         iterator.remove();
 
         // create alien, immediately explode it and then spawn to model
@@ -171,7 +171,6 @@ public class ExplodeMultiple implements ExplodeBehaviour {
     return mainAnimation.isAnimationComplete() && timedExplosions.isEmpty();
   }
 
-  @Getter
   private static class TimedExplosion {
 
     private final float x;
@@ -185,6 +184,18 @@ public class ExplodeMultiple implements ExplodeBehaviour {
       this.x = x;
       this.y = y;
       this.explodeTime = explodeTime;
+    }
+
+    public float getX() {
+      return this.x;
+    }
+
+    public float getY() {
+      return this.y;
+    }
+
+    public float getExplodeTime() {
+      return this.explodeTime;
     }
   }
 }

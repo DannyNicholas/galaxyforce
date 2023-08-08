@@ -1,9 +1,7 @@
 package com.danosoftware.galaxyforce.waves.config.aliens.spinning;
 
-import lombok.Getter;
 import lombok.NonNull;
 
-@Getter
 public class SpinningConfig {
 
   private final SpinningConfigType type;
@@ -11,6 +9,10 @@ public class SpinningConfig {
   public SpinningConfig(
       @NonNull SpinningConfigType type) {
     this.type = type;
+  }
+
+  public SpinningConfigType getType() {
+    return this.type;
   }
 
   public enum SpinningConfigType {
