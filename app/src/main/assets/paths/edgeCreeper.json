@@ -1,0 +1,64 @@
+{
+  "pathData": [
+    {
+      "type": "linear",
+      "start": {
+        "x": -32,
+        "y": 32
+      },
+      "finish": {
+        "x": 32,
+        "y": 32
+      },
+      "pathPoints": 13
+    },
+    {
+      "type": "linear",
+      "start": {
+        "x": 32,
+        "y": 32
+      },
+      "finish": {
+        "x": 32,
+        "y": 928
+      },
+      "pathPoints": 180
+    },
+    {
+      "type": "linear",
+      "start": {
+        "x": 32,
+        "y": 928
+      },
+      "finish": {
+        "x": 508,
+        "y": 928
+      },
+      "pathPoints": 95
+    },
+    {
+      "type": "linear",
+      "start": {
+        "x": 508,
+        "y": 928
+      },
+      "finish": {
+        "x": 508,
+        "y": 32
+      },
+      "pathPoints": 180
+    },
+    {
+      "type": "linear",
+      "start": {
+        "x": 508,
+        "y": 32
+      },
+      "finish": {
+        "x": 572,
+        "y": 32
+      },
+      "pathPoints": 13
+    }
+  ]
+}

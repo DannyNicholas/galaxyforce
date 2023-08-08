@@ -4,8 +4,7 @@
 See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.danosoftware.galaxyforce">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.VIBRATE" />
 

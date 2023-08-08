@@ -105,7 +105,6 @@ public class AlienConfigBuilder {
       case BOUNCER:
       case DROOPY:
       case BAD_CAT:
-      case SMOKEY:
       case TELLY:
       case HELMET:
       case EGG:
@@ -121,6 +120,15 @@ public class AlienConfigBuilder {
       case CONFUSER:
       case SAUCER:
       case JUMPER:
+      case BUBBLE:
+      case BUSHEY:
+      case CHOPPY:
+      case CLOWN:
+      case CROSSER:
+      case FROG_KING:
+      case GREEN_BOY:
+      case JELLYFISH:
+      case SWEEP:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.DOWNWARDS)
@@ -140,11 +148,13 @@ public class AlienConfigBuilder {
       // rotated downwards laser missile (will not fire upwards)
       case GHOST:
       case FOXY:
-      case FOXY_SMALL:
-      case FOXY_MEDIUM:
-      case FOXY_LARGE:
+      case FOXY_SHRINKING_LARGE:
+      case FOXY_SHRINKING_MEDIUM:
+      case FOXY_SHRINKING_NORMAL:
+      case FOXY_SHRINKING_SMALL:
       case CHARLIE:
       case DEVIL:
+      case ZOOM:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.ROTATED_DOWNWARDS)
@@ -177,12 +187,22 @@ public class AlienConfigBuilder {
             .missileSpeed(speed)
             .missileFrequency(missileFrequency)
             .build();
-      // spray downwards missiles
+      // spray missiles
       case LADY_BIRD:
+      case SPIRAL:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.SPRAY)
             .missileCharacter(AlienMissileCharacter.LASER)
+            .missileSpeed(speed)
+            .missileFrequency(missileFrequency)
+            .build();
+      // guided missiles
+      case SMOKEY:
+        return MissileFiringConfig
+            .builder()
+            .missileType(AlienMissileType.GUIDED)
+            .missileCharacter(AlienMissileCharacter.FIREBALL)
             .missileSpeed(speed)
             .missileFrequency(missileFrequency)
             .build();
@@ -373,7 +393,6 @@ public class AlienConfigBuilder {
       case BOUNCER:
       case DROOPY:
       case BAD_CAT:
-      case SMOKEY:
       case TELLY:
       case HELMET:
       case EGG:
@@ -383,6 +402,20 @@ public class AlienConfigBuilder {
       case SPECTATOR:
       case TINY_DANCER:
       case WILD_STYLE:
+      case BUBBLE:
+      case BUSHEY:
+      case CHOPPY:
+      case CLOWN:
+      case CROSSER:
+      case FROG_KING:
+      case GREEN_BOY:
+      case JELLYFISH:
+      case SWEEP:
+      case ZOOM:
+      case FOXY_SHRINKING_LARGE:
+      case FOXY_SHRINKING_MEDIUM:
+      case FOXY_SHRINKING_NORMAL:
+      case FOXY_SHRINKING_SMALL:
         return 1;
       case CIRCUIT:
       case PILOT:
@@ -399,19 +432,18 @@ public class AlienConfigBuilder {
       case SPINNER_GREEN:
       case SPINNER_PULSE_GREEN:
       case FOXY:
-      case FOXY_SMALL:
-      case FOXY_MEDIUM:
-      case FOXY_LARGE:
       case BABY_DRAGON_HEAD:
       case CHARLIE:
       case SQUASHER:
       case SPACE_STATION:
+      case SPIRAL:
         return 2;
       case PINCER:
       case CONFUSER:
         return 3;
       case DEVIL:
       case WHIRLPOOL:
+      case SMOKEY:
         return 5;
       case INSECT_MOTHERSHIP:
       case BATTY:
@@ -441,6 +473,7 @@ public class AlienConfigBuilder {
       case LADY_BIRD:
       case FIGHTER:
       case MINION:
+      case ZOOM:
         return true;
       default:
         return false;

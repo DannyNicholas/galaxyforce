@@ -2,9 +2,9 @@ package com.danosoftware.galaxyforce.waves.config;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
@@ -31,7 +31,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class PathConfigTest {
 

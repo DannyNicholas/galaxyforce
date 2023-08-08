@@ -117,4 +117,37 @@ public class WaveFactoryHelper {
         false
     );
   }
+
+  /**
+   * A subwave rule that starts multiple aliens from top of the screen. Each subsequent alien is
+   * delayed by a supplied time delay.
+   *
+   * @param numberOfAliens     - number of aliens in wave
+   * @param delayBetweenAliens - delay between aliens
+   * @param initialDelay       - delay before first alien starts
+   * @return - subwave rule
+   */
+  public static List<SubWaveRuleProperties> multipleDelayedStartFromTop(
+      int numberOfAliens,
+      float delayBetweenAliens,
+      float initialDelay) {
+
+    List<SubWaveRuleProperties> alienRules = new ArrayList<>(numberOfAliens);
+
+    for (int i = 0; i < numberOfAliens; i++) {
+      alienRules.add(
+          new SubWaveRuleProperties(
+              true,
+              false,
+              0,
+              GameConstants.SCREEN_TOP,
+              1,
+              0f,
+              initialDelay + (delayBetweenAliens * i),
+              false
+          )
+      );
+    }
+    return alienRules;
+  }
 }

@@ -9,9 +9,9 @@ import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EX
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsIterableContaining.hasItem;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -19,8 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
 import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.BaseMissileType;
@@ -37,20 +36,20 @@ import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.sprites.providers.GamePlaySpriteProvider;
-import com.danosoftware.galaxyforce.textures.TextureService;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextureService.class})
+@ExtendWith(MockitoExtension.class)
 public class PrimaryBaseTest {
 
   private IBasePrimary primaryBase;
@@ -64,10 +63,12 @@ public class PrimaryBaseTest {
   @Captor
   private ArgumentCaptor<List<ISprite>> argumentCaptor;
 
-  @Before
+  private MockedStatic<Log> mockStatic;
+
+  @BeforeEach
   public void setUp() {
     // mock any static android logging
-    mockStatic(Log.class);
+    mockStatic = Mockito.mockStatic(Log.class);
 
     // pre-populate sprite details
     setUpSpriteDetailsForTests();
@@ -82,6 +83,10 @@ public class PrimaryBaseTest {
     rightHelper = mock(IBaseHelper.class);
   }
 
+  @AfterEach
+  public void after() {
+    mockStatic.close();
+  }
 
   @Test
   public void baseShouldBeActive() {

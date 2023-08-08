@@ -3,8 +3,11 @@ package com.danosoftware.galaxyforce.sprites.properties;
 public enum GameSpriteIdentifier {
 
   // Block
-  BLOCK_01(SpriteDetails.BLOCK_01, "block01", 2),
-  BLOCK_02(SpriteDetails.BLOCK_02, "block02", 2),
+  BLOCK_01(SpriteDetails.BLOCK_01, "block01", 6),
+  BLOCK_02(SpriteDetails.BLOCK_02, "block02", 6),
+  BLOCK_03(SpriteDetails.BLOCK_03, "block03", 6),
+  BLOCK_04(SpriteDetails.BLOCK_04, "block04", 6),
+  BLOCK_05(SpriteDetails.BLOCK_05, "block05", 6),
 
   // Foxy
   FOXY(SpriteDetails.FOXY, "foxy01", 8),
@@ -583,6 +586,98 @@ public enum GameSpriteIdentifier {
   // droid alien
   DROID(SpriteDetails.DROID, "droid", 3),
   DROID_HIT(SpriteDetails.DROID_HIT, "droidHit", 3),
+
+  // Bubble
+  BUBBLE_01(SpriteDetails.BUBBLE_01, "bubble01", 8),
+  BUBBLE_02(SpriteDetails.BUBBLE_02, "bubble02", 8),
+  BUBBLE_03(SpriteDetails.BUBBLE_03, "bubble03", 8),
+  BUBBLE_01_HIT(SpriteDetails.BUBBLE_01_HIT, "bubble01Hit", 8),
+  BUBBLE_02_HIT(SpriteDetails.BUBBLE_02_HIT, "bubble02Hit", 8),
+  BUBBLE_03_HIT(SpriteDetails.BUBBLE_03_HIT, "bubble03Hit", 8),
+
+  // Bushey
+  BUSHEY_01(SpriteDetails.BUSHEY_01, "bushey01", 8),
+  BUSHEY_02(SpriteDetails.BUSHEY_02, "bushey02", 8),
+  BUSHEY_03(SpriteDetails.BUSHEY_03, "bushey03", 8),
+  BUSHEY_01_HIT(SpriteDetails.BUSHEY_01_HIT, "bushey01Hit", 8),
+  BUSHEY_02_HIT(SpriteDetails.BUSHEY_02_HIT, "bushey02Hit", 8),
+  BUSHEY_03_HIT(SpriteDetails.BUSHEY_03_HIT, "bushey03Hit", 8),
+
+  // Choppy
+  CHOPPY_01(SpriteDetails.CHOPPY_01, "choppy01", 8),
+  CHOPPY_02(SpriteDetails.CHOPPY_02, "choppy02", 8),
+  CHOPPY_03(SpriteDetails.CHOPPY_03, "choppy03", 8),
+  CHOPPY_01_HIT(SpriteDetails.CHOPPY_01_HIT, "choppy01Hit", 8),
+  CHOPPY_02_HIT(SpriteDetails.CHOPPY_02_HIT, "choppy02Hit", 8),
+  CHOPPY_03_HIT(SpriteDetails.CHOPPY_03_HIT, "choppy03Hit", 8),
+
+  // Clown
+  CLOWN_01(SpriteDetails.CLOWN_01, "clown01", 8),
+  CLOWN_02(SpriteDetails.CLOWN_02, "clown02", 8),
+  CLOWN_03(SpriteDetails.CLOWN_03, "clown03", 8),
+  CLOWN_01_HIT(SpriteDetails.CLOWN_01_HIT, "clown01Hit", 8),
+  CLOWN_02_HIT(SpriteDetails.CLOWN_02_HIT, "clown02Hit", 8),
+  CLOWN_03_HIT(SpriteDetails.CLOWN_03_HIT, "clown03Hit", 8),
+
+  // Crosser
+  CROSSER_01(SpriteDetails.CROSSER_01, "crosser01", 8),
+  CROSSER_02(SpriteDetails.CROSSER_02, "crosser02", 8),
+  CROSSER_03(SpriteDetails.CROSSER_03, "crosser03", 8),
+  CROSSER_01_HIT(SpriteDetails.CROSSER_01_HIT, "crosser01Hit", 8),
+  CROSSER_02_HIT(SpriteDetails.CROSSER_02_HIT, "crosser02Hit", 8),
+  CROSSER_03_HIT(SpriteDetails.CROSSER_03_HIT, "crosser03Hit", 8),
+
+  // Frog King
+  FROG_KING_01(SpriteDetails.FROG_KING_01, "frogKing01", 8),
+  FROG_KING_02(SpriteDetails.FROG_KING_02, "frogKing02", 8),
+  FROG_KING_03(SpriteDetails.FROG_KING_03, "frogKing03", 8),
+  FROG_KING_01_HIT(SpriteDetails.FROG_KING_01_HIT, "frogKing01Hit", 8),
+  FROG_KING_02_HIT(SpriteDetails.FROG_KING_02_HIT, "frogKing02Hit", 8),
+  FROG_KING_03_HIT(SpriteDetails.FROG_KING_03_HIT, "frogKing03Hit", 8),
+
+  // Green Boy
+  GREEN_BOY_01(SpriteDetails.GREEN_BOY_01, "greenBoy01", 8),
+  GREEN_BOY_02(SpriteDetails.GREEN_BOY_02, "greenBoy02", 8),
+  GREEN_BOY_03(SpriteDetails.GREEN_BOY_03, "greenBoy03", 8),
+  GREEN_BOY_01_HIT(SpriteDetails.GREEN_BOY_01_HIT, "greenBoy01Hit", 8),
+  GREEN_BOY_02_HIT(SpriteDetails.GREEN_BOY_02_HIT, "greenBoy02Hit", 8),
+  GREEN_BOY_03_HIT(SpriteDetails.GREEN_BOY_03_HIT, "greenBoy03Hit", 8),
+
+  // Jelly Fish
+  JELLYFISH_01(SpriteDetails.JELLYFISH_01, "jellyfish01", 8),
+  JELLYFISH_02(SpriteDetails.JELLYFISH_02, "jellyfish02", 8),
+  JELLYFISH_03(SpriteDetails.JELLYFISH_03, "jellyfish03", 8),
+  JELLYFISH_01_HIT(SpriteDetails.JELLYFISH_01_HIT, "jellyfish01Hit", 8),
+  JELLYFISH_02_HIT(SpriteDetails.JELLYFISH_02_HIT, "jellyfish02Hit", 8),
+  JELLYFISH_03_HIT(SpriteDetails.JELLYFISH_03_HIT, "jellyfish03Hit", 8),
+
+  // Spiral
+  SPIRAL_01(SpriteDetails.SPIRAL_01, "spiral01", 8),
+  SPIRAL_02(SpriteDetails.SPIRAL_02, "spiral02", 8),
+  SPIRAL_03(SpriteDetails.SPIRAL_03, "spiral03", 8),
+  SPIRAL_04(SpriteDetails.SPIRAL_04, "spiral04", 8),
+  SPIRAL_05(SpriteDetails.SPIRAL_05, "spiral05", 8),
+  SPIRAL_01_HIT(SpriteDetails.SPIRAL_01_HIT, "spiral01Hit", 8),
+  SPIRAL_02_HIT(SpriteDetails.SPIRAL_02_HIT, "spiral02Hit", 8),
+  SPIRAL_03_HIT(SpriteDetails.SPIRAL_03_HIT, "spiral03Hit", 8),
+  SPIRAL_04_HIT(SpriteDetails.SPIRAL_04_HIT, "spiral04Hit", 8),
+  SPIRAL_05_HIT(SpriteDetails.SPIRAL_05_HIT, "spiral05Hit", 8),
+
+  // Sweep
+  SWEEP_01(SpriteDetails.SWEEP_01, "sweep01", 8),
+  SWEEP_02(SpriteDetails.SWEEP_02, "sweep02", 8),
+  SWEEP_03(SpriteDetails.SWEEP_03, "sweep03", 8),
+  SWEEP_01_HIT(SpriteDetails.SWEEP_01_HIT, "sweep01Hit", 8),
+  SWEEP_02_HIT(SpriteDetails.SWEEP_02_HIT, "sweep02Hit", 8),
+  SWEEP_03_HIT(SpriteDetails.SWEEP_03_HIT, "sweep03Hit", 8),
+
+  // Zoom
+  ZOOM_01(SpriteDetails.ZOOM_01, "zoom01", 8),
+  ZOOM_02(SpriteDetails.ZOOM_02, "zoom02", 8),
+  ZOOM_03(SpriteDetails.ZOOM_03, "zoom03", 8),
+  ZOOM_01_HIT(SpriteDetails.ZOOM_01_HIT, "zoom01Hit", 8),
+  ZOOM_02_HIT(SpriteDetails.ZOOM_02_HIT, "zoom02Hit", 8),
+  ZOOM_03_HIT(SpriteDetails.ZOOM_03_HIT, "zoom03Hit", 8),
 
   // bases
   BASE(SpriteDetails.BASE, "base", 4),

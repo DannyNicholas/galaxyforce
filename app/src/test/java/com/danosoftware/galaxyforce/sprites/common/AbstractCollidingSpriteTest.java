@@ -12,8 +12,8 @@ import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDimensions;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
 import com.danosoftware.galaxyforce.utilities.Rectangle;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class AbstractCollidingSpriteTest {
 
@@ -60,7 +60,7 @@ public class AbstractCollidingSpriteTest {
   private SpriteDetails spriteId;
   private ICollidingSprite sprite;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     // pre-populate sprite details - only BASE has dimensions
     final TextureRegion mockTextureRegion = mock(TextureRegion.class);

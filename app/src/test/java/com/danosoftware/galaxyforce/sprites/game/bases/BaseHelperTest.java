@@ -7,14 +7,12 @@ import static com.danosoftware.galaxyforce.sprites.game.bases.enums.BaseState.EX
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.LEFT;
 import static com.danosoftware.galaxyforce.sprites.game.bases.enums.HelperSide.RIGHT;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.mockito.Mockito.when;
 
-import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
 import com.danosoftware.galaxyforce.models.assets.BaseMissilesDto;
 import com.danosoftware.galaxyforce.models.screens.game.GameModel;
@@ -30,20 +28,16 @@ import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.sprites.game.powerups.IPowerUp;
 import com.danosoftware.galaxyforce.sprites.game.powerups.PowerUp;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
-import com.danosoftware.galaxyforce.textures.TextureService;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Log.class, TextureService.class})
+@ExtendWith(MockitoExtension.class)
 public class BaseHelperTest {
 
   private static final float INITIAL_X = 100f;
@@ -61,11 +55,8 @@ public class BaseHelperTest {
 
   private IBaseHelper baseHelper;
 
-  @Before
+  @BeforeEach
   public void setup() {
-    // mock any static android logging
-    mockStatic(Log.class);
-
     // pre-populate sprite details
     setUpSpriteDetailsForTests();
 

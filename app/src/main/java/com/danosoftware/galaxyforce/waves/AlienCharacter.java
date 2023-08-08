@@ -20,11 +20,17 @@ public enum AlienCharacter {
   BLOCK(
       new SpriteDetails[]{
           SpriteDetails.BLOCK_01,
-          SpriteDetails.BLOCK_02},
+          SpriteDetails.BLOCK_02,
+          SpriteDetails.BLOCK_03,
+          SpriteDetails.BLOCK_04,
+          SpriteDetails.BLOCK_05},
       new SpriteDetails[]{
           SpriteDetails.BLOCK_01,
-          SpriteDetails.BLOCK_02},
-      0.5f
+          SpriteDetails.BLOCK_02,
+          SpriteDetails.BLOCK_03,
+          SpriteDetails.BLOCK_04,
+          SpriteDetails.BLOCK_05},
+      0.2f
   ),
 
   FROGGER(
@@ -331,7 +337,21 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_SMALL(
+  FOXY_SHRINKING_NORMAL(
+      new SpriteDetails[]{
+          SpriteDetails.FOXY,
+          SpriteDetails.FOXY_TALL,
+          SpriteDetails.FOXY,
+          SpriteDetails.FOXY_WIDE},
+      new SpriteDetails[]{
+          SpriteDetails.FOXY_HIT,
+          SpriteDetails.FOXY_TALL_HIT,
+          SpriteDetails.FOXY_HIT,
+          SpriteDetails.FOXY_WIDE_HIT},
+      0.25f
+  ),
+
+  FOXY_SHRINKING_SMALL(
       new SpriteDetails[]{
           SpriteDetails.FOXY_SMALL,
           SpriteDetails.FOXY_TALL_SMALL,
@@ -345,7 +365,7 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_MEDIUM(
+  FOXY_SHRINKING_MEDIUM(
       new SpriteDetails[]{
           SpriteDetails.FOXY_MEDIUM,
           SpriteDetails.FOXY_TALL_MEDIUM,
@@ -359,7 +379,7 @@ public enum AlienCharacter {
       0.25f
   ),
 
-  FOXY_LARGE(
+  FOXY_SHRINKING_LARGE(
       new SpriteDetails[]{
           SpriteDetails.FOXY_LARGE,
           SpriteDetails.FOXY_TALL_LARGE,
@@ -1018,7 +1038,155 @@ public enum AlienCharacter {
           SpriteDetails.SPACE_STATION},
       new SpriteDetails[]{
           SpriteDetails.SPACE_STATION_HIT},
-      0f);
+      0f),
+
+  BUBBLE(
+      new SpriteDetails[]{
+          SpriteDetails.BUBBLE_01,
+          SpriteDetails.BUBBLE_02,
+          SpriteDetails.BUBBLE_01,
+          SpriteDetails.BUBBLE_03},
+      new SpriteDetails[]{
+          SpriteDetails.BUBBLE_01_HIT,
+          SpriteDetails.BUBBLE_02_HIT,
+          SpriteDetails.BUBBLE_01_HIT,
+          SpriteDetails.BUBBLE_03_HIT},
+      0.20f
+  ),
+
+  BUSHEY(
+      new SpriteDetails[]{
+          SpriteDetails.BUSHEY_01,
+          SpriteDetails.BUSHEY_02,
+          SpriteDetails.BUSHEY_01,
+          SpriteDetails.BUSHEY_03},
+      new SpriteDetails[]{
+          SpriteDetails.BUSHEY_01_HIT,
+          SpriteDetails.BUSHEY_02_HIT,
+          SpriteDetails.BUSHEY_01_HIT,
+          SpriteDetails.BUSHEY_03_HIT},
+      0.20f
+  ),
+
+  CHOPPY(
+      new SpriteDetails[]{
+          SpriteDetails.CHOPPY_01,
+          SpriteDetails.CHOPPY_02,
+          SpriteDetails.CHOPPY_01,
+          SpriteDetails.CHOPPY_03},
+      new SpriteDetails[]{
+          SpriteDetails.CHOPPY_01_HIT,
+          SpriteDetails.CHOPPY_02_HIT,
+          SpriteDetails.CHOPPY_01_HIT,
+          SpriteDetails.CHOPPY_03_HIT},
+      0.20f
+  ),
+
+  CLOWN(
+      new SpriteDetails[]{
+          SpriteDetails.CLOWN_01,
+          SpriteDetails.CLOWN_02,
+          SpriteDetails.CLOWN_01,
+          SpriteDetails.CLOWN_03},
+      new SpriteDetails[]{
+          SpriteDetails.CLOWN_01_HIT,
+          SpriteDetails.CLOWN_02_HIT,
+          SpriteDetails.CLOWN_01_HIT,
+          SpriteDetails.CLOWN_03_HIT},
+      0.20f
+  ),
+
+  CROSSER(
+      new SpriteDetails[]{
+          SpriteDetails.CROSSER_01,
+          SpriteDetails.CROSSER_02,
+          SpriteDetails.CROSSER_01,
+          SpriteDetails.CROSSER_03},
+      new SpriteDetails[]{
+          SpriteDetails.CROSSER_01_HIT,
+          SpriteDetails.CROSSER_02_HIT,
+          SpriteDetails.CROSSER_01_HIT,
+          SpriteDetails.CROSSER_03_HIT},
+      0.20f
+  ),
+
+  FROG_KING(
+      new SpriteDetails[]{
+          SpriteDetails.FROG_KING_01,
+          SpriteDetails.FROG_KING_02,
+          SpriteDetails.FROG_KING_01,
+          SpriteDetails.FROG_KING_03},
+      new SpriteDetails[]{
+          SpriteDetails.FROG_KING_01_HIT,
+          SpriteDetails.FROG_KING_02_HIT,
+          SpriteDetails.FROG_KING_01_HIT,
+          SpriteDetails.FROG_KING_03_HIT},
+      0.20f
+  ),
+
+  GREEN_BOY(
+      new SpriteDetails[]{
+          SpriteDetails.GREEN_BOY_01,
+          SpriteDetails.GREEN_BOY_02,
+          SpriteDetails.GREEN_BOY_01,
+          SpriteDetails.GREEN_BOY_03},
+      new SpriteDetails[]{
+          SpriteDetails.GREEN_BOY_01_HIT,
+          SpriteDetails.GREEN_BOY_02_HIT,
+          SpriteDetails.GREEN_BOY_01_HIT,
+          SpriteDetails.GREEN_BOY_03_HIT},
+      0.20f
+  ),
+
+  JELLYFISH(
+      new SpriteDetails[]{
+          SpriteDetails.JELLYFISH_02,
+          SpriteDetails.JELLYFISH_03},
+      new SpriteDetails[]{
+          SpriteDetails.JELLYFISH_02_HIT,
+          SpriteDetails.JELLYFISH_03_HIT},
+      0.20f
+  ),
+
+  SPIRAL(
+      new SpriteDetails[]{
+          SpriteDetails.SPIRAL_01,
+          SpriteDetails.SPIRAL_02,
+          SpriteDetails.SPIRAL_03,
+          SpriteDetails.SPIRAL_04,
+          SpriteDetails.SPIRAL_05},
+      new SpriteDetails[]{
+          SpriteDetails.SPIRAL_01_HIT,
+          SpriteDetails.SPIRAL_02_HIT,
+          SpriteDetails.SPIRAL_03_HIT,
+          SpriteDetails.SPIRAL_04_HIT,
+          SpriteDetails.SPIRAL_05_HIT},
+      0.20f
+  ),
+
+  SWEEP(
+      new SpriteDetails[]{
+          SpriteDetails.SWEEP_02,
+          SpriteDetails.SWEEP_03},
+      new SpriteDetails[]{
+          SpriteDetails.SWEEP_02_HIT,
+          SpriteDetails.SWEEP_03_HIT},
+      0.20f
+  ),
+
+  ZOOM(
+      new SpriteDetails[]{
+          SpriteDetails.ZOOM_01,
+          SpriteDetails.ZOOM_02,
+          SpriteDetails.ZOOM_01,
+          SpriteDetails.ZOOM_03},
+      new SpriteDetails[]{
+          SpriteDetails.ZOOM_01_HIT,
+          SpriteDetails.ZOOM_02_HIT,
+          SpriteDetails.ZOOM_01_HIT,
+          SpriteDetails.ZOOM_03_HIT},
+      0.20f
+  );
 
   private static final float DEFAULT_EXPLOSION_FRAME_DURATION = 0.075f;
 

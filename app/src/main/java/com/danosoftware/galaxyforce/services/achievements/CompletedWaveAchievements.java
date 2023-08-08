@@ -1,12 +1,12 @@
 package com.danosoftware.galaxyforce.services.achievements;
 
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 
-@Value
 @Builder
-public class CompletedWaveAchievements {
+@Getter
+public final class CompletedWaveAchievements {
 
-  int wave;
-  boolean noLivesLostInWave;
+  private final int wave;
+  private final boolean noLivesLostInWave;
 }

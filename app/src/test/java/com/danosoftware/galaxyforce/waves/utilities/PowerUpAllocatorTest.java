@@ -3,9 +3,9 @@ package com.danosoftware.galaxyforce.waves.utilities;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 import android.util.Log;
 import com.danosoftware.galaxyforce.enumerations.PowerUpType;
@@ -16,11 +16,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,18 +30,24 @@ import org.slf4j.LoggerFactory;
  * Test that power-up allocator behaves as expected when allocating a list of power-ups across a
  * wave of aliens.
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Log.class)
+@ExtendWith(MockitoExtension.class)
 public class PowerUpAllocatorTest {
 
   private final static Logger logger = LoggerFactory.getLogger(PowerUpAllocatorTest.class);
 
   private PowerUpAllocator powerUpAllocator;
 
-  @Before
+  private MockedStatic<Log> mockStatic;
+
+  @BeforeEach
   public void setUp() {
     // mock any static android logging
-    mockStatic(Log.class);
+    mockStatic = Mockito.mockStatic(Log.class);
+  }
+
+  @AfterEach
+  public void after() {
+    mockStatic.close();
   }
 
   /**
@@ -90,13 +98,16 @@ public class PowerUpAllocatorTest {
   /**
    * Throw exception if attempting to add more power-ups than aliens.
    */
-  @Test(expected = GalaxyForceException.class)
+  @Test
   public void shouldThrowExceptionWhenMorePowerUpsThanAliens() {
 
-    // should fail when trying to allocate 5 power-ups across 4 aliens
     List<PowerUpType> powerUpTypes = Arrays.asList(PowerUpType.MISSILE_PARALLEL,
         PowerUpType.MISSILE_PARALLEL, PowerUpType.LIFE, PowerUpType.LIFE, PowerUpType.MISSILE_FAST);
-    new PowerUpAllocator(powerUpTypes, 4, 3);
+
+    // should fail when trying to allocate 5 power-ups across 4 aliens
+    assertThrows(GalaxyForceException.class, () -> {
+      new PowerUpAllocator(powerUpTypes, 4, 3);
+    });
   }
 
   /**

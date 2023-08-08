@@ -8,6 +8,9 @@ public enum SpriteDetails {
   // Block
   BLOCK_01,
   BLOCK_02,
+  BLOCK_03,
+  BLOCK_04,
+  BLOCK_05,
 
   // Foxy
   FOXY,
@@ -582,6 +585,98 @@ public enum SpriteDetails {
   // droid alien
   DROID,
   DROID_HIT,
+
+  // bubble
+  BUBBLE_01,
+  BUBBLE_02,
+  BUBBLE_03,
+  BUBBLE_01_HIT,
+  BUBBLE_02_HIT,
+  BUBBLE_03_HIT,
+
+  // bushey
+  BUSHEY_01,
+  BUSHEY_02,
+  BUSHEY_03,
+  BUSHEY_01_HIT,
+  BUSHEY_02_HIT,
+  BUSHEY_03_HIT,
+
+  // choppy
+  CHOPPY_01,
+  CHOPPY_02,
+  CHOPPY_03,
+  CHOPPY_01_HIT,
+  CHOPPY_02_HIT,
+  CHOPPY_03_HIT,
+
+  // clown
+  CLOWN_01,
+  CLOWN_02,
+  CLOWN_03,
+  CLOWN_01_HIT,
+  CLOWN_02_HIT,
+  CLOWN_03_HIT,
+
+  // crosser
+  CROSSER_01,
+  CROSSER_02,
+  CROSSER_03,
+  CROSSER_01_HIT,
+  CROSSER_02_HIT,
+  CROSSER_03_HIT,
+
+  // frog-king
+  FROG_KING_01,
+  FROG_KING_02,
+  FROG_KING_03,
+  FROG_KING_01_HIT,
+  FROG_KING_02_HIT,
+  FROG_KING_03_HIT,
+
+  // green boy
+  GREEN_BOY_01,
+  GREEN_BOY_02,
+  GREEN_BOY_03,
+  GREEN_BOY_01_HIT,
+  GREEN_BOY_02_HIT,
+  GREEN_BOY_03_HIT,
+
+  // jellyfish
+  JELLYFISH_01,
+  JELLYFISH_02,
+  JELLYFISH_03,
+  JELLYFISH_01_HIT,
+  JELLYFISH_02_HIT,
+  JELLYFISH_03_HIT,
+
+  // spiral
+  SPIRAL_01,
+  SPIRAL_02,
+  SPIRAL_03,
+  SPIRAL_04,
+  SPIRAL_05,
+  SPIRAL_01_HIT,
+  SPIRAL_02_HIT,
+  SPIRAL_03_HIT,
+  SPIRAL_04_HIT,
+  SPIRAL_05_HIT,
+
+  // sweep
+  SWEEP_01,
+  SWEEP_02,
+  SWEEP_03,
+  SWEEP_01_HIT,
+  SWEEP_02_HIT,
+  SWEEP_03_HIT,
+
+  // zoom
+  ZOOM_01,
+  ZOOM_02,
+  ZOOM_03,
+  ZOOM_01_HIT,
+  ZOOM_02_HIT,
+  ZOOM_03_HIT,
 
   // bases
   BASE,

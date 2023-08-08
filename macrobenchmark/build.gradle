@@ -33,6 +33,7 @@ android {
             signingConfig = debug.signingConfig
         }
     }
+    namespace 'com.danosoftware.macrobenchmark'
 }
 
 androidComponents {

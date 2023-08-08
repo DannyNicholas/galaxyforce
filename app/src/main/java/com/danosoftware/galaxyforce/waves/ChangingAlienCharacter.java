@@ -6,10 +6,10 @@ import java.util.List;
 public enum ChangingAlienCharacter {
 
   FOXY(new AlienCharacter[]{
-      AlienCharacter.FOXY_LARGE,
-      AlienCharacter.FOXY_MEDIUM,
-      AlienCharacter.FOXY,
-      AlienCharacter.FOXY_SMALL
+      AlienCharacter.FOXY_SHRINKING_LARGE,
+      AlienCharacter.FOXY_SHRINKING_MEDIUM,
+      AlienCharacter.FOXY_SHRINKING_NORMAL,
+      AlienCharacter.FOXY_SHRINKING_SMALL
   });
 
   // alien animation frames

@@ -16,8 +16,8 @@ import com.danosoftware.galaxyforce.sprites.common.ISprite;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDetails;
 import com.danosoftware.galaxyforce.sprites.properties.SpriteDimensions;
 import com.danosoftware.galaxyforce.textures.TextureRegion;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Confirms the the off-screen tester correctly identifies when sprites are off the edge of the
@@ -50,7 +50,7 @@ public class OffScreenTesterTest {
   private ISprite sprite;
   private SpriteDetails spriteId;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     SpriteDimensions dimensions = mock(SpriteDimensions.class);
     when(dimensions.getHeight()).thenReturn(HEIGHT);

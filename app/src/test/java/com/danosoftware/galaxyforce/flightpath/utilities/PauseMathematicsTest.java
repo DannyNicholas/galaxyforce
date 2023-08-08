@@ -6,7 +6,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import com.danosoftware.galaxyforce.flightpath.paths.DoublePoint;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test Pause Mathematics Utility

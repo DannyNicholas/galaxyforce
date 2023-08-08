@@ -2,8 +2,8 @@ package com.danosoftware.galaxyforce.waves.config;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 import com.danosoftware.galaxyforce.enumerations.AlienMissileCharacter;
@@ -26,7 +26,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningFixedAn
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
 import java.util.ArrayList;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class FollowerConfigTest {
 
