@@ -1,7 +1,6 @@
 package com.danosoftware.macrobenchmark.test
 
 import android.content.Intent
-import androidx.benchmark.macro.FrameTimingGfxInfoMetric
 import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
@@ -45,7 +44,7 @@ class AppBenchmark {
         val device = UiDevice.getInstance(instrumentation)
         benchmarkRule.measureRepeated(
             packageName = PACKAGE,
-            metrics = listOf(FrameTimingMetric(), FrameTimingGfxInfoMetric()),
+            metrics = listOf(FrameTimingMetric()),
             iterations = 5,
             startupMode = StartupMode.WARM
         ) {

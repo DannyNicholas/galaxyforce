@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.exceptions.GalaxyForceException;
@@ -40,6 +41,7 @@ import com.danosoftware.galaxyforce.textures.TextureLoader;
 import com.danosoftware.galaxyforce.textures.TextureRegionXmlParser;
 import com.danosoftware.galaxyforce.textures.TextureService;
 import com.danosoftware.galaxyforce.view.GLGraphics;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
@@ -322,16 +324,21 @@ public class GameImpl implements Game, OnTaskCompleteListener<IScreen> {
   /**
    * Retrieve version name of this package. Can return null if version name can not be found.
    */
+  @SuppressWarnings("deprecation")
   private String versionName(Context context) {
     PackageManager packageMgr = context.getPackageManager();
     String packageName = context.getPackageName();
 
     if (packageMgr != null && packageName != null) {
       try {
-        PackageInfo info = packageMgr.getPackageInfo(packageName, 0);
-        if (info != null) {
-          return info.versionName;
+        PackageInfo info;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+          info = packageMgr.getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
+        } else {
+          // deprecated from API 33
+          info = packageMgr.getPackageInfo(packageName, 0);
         }
+        return info.versionName;
       } catch (PackageManager.NameNotFoundException e) {
         return null;
       }
