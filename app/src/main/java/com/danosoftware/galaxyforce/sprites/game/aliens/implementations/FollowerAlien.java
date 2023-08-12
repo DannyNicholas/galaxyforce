@@ -10,7 +10,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -22,7 +22,6 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
   /* minimum distance between follower bodies */
   private static final int MIN_DISTANCE = 25;
 
-  @Builder
   public FollowerAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -57,5 +56,79 @@ public class FollowerAlien extends AbstractAlienFollower implements IAlienFollow
             .getSpeed()
             .getSpeedInPixelsPerSeconds(),
         MIN_DISTANCE);
+  }
+
+  public static FollowerAlienBuilder builder() {
+    return new FollowerAlienBuilder();
+  }
+
+  public static class FollowerAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull FollowerConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+
+    FollowerAlienBuilder() {
+    }
+
+    public FollowerAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public FollowerAlienBuilder alienConfig(@NonNull FollowerConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public FollowerAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public FollowerAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public FollowerAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public FollowerAlien build() {
+      return new FollowerAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, xStart, yStart);
+    }
   }
 }

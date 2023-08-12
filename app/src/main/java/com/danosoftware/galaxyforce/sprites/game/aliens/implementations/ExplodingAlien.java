@@ -15,7 +15,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.factories.AlienMissileFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.ExplodingConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -37,7 +37,6 @@ public class ExplodingAlien extends AbstractAlien {
 
   private boolean isExploding;
 
-  @Builder
   public ExplodingAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -78,6 +77,10 @@ public class ExplodingAlien extends AbstractAlien {
     isExploding = false;
   }
 
+  public static ExplodingAlienBuilder builder() {
+    return new ExplodingAlienBuilder();
+  }
+
   @Override
   public void animate(float deltaTime) {
 
@@ -97,6 +100,82 @@ public class ExplodingAlien extends AbstractAlien {
         model.fireAlienMissiles(missiles);
         isExploding = true;
       }
+    }
+  }
+
+  public static class ExplodingAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull GameModel model;
+    private @NonNull ExplodingConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+
+    ExplodingAlienBuilder() {
+    }
+
+    public ExplodingAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public ExplodingAlienBuilder model(@NonNull GameModel model) {
+      this.model = model;
+      return this;
+    }
+
+    public ExplodingAlienBuilder alienConfig(@NonNull ExplodingConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public ExplodingAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public ExplodingAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public ExplodingAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public ExplodingAlien build() {
+      return new ExplodingAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, model, alienConfig, powerUpType, xStart, yStart);
     }
   }
 }

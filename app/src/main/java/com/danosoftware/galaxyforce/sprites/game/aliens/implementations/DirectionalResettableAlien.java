@@ -11,7 +11,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.DirectionalResettableConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -34,7 +34,6 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
   private final float xDelta;
   private final float yDelta;
 
-  @Builder
   public DirectionalResettableAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -80,6 +79,10 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
     final float angle = alienConfig.getAngle();
     this.xDelta = movePixelsPerSecond * (float) Math.cos(angle);
     this.yDelta = movePixelsPerSecond * (float) Math.sin(angle);
+  }
+
+  public static DirectionalResettableAlienBuilder builder() {
+    return new DirectionalResettableAlienBuilder();
   }
 
   @Override
@@ -133,5 +136,87 @@ public class DirectionalResettableAlien extends AbstractResettableAlien {
   @Override
   public float getTimeDelay() {
     return originalTimeDelayStart;
+  }
+
+  public static class DirectionalResettableAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull DirectionalResettableConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+    private @NonNull Float timeDelayStart;
+    private @NonNull Boolean restartImmediately;
+
+    DirectionalResettableAlienBuilder() {
+    }
+
+    public DirectionalResettableAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder alienConfig(@NonNull DirectionalResettableConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder timeDelayStart(@NonNull Float timeDelayStart) {
+      this.timeDelayStart = timeDelayStart;
+      return this;
+    }
+
+    public DirectionalResettableAlienBuilder restartImmediately(@NonNull Boolean restartImmediately) {
+      this.restartImmediately = restartImmediately;
+      return this;
+    }
+
+    public DirectionalResettableAlien build() {
+      return new DirectionalResettableAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, xStart, yStart, timeDelayStart, restartImmediately);
+    }
   }
 }

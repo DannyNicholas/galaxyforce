@@ -3,16 +3,16 @@ package com.danosoftware.galaxyforce.games;
 import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+
 import com.danosoftware.galaxyforce.billing.BillingService;
 import com.danosoftware.galaxyforce.screen.enums.ScreenType;
 import com.danosoftware.galaxyforce.services.configurations.ConfigurationService;
 import com.danosoftware.galaxyforce.services.googleplay.GooglePlayServices;
 import com.danosoftware.galaxyforce.tasks.TaskService;
 import com.danosoftware.galaxyforce.view.GLGraphics;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * Runs a game loop test that cycles through different sections of the game automatically. Used for
@@ -20,7 +20,6 @@ import lombok.Getter;
  */
 public class GameLoopTest extends GameImpl {
 
-  private final boolean hasSwitched = false;
   private float timeElasped = 0f;
   private final Activity activity;
   private final List<ActionItem> sequence;
@@ -94,11 +93,22 @@ public class GameLoopTest extends GameImpl {
   }
 
   // represents an action to perform at a set time duration
-  @Getter
-  @AllArgsConstructor
   private static final class ActionItem {
 
     private final Float time;
     private final Runnable action;
+
+    public ActionItem(Float time, Runnable action) {
+      this.time = time;
+      this.action = action;
+    }
+
+    public Float getTime() {
+      return this.time;
+    }
+
+    public Runnable getAction() {
+      return this.action;
+    }
   }
 }

@@ -9,7 +9,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.StaticConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -17,7 +17,6 @@ import lombok.NonNull;
  */
 public class StaticAlien extends AbstractAlien {
 
-  @Builder
   public StaticAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -47,5 +46,79 @@ public class StaticAlien extends AbstractAlien {
             alienConfig.getAlienCharacter()),
         spinningFactory.createSpinningBehaviour(
             alienConfig.getSpinningConfig()));
+  }
+
+  public static StaticAlienBuilder builder() {
+    return new StaticAlienBuilder();
+  }
+
+  public static class StaticAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull StaticConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+
+    StaticAlienBuilder() {
+    }
+
+    public StaticAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public StaticAlienBuilder alienConfig(@NonNull StaticConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public StaticAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public StaticAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public StaticAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public StaticAlien build() {
+      return new StaticAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, alienConfig, powerUpType, xStart, yStart);
+    }
   }
 }

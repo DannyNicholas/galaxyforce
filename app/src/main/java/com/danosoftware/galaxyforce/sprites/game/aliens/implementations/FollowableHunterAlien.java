@@ -15,8 +15,9 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviour
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.missiles.bases.IBaseMissile;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterConfig;
+
 import java.util.List;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -53,7 +54,6 @@ public class FollowableHunterAlien extends AbstractAlien {
   // represents the boundaries the alien can fly within
   private final BoundariesChecker boundariesChecker;
 
-  @Builder
   public FollowableHunterAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -111,6 +111,10 @@ public class FollowableHunterAlien extends AbstractAlien {
     this.angle = recalculateAngle(0f);
 
     this.speedInPixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
+  }
+
+  public static FollowableHunterAlienBuilder builder() {
+    return new FollowableHunterAlienBuilder();
   }
 
   @Override
@@ -223,5 +227,93 @@ public class FollowableHunterAlien extends AbstractAlien {
     }
 
     return angle;
+  }
+
+  public static class FollowableHunterAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull GameModel model;
+    private @NonNull FollowableHunterConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+    private @NonNull Float timeDelayStart;
+    private @NonNull List<IAlienFollower> followers;
+
+    FollowableHunterAlienBuilder() {
+    }
+
+    public FollowableHunterAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder model(@NonNull GameModel model) {
+      this.model = model;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder alienConfig(@NonNull FollowableHunterConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder timeDelayStart(@NonNull Float timeDelayStart) {
+      this.timeDelayStart = timeDelayStart;
+      return this;
+    }
+
+    public FollowableHunterAlienBuilder followers(@NonNull List<IAlienFollower> followers) {
+      this.followers = followers;
+      return this;
+    }
+
+    public FollowableHunterAlien build() {
+      return new FollowableHunterAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, model, alienConfig, powerUpType, xStart, yStart, timeDelayStart, followers);
+    }
   }
 }

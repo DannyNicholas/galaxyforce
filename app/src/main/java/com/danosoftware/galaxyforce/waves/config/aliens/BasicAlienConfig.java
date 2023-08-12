@@ -6,10 +6,9 @@ import com.danosoftware.galaxyforce.waves.config.aliens.exploding.ExplosionConfi
 import com.danosoftware.galaxyforce.waves.config.aliens.missiles.MissileConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spawning.SpawnConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.spinning.SpinningConfig;
-import lombok.Getter;
+
 import lombok.NonNull;
 
-@Getter
 public abstract class BasicAlienConfig extends AlienConfig {
 
   private final int energy;
@@ -34,5 +33,29 @@ public abstract class BasicAlienConfig extends AlienConfig {
     this.spawnConfig = spawnConfig;
     this.spinningConfig = spinningConfig;
     this.explosionConfig = explosionConfig;
+  }
+
+  public int getEnergy() {
+    return this.energy;
+  }
+
+  public AlienCharacter getAlienCharacter() {
+    return this.alienCharacter;
+  }
+
+  public SpawnConfig getSpawnConfig() {
+    return this.spawnConfig;
+  }
+
+  public MissileConfig getMissileConfig() {
+    return this.missileConfig;
+  }
+
+  public SpinningConfig getSpinningConfig() {
+    return this.spinningConfig;
+  }
+
+  public ExplosionConfig getExplosionConfig() {
+    return this.explosionConfig;
   }
 }

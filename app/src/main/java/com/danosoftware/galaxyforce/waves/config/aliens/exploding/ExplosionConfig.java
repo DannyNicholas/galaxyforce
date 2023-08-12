@@ -1,14 +1,15 @@
 package com.danosoftware.galaxyforce.waves.config.aliens.exploding;
 
-import lombok.Getter;
-
-@Getter
 public abstract class ExplosionConfig {
 
   private final ExplosionConfig.ExplosionConfigType type;
 
   public ExplosionConfig(ExplosionConfig.ExplosionConfigType type) {
     this.type = type;
+  }
+
+  public ExplosionConfigType getType() {
+    return this.type;
   }
 
   public enum ExplosionConfigType {

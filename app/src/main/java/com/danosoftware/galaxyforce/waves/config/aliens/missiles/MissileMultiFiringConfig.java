@@ -1,8 +1,7 @@
 package com.danosoftware.galaxyforce.waves.config.aliens.missiles;
 
 import java.util.Collection;
-import lombok.Builder;
-import lombok.Getter;
+
 import lombok.NonNull;
 
 /**
@@ -10,16 +9,38 @@ import lombok.NonNull;
  * Useful if an alien has multiple missile behaviours (e.g alien fires downwards missiles and guided
  * missiles at different frequencies).
  */
-@Getter
 public class MissileMultiFiringConfig extends MissileConfig {
 
   // multiple missile configs
   private final Collection<MissileFiringConfig> missileConfigs;
 
-  @Builder
   public MissileMultiFiringConfig(
       @NonNull final Collection<MissileFiringConfig> missileConfigs) {
     super(MissileConfigType.MULTI_MISSILE);
     this.missileConfigs = missileConfigs;
+  }
+
+  public static MissileMultiFiringConfigBuilder builder() {
+    return new MissileMultiFiringConfigBuilder();
+  }
+
+  public Collection<MissileFiringConfig> getMissileConfigs() {
+    return this.missileConfigs;
+  }
+
+  public static class MissileMultiFiringConfigBuilder {
+    private @NonNull Collection<MissileFiringConfig> missileConfigs;
+
+    MissileMultiFiringConfigBuilder() {
+    }
+
+    public MissileMultiFiringConfig.MissileMultiFiringConfigBuilder missileConfigs(@NonNull Collection<MissileFiringConfig> missileConfigs) {
+      this.missileConfigs = missileConfigs;
+      return this;
+    }
+
+    public MissileMultiFiringConfig build() {
+      return new MissileMultiFiringConfig(missileConfigs);
+    }
   }
 }

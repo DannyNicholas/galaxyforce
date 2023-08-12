@@ -12,7 +12,7 @@ import com.danosoftware.galaxyforce.sprites.game.behaviours.powerup.PowerUpBehav
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spawn.SpawnBehaviourFactory;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.spinner.SpinningBehaviourFactory;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.HunterConfig;
-import lombok.Builder;
+
 import lombok.NonNull;
 
 /**
@@ -46,7 +46,6 @@ public class HunterAlien extends AbstractAlien {
   /**
    * Create Alien Hunter.
    */
-  @Builder
   public HunterAlien(
       @NonNull final ExplosionBehaviourFactory explosionFactory,
       @NonNull final SpawnBehaviourFactory spawnFactory,
@@ -103,6 +102,10 @@ public class HunterAlien extends AbstractAlien {
     this.angle = recalculateAngle(0f);
 
     this.speedInPixelsPerSecond = alienConfig.getSpeed().getSpeedInPixelsPerSeconds();
+  }
+
+  public static HunterAlienBuilder builder() {
+    return new HunterAlienBuilder();
   }
 
   @Override
@@ -179,5 +182,87 @@ public class HunterAlien extends AbstractAlien {
     }
 
     return angle;
+  }
+
+  public static class HunterAlienBuilder {
+    private @NonNull ExplosionBehaviourFactory explosionFactory;
+    private @NonNull SpawnBehaviourFactory spawnFactory;
+    private @NonNull SpinningBehaviourFactory spinningFactory;
+    private @NonNull PowerUpBehaviourFactory powerUpFactory;
+    private @NonNull FireBehaviourFactory fireFactory;
+    private @NonNull HitBehaviourFactory hitFactory;
+    private @NonNull GameModel model;
+    private @NonNull HunterConfig alienConfig;
+    private PowerUpType powerUpType;
+    private @NonNull Float xStart;
+    private @NonNull Float yStart;
+    private @NonNull Float timeDelayStart;
+
+    HunterAlienBuilder() {
+    }
+
+    public HunterAlienBuilder explosionFactory(@NonNull ExplosionBehaviourFactory explosionFactory) {
+      this.explosionFactory = explosionFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder spawnFactory(@NonNull SpawnBehaviourFactory spawnFactory) {
+      this.spawnFactory = spawnFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder spinningFactory(@NonNull SpinningBehaviourFactory spinningFactory) {
+      this.spinningFactory = spinningFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder powerUpFactory(@NonNull PowerUpBehaviourFactory powerUpFactory) {
+      this.powerUpFactory = powerUpFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder fireFactory(@NonNull FireBehaviourFactory fireFactory) {
+      this.fireFactory = fireFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder hitFactory(@NonNull HitBehaviourFactory hitFactory) {
+      this.hitFactory = hitFactory;
+      return this;
+    }
+
+    public HunterAlienBuilder model(@NonNull GameModel model) {
+      this.model = model;
+      return this;
+    }
+
+    public HunterAlienBuilder alienConfig(@NonNull HunterConfig alienConfig) {
+      this.alienConfig = alienConfig;
+      return this;
+    }
+
+    public HunterAlienBuilder powerUpType(PowerUpType powerUpType) {
+      this.powerUpType = powerUpType;
+      return this;
+    }
+
+    public HunterAlienBuilder xStart(@NonNull Float xStart) {
+      this.xStart = xStart;
+      return this;
+    }
+
+    public HunterAlienBuilder yStart(@NonNull Float yStart) {
+      this.yStart = yStart;
+      return this;
+    }
+
+    public HunterAlienBuilder timeDelayStart(@NonNull Float timeDelayStart) {
+      this.timeDelayStart = timeDelayStart;
+      return this;
+    }
+
+    public HunterAlien build() {
+      return new HunterAlien(explosionFactory, spawnFactory, spinningFactory, powerUpFactory, fireFactory, hitFactory, model, alienConfig, powerUpType, xStart, yStart, timeDelayStart);
+    }
   }
 }

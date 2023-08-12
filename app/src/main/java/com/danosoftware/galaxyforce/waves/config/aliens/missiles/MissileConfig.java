@@ -1,14 +1,15 @@
 package com.danosoftware.galaxyforce.waves.config.aliens.missiles;
 
-import lombok.Getter;
-
-@Getter
 public abstract class MissileConfig {
 
   private final MissileConfigType type;
 
   public MissileConfig(MissileConfigType type) {
     this.type = type;
+  }
+
+  public MissileConfigType getType() {
+    return this.type;
   }
 
   public enum MissileConfigType {
