@@ -76,10 +76,10 @@ android {
         targetSdkVersion 33
 
         // Defines the version number of your app.
-        versionCode 63
+        versionCode 64
 
         // Defines a user-friendly version name for your app.
-        versionName "0.63(BETA)"
+        versionName "0.64(BETA)"
     }
 
     /**
@@ -165,6 +165,9 @@ dependencies {
     implementation "androidx.core:core:1.10.1"
     implementation "com.android.billingclient:billing:$billing_version"
     implementation 'com.google.android.gms:play-services-games-v2:17.0.0'
+    // play-services-games-v2:17.0.0 causes a warning in Google Play Console due to depending on outdated androidx.fragment:fragment
+    // temporarily constrain to later version
+    constraints.implementation 'androidx.fragment:fragment:1.3.6'
     implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
     implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
