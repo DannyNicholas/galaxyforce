@@ -49,9 +49,9 @@ public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListe
   private final List<BillingUpdatesListener> billingUpdateListeners;
   private final Activity mActivity;
 
-  // organise purchases by order id.
+  // organise purchases by product id.
   // in the case of a pending purchase that upgrades to a full purchase we only want the latest purchase.
-  // we use a map to replace any previous purchases with the same order id.
+  // we use a map to replace any previous purchases with the same product id.
   private final Map<String, Purchase> mPurchases = new HashMap<>();
 
   private final BillingClient mBillingClient;
@@ -270,7 +270,9 @@ public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListe
               Log.i(TAG, "Successfully consumed purchase token: " + purchaseTkn);
 
               // remove purchase
-              mPurchases.remove(purchase.getOrderId());
+              for (String productId : purchase.getProducts()) {
+                mPurchases.remove(productId);
+              }
 
               // notify purchase listeners
               notifyPurchaseListeners();
@@ -285,7 +287,7 @@ public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListe
 
   private void notifyPurchaseListeners() {
     for (BillingUpdatesListener listeners : billingUpdateListeners) {
-      listeners.onPurchasesUpdated(new ArrayList<>(mPurchases.values()));
+      listeners.onPurchasesUpdated(new ArrayList<Purchase>(mPurchases.values()));
     }
   }
 
@@ -322,7 +324,9 @@ public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListe
 
     if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
       Log.d(TAG, "Got a verified purchase: " + purchase);
-      mPurchases.put(purchase.getOrderId(), purchase);
+      for (String productId : purchase.getProducts()) {
+        mPurchases.put(productId, purchase);
+      }
 
       // we must acknowledge a purchase (async) or it will be automatically cancelled
       if (!purchase.isAcknowledged()) {
@@ -342,7 +346,9 @@ public class BillingManagerImpl implements BillingManager, PurchasesUpdatedListe
     } else if (purchase.getPurchaseState() == Purchase.PurchaseState.PENDING) {
       // a pending purchase may take some time to approve
       Log.d(TAG, "Got a verified pending purchase: " + purchase);
-      mPurchases.put(purchase.getOrderId(), purchase);
+      for (String productId : purchase.getProducts()) {
+        mPurchases.put(productId, purchase);
+      }
     } else {
       Log.w(TAG, "Purchase " + purchase + " is not purchased. Purchase state: "
           + purchase.getPurchaseState());

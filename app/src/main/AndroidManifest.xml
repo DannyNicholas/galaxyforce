@@ -6,69 +6,73 @@ See: https://developer.android.com/guide/topics/manifest/manifest-intro.html
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- This app requires OpenGL ES 2.0. -->
-    <uses-feature
-      android:glEsVersion="0x00020000"
-      android:required="true" />
+  <!-- This app requires OpenGL ES 2.0. -->
+  <uses-feature
+    android:glEsVersion="0x00020000"
+    android:required="true" />
+
+  <!--
+  Previous application theme: android:theme="@style/AppTheme".
+  @android:style/Theme.Translucent.NoTitleBar : causes app to start without displaying white screen and title bar.
+  Could also use following but requires SDK version 11: @android:style/Theme.Holo.NoActionBar
+  -->
+
+  <application
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+    android:allowBackup="true"
+    android:fullBackupContent="@xml/my_backup_rules">
 
     <!--
-    Previous application theme: android:theme="@style/AppTheme".
-    @android:style/Theme.Translucent.NoTitleBar : causes app to start without displaying white screen and title bar.
-    Could also use following but requires SDK version 11: @android:style/Theme.Holo.NoActionBar
+    Remove below meta-data if you want to temporarily disable google play games auto sign-in on start-up.
+    Useful when testing game-loop on Google Play Console pre-launch report.
     -->
+    <meta-data
+      android:name="com.google.android.gms.games.APP_ID"
+      android:value="@string/app_id" />
+    <meta-data
+      android:name="com.google.android.gms.version"
+      android:value="@integer/google_play_services_version" />
 
-    <application
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-      android:allowBackup="true"
-      android:fullBackupContent="@xml/my_backup_rules">
+    <!--
+    android:configChanges prevents the activity from re-starting
+    when the orientation or screen-size changes.
+    See: https://developer.android.com/guide/topics/resources/runtime-changes
+    -->
+    <activity
+      android:name=".MainActivity"
+      android:screenOrientation="sensorPortrait"
+      android:exported="true"
+      android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
 
-        <meta-data
-          android:name="com.google.android.gms.games.APP_ID"
-          android:value="@string/app_id" />
-        <meta-data
-          android:name="com.google.android.gms.version"
-          android:value="@integer/google_play_services_version" />
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <action android:name="android.intent.action.VIEW" />
 
-        <!--
-        android:configChanges prevents the activity from re-starting
-        when the orientation or screen-size changes.
-        See: https://developer.android.com/guide/topics/resources/runtime-changes
-        -->
-        <activity
-          android:name=".MainActivity"
-          android:screenOrientation="sensorPortrait"
-          android:exported="true"
-          android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+      <!-- Intent filter for google play test loops -->
+      <intent-filter>
+        <action android:name="com.google.intent.action.TEST_LOOP" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="application/javascript" />
+      </intent-filter>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+      <!-- Intent filter for benchmark profiling -->
+      <intent-filter>
+        <action android:name="com.danosoftware.galaxyforce.BENCHMARK" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
 
-            <!-- Intent filter for google play test loops -->
-            <intent-filter>
-                <action android:name="com.google.intent.action.TEST_LOOP" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/javascript" />
-            </intent-filter>
+    <!-- Profileable to enable Macrobenchmark profiling -->
+    <!-- Suppress AndroidElementNotAllowed -->
+    <profileable android:shell="true" />
 
-            <!-- Intent filter for benchmark profiling -->
-            <intent-filter>
-                <action android:name="com.danosoftware.galaxyforce.BENCHMARK" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <!-- Profileable to enable Macrobenchmark profiling -->
-        <!-- Suppress AndroidElementNotAllowed -->
-        <profileable android:shell="true" />
-
-    </application>
+  </application>
 
 </manifest>
