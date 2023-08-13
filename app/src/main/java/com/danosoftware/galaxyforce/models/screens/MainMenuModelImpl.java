@@ -120,7 +120,10 @@ public class MainMenuModelImpl implements Model, ButtonModel, BillingObserver {
   private void addOptionalBillingButtons() {
     /*
      * if the full version has NOT been purchased then add the upgrade
-     * button
+     * button.
+     * We still show the upgrade button if the purchase is pending.
+     * The upgrade screen will tell the user that their purchase is still
+     * pending (may need some action from them).
      */
     final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
     if (fullGamePurchaseState == PurchaseState.NOT_PURCHASED ||

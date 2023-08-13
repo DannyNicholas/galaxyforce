@@ -137,6 +137,9 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
      * The billing logic will force the user to upgrade if they attempt to play
      * beyond a free wave and have not purchased.
      *
+     * For example a user may not have purchased the game but completed wave 12 (the last free wave).
+     * We still want to show wave 13 as unlocked but attempting to play it, will trigger an upgrade.
+     *
      * However, if the billing state is not ready, only show the highest wave reached
      * up to (but not beyond) the max free waves. Without knowing the purchase state
      * we are unable to handle any attempts to play beyond the free waves.
@@ -298,7 +301,8 @@ public class SelectLevelModelImpl implements LevelModel, SelectLevelModel, Billi
     final PurchaseState fullGamePurchaseState = billingService.getFullGamePurchaseState();
     if (level > GameConstants.MAX_FREE_WAVE
         && (fullGamePurchaseState == PurchaseState.NOT_PURCHASED
-        || fullGamePurchaseState == PurchaseState.PENDING)) {
+        || fullGamePurchaseState == PurchaseState.PENDING
+        || fullGamePurchaseState == PurchaseState.NOT_READY)) {
       Log.i(LOCAL_TAG, "Exceeded maximum free wave. Must upgrade.");
       game.changeToReturningScreen(ScreenType.UPGRADE_FULL_VERSION);
     } else {
