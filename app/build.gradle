@@ -76,10 +76,10 @@ android {
         targetSdkVersion 33
 
         // Defines the version number of your app.
-        versionCode 64
+        versionCode 68
 
         // Defines a user-friendly version name for your app.
-        versionName "0.64(BETA)"
+        versionName "0.68(BETA)"
     }
 
     /**
