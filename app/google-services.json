@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "905913629081",
+    "project_id": "pluto-panic-84362372",
+    "storage_bucket": "pluto-panic-84362372.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905913629081:android:1700a1499d8c8022c47b08",
+        "android_client_info": {
+          "package_name": "com.danosoftware.galaxyforce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905913629081-ur7e31dgkm9ki17ifr4rogfob7025r79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.danosoftware.galaxyforce",
+            "certificate_hash": "f4e59cb6769500f24f3c452c93807878af420b77"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsXiF-pV5eckYPE2gH_IN2BKoHRzdSDro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
