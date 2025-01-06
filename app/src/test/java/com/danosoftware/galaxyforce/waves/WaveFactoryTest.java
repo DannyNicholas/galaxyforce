@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.danosoftware.galaxyforce.sprites.game.aliens.IAlien;
+import com.danosoftware.galaxyforce.waves.config.SubWaveIntroductoryPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.utilities.PowerUpAllocatorFactory;
@@ -45,24 +46,26 @@ public class WaveFactoryTest {
         .thenReturn(createdAliens);
     when(creationUtils.createPathAlienSubWave(any(SubWavePathConfig.class)))
         .thenReturn(createdAliens);
+    when(creationUtils.createIntroductoryPathAlienSubWave(any(SubWaveIntroductoryPathConfig.class)))
+        .thenReturn(createdAliens);
   }
 
   @Test
   public void shouldCreateAllWaves() {
     for (int wave = 1; wave <= MAX_WAVES; wave++) {
 
-      logger.info("Creating wave: " + wave);
+      logger.info("Creating wave: {}", wave);
 
       PowerUpAllocatorFactory powerUpAllocatorFactory = mock(PowerUpAllocatorFactory.class);
       WaveFactory waveFactory = new WaveFactory(creationUtils, powerUpAllocatorFactory);
       List<SubWave> subWaves = waveFactory.createWave(wave);
 
-      logger.info("Sub-waves: " + subWaves.size());
+      logger.info("Sub-waves: {}", subWaves.size());
 
-      assertThat(subWaves.size() > 0, is(true));
+      assertThat(!subWaves.isEmpty(), is(true));
 
       for (SubWave subWave : subWaves) {
-        logger.info("Aliens: " + subWave.getAliens().size());
+        logger.info("Aliens: {}", subWave.getAliens().size());
         assertThat(subWave.getAliens(), hasSize(greaterThan(0)));
       }
     }
