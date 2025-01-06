@@ -116,7 +116,13 @@ public enum Path {
    * Incomplete square path around screen edge from bottom-left,
    * top-left, top-right, finishing at bottom-right
    */
-  EDGE_CREEPER("edgeCreeper.json");
+  EDGE_CREEPER("edgeCreeper.json"),
+
+  /*
+   * Starts top center and moves down before performing a repeating circular attack.
+   */
+  EYE_OF_HORUS_INTRO("eyeOfHorusIntro.json"),
+  EYE_OF_HORUS("eyeOfHorus.json");
 
 
   // file name holding path data
