@@ -37,7 +37,7 @@ buildscript {
      * version 3.0.1 as a classpath dependency.
      */
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.11.2'
+        classpath 'com.android.tools.build:gradle:8.13.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21'
         classpath 'com.google.gms:google-services:4.4.2'
     }

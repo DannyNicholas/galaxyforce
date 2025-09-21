@@ -1,10 +1,7 @@
-*.iml
+env.properties
 .gradle
+.idea
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/.idea/caches
-/.idea/codeStyles
 .DS_Store
 /build
 /app/build
@@ -14,4 +11,3 @@
 .externalNativeBuild
 /app/src/main/res/values/billing.xml
 *.hprof
-/.idea/deploymentTargetDropDown.xml
