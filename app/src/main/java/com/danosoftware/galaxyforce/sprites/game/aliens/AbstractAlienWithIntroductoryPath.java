@@ -1,5 +1,7 @@
 package com.danosoftware.galaxyforce.sprites.game.aliens;
 
+import android.util.Log;
+import com.danosoftware.galaxyforce.constants.GameConstants;
 import com.danosoftware.galaxyforce.flightpath.paths.PathPoint;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.explode.ExplodeBehaviour;
 import com.danosoftware.galaxyforce.sprites.game.behaviours.fire.FireBehaviour;
@@ -15,6 +17,8 @@ import java.util.List;
  * introductory path is completed, the alien will follow a repeating path until destroyed.
  */
 public abstract class AbstractAlienWithIntroductoryPath extends AbstractAlien {
+
+  private static final float TIME_PER_INDEX = 1f / 60f;
 
   private final List<PathPoint> introductoryPath;
   private final List<PathPoint> repeatingPath;
@@ -89,12 +93,18 @@ public abstract class AbstractAlienWithIntroductoryPath extends AbstractAlien {
        */
       if (isOnIntroductoryPath) {
         if (index > introductoryPath.size() - 1) {
+          Log.i(GameConstants.LOG_TAG,
+              "Time: " + timeElapsed);
           isOnIntroductoryPath = false;
-          timeElapsed = timeElapsed % ((introductoryPath.size() - 1) / 60f);
+          timeElapsed = timeElapsed % TIME_PER_INDEX;
+          Log.i(GameConstants.LOG_TAG,
+              "Time: " + timeElapsed);
           index = Math.round(timeElapsed * 60f);
         } else {
           PathPoint position = introductoryPath.get(index);
           move(position);
+          Log.i(GameConstants.LOG_TAG,
+              "Time: " + timeElapsed + " - Index: " + index + "/" + (introductoryPath.size() - 1));
         }
       }
 
@@ -105,11 +115,13 @@ public abstract class AbstractAlienWithIntroductoryPath extends AbstractAlien {
        */
       if (!isOnIntroductoryPath) {
         if (index > repeatingPath.size() - 1) {
-          timeElapsed = timeElapsed % ((repeatingPath.size() - 1) / 60f);
+          timeElapsed = timeElapsed % TIME_PER_INDEX;
           index = Math.round(timeElapsed * 60f);
         }
         PathPoint position = repeatingPath.get(index);
         move(position);
+        Log.i(GameConstants.LOG_TAG,
+            "Time: " + timeElapsed + " - Index: " + index + "/" + (repeatingPath.size() - 1));
       }
 
     } else if (isWaiting()) {
