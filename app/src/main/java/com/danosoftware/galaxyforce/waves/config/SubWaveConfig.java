@@ -38,6 +38,6 @@ public abstract class SubWaveConfig {
    * Type of sub-wave configs
    */
   public enum Type {
-    PATH, NO_PATH
+    PATH, INTRODUCTORY_PATH, NO_PATH
   }
 }

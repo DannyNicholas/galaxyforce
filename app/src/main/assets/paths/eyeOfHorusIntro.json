@@ -1,0 +1,36 @@
+{
+  "pathData": [
+    {
+      "type": "linear",
+      "start": {
+        "x": 270,
+        "y": 1088
+      },
+      "finish": {
+        "x": 270,
+        "y": 480
+      },
+      "pathPoints": 100
+    },
+    {
+      "type": "pause",
+      "pauseTime": 1,
+      "position": {
+        "x": 270,
+        "y": 480
+      }
+    },
+    {
+      "type": "linear",
+      "start": {
+        "x": 270,
+        "y": 480
+      },
+      "finish": {
+        "x": 270,
+        "y": 825
+      },
+      "pathPoints": 100
+    }
+  ]
+}

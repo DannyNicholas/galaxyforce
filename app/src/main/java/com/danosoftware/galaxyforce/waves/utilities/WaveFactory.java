@@ -75,6 +75,7 @@ import com.danosoftware.galaxyforce.waves.AlienCharacter;
 import com.danosoftware.galaxyforce.waves.ChangingAlienCharacter;
 import com.danosoftware.galaxyforce.waves.SubWave;
 import com.danosoftware.galaxyforce.waves.config.SubWaveConfig;
+import com.danosoftware.galaxyforce.waves.config.SubWaveIntroductoryPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveNoPathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWavePathConfig;
 import com.danosoftware.galaxyforce.waves.config.SubWaveRepeatMode;
@@ -89,6 +90,7 @@ import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowableHunterCo
 import com.danosoftware.galaxyforce.waves.config.aliens.types.FollowerConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.PathConfig;
 import com.danosoftware.galaxyforce.waves.config.aliens.types.SplitterConfig;
+import com.danosoftware.galaxyforce.waves.rules.SubWaveIntroductoryPathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRule;
 import com.danosoftware.galaxyforce.waves.rules.SubWavePathRuleProperties;
 import com.danosoftware.galaxyforce.waves.rules.SubWaveRule;
@@ -3804,13 +3806,26 @@ public class WaveFactory {
         subWaves.add(
             createSubWave(
                 SubWaveRepeatMode.REPEAT_UNTIL_DESTROYED,
-                new SubWavePathConfig(
-                    SubWavePathRule.NORMAL_ARC,
+                new SubWaveIntroductoryPathConfig(
+                    SubWaveIntroductoryPathRule.EYE_OF_HORUS,
                     alienConfig(
                         AlienCharacter.BIG_BOSS,
-                        AlienMissileSpeed.MEDIUM,
-                        6.5f),
-                    Collections.singletonList(PowerUpType.LIFE)
+                        Arrays.asList(
+                            MissileFiringConfig
+                                .builder()
+                                .missileType(AlienMissileType.GUIDED)
+                                .missileCharacter(AlienMissileCharacter.FIREBALL)
+                                .missileSpeed(AlienMissileSpeed.MEDIUM)
+                                .missileFrequency(3f)
+                                .build(),
+                            MissileFiringConfig
+                                .builder()
+                                .missileType(AlienMissileType.SPRAY)
+                                .missileCharacter(AlienMissileCharacter.LASER)
+                                .missileSpeed(AlienMissileSpeed.VERY_FAST)
+                                .missileFrequency(1f)
+                                .build())),
+                    NO_POWER_UPS
                 )
             )
         );
@@ -3889,6 +3904,10 @@ public class WaveFactory {
         case PATH:
           SubWavePathConfig pathConfig = (SubWavePathConfig) config;
           aliens.addAll(creationUtils.createPathAlienSubWave(pathConfig));
+          break;
+        case INTRODUCTORY_PATH:
+          SubWaveIntroductoryPathConfig introductoryPathConfig = (SubWaveIntroductoryPathConfig) config;
+          aliens.addAll(creationUtils.createIntroductoryPathAlienSubWave(introductoryPathConfig));
           break;
         case NO_PATH:
           SubWaveNoPathConfig noPathConfig = (SubWaveNoPathConfig) config;

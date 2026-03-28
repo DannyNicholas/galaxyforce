@@ -89,7 +89,6 @@ public class AlienConfigBuilder {
       case SPINNER_PULSE_GREEN:
       case MOLECULE:
       case MOLECULE_MINI:
-      case BIG_BOSS:
       case ASTEROID:
       case ASTEROID_MINI:
       case DRAGON_BODY:
@@ -199,6 +198,7 @@ public class AlienConfigBuilder {
             .build();
       // guided missiles
       case SMOKEY:
+      case BIG_BOSS:
         return MissileFiringConfig
             .builder()
             .missileType(AlienMissileType.GUIDED)
@@ -381,7 +381,6 @@ public class AlienConfigBuilder {
       case OCTOPUS:
       case MINION:
       case MOLECULE_MINI:
-      case BIG_BOSS:
       case ASTEROID_MINI:
       case DRAGON_BODY:
       case BABY_DRAGON_BODY:
@@ -455,6 +454,8 @@ public class AlienConfigBuilder {
         return 15;
       case DRAGON_HEAD:
         return 20;
+      case BIG_BOSS:
+        return 25;
       case BARRIER:
       case BLOCK:
         return Integer.MAX_VALUE;

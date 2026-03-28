@@ -16,6 +16,25 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 /**
+ * load environment variables from env.properties when developing locally.
+ * In other build environments e.g. CircleCI, use environment variables.
+  */
+// Load env.properties if present
+def envProps = new Properties()
+def envFile = rootProject.file("env.properties")
+if (envFile.exists()) {
+    envFile.withInputStream { stream ->
+        envProps.load(stream)
+    }
+}
+
+// Helper function: prefer real environment variables (CircleCI, local shell),
+// then fallback to env.properties, then empty string
+def getEnvVar = { key ->
+    return System.getenv(key) ?: envProps.getProperty(key, "")
+}
+
+/**
  * The android block is where you configure all your Android-specific
  * build options.
  */
@@ -114,10 +133,10 @@ android {
 
         debug {
             // uses gradle properties to populate API keys in BuildConfig
-            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
-            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
-            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
-            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
+            buildConfigField 'String', "public_key1", "\"${getEnvVar("PUBLIC_KEY1")}\""
+            buildConfigField 'String', "public_key2", "\"${getEnvVar("PUBLIC_KEY2")}\""
+            buildConfigField 'String', "public_key3", "\"${getEnvVar("PUBLIC_KEY3")}\""
+            buildConfigField 'String', "public_key4", "\"${getEnvVar("PUBLIC_KEY4")}\""
         }
 
         /**
@@ -130,10 +149,10 @@ android {
             signingConfig signingConfigs.debug
 
             // uses gradle properties to populate API keys in BuildConfig
-            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
-            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
-            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
-            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
+            buildConfigField 'String', "public_key1", "\"${getEnvVar("PUBLIC_KEY1")}\""
+            buildConfigField 'String', "public_key2", "\"${getEnvVar("PUBLIC_KEY2")}\""
+            buildConfigField 'String', "public_key3", "\"${getEnvVar("PUBLIC_KEY3")}\""
+            buildConfigField 'String', "public_key4", "\"${getEnvVar("PUBLIC_KEY4")}\""
 
             minifyEnabled true // Enables code shrinking for the release build type.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
@@ -141,10 +160,10 @@ android {
         }
         benchmark {
             // uses gradle properties to populate API keys in BuildConfig
-            buildConfigField 'String', "public_key1", "\"$PUBLIC_KEY1\""
-            buildConfigField 'String', "public_key2", "\"$PUBLIC_KEY2\""
-            buildConfigField 'String', "public_key3", "\"$PUBLIC_KEY3\""
-            buildConfigField 'String', "public_key4", "\"$PUBLIC_KEY4\""
+            buildConfigField 'String', "public_key1", "\"${getEnvVar("PUBLIC_KEY1")}\""
+            buildConfigField 'String', "public_key2", "\"${getEnvVar("PUBLIC_KEY2")}\""
+            buildConfigField 'String', "public_key3", "\"${getEnvVar("PUBLIC_KEY3")}\""
+            buildConfigField 'String', "public_key4", "\"${getEnvVar("PUBLIC_KEY4")}\""
 
             minifyEnabled true // Enables code shrinking for the release build type.
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),

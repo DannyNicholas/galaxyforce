@@ -22,6 +22,7 @@ import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.Explodin
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowableHunterAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.FollowerAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.HunterAlien;
+import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.IntroductoryPathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.PathAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticAlien;
 import com.danosoftware.galaxyforce.sprites.game.aliens.implementations.StaticExplosion;
@@ -78,6 +79,51 @@ public class AlienFactory {
     this.powerUpFactory = new PowerUpBehaviourFactory(model);
     this.fireFactory = new FireBehaviourFactory(model);
     this.hitFactory = new HitBehaviourFactory(sounds, vibrator);
+  }
+
+  /**
+   * Creates an alien with a supplied path. Starting position will be based on path.
+   */
+  public List<IAlien> createAlien(
+      final AlienConfig alienConfig,
+      final PowerUpType powerUp,
+      final List<PathPoint> introductoryPath,
+      final List<PathPoint> repeatingPath,
+      final float delay) {
+
+    final List<IAlien> aliens = new ArrayList<>();
+    final AlienType alienType = alienConfig.getAlienType();
+
+    // create instance of the wanted alien
+    switch (alienType) {
+
+      case PATH:
+        aliens.add(
+            IntroductoryPathAlien
+                .builder()
+                .explosionFactory(explosionFactory)
+                .spawnFactory(spawnFactory)
+                .spinningFactory(spinningFactory)
+                .powerUpFactory(powerUpFactory)
+                .fireFactory(fireFactory)
+                .hitFactory(hitFactory)
+                .alienConfig((PathConfig) alienConfig)
+                .powerUpType(powerUp)
+                .introductoryPath(introductoryPath)
+                .repeatingPath(repeatingPath)
+                .delayStartTime(delay)
+                .build());
+        break;
+      default:
+        String errorMessage = String.format(
+            "Error: Unrecognised Path AlienType: '%s'",
+            alienType.name());
+        Log.e(TAG, errorMessage);
+        throw new GalaxyForceException(errorMessage);
+    }
+
+    // return alien;
+    return aliens;
   }
 
   /**
